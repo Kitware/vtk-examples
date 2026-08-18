@@ -119,8 +119,8 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=p>}</span>
 <span class=w>  </span><span class=k>else</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Usage: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span>
-<span class=w>         </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; png_file [iso value] e.g. fullhead15.png 500&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Usage: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span>
+<span class=w>         </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" png_file [iso value] e.g. fullhead15.png 500"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>EXIT_FAILURE</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=w>  </span><span class=kt>int</span><span class=w> </span><span class=n>isoValue</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>500</span><span class=p>;</span>
@@ -134,7 +134,7 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPNGReader</span><span class=o>&gt;</span><span class=w> </span><span class=n>reader</span><span class=p>;</span>
 </span><span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>CanReadFile</span><span class=p>(</span><span class=n>inputFileName</span><span class=p>.</span><span class=n>c_str</span><span class=p>()))</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cerr</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Error: Could not read &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>inputFileName</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;.</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cerr</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Error: Could not read "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>inputFileName</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>".</span><span class=se>\n</span><span class=s>"</span><span class=p>;</span>
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>EXIT_FAILURE</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=w>  </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>inputFileName</span><span class=p>.</span><span class=n>c_str</span><span class=p>());</span>
@@ -151,7 +151,7 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>isoActor</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>isoActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>isoMapper</span><span class=p>);</span>
 <span class=w>  </span><span class=n>isoActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
-<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;MediumOrchid&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"MediumOrchid"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkContourTriangulator</span><span class=o>&gt;</span><span class=w> </span><span class=n>poly</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>poly</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>iso</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
@@ -162,21 +162,21 @@ function registerListener(event, func) {
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>polyActor</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>polyActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>polyMapper</span><span class=p>);</span>
-<span class=w>  </span><span class=n>polyActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Gray&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>polyActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Gray"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=w>  </span><span class=c1>// Standard rendering classes</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderer</span><span class=p>;</span>
 </span><span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span><span class=w> </span><span class=n>renWin</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>SetMultiSamples</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;ContourTriangulator&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"ContourTriangulator"</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span><span class=w> </span><span class=n>iren</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>iren</span><span class=o>-&gt;</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renWin</span><span class=p>);</span>
 
 <span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>polyActor</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>isoActor</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;DarkSlateGray&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"DarkSlateGray"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>300</span><span class=p>,</span><span class=w> </span><span class=mi>300</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkCamera</span><span class=o>*</span><span class=w> </span><span class=n>camera</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>GetActiveCamera</span><span class=p>();</span>
@@ -208,11 +208,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;ContourTriangulator: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"ContourTriangulator: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>ContourTriangulator</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>ContourTriangulator.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>ContourTriangulator</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

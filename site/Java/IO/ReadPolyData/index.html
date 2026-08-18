@@ -71,7 +71,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>vtkNativeLibrary</span><span class=p>.</span><span class=na>LoadAllNativeLibraries</span><span class=p>())</span><span class=w> </span><span class=p>{</span>
 <span class=w>      </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=n>vtkNativeLibrary</span><span class=w> </span><span class=n>lib</span><span class=w> </span><span class=p>:</span><span class=w> </span><span class=n>vtkNativeLibrary</span><span class=p>.</span><span class=na>values</span><span class=p>())</span><span class=w> </span><span class=p>{</span>
 <span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>lib</span><span class=p>.</span><span class=na>IsLoaded</span><span class=p>())</span><span class=w> </span><span class=p>{</span>
-<span class=w>          </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&quot; not loaded&quot;</span><span class=p>);</span>
+<span class=w>          </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>" not loaded"</span><span class=p>);</span>
 <span class=w>        </span><span class=p>}</span>
 <span class=w>      </span><span class=p>}</span>
 <span class=w>    </span><span class=p>}</span>
@@ -83,7 +83,7 @@ function registerListener(event, func) {
 
 <span class=w>    </span><span class=c1>//parse command line arguments</span>
 <span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>args</span><span class=p>.</span><span class=na>length</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=mi>1</span><span class=p>)</span><span class=w> </span><span class=p>{</span>
-<span class=w>      </span><span class=n>System</span><span class=p>.</span><span class=na>err</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&quot;Usage: java -classpath ... Filename(.vtp) e.g Torso.vtp&quot;</span><span class=p>);</span>
+<span class=w>      </span><span class=n>System</span><span class=p>.</span><span class=na>err</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>"Usage: java -classpath ... Filename(.vtp) e.g Torso.vtp"</span><span class=p>);</span>
 <span class=w>      </span><span class=k>return</span><span class=p>;</span>
 <span class=w>    </span><span class=p>}</span>
 <span class=w>    </span><span class=n>String</span><span class=w> </span><span class=n>inputFilename</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>args</span><span class=o>[</span><span class=mi>0</span><span class=o>]</span><span class=p>;</span>
@@ -94,8 +94,8 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=kt>double</span><span class=w> </span><span class=n>Bkg</span><span class=o>[]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=kt>double</span><span class=o>[</span><span class=mi>4</span><span class=o>]</span><span class=p>;</span>
 <span class=w>    </span><span class=kt>double</span><span class=w> </span><span class=n>ActorColor</span><span class=o>[]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=kt>double</span><span class=o>[</span><span class=mi>4</span><span class=o>]</span><span class=p>;</span>
 
-<span class=w>    </span><span class=n>Color</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>&quot;Teal&quot;</span><span class=p>,</span><span class=w> </span><span class=n>Bkg</span><span class=p>);</span>
-<span class=w>    </span><span class=n>Color</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>&quot;BurlyWood&quot;</span><span class=p>,</span><span class=w> </span><span class=n>ActorColor</span><span class=p>);</span>
+<span class=w>    </span><span class=n>Color</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>"Teal"</span><span class=p>,</span><span class=w> </span><span class=n>Bkg</span><span class=p>);</span>
+<span class=w>    </span><span class=n>Color</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>"BurlyWood"</span><span class=p>,</span><span class=w> </span><span class=n>ActorColor</span><span class=p>);</span>
 
 <span class=hll><span class=w>    </span><span class=n>vtkXMLPolyDataReader</span><span class=w> </span><span class=n>reader</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkXMLPolyDataReader</span><span class=p>();</span>
 </span><span class=w>    </span><span class=n>reader</span><span class=p>.</span><span class=na>SetFileName</span><span class=p>(</span><span class=n>inputFilename</span><span class=p>);</span>
@@ -123,7 +123,7 @@ function registerListener(event, func) {
 
 <span class=w>    </span><span class=n>renWin</span><span class=p>.</span><span class=na>SetSize</span><span class=p>(</span><span class=mi>600</span><span class=p>,</span><span class=w> </span><span class=mi>600</span><span class=p>);</span>
 <span class=w>    </span><span class=n>renWin</span><span class=p>.</span><span class=na>Render</span><span class=p>();</span>
-<span class=w>    </span><span class=n>renWin</span><span class=p>.</span><span class=na>SetWindowName</span><span class=p>(</span><span class=s>&quot;ReadPolyData&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>renWin</span><span class=p>.</span><span class=na>SetWindowName</span><span class=p>(</span><span class=s>"ReadPolyData"</span><span class=p>);</span>
 
 <span class=w>    </span><span class=n>iren</span><span class=p>.</span><span class=na>Initialize</span><span class=p>();</span>
 <span class=w>    </span><span class=n>iren</span><span class=p>.</span><span class=na>Start</span><span class=p>();</span>

@@ -131,18 +131,18 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_program_parameters</span><span class=p>():</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>argparse</span>
-    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;Demonstrates Gaussian and Mean curvatures on a surface.&#39;</span>
-    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;</span>
-<span class=s1>    For example: -s&quot;Random Hills&quot; -f</span>
+    <span class=n>description</span> <span class=o>=</span> <span class=s1>'Demonstrates Gaussian and Mean curvatures on a surface.'</span>
+    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>'''</span>
+<span class=s1>    For example: -s"Random Hills" -f</span>
 <span class=s1>                 Will display the curvatures along with normals on the surface colored by elevation.</span>
-<span class=s1>    &#39;&#39;&#39;</span>
+<span class=s1>    '''</span>
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
                                      <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawDescriptionHelpFormatter</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;surface_name&#39;</span><span class=p>,</span> <span class=n>nargs</span><span class=o>=</span><span class=s1>&#39;?&#39;</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=s1>&#39;random hills&#39;</span><span class=p>,</span>
-                        <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The name of the surface - enclose the name in quotes if it has spaces.&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-f&#39;</span><span class=p>,</span> <span class=s1>&#39;--frequency_table&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_true&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Display the frequency table.&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-omw&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_true&#39;</span><span class=p>,</span>
-                        <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Use an OrientationMarkerWidget instead of a CameraOrientationWidget.&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'surface_name'</span><span class=p>,</span> <span class=n>nargs</span><span class=o>=</span><span class=s1>'?'</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=s1>'random hills'</span><span class=p>,</span>
+                        <span class=n>help</span><span class=o>=</span><span class=s1>'The name of the surface - enclose the name in quotes if it has spaces.'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-f'</span><span class=p>,</span> <span class=s1>'--frequency_table'</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>'store_true'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'Display the frequency table.'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-omw'</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>'store_true'</span><span class=p>,</span>
+                        <span class=n>help</span><span class=o>=</span><span class=s1>'Use an OrientationMarkerWidget instead of a CameraOrientationWidget.'</span><span class=p>)</span>
 
     <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
     <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>surface_name</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>frequency_table</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>omw</span>
@@ -151,36 +151,36 @@ function registerListener(event, func) {
 <span class=k>def</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=n>argv</span><span class=p>):</span>
     <span class=n>surface_name</span><span class=p>,</span> <span class=n>frequency_table</span><span class=p>,</span> <span class=n>use_omw</span> <span class=o>=</span> <span class=n>get_program_parameters</span><span class=p>()</span>
 
-    <span class=n>available_surfaces</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;bour&#39;</span><span class=p>,</span> <span class=s1>&#39;cube&#39;</span><span class=p>,</span> <span class=s1>&#39;enneper&#39;</span><span class=p>,</span> <span class=s1>&#39;hills&#39;</span><span class=p>,</span> <span class=s1>&#39;mobius&#39;</span><span class=p>,</span> <span class=s1>&#39;parametric hills&#39;</span><span class=p>,</span> <span class=s1>&#39;sphere&#39;</span><span class=p>,</span> <span class=s1>&#39;torus&#39;</span><span class=p>]</span>
+    <span class=n>available_surfaces</span> <span class=o>=</span> <span class=p>[</span><span class=s1>'bour'</span><span class=p>,</span> <span class=s1>'cube'</span><span class=p>,</span> <span class=s1>'enneper'</span><span class=p>,</span> <span class=s1>'hills'</span><span class=p>,</span> <span class=s1>'mobius'</span><span class=p>,</span> <span class=s1>'parametric hills'</span><span class=p>,</span> <span class=s1>'sphere'</span><span class=p>,</span> <span class=s1>'torus'</span><span class=p>]</span>
     <span class=c1># Surfaces whose curvatures need to be adjusted along the edges of the surface or constrained.</span>
-    <span class=n>needs_adjusting</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;bour&#39;</span><span class=p>,</span> <span class=s1>&#39;enneper&#39;</span><span class=p>,</span> <span class=s1>&#39;hills&#39;</span><span class=p>,</span> <span class=s1>&#39;parametric hills&#39;</span><span class=p>,</span> <span class=s1>&#39;torus&#39;</span><span class=p>]</span>
+    <span class=n>needs_adjusting</span> <span class=o>=</span> <span class=p>[</span><span class=s1>'bour'</span><span class=p>,</span> <span class=s1>'enneper'</span><span class=p>,</span> <span class=s1>'hills'</span><span class=p>,</span> <span class=s1>'parametric hills'</span><span class=p>,</span> <span class=s1>'torus'</span><span class=p>]</span>
     <span class=c1># These surfaces have just one curvature value.</span>
-    <span class=n>single_gauss_curv</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;bour&#39;</span><span class=p>,</span> <span class=s1>&#39;enneper&#39;</span><span class=p>,</span> <span class=s1>&#39;cube&#39;</span><span class=p>,</span> <span class=s1>&#39;mobius&#39;</span><span class=p>,</span> <span class=s1>&#39;sphere&#39;</span><span class=p>]</span>
-    <span class=n>single_mean_curv</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;bour&#39;</span><span class=p>,</span> <span class=s1>&#39;enneper&#39;</span><span class=p>,</span> <span class=s1>&#39;cube&#39;</span><span class=p>,</span> <span class=s1>&#39;sphere&#39;</span><span class=p>]</span>
+    <span class=n>single_gauss_curv</span> <span class=o>=</span> <span class=p>[</span><span class=s1>'bour'</span><span class=p>,</span> <span class=s1>'enneper'</span><span class=p>,</span> <span class=s1>'cube'</span><span class=p>,</span> <span class=s1>'mobius'</span><span class=p>,</span> <span class=s1>'sphere'</span><span class=p>]</span>
+    <span class=n>single_mean_curv</span> <span class=o>=</span> <span class=p>[</span><span class=s1>'bour'</span><span class=p>,</span> <span class=s1>'enneper'</span><span class=p>,</span> <span class=s1>'cube'</span><span class=p>,</span> <span class=s1>'sphere'</span><span class=p>]</span>
 
-    <span class=n>surface_name</span> <span class=o>=</span> <span class=s1>&#39; &#39;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>surface_name</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span><span class=o>.</span><span class=n>replace</span><span class=p>(</span><span class=s1>&#39;_&#39;</span><span class=p>,</span> <span class=s1>&#39; &#39;</span><span class=p>)</span><span class=o>.</span><span class=n>split</span><span class=p>())</span>
-    <span class=k>if</span> <span class=n>surface_name</span> <span class=ow>in</span> <span class=p>[</span><span class=s1>&#39;parametrichills&#39;</span><span class=p>,</span> <span class=s1>&#39;random hills&#39;</span><span class=p>,</span> <span class=s1>&#39;randomhills&#39;</span><span class=p>]:</span>
-        <span class=n>surface_name</span> <span class=o>=</span> <span class=s1>&#39;parametric hills&#39;</span>
+    <span class=n>surface_name</span> <span class=o>=</span> <span class=s1>' '</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>surface_name</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span><span class=o>.</span><span class=n>replace</span><span class=p>(</span><span class=s1>'_'</span><span class=p>,</span> <span class=s1>' '</span><span class=p>)</span><span class=o>.</span><span class=n>split</span><span class=p>())</span>
+    <span class=k>if</span> <span class=n>surface_name</span> <span class=ow>in</span> <span class=p>[</span><span class=s1>'parametrichills'</span><span class=p>,</span> <span class=s1>'random hills'</span><span class=p>,</span> <span class=s1>'randomhills'</span><span class=p>]:</span>
+        <span class=n>surface_name</span> <span class=o>=</span> <span class=s1>'parametric hills'</span>
     <span class=k>if</span> <span class=n>surface_name</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span> <span class=ow>not</span> <span class=ow>in</span> <span class=n>available_surfaces</span><span class=p>:</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Nonexistent surface:&#39;</span><span class=p>,</span> <span class=n>surface_name</span><span class=p>)</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Available surfaces are:&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'Nonexistent surface:'</span><span class=p>,</span> <span class=n>surface_name</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'Available surfaces are:'</span><span class=p>)</span>
         <span class=n>asl</span> <span class=o>=</span> <span class=nb>sorted</span><span class=p>(</span><span class=n>available_surfaces</span><span class=p>)</span>
         <span class=n>asl</span> <span class=o>=</span> <span class=p>[</span><span class=n>asl</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>title</span><span class=p>()</span> <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=nb>len</span><span class=p>(</span><span class=n>asl</span><span class=p>))]</span>
         <span class=n>asl</span> <span class=o>=</span> <span class=p>[</span><span class=n>asl</span><span class=p>[</span><span class=n>i</span><span class=p>:</span><span class=n>i</span> <span class=o>+</span> <span class=mi>5</span><span class=p>]</span> <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=nb>len</span><span class=p>(</span><span class=n>asl</span><span class=p>),</span> <span class=mi>5</span><span class=p>)]</span>
         <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=nb>len</span><span class=p>(</span><span class=n>asl</span><span class=p>)):</span>
-            <span class=n>s</span> <span class=o>=</span> <span class=s1>&#39;, &#39;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>asl</span><span class=p>[</span><span class=n>i</span><span class=p>])</span>
+            <span class=n>s</span> <span class=o>=</span> <span class=s1>', '</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>asl</span><span class=p>[</span><span class=n>i</span><span class=p>])</span>
             <span class=k>if</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=nb>len</span><span class=p>(</span><span class=n>asl</span><span class=p>)</span> <span class=o>-</span> <span class=mi>1</span><span class=p>:</span>
-                <span class=n>s</span> <span class=o>+=</span> <span class=s1>&#39;,&#39;</span>
-            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;   </span><span class=si>{</span><span class=n>s</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;If a name has spaces in it, delineate the name with quotes e.g. &quot;parametric hills&quot;&#39;</span><span class=p>)</span>
+                <span class=n>s</span> <span class=o>+=</span> <span class=s1>','</span>
+            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'   </span><span class=si>{</span><span class=n>s</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'If a name has spaces in it, delineate the name with quotes e.g. "parametric hills"'</span><span class=p>)</span>
         <span class=k>return</span>
 
     <span class=n>source</span> <span class=o>=</span> <span class=n>get_source</span><span class=p>(</span><span class=n>surface_name</span><span class=p>)</span>
     <span class=k>if</span> <span class=ow>not</span> <span class=n>source</span><span class=p>:</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;The surface is not available.&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'The surface is not available.'</span><span class=p>)</span>
         <span class=k>return</span>
 
-    <span class=n>Surface</span> <span class=o>=</span> <span class=n>namedtuple</span><span class=p>(</span><span class=s1>&#39;Surface&#39;</span><span class=p>,</span> <span class=s1>&#39;name source&#39;</span><span class=p>)</span>
+    <span class=n>Surface</span> <span class=o>=</span> <span class=n>namedtuple</span><span class=p>(</span><span class=s1>'Surface'</span><span class=p>,</span> <span class=s1>'name source'</span><span class=p>)</span>
     <span class=n>surface</span> <span class=o>=</span> <span class=n>Surface</span><span class=p>(</span><span class=n>surface_name</span><span class=p>,</span> <span class=n>get_source</span><span class=p>(</span><span class=n>surface_name</span><span class=p>))</span>
 
     <span class=c1># --------------------------------------------------------------------------------------</span>
@@ -188,18 +188,18 @@ function registerListener(event, func) {
     <span class=c1># --------------------------------------------------------------------------------------</span>
     <span class=c1># Use an ordered dictionary as we want the keys in a specific order.</span>
     <span class=n>curvatures</span> <span class=o>=</span> <span class=n>OrderedDict</span><span class=p>()</span>
-    <span class=n>curvatures</span><span class=p>[</span><span class=s1>&#39;Gauss_Curvature&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=n>generate_gaussian_curvatures</span><span class=p>(</span><span class=n>surface</span><span class=p>,</span> <span class=n>needs_adjusting</span><span class=p>,</span>
+    <span class=n>curvatures</span><span class=p>[</span><span class=s1>'Gauss_Curvature'</span><span class=p>]</span> <span class=o>=</span> <span class=n>generate_gaussian_curvatures</span><span class=p>(</span><span class=n>surface</span><span class=p>,</span> <span class=n>needs_adjusting</span><span class=p>,</span>
                                                                  <span class=n>frequency_table</span><span class=o>=</span><span class=n>frequency_table</span><span class=p>)</span>
-    <span class=n>curvatures</span><span class=p>[</span><span class=s1>&#39;Mean_Curvature&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=n>generate_mean_curvatures</span><span class=p>(</span><span class=n>surface</span><span class=p>,</span> <span class=n>needs_adjusting</span><span class=p>,</span> <span class=n>frequency_table</span><span class=o>=</span><span class=n>frequency_table</span><span class=p>)</span>
+    <span class=n>curvatures</span><span class=p>[</span><span class=s1>'Mean_Curvature'</span><span class=p>]</span> <span class=o>=</span> <span class=n>generate_mean_curvatures</span><span class=p>(</span><span class=n>surface</span><span class=p>,</span> <span class=n>needs_adjusting</span><span class=p>,</span> <span class=n>frequency_table</span><span class=o>=</span><span class=n>frequency_table</span><span class=p>)</span>
 
-    <span class=c1># Let&#39;s visualize what we have done.</span>
+    <span class=c1># Let's visualize what we have done.</span>
 
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
     <span class=n>window_height</span> <span class=o>=</span> <span class=mi>640</span>
     <span class=n>window_width</span> <span class=o>=</span> <span class=mi>2</span> <span class=o>*</span> <span class=n>window_height</span>
 
-<span class=hll>    <span class=n>ren_win</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>size</span><span class=o>=</span><span class=p>(</span><span class=n>window_width</span><span class=p>,</span> <span class=n>window_height</span><span class=p>),</span> <span class=n>window_name</span><span class=o>=</span><span class=sa>f</span><span class=s1>&#39;</span><span class=si>{</span><span class=n>Path</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>])</span><span class=o>.</span><span class=n>stem</span><span class=si>:</span><span class=s1>s</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+<span class=hll>    <span class=n>ren_win</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>size</span><span class=o>=</span><span class=p>(</span><span class=n>window_width</span><span class=p>,</span> <span class=n>window_height</span><span class=p>),</span> <span class=n>window_name</span><span class=o>=</span><span class=sa>f</span><span class=s1>'</span><span class=si>{</span><span class=n>Path</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>])</span><span class=o>.</span><span class=n>stem</span><span class=si>:</span><span class=s1>s</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
 </span><span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>iren</span><span class=o>.</span><span class=n>render_window</span> <span class=o>=</span> <span class=n>ren_win</span>
 <span class=hll>    <span class=n>style</span> <span class=o>=</span> <span class=n>vtkInteractorStyleTrackballCamera</span><span class=p>()</span>
@@ -207,8 +207,8 @@ function registerListener(event, func) {
 
     <span class=c1># Define viewport ranges [x_min, y_min, x_max, y_max]</span>
     <span class=n>viewports</span> <span class=o>=</span> <span class=nb>dict</span><span class=p>()</span>
-    <span class=n>viewports</span><span class=p>[</span><span class=s1>&#39;Gauss_Curvature&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=p>[</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.5</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>]</span>
-    <span class=n>viewports</span><span class=p>[</span><span class=s1>&#39;Mean_Curvature&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=p>[</span><span class=mf>0.5</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>]</span>
+    <span class=n>viewports</span><span class=p>[</span><span class=s1>'Gauss_Curvature'</span><span class=p>]</span> <span class=o>=</span> <span class=p>[</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.5</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>]</span>
+    <span class=n>viewports</span><span class=p>[</span><span class=s1>'Mean_Curvature'</span><span class=p>]</span> <span class=o>=</span> <span class=p>[</span><span class=mf>0.5</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>]</span>
 
     <span class=c1># Position the source name according to its length.</span>
     <span class=n>text_positions</span> <span class=o>=</span> <span class=n>get_text_positions</span><span class=p>(</span><span class=n>available_surfaces</span><span class=p>,</span>
@@ -216,18 +216,18 @@ function registerListener(event, func) {
                                         <span class=n>vertical_justification</span><span class=o>=</span><span class=n>TextProperty</span><span class=o>.</span><span class=n>VerticalJustification</span><span class=o>.</span><span class=n>VTK_TEXT_TOP</span><span class=p>,</span>
                                         <span class=n>width</span><span class=o>=</span><span class=mf>0.45</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>title_text_property</span> <span class=o>=</span> <span class=n>vtkTextProperty</span><span class=p>(</span><span class=n>color</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;AliceBlue&#39;</span><span class=p>),</span> <span class=n>bold</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>italic</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>shadow</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span>
+<span class=hll>    <span class=n>title_text_property</span> <span class=o>=</span> <span class=n>vtkTextProperty</span><span class=p>(</span><span class=n>color</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'AliceBlue'</span><span class=p>),</span> <span class=n>bold</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>italic</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>shadow</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span>
 </span>                                          <span class=n>font_size</span><span class=o>=</span><span class=mi>16</span><span class=p>,</span>
                                           <span class=n>justification</span><span class=o>=</span><span class=n>TextProperty</span><span class=o>.</span><span class=n>Justification</span><span class=o>.</span><span class=n>VTK_TEXT_LEFT</span><span class=p>)</span>
-<span class=hll>    <span class=n>label_text_property</span> <span class=o>=</span> <span class=n>vtkTextProperty</span><span class=p>(</span><span class=n>color</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;AliceBlue&#39;</span><span class=p>),</span> <span class=n>bold</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>italic</span><span class=o>=</span><span class=kc>False</span><span class=p>,</span> <span class=n>shadow</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span>
+<span class=hll>    <span class=n>label_text_property</span> <span class=o>=</span> <span class=n>vtkTextProperty</span><span class=p>(</span><span class=n>color</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'AliceBlue'</span><span class=p>),</span> <span class=n>bold</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>italic</span><span class=o>=</span><span class=kc>False</span><span class=p>,</span> <span class=n>shadow</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span>
 </span>                                          <span class=n>font_size</span><span class=o>=</span><span class=mi>16</span><span class=p>,</span>
                                           <span class=n>justification</span><span class=o>=</span><span class=n>TextProperty</span><span class=o>.</span><span class=n>Justification</span><span class=o>.</span><span class=n>VTK_TEXT_LEFT</span><span class=p>)</span>
 <span class=hll>    <span class=n>text_actor</span> <span class=o>=</span> <span class=n>vtkTextActor</span><span class=p>(</span><span class=nb>input</span><span class=o>=</span><span class=n>surface_name</span><span class=o>.</span><span class=n>title</span><span class=p>(),</span> <span class=n>text_scale_mode</span><span class=o>=</span><span class=n>vtkTextActor</span><span class=o>.</span><span class=n>TEXT_SCALE_MODE_NONE</span><span class=p>,</span>
 </span>                              <span class=n>text_property</span><span class=o>=</span><span class=n>title_text_property</span><span class=p>)</span>
     <span class=c1># Create the text representation. Used for positioning the text actor.</span>
 <span class=hll>    <span class=n>text_representation</span> <span class=o>=</span> <span class=n>vtkTextRepresentation</span><span class=p>(</span><span class=n>enforce_normalized_viewport_bounds</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
-</span>    <span class=n>text_representation</span><span class=o>.</span><span class=n>position_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>text_positions</span><span class=p>[</span><span class=n>surface</span><span class=o>.</span><span class=n>name</span><span class=p>][</span><span class=s1>&#39;p&#39;</span><span class=p>]</span>
-    <span class=n>text_representation</span><span class=o>.</span><span class=n>position2_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>text_positions</span><span class=p>[</span><span class=n>surface</span><span class=o>.</span><span class=n>name</span><span class=p>][</span><span class=s1>&#39;p2&#39;</span><span class=p>]</span>
+</span>    <span class=n>text_representation</span><span class=o>.</span><span class=n>position_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>text_positions</span><span class=p>[</span><span class=n>surface</span><span class=o>.</span><span class=n>name</span><span class=p>][</span><span class=s1>'p'</span><span class=p>]</span>
+    <span class=n>text_representation</span><span class=o>.</span><span class=n>position2_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>text_positions</span><span class=p>[</span><span class=n>surface</span><span class=o>.</span><span class=n>name</span><span class=p>][</span><span class=s1>'p2'</span><span class=p>]</span>
 <span class=hll>    <span class=n>text_widget</span> <span class=o>=</span> <span class=n>vtkTextWidget</span><span class=p>(</span><span class=n>representation</span><span class=o>=</span><span class=n>text_representation</span><span class=p>,</span> <span class=n>text_actor</span><span class=o>=</span><span class=n>text_actor</span><span class=p>,</span> <span class=n>interactor</span><span class=o>=</span><span class=n>iren</span><span class=p>,</span>
 </span>                                <span class=n>selectable</span><span class=o>=</span><span class=kc>False</span><span class=p>)</span>
     <span class=c1># Build the renderers and add them to the render window.</span>
@@ -236,14 +236,14 @@ function registerListener(event, func) {
 
     <span class=n>first</span> <span class=o>=</span> <span class=kc>True</span>
     <span class=k>for</span> <span class=n>k</span><span class=p>,</span> <span class=n>v</span> <span class=ow>in</span> <span class=n>curvatures</span><span class=o>.</span><span class=n>items</span><span class=p>():</span>
-<span class=hll>        <span class=n>src_mapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>(</span><span class=n>scalar_range</span><span class=o>=</span><span class=n>v</span><span class=p>[</span><span class=s1>&#39;scalar_range_curvatures&#39;</span><span class=p>],</span>
-</span>                                       <span class=n>lookup_table</span><span class=o>=</span><span class=n>v</span><span class=p>[</span><span class=s1>&#39;lut&#39;</span><span class=p>],</span>
+<span class=hll>        <span class=n>src_mapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>(</span><span class=n>scalar_range</span><span class=o>=</span><span class=n>v</span><span class=p>[</span><span class=s1>'scalar_range_curvatures'</span><span class=p>],</span>
+</span>                                       <span class=n>lookup_table</span><span class=o>=</span><span class=n>v</span><span class=p>[</span><span class=s1>'lut'</span><span class=p>],</span>
                                        <span class=n>scalar_mode</span><span class=o>=</span><span class=n>Mapper</span><span class=o>.</span><span class=n>ScalarMode</span><span class=o>.</span><span class=n>VTK_SCALAR_MODE_DEFAULT</span><span class=p>)</span>
 
 <span class=hll>        <span class=n>src_actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>(</span><span class=n>mapper</span><span class=o>=</span><span class=n>src_mapper</span><span class=p>)</span>
-</span>        <span class=n>v</span><span class=p>[</span><span class=s1>&#39;surface&#39;</span><span class=p>]</span> <span class=o>&gt;&gt;</span> <span class=n>src_mapper</span>
+</span>        <span class=n>v</span><span class=p>[</span><span class=s1>'surface'</span><span class=p>]</span> <span class=o>&gt;&gt;</span> <span class=n>src_mapper</span>
 
-<span class=hll>        <span class=n>ren</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;ParaViewBlueGrayBkg&#39;</span><span class=p>))</span>
+<span class=hll>        <span class=n>ren</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'ParaViewBlueGrayBkg'</span><span class=p>))</span>
 </span>        <span class=k>if</span> <span class=n>first</span><span class=p>:</span>
             <span class=n>text_widget</span><span class=o>.</span><span class=n>default_renderer</span> <span class=o>=</span> <span class=n>ren</span>
             <span class=n>first</span> <span class=o>=</span> <span class=kc>False</span>
@@ -251,16 +251,16 @@ function registerListener(event, func) {
         <span class=n>ren</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>src_actor</span><span class=p>)</span>
 
         <span class=n>scalar_bar_properties</span> <span class=o>=</span> <span class=n>ScalarBarProperties</span><span class=p>()</span>
-        <span class=n>scalar_bar_properties</span><span class=o>.</span><span class=n>title_text</span> <span class=o>=</span> <span class=n>k</span><span class=o>.</span><span class=n>replace</span><span class=p>(</span><span class=s1>&#39;_&#39;</span><span class=p>,</span> <span class=s1>&#39; &#39;</span><span class=p>)</span> <span class=o>+</span> <span class=s1>&#39;</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=n>scalar_bar_properties</span><span class=o>.</span><span class=n>number_of_labels</span> <span class=o>=</span> <span class=nb>min</span><span class=p>(</span><span class=mi>5</span><span class=p>,</span> <span class=n>curvatures</span><span class=p>[</span><span class=n>k</span><span class=p>][</span><span class=s1>&#39;scalar_bar_labels&#39;</span><span class=p>])</span>
-        <span class=n>scalar_bar_properties</span><span class=o>.</span><span class=n>lut</span> <span class=o>=</span> <span class=n>curvatures</span><span class=p>[</span><span class=n>k</span><span class=p>][</span><span class=s1>&#39;lut&#39;</span><span class=p>]</span>
+        <span class=n>scalar_bar_properties</span><span class=o>.</span><span class=n>title_text</span> <span class=o>=</span> <span class=n>k</span><span class=o>.</span><span class=n>replace</span><span class=p>(</span><span class=s1>'_'</span><span class=p>,</span> <span class=s1>' '</span><span class=p>)</span> <span class=o>+</span> <span class=s1>'</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=n>scalar_bar_properties</span><span class=o>.</span><span class=n>number_of_labels</span> <span class=o>=</span> <span class=nb>min</span><span class=p>(</span><span class=mi>5</span><span class=p>,</span> <span class=n>curvatures</span><span class=p>[</span><span class=n>k</span><span class=p>][</span><span class=s1>'scalar_bar_labels'</span><span class=p>])</span>
+        <span class=n>scalar_bar_properties</span><span class=o>.</span><span class=n>lut</span> <span class=o>=</span> <span class=n>curvatures</span><span class=p>[</span><span class=n>k</span><span class=p>][</span><span class=s1>'lut'</span><span class=p>]</span>
         <span class=n>scalar_bar_properties</span><span class=o>.</span><span class=n>orientation</span> <span class=o>=</span> <span class=kc>False</span>
-        <span class=k>if</span> <span class=n>k</span> <span class=o>==</span> <span class=s1>&#39;Gauss_Curvature&#39;</span><span class=p>:</span>
+        <span class=k>if</span> <span class=n>k</span> <span class=o>==</span> <span class=s1>'Gauss_Curvature'</span><span class=p>:</span>
             <span class=k>if</span> <span class=n>surface_name</span> <span class=ow>in</span> <span class=n>single_gauss_curv</span><span class=p>:</span>
-                <span class=n>scalar_bar_properties</span><span class=o>.</span><span class=n>position_h</span> <span class=o>=</span> <span class=p>{</span><span class=s1>&#39;p&#39;</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.3</span><span class=p>,</span> <span class=mf>0.05</span><span class=p>),</span> <span class=s1>&#39;p2&#39;</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.35</span><span class=p>,</span> <span class=mf>0.1</span><span class=p>)}</span>
-        <span class=k>if</span> <span class=n>k</span> <span class=o>==</span> <span class=s1>&#39;Mean_Curvature&#39;</span><span class=p>:</span>
+                <span class=n>scalar_bar_properties</span><span class=o>.</span><span class=n>position_h</span> <span class=o>=</span> <span class=p>{</span><span class=s1>'p'</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.3</span><span class=p>,</span> <span class=mf>0.05</span><span class=p>),</span> <span class=s1>'p2'</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.35</span><span class=p>,</span> <span class=mf>0.1</span><span class=p>)}</span>
+        <span class=k>if</span> <span class=n>k</span> <span class=o>==</span> <span class=s1>'Mean_Curvature'</span><span class=p>:</span>
             <span class=k>if</span> <span class=n>surface_name</span> <span class=ow>in</span> <span class=n>single_mean_curv</span><span class=p>:</span>
-                <span class=n>scalar_bar_properties</span><span class=o>.</span><span class=n>position_h</span> <span class=o>=</span> <span class=p>{</span><span class=s1>&#39;p&#39;</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.3</span><span class=p>,</span> <span class=mf>0.05</span><span class=p>),</span> <span class=s1>&#39;p2&#39;</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.35</span><span class=p>,</span> <span class=mf>0.1</span><span class=p>)}</span>
+                <span class=n>scalar_bar_properties</span><span class=o>.</span><span class=n>position_h</span> <span class=o>=</span> <span class=p>{</span><span class=s1>'p'</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.3</span><span class=p>,</span> <span class=mf>0.05</span><span class=p>),</span> <span class=s1>'p2'</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.35</span><span class=p>,</span> <span class=mf>0.1</span><span class=p>)}</span>
         <span class=n>scalar_bar_widgets</span><span class=p>[</span><span class=n>k</span><span class=p>]</span> <span class=o>=</span> <span class=n>make_scalar_bar_widget</span><span class=p>(</span><span class=n>scalar_bar_properties</span><span class=p>,</span> <span class=n>title_text_property</span><span class=p>,</span>
                                                        <span class=n>label_text_property</span><span class=p>,</span> <span class=n>ren</span><span class=p>,</span> <span class=n>iren</span><span class=p>)</span>
 
@@ -275,7 +275,7 @@ function registerListener(event, func) {
     <span class=c1># Enable the widgets.</span>
     <span class=k>if</span> <span class=n>use_omw</span><span class=p>:</span>
         <span class=n>rgb</span> <span class=o>=</span> <span class=p>[</span><span class=mf>0.0</span><span class=p>]</span> <span class=o>*</span> <span class=mi>4</span>
-        <span class=n>colors</span><span class=o>.</span><span class=n>GetColor</span><span class=p>(</span><span class=s2>&quot;Carrot&quot;</span><span class=p>,</span> <span class=n>rgb</span><span class=p>)</span>
+        <span class=n>colors</span><span class=o>.</span><span class=n>GetColor</span><span class=p>(</span><span class=s2>"Carrot"</span><span class=p>,</span> <span class=n>rgb</span><span class=p>)</span>
         <span class=n>rgb</span> <span class=o>=</span> <span class=nb>tuple</span><span class=p>(</span><span class=n>rgb</span><span class=p>[:</span><span class=mi>3</span><span class=p>])</span>
 <span class=hll>        <span class=n>widget</span> <span class=o>=</span> <span class=n>vtkOrientationMarkerWidget</span><span class=p>(</span><span class=n>orientation_marker</span><span class=o>=</span><span class=n>vtkAxesActor</span><span class=p>(),</span>
 </span>                                            <span class=n>interactor</span><span class=o>=</span><span class=n>iren</span><span class=p>,</span> <span class=n>default_renderer</span><span class=o>=</span><span class=n>renderers</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span>
@@ -351,12 +351,12 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_hills</span><span class=p>():</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Create four hills on a plane.</span>
 <span class=sd>    This will have regions of negative, zero and positive Gaussian curvatures.</span>
 
 <span class=sd>    :return:</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 
     <span class=n>x_res</span> <span class=o>=</span> <span class=mi>50</span>
     <span class=n>y_res</span> <span class=o>=</span> <span class=mi>50</span>
@@ -413,7 +413,7 @@ function registerListener(event, func) {
             <span class=n>indices</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>rc</span> <span class=o>+</span> <span class=n>c</span><span class=p>)</span>
             <span class=n>indices</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>indices</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>+</span> <span class=mi>1</span><span class=p>)</span>
             <span class=n>indices</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>rc</span> <span class=o>+</span> <span class=n>y_res</span> <span class=o>+</span> <span class=n>c</span><span class=p>)</span>
-            <span class=c1># print(f&#39;t_num: {t_num} :-  {indices[0]}, {indices[1]}, {indices[2]}&#39;)</span>
+            <span class=c1># print(f't_num: {t_num} :-  {indices[0]}, {indices[1]}, {indices[2]}')</span>
 <span class=hll>            <span class=n>triangle</span> <span class=o>=</span> <span class=n>vtkTriangle</span><span class=p>()</span>
 </span>            <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=nb>len</span><span class=p>(</span><span class=n>indices</span><span class=p>)):</span>
                 <span class=n>triangle</span><span class=o>.</span><span class=n>GetPointIds</span><span class=p>()</span><span class=o>.</span><span class=n>SetId</span><span class=p>(</span><span class=n>i</span><span class=p>,</span> <span class=n>indices</span><span class=p>[</span><span class=n>i</span><span class=p>])</span>
@@ -425,7 +425,7 @@ function registerListener(event, func) {
             <span class=n>indices</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>rc</span> <span class=o>+</span> <span class=n>c</span> <span class=o>+</span> <span class=mi>1</span><span class=p>)</span>
             <span class=n>indices</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>rc</span> <span class=o>+</span> <span class=n>y_res</span> <span class=o>+</span> <span class=n>c</span> <span class=o>+</span> <span class=mi>1</span><span class=p>)</span>
             <span class=n>indices</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>rc</span> <span class=o>+</span> <span class=n>y_res</span> <span class=o>+</span> <span class=n>c</span><span class=p>)</span>
-            <span class=c1># print(f&#39;t_num: {t_num} :-  {indices[0]}, {indices[1]}, {indices[2]}&#39;)</span>
+            <span class=c1># print(f't_num: {t_num} :-  {indices[0]}, {indices[1]}, {indices[2]}')</span>
 <span class=hll>            <span class=n>triangle2</span> <span class=o>=</span> <span class=n>vtkTriangle</span><span class=p>()</span>
 </span>            <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=nb>len</span><span class=p>(</span><span class=n>indices</span><span class=p>)):</span>
                 <span class=n>triangle2</span><span class=o>.</span><span class=n>GetPointIds</span><span class=p>()</span><span class=o>.</span><span class=n>SetId</span><span class=p>(</span><span class=n>i</span><span class=p>,</span> <span class=n>indices</span><span class=p>[</span><span class=n>i</span><span class=p>])</span>
@@ -435,7 +435,7 @@ function registerListener(event, func) {
 
 <span class=hll>    <span class=n>poly_data</span> <span class=o>=</span> <span class=n>vtkPolyData</span><span class=p>(</span><span class=n>points</span><span class=o>=</span><span class=n>points</span><span class=p>,</span> <span class=n>polys</span><span class=o>=</span><span class=n>triangles</span><span class=p>)</span>
 </span>
-<span class=hll>    <span class=n>textures</span> <span class=o>=</span> <span class=n>vtkFloatArray</span><span class=p>(</span><span class=n>name</span><span class=o>=</span><span class=s1>&#39;Textures&#39;</span><span class=p>,</span> <span class=n>number_of_components</span><span class=o>=</span><span class=mi>2</span><span class=p>,</span> <span class=n>number_of_tuples</span><span class=o>=</span><span class=mi>2</span> <span class=o>*</span> <span class=n>poly_data</span><span class=o>.</span><span class=n>number_of_points</span><span class=p>)</span>
+<span class=hll>    <span class=n>textures</span> <span class=o>=</span> <span class=n>vtkFloatArray</span><span class=p>(</span><span class=n>name</span><span class=o>=</span><span class=s1>'Textures'</span><span class=p>,</span> <span class=n>number_of_components</span><span class=o>=</span><span class=mi>2</span><span class=p>,</span> <span class=n>number_of_tuples</span><span class=o>=</span><span class=mi>2</span> <span class=o>*</span> <span class=n>poly_data</span><span class=o>.</span><span class=n>number_of_points</span><span class=p>)</span>
 </span>    <span class=n>poly_data</span><span class=o>.</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>.</span><span class=n>SetTCoords</span><span class=p>(</span><span class=n>textures</span><span class=p>)</span>
 
     <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>x_res</span><span class=p>):</span>
@@ -537,35 +537,35 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_source</span><span class=p>(</span><span class=n>source</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 
 <span class=sd>    :param source: The name of the source.</span>
 <span class=sd>    :return:</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=n>surface</span> <span class=o>=</span> <span class=n>source</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span>
-    <span class=k>if</span> <span class=n>surface</span> <span class=o>==</span> <span class=s1>&#39;bour&#39;</span><span class=p>:</span>
+    <span class=k>if</span> <span class=n>surface</span> <span class=o>==</span> <span class=s1>'bour'</span><span class=p>:</span>
         <span class=k>return</span> <span class=n>get_bour</span><span class=p>()</span>
-    <span class=k>elif</span> <span class=n>surface</span> <span class=o>==</span> <span class=s1>&#39;cube&#39;</span><span class=p>:</span>
+    <span class=k>elif</span> <span class=n>surface</span> <span class=o>==</span> <span class=s1>'cube'</span><span class=p>:</span>
         <span class=k>return</span> <span class=n>get_cube</span><span class=p>()</span>
-    <span class=k>elif</span> <span class=n>surface</span> <span class=o>==</span> <span class=s1>&#39;enneper&#39;</span><span class=p>:</span>
+    <span class=k>elif</span> <span class=n>surface</span> <span class=o>==</span> <span class=s1>'enneper'</span><span class=p>:</span>
         <span class=k>return</span> <span class=n>get_enneper</span><span class=p>()</span>
-    <span class=k>elif</span> <span class=n>surface</span> <span class=o>==</span> <span class=s1>&#39;hills&#39;</span><span class=p>:</span>
+    <span class=k>elif</span> <span class=n>surface</span> <span class=o>==</span> <span class=s1>'hills'</span><span class=p>:</span>
         <span class=k>return</span> <span class=n>get_hills</span><span class=p>()</span>
-    <span class=k>elif</span> <span class=n>surface</span> <span class=o>==</span> <span class=s1>&#39;mobius&#39;</span><span class=p>:</span>
+    <span class=k>elif</span> <span class=n>surface</span> <span class=o>==</span> <span class=s1>'mobius'</span><span class=p>:</span>
         <span class=k>return</span> <span class=n>get_mobius</span><span class=p>()</span>
-    <span class=k>elif</span> <span class=n>surface</span> <span class=o>==</span> <span class=s1>&#39;parametric hills&#39;</span><span class=p>:</span>
+    <span class=k>elif</span> <span class=n>surface</span> <span class=o>==</span> <span class=s1>'parametric hills'</span><span class=p>:</span>
         <span class=k>return</span> <span class=n>get_parametric_hills</span><span class=p>()</span>
-    <span class=k>elif</span> <span class=n>surface</span> <span class=o>==</span> <span class=s1>&#39;sphere&#39;</span><span class=p>:</span>
+    <span class=k>elif</span> <span class=n>surface</span> <span class=o>==</span> <span class=s1>'sphere'</span><span class=p>:</span>
         <span class=k>return</span> <span class=n>get_sphere</span><span class=p>()</span>
-    <span class=k>elif</span> <span class=n>surface</span> <span class=o>==</span> <span class=s1>&#39;torus&#39;</span><span class=p>:</span>
+    <span class=k>elif</span> <span class=n>surface</span> <span class=o>==</span> <span class=s1>'torus'</span><span class=p>:</span>
         <span class=k>return</span> <span class=n>get_torus</span><span class=p>()</span>
-    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;The surface is not available.&#39;</span><span class=p>)</span>
-    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Using parametric hills instead.&#39;</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s1>'The surface is not available.'</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s1>'Using parametric hills instead.'</span><span class=p>)</span>
     <span class=k>return</span> <span class=n>get_parametric_hills</span><span class=p>()</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_diverging_lut</span><span class=p>():</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    See: [Diverging Color Maps for Scientific Visualization](https://www.kennethmoreland.com/color-maps/)</span>
 <span class=sd>                       start point         midPoint            end point</span>
 <span class=sd>     cool to warm:     0.230, 0.299, 0.754 0.865, 0.865, 0.865 0.706, 0.016, 0.150</span>
@@ -575,7 +575,7 @@ function registerListener(event, func) {
 <span class=sd>     green to red:     0.085, 0.532, 0.201 0.865, 0.865, 0.865 0.758, 0.214, 0.233</span>
 
 <span class=sd>    :return:</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 <span class=hll>    <span class=n>ctf</span> <span class=o>=</span> <span class=n>vtkColorTransferFunction</span><span class=p>(</span><span class=n>color_space</span><span class=o>=</span><span class=n>ColorTransferFunction</span><span class=o>.</span><span class=n>ColorSpace</span><span class=o>.</span><span class=n>VTK_CTF_DIVERGING</span><span class=p>)</span>
 </span>    <span class=c1># Cool to warm.</span>
     <span class=n>ctf</span><span class=o>.</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.230</span><span class=p>,</span> <span class=mf>0.299</span><span class=p>,</span> <span class=mf>0.754</span><span class=p>)</span>
@@ -594,11 +594,11 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_diverging_lut_sv</span><span class=p>(</span><span class=n>color_name</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    A specialization to get a lookup table of only one RGB point ond one color.</span>
 
 <span class=sd>    :return:</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
 <span class=hll>    <span class=n>ctf</span> <span class=o>=</span> <span class=n>vtkColorTransferFunction</span><span class=p>(</span><span class=n>color_space</span><span class=o>=</span><span class=n>ColorTransferFunction</span><span class=o>.</span><span class=n>ColorSpace</span><span class=o>.</span><span class=n>VTK_CTF_DIVERGING</span><span class=p>)</span>
@@ -619,9 +619,9 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
     <span class=n>pts</span> <span class=o>=</span> <span class=nb>list</span><span class=p>()</span>
-    <span class=n>pts</span><span class=o>.</span><span class=n>append</span><span class=p>([</span><span class=mf>0.0</span><span class=p>]</span> <span class=o>+</span> <span class=nb>list</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;MidnightBlue&#39;</span><span class=p>)))</span>
-    <span class=n>pts</span><span class=o>.</span><span class=n>append</span><span class=p>([</span><span class=mf>0.5</span><span class=p>]</span> <span class=o>+</span> <span class=nb>list</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Gainsboro&#39;</span><span class=p>)))</span>
-    <span class=n>pts</span><span class=o>.</span><span class=n>append</span><span class=p>([</span><span class=mf>1.0</span><span class=p>]</span> <span class=o>+</span> <span class=nb>list</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;DarkOrange&#39;</span><span class=p>)))</span>
+    <span class=n>pts</span><span class=o>.</span><span class=n>append</span><span class=p>([</span><span class=mf>0.0</span><span class=p>]</span> <span class=o>+</span> <span class=nb>list</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'MidnightBlue'</span><span class=p>)))</span>
+    <span class=n>pts</span><span class=o>.</span><span class=n>append</span><span class=p>([</span><span class=mf>0.5</span><span class=p>]</span> <span class=o>+</span> <span class=nb>list</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Gainsboro'</span><span class=p>)))</span>
+    <span class=n>pts</span><span class=o>.</span><span class=n>append</span><span class=p>([</span><span class=mf>1.0</span><span class=p>]</span> <span class=o>+</span> <span class=nb>list</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'DarkOrange'</span><span class=p>)))</span>
 
 <span class=hll>    <span class=n>ctf</span> <span class=o>=</span> <span class=n>vtkColorTransferFunction</span><span class=p>(</span><span class=n>color_space</span><span class=o>=</span><span class=n>ColorTransferFunction</span><span class=o>.</span><span class=n>ColorSpace</span><span class=o>.</span><span class=n>VTK_CTF_DIVERGING</span><span class=p>)</span>
 </span>    <span class=k>for</span> <span class=n>pt</span> <span class=ow>in</span> <span class=n>pts</span><span class=p>:</span>
@@ -639,14 +639,14 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_bands</span><span class=p>(</span><span class=n>d_r</span><span class=p>,</span> <span class=n>number_of_bands</span><span class=p>,</span> <span class=n>precision</span><span class=o>=</span><span class=mi>2</span><span class=p>,</span> <span class=n>nearest_integer</span><span class=o>=</span><span class=kc>False</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Divide a range into bands</span>
 <span class=sd>    :param: d_r - [min, max] the range that is to be covered by the bands.</span>
 <span class=sd>    :param: number_of_bands - The number of bands, a positive integer.</span>
 <span class=sd>    :param: precision - The decimal precision of the bounds.</span>
 <span class=sd>    :param: nearest_integer - If True then [floor(min), ceil(max)] is used.</span>
 <span class=sd>    :return: A dictionary consisting of the band number and [min, midpoint, max] for each band.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=n>prec</span> <span class=o>=</span> <span class=nb>abs</span><span class=p>(</span><span class=n>precision</span><span class=p>)</span>
     <span class=k>if</span> <span class=n>prec</span> <span class=o>&gt;</span> <span class=mi>14</span><span class=p>:</span>
         <span class=n>prec</span> <span class=o>=</span> <span class=mi>14</span>
@@ -672,14 +672,14 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_frequencies</span><span class=p>(</span><span class=n>bands</span><span class=p>,</span> <span class=n>src</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Count the number of scalars in each band.</span>
 <span class=sd>    The scalars used are the active scalars in the polydata.</span>
 
 <span class=sd>    :param: bands - The bands.</span>
 <span class=hll><span class=sd>    :param: src - The vtkPolyData source.</span>
 </span><span class=sd>    :return: The frequencies of the scalars in each band.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=n>freq</span> <span class=o>=</span> <span class=nb>dict</span><span class=p>()</span>
     <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=nb>len</span><span class=p>(</span><span class=n>bands</span><span class=p>)):</span>
         <span class=n>freq</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>=</span> <span class=mi>0</span>
@@ -694,30 +694,30 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>adjust_edge_curvatures</span><span class=p>(</span><span class=n>source</span><span class=p>,</span> <span class=n>curvature_name</span><span class=p>,</span> <span class=n>epsilon</span><span class=o>=</span><span class=mf>1.0e-08</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    This function adjusts curvatures along the edges of the surface by replacing</span>
 <span class=sd>     the value with the average value of the curvatures of points in the neighborhood.</span>
 
 <span class=hll><span class=sd>    Remember to update the vtkCurvatures object before calling this.</span>
 </span>
 <span class=hll><span class=sd>    :param source: A vtkPolyData object corresponding to the vtkCurvatures object.</span>
-</span><span class=sd>    :param curvature_name: The name of the curvature, &#39;Gauss_Curvature&#39; or &#39;Mean_Curvature&#39;.</span>
+</span><span class=sd>    :param curvature_name: The name of the curvature, 'Gauss_Curvature' or 'Mean_Curvature'.</span>
 <span class=sd>    :param epsilon: Absolute curvature values less than this will be set to zero.</span>
 <span class=hll><span class=sd>    :return: The vtkPolyData object with the adjusted edge curvatures.</span>
-</span><span class=sd>    &quot;&quot;&quot;</span>
+</span><span class=sd>    """</span>
 
     <span class=k>def</span><span class=w> </span><span class=nf>point_neighbourhood</span><span class=p>(</span><span class=n>pt_id</span><span class=p>):</span>
-<span class=w>        </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>        </span><span class=sd>"""</span>
 <span class=sd>        Find the ids of the neighbors of pt_id.</span>
 
 <span class=sd>        :param pt_id: The point id.</span>
 <span class=sd>        :return: The neighbour ids.</span>
-<span class=sd>        &quot;&quot;&quot;</span>
-<span class=w>        </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=sd>        """</span>
+<span class=w>        </span><span class=sd>"""</span>
 <span class=sd>        Extract the topological neighbors for point pId. In two steps:</span>
 <span class=sd>        1) source.GetPointCells(pt_id, cell_ids)</span>
 <span class=sd>        2) source.GetCellPoints(cell_id, cell_point_ids) for all cell_id in cell_ids</span>
-<span class=sd>        &quot;&quot;&quot;</span>
+<span class=sd>        """</span>
 <span class=hll>        <span class=n>cell_ids</span> <span class=o>=</span> <span class=n>vtkIdList</span><span class=p>()</span>
 </span>        <span class=n>source</span><span class=o>.</span><span class=n>GetPointCells</span><span class=p>(</span><span class=n>pt_id</span><span class=p>,</span> <span class=n>cell_ids</span><span class=p>)</span>
         <span class=n>neighbour</span> <span class=o>=</span> <span class=nb>set</span><span class=p>()</span>
@@ -730,13 +730,13 @@ function registerListener(event, func) {
         <span class=k>return</span> <span class=n>neighbour</span>
 
     <span class=k>def</span><span class=w> </span><span class=nf>compute_distance</span><span class=p>(</span><span class=n>pt_id_a</span><span class=p>,</span> <span class=n>pt_id_b</span><span class=p>):</span>
-<span class=w>        </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>        </span><span class=sd>"""</span>
 <span class=sd>        Compute the distance between two points given their ids.</span>
 
 <span class=sd>        :param pt_id_a:</span>
 <span class=sd>        :param pt_id_b:</span>
 <span class=sd>        :return:</span>
-<span class=sd>        &quot;&quot;&quot;</span>
+<span class=sd>        """</span>
         <span class=n>pt_a</span> <span class=o>=</span> <span class=n>np</span><span class=o>.</span><span class=n>array</span><span class=p>(</span><span class=n>source</span><span class=o>.</span><span class=n>GetPoint</span><span class=p>(</span><span class=n>pt_id_a</span><span class=p>))</span>
         <span class=n>pt_b</span> <span class=o>=</span> <span class=n>np</span><span class=o>.</span><span class=n>array</span><span class=p>(</span><span class=n>source</span><span class=o>.</span><span class=n>GetPoint</span><span class=p>(</span><span class=n>pt_id_b</span><span class=p>))</span>
         <span class=k>return</span> <span class=n>np</span><span class=o>.</span><span class=n>linalg</span><span class=o>.</span><span class=n>norm</span><span class=p>(</span><span class=n>pt_a</span> <span class=o>-</span> <span class=n>pt_b</span><span class=p>)</span>
@@ -747,7 +747,7 @@ function registerListener(event, func) {
     <span class=n>curvatures</span> <span class=o>=</span> <span class=n>np_source</span><span class=o>.</span><span class=n>PointData</span><span class=p>[</span><span class=n>curvature_name</span><span class=p>]</span>
 
     <span class=c1>#  Get the boundary point IDs.</span>
-    <span class=n>array_name</span> <span class=o>=</span> <span class=s1>&#39;ids&#39;</span>
+    <span class=n>array_name</span> <span class=o>=</span> <span class=s1>'ids'</span>
 <span class=hll>    <span class=n>id_filter</span> <span class=o>=</span> <span class=n>vtkGenerateIds</span><span class=p>(</span><span class=n>input_data</span><span class=o>=</span><span class=n>source</span><span class=p>,</span> <span class=n>point_ids</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>cell_ids</span><span class=o>=</span><span class=kc>False</span><span class=p>,</span>
 </span>                               <span class=n>point_ids_array_name</span><span class=o>=</span><span class=n>array_name</span><span class=p>,</span> <span class=n>cell_ids_array_name</span><span class=o>=</span><span class=n>array_name</span><span class=p>)</span>
 
@@ -803,17 +803,17 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>constrain_curvatures</span><span class=p>(</span><span class=n>source</span><span class=p>,</span> <span class=n>curvature_name</span><span class=p>,</span> <span class=n>lower_bound</span><span class=o>=</span><span class=mf>0.0</span><span class=p>,</span> <span class=n>upper_bound</span><span class=o>=</span><span class=mf>0.0</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    This function constrains curvatures to the range [lower_bound ... upper_bound].</span>
 
 <span class=hll><span class=sd>    Remember to update the vtkCurvatures object before calling this.</span>
 </span>
 <span class=hll><span class=sd>    :param source: A vtkPolyData object corresponding to the vtkCurvatures object.</span>
-</span><span class=sd>    :param curvature_name: The name of the curvature, &#39;Gauss_Curvature&#39; or &#39;Mean_Curvature&#39;.</span>
+</span><span class=sd>    :param curvature_name: The name of the curvature, 'Gauss_Curvature' or 'Mean_Curvature'.</span>
 <span class=sd>    :param lower_bound: The lower bound.</span>
 <span class=sd>    :param upper_bound: The upper bound.</span>
 <span class=hll><span class=sd>    :return: The vtkPolyData object with the constrained curvatures.</span>
-</span><span class=sd>    &quot;&quot;&quot;</span>
+</span><span class=sd>    """</span>
 
     <span class=n>bounds</span> <span class=o>=</span> <span class=nb>list</span><span class=p>()</span>
     <span class=k>if</span> <span class=n>lower_bound</span> <span class=o>&lt;</span> <span class=n>upper_bound</span><span class=p>:</span>
@@ -842,13 +842,13 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>adjust_ranges</span><span class=p>(</span><span class=n>bands</span><span class=p>,</span> <span class=n>freq</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    The bands and frequencies are adjusted so that the first and last</span>
 <span class=sd>     frequencies in the range are non-zero.</span>
 <span class=sd>    :param bands: The bands dictionary.</span>
 <span class=sd>    :param freq: The frequency dictionary.</span>
 <span class=sd>    :return: Adjusted bands and frequencies.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=c1># Get the indices of the first and last non-zero elements.</span>
     <span class=n>first</span> <span class=o>=</span> <span class=mi>0</span>
     <span class=k>for</span> <span class=n>k</span><span class=p>,</span> <span class=n>v</span> <span class=ow>in</span> <span class=n>freq</span><span class=o>.</span><span class=n>items</span><span class=p>():</span>
@@ -882,17 +882,17 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>generate_gaussian_curvatures</span><span class=p>(</span><span class=n>surface</span><span class=p>,</span> <span class=n>needs_adjusting</span><span class=p>,</span> <span class=n>frequency_table</span><span class=o>=</span><span class=kc>False</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Generate the Gaussian curvatures on the surface.</span>
 
 <span class=sd>    :param surface: The surface.</span>
 <span class=sd>    :param needs_adjusting: Surfaces whose curvatures need to be adjusted along the edges of the surface or constrained.</span>
 <span class=sd>    :param frequency_table: True if a frequency table is to be displayed.</span>
 <span class=sd>    :return: Return the surface, the scalar ranges of the curvatures along with the lookup tables.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=n>name</span> <span class=o>=</span> <span class=n>surface</span><span class=o>.</span><span class=n>name</span>
     <span class=n>source</span> <span class=o>=</span> <span class=n>surface</span><span class=o>.</span><span class=n>source</span>
-    <span class=n>curvature</span> <span class=o>=</span> <span class=s1>&#39;Gauss_Curvature&#39;</span>
+    <span class=n>curvature</span> <span class=o>=</span> <span class=s1>'Gauss_Curvature'</span>
 
     <span class=n>scalar_bar_labels</span> <span class=o>=</span> <span class=mi>5</span>
 
@@ -902,25 +902,25 @@ function registerListener(event, func) {
     <span class=k>if</span> <span class=n>name</span> <span class=ow>in</span> <span class=n>needs_adjusting</span><span class=p>:</span>
         <span class=n>adjust_edge_curvatures</span><span class=p>(</span><span class=n>p</span><span class=p>,</span> <span class=n>curvature</span><span class=p>)</span>
 
-    <span class=k>if</span> <span class=n>name</span> <span class=o>==</span> <span class=s1>&#39;bour&#39;</span><span class=p>:</span>
+    <span class=k>if</span> <span class=n>name</span> <span class=o>==</span> <span class=s1>'bour'</span><span class=p>:</span>
         <span class=c1># Gaussian curvature is -1/(r(r+1)^4)</span>
         <span class=n>r</span> <span class=o>=</span> <span class=mi>1</span>
         <span class=n>gauss_curvature</span> <span class=o>=</span> <span class=o>-</span><span class=mi>1</span> <span class=o>/</span> <span class=p>(</span><span class=n>r</span> <span class=o>*</span> <span class=p>(</span><span class=n>r</span> <span class=o>+</span> <span class=mi>1</span><span class=p>)</span> <span class=o>**</span> <span class=mi>4</span><span class=p>)</span>
         <span class=n>constrain_curvatures</span><span class=p>(</span><span class=n>p</span><span class=p>,</span> <span class=n>curvature</span><span class=p>,</span> <span class=n>gauss_curvature</span><span class=p>,</span> <span class=n>gauss_curvature</span><span class=p>)</span>
         <span class=n>scalar_bar_labels</span> <span class=o>=</span> <span class=mi>1</span>
-    <span class=k>if</span> <span class=n>name</span> <span class=o>==</span> <span class=s1>&#39;enneper&#39;</span><span class=p>:</span>
+    <span class=k>if</span> <span class=n>name</span> <span class=o>==</span> <span class=s1>'enneper'</span><span class=p>:</span>
         <span class=c1># Gaussian curvature is -4/(1 + r^2)^4</span>
         <span class=n>r</span> <span class=o>=</span> <span class=mi>1</span>
         <span class=n>gauss_curvature</span> <span class=o>=</span> <span class=o>-</span><span class=mi>4</span> <span class=o>/</span> <span class=p>((</span><span class=mi>1</span> <span class=o>+</span> <span class=n>r</span> <span class=o>**</span> <span class=mi>2</span><span class=p>)</span> <span class=o>**</span> <span class=mi>4</span><span class=p>)</span>
         <span class=n>constrain_curvatures</span><span class=p>(</span><span class=n>p</span><span class=p>,</span> <span class=n>curvature</span><span class=p>,</span> <span class=n>gauss_curvature</span><span class=p>,</span> <span class=n>gauss_curvature</span><span class=p>)</span>
         <span class=n>scalar_bar_labels</span> <span class=o>=</span> <span class=mi>1</span>
-    <span class=k>if</span> <span class=n>name</span> <span class=o>==</span> <span class=s1>&#39;cube&#39;</span><span class=p>:</span>
+    <span class=k>if</span> <span class=n>name</span> <span class=o>==</span> <span class=s1>'cube'</span><span class=p>:</span>
         <span class=n>constrain_curvatures</span><span class=p>(</span><span class=n>p</span><span class=p>,</span> <span class=n>curvature</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>)</span>
         <span class=n>scalar_bar_labels</span> <span class=o>=</span> <span class=mi>1</span>
-    <span class=k>if</span> <span class=n>name</span> <span class=o>==</span> <span class=s1>&#39;mobius&#39;</span><span class=p>:</span>
+    <span class=k>if</span> <span class=n>name</span> <span class=o>==</span> <span class=s1>'mobius'</span><span class=p>:</span>
         <span class=n>constrain_curvatures</span><span class=p>(</span><span class=n>p</span><span class=p>,</span> <span class=n>curvature</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>)</span>
         <span class=n>scalar_bar_labels</span> <span class=o>=</span> <span class=mi>1</span>
-    <span class=k>if</span> <span class=n>name</span> <span class=o>==</span> <span class=s1>&#39;sphere&#39;</span><span class=p>:</span>
+    <span class=k>if</span> <span class=n>name</span> <span class=o>==</span> <span class=s1>'sphere'</span><span class=p>:</span>
         <span class=c1># Gaussian curvature is 1/r^2</span>
         <span class=n>r</span> <span class=o>=</span> <span class=mi>1</span>
         <span class=n>gauss_curvature</span> <span class=o>=</span> <span class=mf>1.0</span> <span class=o>/</span> <span class=n>r</span> <span class=o>**</span> <span class=mi>2</span>
@@ -934,32 +934,32 @@ function registerListener(event, func) {
     <span class=n>freq</span> <span class=o>=</span> <span class=n>get_frequencies</span><span class=p>(</span><span class=n>bands</span><span class=p>,</span> <span class=n>p</span><span class=p>)</span>
     <span class=n>bands</span><span class=p>,</span> <span class=n>freq</span> <span class=o>=</span> <span class=n>adjust_ranges</span><span class=p>(</span><span class=n>bands</span><span class=p>,</span> <span class=n>freq</span><span class=p>)</span>
     <span class=k>if</span> <span class=n>frequency_table</span><span class=p>:</span>
-        <span class=c1># Let&#39;s do a frequency table with the number of scalars in each band.</span>
+        <span class=c1># Let's do a frequency table with the number of scalars in each band.</span>
         <span class=n>print_bands_frequencies</span><span class=p>(</span><span class=n>curvature</span><span class=p>,</span> <span class=n>bands</span><span class=p>,</span> <span class=n>freq</span><span class=p>)</span>
 
-    <span class=k>if</span> <span class=n>name</span> <span class=ow>in</span> <span class=p>[</span><span class=s1>&#39;bour&#39;</span><span class=p>,</span> <span class=s1>&#39;enneper&#39;</span><span class=p>,</span> <span class=s1>&#39;cube&#39;</span><span class=p>,</span> <span class=s1>&#39;mobius&#39;</span><span class=p>,</span> <span class=s1>&#39;sphere&#39;</span><span class=p>]:</span>
-        <span class=c1># lut = get_diverging_lut_sv(&#39;LightSteelBlue&#39;)</span>
-        <span class=n>lut</span> <span class=o>=</span> <span class=n>get_diverging_lut_sv</span><span class=p>(</span><span class=s1>&#39;BlanchedAlmond&#39;</span><span class=p>)</span>
+    <span class=k>if</span> <span class=n>name</span> <span class=ow>in</span> <span class=p>[</span><span class=s1>'bour'</span><span class=p>,</span> <span class=s1>'enneper'</span><span class=p>,</span> <span class=s1>'cube'</span><span class=p>,</span> <span class=s1>'mobius'</span><span class=p>,</span> <span class=s1>'sphere'</span><span class=p>]:</span>
+        <span class=c1># lut = get_diverging_lut_sv('LightSteelBlue')</span>
+        <span class=n>lut</span> <span class=o>=</span> <span class=n>get_diverging_lut_sv</span><span class=p>(</span><span class=s1>'BlanchedAlmond'</span><span class=p>)</span>
     <span class=k>else</span><span class=p>:</span>
         <span class=n>lut</span> <span class=o>=</span> <span class=n>get_diverging_lut</span><span class=p>()</span>
     <span class=n>lut</span><span class=o>.</span><span class=n>table_range</span> <span class=o>=</span> <span class=n>scalar_range_curvatures</span>
 
-    <span class=k>return</span> <span class=p>{</span><span class=s1>&#39;surface&#39;</span><span class=p>:</span> <span class=n>p</span><span class=p>,</span> <span class=s1>&#39;scalar_range_curvatures&#39;</span><span class=p>:</span> <span class=n>scalar_range_curvatures</span><span class=p>,</span> <span class=s1>&#39;scalar_bar_labels&#39;</span><span class=p>:</span> <span class=n>scalar_bar_labels</span><span class=p>,</span>
-            <span class=s1>&#39;lut&#39;</span><span class=p>:</span> <span class=n>lut</span><span class=p>}</span>
+    <span class=k>return</span> <span class=p>{</span><span class=s1>'surface'</span><span class=p>:</span> <span class=n>p</span><span class=p>,</span> <span class=s1>'scalar_range_curvatures'</span><span class=p>:</span> <span class=n>scalar_range_curvatures</span><span class=p>,</span> <span class=s1>'scalar_bar_labels'</span><span class=p>:</span> <span class=n>scalar_bar_labels</span><span class=p>,</span>
+            <span class=s1>'lut'</span><span class=p>:</span> <span class=n>lut</span><span class=p>}</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>generate_mean_curvatures</span><span class=p>(</span><span class=n>surface</span><span class=p>,</span> <span class=n>needs_adjusting</span><span class=p>,</span> <span class=n>frequency_table</span><span class=o>=</span><span class=kc>False</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Generate the mean curvatures on the surface.</span>
 
 <span class=sd>    :param surface: The surface.</span>
 <span class=sd>    :param needs_adjusting: Surfaces whose curvatures need to be adjusted along the edges of the surface or constrained.</span>
 <span class=sd>    :param frequency_table: True if a frequency table is to be displayed.</span>
 <span class=sd>    :return: Return the surface, the scalar ranges of the curvatures along with the lookup tables.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=n>name</span> <span class=o>=</span> <span class=n>surface</span><span class=o>.</span><span class=n>name</span>
     <span class=n>source</span> <span class=o>=</span> <span class=n>surface</span><span class=o>.</span><span class=n>source</span>
-    <span class=n>curvature</span> <span class=o>=</span> <span class=s1>&#39;Mean_Curvature&#39;</span>
+    <span class=n>curvature</span> <span class=o>=</span> <span class=s1>'Mean_Curvature'</span>
 
     <span class=n>scalar_bar_labels</span> <span class=o>=</span> <span class=mi>5</span>
 
@@ -969,20 +969,20 @@ function registerListener(event, func) {
     <span class=k>if</span> <span class=n>name</span> <span class=ow>in</span> <span class=n>needs_adjusting</span><span class=p>:</span>
         <span class=n>adjust_edge_curvatures</span><span class=p>(</span><span class=n>p</span><span class=p>,</span> <span class=n>curvature</span><span class=p>)</span>
 
-    <span class=k>if</span> <span class=n>name</span> <span class=o>==</span> <span class=s1>&#39;bour&#39;</span><span class=p>:</span>
+    <span class=k>if</span> <span class=n>name</span> <span class=o>==</span> <span class=s1>'bour'</span><span class=p>:</span>
         <span class=c1># Mean curvature is 0</span>
         <span class=n>constrain_curvatures</span><span class=p>(</span><span class=n>p</span><span class=p>,</span> <span class=n>curvature</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
         <span class=n>scalar_bar_labels</span> <span class=o>=</span> <span class=mi>1</span>
-    <span class=k>if</span> <span class=n>name</span> <span class=o>==</span> <span class=s1>&#39;enneper&#39;</span><span class=p>:</span>
+    <span class=k>if</span> <span class=n>name</span> <span class=o>==</span> <span class=s1>'enneper'</span><span class=p>:</span>
         <span class=c1># Mean curvature is 0</span>
         <span class=n>constrain_curvatures</span><span class=p>(</span><span class=n>p</span><span class=p>,</span> <span class=n>curvature</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
         <span class=n>scalar_bar_labels</span> <span class=o>=</span> <span class=mi>1</span>
-    <span class=k>if</span> <span class=n>name</span> <span class=o>==</span> <span class=s1>&#39;cube&#39;</span><span class=p>:</span>
+    <span class=k>if</span> <span class=n>name</span> <span class=o>==</span> <span class=s1>'cube'</span><span class=p>:</span>
         <span class=n>constrain_curvatures</span><span class=p>(</span><span class=n>p</span><span class=p>,</span> <span class=n>curvature</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>)</span>
         <span class=n>scalar_bar_labels</span> <span class=o>=</span> <span class=mi>1</span>
-    <span class=k>if</span> <span class=n>name</span> <span class=o>==</span> <span class=s1>&#39;mobius&#39;</span><span class=p>:</span>
+    <span class=k>if</span> <span class=n>name</span> <span class=o>==</span> <span class=s1>'mobius'</span><span class=p>:</span>
         <span class=n>constrain_curvatures</span><span class=p>(</span><span class=n>p</span><span class=p>,</span> <span class=n>curvature</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.6</span><span class=p>,</span> <span class=mf>0.6</span><span class=p>)</span>
-    <span class=k>if</span> <span class=n>name</span> <span class=o>==</span> <span class=s1>&#39;sphere&#39;</span><span class=p>:</span>
+    <span class=k>if</span> <span class=n>name</span> <span class=o>==</span> <span class=s1>'sphere'</span><span class=p>:</span>
         <span class=c1># Mean curvature is 1/r</span>
         <span class=n>r</span> <span class=o>=</span> <span class=mi>1</span>
         <span class=n>mean_curvature</span> <span class=o>=</span> <span class=mf>1.0</span> <span class=o>/</span> <span class=n>r</span>
@@ -996,37 +996,37 @@ function registerListener(event, func) {
     <span class=n>freq</span> <span class=o>=</span> <span class=n>get_frequencies</span><span class=p>(</span><span class=n>bands</span><span class=p>,</span> <span class=n>p</span><span class=p>)</span>
     <span class=n>bands</span><span class=p>,</span> <span class=n>freq</span> <span class=o>=</span> <span class=n>adjust_ranges</span><span class=p>(</span><span class=n>bands</span><span class=p>,</span> <span class=n>freq</span><span class=p>)</span>
     <span class=k>if</span> <span class=n>frequency_table</span><span class=p>:</span>
-        <span class=c1># Let&#39;s do a frequency table with the number of scalars in each band.</span>
+        <span class=c1># Let's do a frequency table with the number of scalars in each band.</span>
         <span class=n>print_bands_frequencies</span><span class=p>(</span><span class=n>curvature</span><span class=p>,</span> <span class=n>bands</span><span class=p>,</span> <span class=n>freq</span><span class=p>)</span>
 
-    <span class=k>if</span> <span class=n>name</span> <span class=ow>in</span> <span class=p>[</span><span class=s1>&#39;bour&#39;</span><span class=p>,</span> <span class=s1>&#39;enneper&#39;</span><span class=p>,</span> <span class=s1>&#39;cube&#39;</span><span class=p>,</span> <span class=s1>&#39;sphere&#39;</span><span class=p>]:</span>
-        <span class=n>lut</span> <span class=o>=</span> <span class=n>get_diverging_lut_sv</span><span class=p>(</span><span class=s1>&#39;MistyRose&#39;</span><span class=p>)</span>
+    <span class=k>if</span> <span class=n>name</span> <span class=ow>in</span> <span class=p>[</span><span class=s1>'bour'</span><span class=p>,</span> <span class=s1>'enneper'</span><span class=p>,</span> <span class=s1>'cube'</span><span class=p>,</span> <span class=s1>'sphere'</span><span class=p>]:</span>
+        <span class=n>lut</span> <span class=o>=</span> <span class=n>get_diverging_lut_sv</span><span class=p>(</span><span class=s1>'MistyRose'</span><span class=p>)</span>
     <span class=k>else</span><span class=p>:</span>
         <span class=n>lut</span> <span class=o>=</span> <span class=n>get_diverging_lut1</span><span class=p>()</span>
     <span class=n>lut</span><span class=o>.</span><span class=n>table_range</span> <span class=o>=</span> <span class=n>scalar_range_curvatures</span>
 
-    <span class=k>return</span> <span class=p>{</span><span class=s1>&#39;surface&#39;</span><span class=p>:</span> <span class=n>p</span><span class=p>,</span> <span class=s1>&#39;scalar_range_curvatures&#39;</span><span class=p>:</span> <span class=n>scalar_range_curvatures</span><span class=p>,</span> <span class=s1>&#39;scalar_bar_labels&#39;</span><span class=p>:</span> <span class=n>scalar_bar_labels</span><span class=p>,</span>
-            <span class=s1>&#39;lut&#39;</span><span class=p>:</span> <span class=n>lut</span><span class=p>}</span>
+    <span class=k>return</span> <span class=p>{</span><span class=s1>'surface'</span><span class=p>:</span> <span class=n>p</span><span class=p>,</span> <span class=s1>'scalar_range_curvatures'</span><span class=p>:</span> <span class=n>scalar_range_curvatures</span><span class=p>,</span> <span class=s1>'scalar_bar_labels'</span><span class=p>:</span> <span class=n>scalar_bar_labels</span><span class=p>,</span>
+            <span class=s1>'lut'</span><span class=p>:</span> <span class=n>lut</span><span class=p>}</span>
 
 
 <span class=k>class</span><span class=w> </span><span class=nc>ScalarBarProperties</span><span class=p>:</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    The properties needed for scalar bars.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 <span class=hll>    <span class=n>named_colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
     <span class=n>lut</span> <span class=o>=</span> <span class=kc>None</span>
     <span class=c1># These are in pixels</span>
-    <span class=n>maximum_dimensions</span> <span class=o>=</span> <span class=p>{</span><span class=s1>&#39;width&#39;</span><span class=p>:</span> <span class=mi>100</span><span class=p>,</span> <span class=s1>&#39;height&#39;</span><span class=p>:</span> <span class=mi>260</span><span class=p>}</span>
-    <span class=n>title_text</span> <span class=o>=</span> <span class=s1>&#39;&#39;</span><span class=p>,</span>
+    <span class=n>maximum_dimensions</span> <span class=o>=</span> <span class=p>{</span><span class=s1>'width'</span><span class=p>:</span> <span class=mi>100</span><span class=p>,</span> <span class=s1>'height'</span><span class=p>:</span> <span class=mi>260</span><span class=p>}</span>
+    <span class=n>title_text</span> <span class=o>=</span> <span class=s1>''</span><span class=p>,</span>
     <span class=n>number_of_labels</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>5</span>
-    <span class=n>label_format</span> <span class=o>=</span> <span class=s1>&#39;</span><span class=si>{:0.2f}</span><span class=s1>&#39;</span>
+    <span class=n>label_format</span> <span class=o>=</span> <span class=s1>'</span><span class=si>{:0.2f}</span><span class=s1>'</span>
     <span class=c1># Orientation vertical=True, horizontal=False.</span>
     <span class=n>orientation</span><span class=p>:</span> <span class=nb>bool</span> <span class=o>=</span> <span class=kc>True</span>
     <span class=c1># Horizontal and vertical positioning.</span>
-    <span class=c1># These are the default positions, don&#39;t change these.</span>
-    <span class=n>default_v</span> <span class=o>=</span> <span class=p>{</span><span class=s1>&#39;p&#39;</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.85</span><span class=p>,</span> <span class=mf>0.05</span><span class=p>),</span> <span class=s1>&#39;p2&#39;</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.1</span><span class=p>,</span> <span class=mf>0.7</span><span class=p>)}</span>
-    <span class=n>default_h</span> <span class=o>=</span> <span class=p>{</span><span class=s1>&#39;p&#39;</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.125</span><span class=p>,</span> <span class=mf>0.05</span><span class=p>),</span> <span class=s1>&#39;p2&#39;</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.75</span><span class=p>,</span> <span class=mf>0.1</span><span class=p>)}</span>
+    <span class=c1># These are the default positions, don't change these.</span>
+    <span class=n>default_v</span> <span class=o>=</span> <span class=p>{</span><span class=s1>'p'</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.85</span><span class=p>,</span> <span class=mf>0.05</span><span class=p>),</span> <span class=s1>'p2'</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.1</span><span class=p>,</span> <span class=mf>0.7</span><span class=p>)}</span>
+    <span class=n>default_h</span> <span class=o>=</span> <span class=p>{</span><span class=s1>'p'</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.125</span><span class=p>,</span> <span class=mf>0.05</span><span class=p>),</span> <span class=s1>'p2'</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.75</span><span class=p>,</span> <span class=mf>0.1</span><span class=p>)}</span>
     <span class=c1># Modify these as needed.</span>
     <span class=n>position_v</span> <span class=o>=</span> <span class=n>copy</span><span class=o>.</span><span class=n>deepcopy</span><span class=p>(</span><span class=n>default_v</span><span class=p>)</span>
     <span class=n>position_h</span> <span class=o>=</span> <span class=n>copy</span><span class=o>.</span><span class=n>deepcopy</span><span class=p>(</span><span class=n>default_h</span><span class=p>)</span>
@@ -1034,7 +1034,7 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>make_scalar_bar_widget</span><span class=p>(</span><span class=n>scalar_bar_properties</span><span class=p>,</span> <span class=n>title_text_property</span><span class=p>,</span> <span class=n>label_text_property</span><span class=p>,</span> <span class=n>renderer</span><span class=p>,</span>
                            <span class=n>interactor</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Make a scalar bar widget.</span>
 
 <span class=sd>    :param scalar_bar_properties: The lookup table, title name, maximum dimensions in pixels and position.</span>
@@ -1043,7 +1043,7 @@ function registerListener(event, func) {
 <span class=sd>    :param renderer: The defaultren.</span>
 <span class=sd>    :param interactor: The vtkInteractor.</span>
 <span class=sd>    :return: The scalar bar widget.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 <span class=hll>    <span class=n>sb_actor</span> <span class=o>=</span> <span class=n>vtkScalarBarActor</span><span class=p>(</span><span class=n>lookup_table</span><span class=o>=</span><span class=n>scalar_bar_properties</span><span class=o>.</span><span class=n>lut</span><span class=p>,</span> <span class=n>title</span><span class=o>=</span><span class=n>scalar_bar_properties</span><span class=o>.</span><span class=n>title_text</span><span class=p>,</span>
 </span>                                 <span class=n>unconstrained_font_size</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span>
                                  <span class=n>number_of_labels</span><span class=o>=</span><span class=n>scalar_bar_properties</span><span class=o>.</span><span class=n>number_of_labels</span><span class=p>,</span>
@@ -1057,11 +1057,11 @@ function registerListener(event, func) {
     <span class=n>sb_rep</span><span class=o>.</span><span class=n>position_coordinate</span><span class=o>.</span><span class=n>SetCoordinateSystemToNormalizedViewport</span><span class=p>()</span>
     <span class=n>sb_rep</span><span class=o>.</span><span class=n>position2_coordinate</span><span class=o>.</span><span class=n>SetCoordinateSystemToNormalizedViewport</span><span class=p>()</span>
     <span class=k>if</span> <span class=n>scalar_bar_properties</span><span class=o>.</span><span class=n>orientation</span><span class=p>:</span>
-        <span class=n>sb_rep</span><span class=o>.</span><span class=n>position_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>scalar_bar_properties</span><span class=o>.</span><span class=n>position_v</span><span class=p>[</span><span class=s1>&#39;p&#39;</span><span class=p>]</span>
-        <span class=n>sb_rep</span><span class=o>.</span><span class=n>position2_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>scalar_bar_properties</span><span class=o>.</span><span class=n>position_v</span><span class=p>[</span><span class=s1>&#39;p2&#39;</span><span class=p>]</span>
+        <span class=n>sb_rep</span><span class=o>.</span><span class=n>position_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>scalar_bar_properties</span><span class=o>.</span><span class=n>position_v</span><span class=p>[</span><span class=s1>'p'</span><span class=p>]</span>
+        <span class=n>sb_rep</span><span class=o>.</span><span class=n>position2_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>scalar_bar_properties</span><span class=o>.</span><span class=n>position_v</span><span class=p>[</span><span class=s1>'p2'</span><span class=p>]</span>
     <span class=k>else</span><span class=p>:</span>
-        <span class=n>sb_rep</span><span class=o>.</span><span class=n>position_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>scalar_bar_properties</span><span class=o>.</span><span class=n>position_h</span><span class=p>[</span><span class=s1>&#39;p&#39;</span><span class=p>]</span>
-        <span class=n>sb_rep</span><span class=o>.</span><span class=n>position2_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>scalar_bar_properties</span><span class=o>.</span><span class=n>position_h</span><span class=p>[</span><span class=s1>&#39;p2&#39;</span><span class=p>]</span>
+        <span class=n>sb_rep</span><span class=o>.</span><span class=n>position_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>scalar_bar_properties</span><span class=o>.</span><span class=n>position_h</span><span class=p>[</span><span class=s1>'p'</span><span class=p>]</span>
+        <span class=n>sb_rep</span><span class=o>.</span><span class=n>position2_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>scalar_bar_properties</span><span class=o>.</span><span class=n>position_h</span><span class=p>[</span><span class=s1>'p2'</span><span class=p>]</span>
 
 <span class=hll>    <span class=n>widget</span> <span class=o>=</span> <span class=n>vtkScalarBarWidget</span><span class=p>(</span><span class=n>representation</span><span class=o>=</span><span class=n>sb_rep</span><span class=p>,</span> <span class=n>scalar_bar_actor</span><span class=o>=</span><span class=n>sb_actor</span><span class=p>,</span> <span class=n>default_renderer</span><span class=o>=</span><span class=n>renderer</span><span class=p>,</span>
 </span>                                <span class=n>interactor</span><span class=o>=</span><span class=n>interactor</span><span class=p>,</span> <span class=n>enabled</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
@@ -1070,7 +1070,7 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_text_positions</span><span class=p>(</span><span class=n>names</span><span class=p>,</span> <span class=n>justification</span><span class=o>=</span><span class=mi>0</span><span class=p>,</span> <span class=n>vertical_justification</span><span class=o>=</span><span class=mi>0</span><span class=p>,</span> <span class=n>width</span><span class=o>=</span><span class=mf>0.96</span><span class=p>,</span> <span class=n>height</span><span class=o>=</span><span class=mf>0.1</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Get viewport positioning information for a list of names.</span>
 
 <span class=sd>    :param names: The list of names.</span>
@@ -1079,7 +1079,7 @@ function registerListener(event, func) {
 <span class=sd>    :param width: Width of the bounding_box of the text in screen coordinates.</span>
 <span class=sd>    :param height: Height of the bounding_box of the text in screen coordinates.</span>
 <span class=sd>    :return: A list of positioning information.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=c1># The gap between the left or right edge of the screen and the text.</span>
     <span class=n>dx</span> <span class=o>=</span> <span class=mf>0.02</span>
     <span class=n>width</span> <span class=o>=</span> <span class=nb>abs</span><span class=p>(</span><span class=n>width</span><span class=p>)</span>
@@ -1126,9 +1126,9 @@ function registerListener(event, func) {
 
         <span class=c1># For debugging!</span>
         <span class=c1># print(</span>
-        <span class=c1>#     f&#39;{k:16s}: (x0, y0) = ({x0:3.2f}, {y0:3.2f}), (x1, y1) = ({x0 + delta_sz:3.2f}, {y0 + dy:3.2f})&#39;</span>
-        <span class=c1>#     f&#39;, width={delta_sz:3.2f}, height={dy:3.2f}&#39;)</span>
-        <span class=n>text_positions</span><span class=p>[</span><span class=n>k</span><span class=p>]</span> <span class=o>=</span> <span class=p>{</span><span class=s1>&#39;p&#39;</span><span class=p>:</span> <span class=p>[</span><span class=n>x0</span><span class=p>,</span> <span class=n>y0</span><span class=p>,</span> <span class=mi>0</span><span class=p>],</span> <span class=s1>&#39;p2&#39;</span><span class=p>:</span> <span class=p>[</span><span class=n>delta_sz</span><span class=p>,</span> <span class=n>dy</span><span class=p>,</span> <span class=mi>0</span><span class=p>]}</span>
+        <span class=c1>#     f'{k:16s}: (x0, y0) = ({x0:3.2f}, {y0:3.2f}), (x1, y1) = ({x0 + delta_sz:3.2f}, {y0 + dy:3.2f})'</span>
+        <span class=c1>#     f', width={delta_sz:3.2f}, height={dy:3.2f}')</span>
+        <span class=n>text_positions</span><span class=p>[</span><span class=n>k</span><span class=p>]</span> <span class=o>=</span> <span class=p>{</span><span class=s1>'p'</span><span class=p>:</span> <span class=p>[</span><span class=n>x0</span><span class=p>,</span> <span class=n>y0</span><span class=p>,</span> <span class=mi>0</span><span class=p>],</span> <span class=s1>'p2'</span><span class=p>:</span> <span class=p>[</span><span class=n>delta_sz</span><span class=p>,</span> <span class=n>dy</span><span class=p>,</span> <span class=mi>0</span><span class=p>]}</span>
 
     <span class=k>return</span> <span class=n>text_positions</span>
 
@@ -1139,69 +1139,69 @@ function registerListener(event, func) {
         <span class=n>prec</span> <span class=o>=</span> <span class=mi>14</span>
 
     <span class=k>if</span> <span class=nb>len</span><span class=p>(</span><span class=n>bands</span><span class=p>)</span> <span class=o>!=</span> <span class=nb>len</span><span class=p>(</span><span class=n>freq</span><span class=p>):</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Bands and Frequencies must be the same size.&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'Bands and Frequencies must be the same size.'</span><span class=p>)</span>
         <span class=k>return</span>
-    <span class=n>s</span> <span class=o>=</span> <span class=sa>f</span><span class=s1>&#39;Bands &amp; Frequencies:</span><span class=se>\n</span><span class=si>{</span><span class=s2>&quot; &quot;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>curvature</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span><span class=o>.</span><span class=n>replace</span><span class=p>(</span><span class=s2>&quot;_&quot;</span><span class=p>,</span><span class=w> </span><span class=s2>&quot; &quot;</span><span class=p>)</span><span class=o>.</span><span class=n>split</span><span class=p>())</span><span class=o>.</span><span class=n>title</span><span class=p>()</span><span class=si>}</span><span class=se>\n</span><span class=s1>&#39;</span>
+    <span class=n>s</span> <span class=o>=</span> <span class=sa>f</span><span class=s1>'Bands &amp; Frequencies:</span><span class=se>\n</span><span class=si>{</span><span class=s2>" "</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>curvature</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span><span class=o>.</span><span class=n>replace</span><span class=p>(</span><span class=s2>"_"</span><span class=p>,</span><span class=w> </span><span class=s2>" "</span><span class=p>)</span><span class=o>.</span><span class=n>split</span><span class=p>())</span><span class=o>.</span><span class=n>title</span><span class=p>()</span><span class=si>}</span><span class=se>\n</span><span class=s1>'</span>
     <span class=n>total</span> <span class=o>=</span> <span class=mi>0</span>
     <span class=n>width</span> <span class=o>=</span> <span class=n>prec</span> <span class=o>+</span> <span class=mi>6</span>
     <span class=k>for</span> <span class=n>k</span><span class=p>,</span> <span class=n>v</span> <span class=ow>in</span> <span class=n>bands</span><span class=o>.</span><span class=n>items</span><span class=p>():</span>
         <span class=n>total</span> <span class=o>+=</span> <span class=n>freq</span><span class=p>[</span><span class=n>k</span><span class=p>]</span>
         <span class=k>for</span> <span class=n>j</span><span class=p>,</span> <span class=n>q</span> <span class=ow>in</span> <span class=nb>enumerate</span><span class=p>(</span><span class=n>v</span><span class=p>):</span>
             <span class=k>if</span> <span class=n>j</span> <span class=o>==</span> <span class=mi>0</span><span class=p>:</span>
-                <span class=n>s</span> <span class=o>+=</span> <span class=sa>f</span><span class=s1>&#39;</span><span class=si>{</span><span class=n>k</span><span class=si>:</span><span class=s1>4d</span><span class=si>}</span><span class=s1> [&#39;</span>
+                <span class=n>s</span> <span class=o>+=</span> <span class=sa>f</span><span class=s1>'</span><span class=si>{</span><span class=n>k</span><span class=si>:</span><span class=s1>4d</span><span class=si>}</span><span class=s1> ['</span>
             <span class=k>if</span> <span class=n>j</span> <span class=o>==</span> <span class=nb>len</span><span class=p>(</span><span class=n>v</span><span class=p>)</span> <span class=o>-</span> <span class=mi>1</span><span class=p>:</span>
-                <span class=n>s</span> <span class=o>+=</span> <span class=sa>f</span><span class=s1>&#39;</span><span class=si>{</span><span class=n>q</span><span class=si>:{</span><span class=n>width</span><span class=si>}</span><span class=s1>.</span><span class=si>{</span><span class=n>prec</span><span class=si>}</span><span class=s1>f</span><span class=si>}</span><span class=s1>]: </span><span class=si>{</span><span class=n>freq</span><span class=p>[</span><span class=n>k</span><span class=p>]</span><span class=si>:</span><span class=s1>8d</span><span class=si>}</span><span class=se>\n</span><span class=s1>&#39;</span>
+                <span class=n>s</span> <span class=o>+=</span> <span class=sa>f</span><span class=s1>'</span><span class=si>{</span><span class=n>q</span><span class=si>:{</span><span class=n>width</span><span class=si>}</span><span class=s1>.</span><span class=si>{</span><span class=n>prec</span><span class=si>}</span><span class=s1>f</span><span class=si>}</span><span class=s1>]: </span><span class=si>{</span><span class=n>freq</span><span class=p>[</span><span class=n>k</span><span class=p>]</span><span class=si>:</span><span class=s1>8d</span><span class=si>}</span><span class=se>\n</span><span class=s1>'</span>
             <span class=k>else</span><span class=p>:</span>
-                <span class=n>s</span> <span class=o>+=</span> <span class=sa>f</span><span class=s1>&#39;</span><span class=si>{</span><span class=n>q</span><span class=si>:{</span><span class=n>width</span><span class=si>}</span><span class=s1>.</span><span class=si>{</span><span class=n>prec</span><span class=si>}</span><span class=s1>f</span><span class=si>}</span><span class=s1>, &#39;</span>
+                <span class=n>s</span> <span class=o>+=</span> <span class=sa>f</span><span class=s1>'</span><span class=si>{</span><span class=n>q</span><span class=si>:{</span><span class=n>width</span><span class=si>}</span><span class=s1>.</span><span class=si>{</span><span class=n>prec</span><span class=si>}</span><span class=s1>f</span><span class=si>}</span><span class=s1>, '</span>
     <span class=n>width</span> <span class=o>=</span> <span class=mi>3</span> <span class=o>*</span> <span class=n>width</span> <span class=o>+</span> <span class=mi>13</span>
-    <span class=n>s</span> <span class=o>+=</span> <span class=sa>f</span><span class=s1>&#39;</span><span class=si>{</span><span class=s2>&quot;Total&quot;</span><span class=si>:{</span><span class=n>width</span><span class=si>}</span><span class=s1>s</span><span class=si>}{</span><span class=n>total</span><span class=si>:</span><span class=s1>8d</span><span class=si>}</span><span class=se>\n</span><span class=s1>&#39;</span>
+    <span class=n>s</span> <span class=o>+=</span> <span class=sa>f</span><span class=s1>'</span><span class=si>{</span><span class=s2>"Total"</span><span class=si>:{</span><span class=n>width</span><span class=si>}</span><span class=s1>s</span><span class=si>}{</span><span class=n>total</span><span class=si>:</span><span class=s1>8d</span><span class=si>}</span><span class=se>\n</span><span class=s1>'</span>
     <span class=nb>print</span><span class=p>(</span><span class=n>s</span><span class=p>)</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>adjust_camera_parameters</span><span class=p>(</span><span class=n>surface_name</span><span class=p>,</span> <span class=n>ren</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Adjust the camera parameters.</span>
 
 <span class=sd>    :param surface_name: The name of the surface.</span>
 <span class=sd>    :param ren: The surface renderer.</span>
 
-<span class=sd>    &quot;&quot;&quot;</span>
-    <span class=k>if</span> <span class=n>surface_name</span> <span class=o>==</span> <span class=s1>&#39;bour&#39;</span><span class=p>:</span>
+<span class=sd>    """</span>
+    <span class=k>if</span> <span class=n>surface_name</span> <span class=o>==</span> <span class=s1>'bour'</span><span class=p>:</span>
         <span class=n>camera</span> <span class=o>=</span> <span class=n>ren</span><span class=o>.</span><span class=n>active_camera</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>position</span> <span class=o>=</span> <span class=p>(</span><span class=mf>3.91309</span><span class=p>,</span> <span class=mf>4.61632</span><span class=p>,</span> <span class=mf>6.91062</span><span class=p>)</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>focal_point</span> <span class=o>=</span> <span class=p>(</span><span class=o>-</span><span class=mf>0.060223</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.168046</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.0239732</span><span class=p>)</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>view_up</span> <span class=o>=</span> <span class=p>(</span><span class=o>-</span><span class=mf>0.262203</span><span class=p>,</span> <span class=mf>0.857986</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.441713</span><span class=p>)</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>distance</span> <span class=o>=</span> <span class=mf>9.31482</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>clipping_range</span> <span class=o>=</span> <span class=p>(</span><span class=mf>5.0123</span><span class=p>,</span> <span class=mf>14.817</span><span class=p>)</span>
-    <span class=k>elif</span> <span class=n>surface_name</span> <span class=o>==</span> <span class=s1>&#39;cube&#39;</span><span class=p>:</span>
+    <span class=k>elif</span> <span class=n>surface_name</span> <span class=o>==</span> <span class=s1>'cube'</span><span class=p>:</span>
         <span class=n>camera</span> <span class=o>=</span> <span class=n>ren</span><span class=o>.</span><span class=n>active_camera</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>position</span> <span class=o>=</span> <span class=p>(</span><span class=mf>2.65599</span><span class=p>,</span> <span class=mf>2.41689</span><span class=p>,</span> <span class=mf>3.59086</span><span class=p>)</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>focal_point</span> <span class=o>=</span> <span class=p>(</span><span class=mf>0.0212111</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.0928949</span><span class=p>,</span> <span class=mf>0.0500619</span><span class=p>)</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>view_up</span> <span class=o>=</span> <span class=p>(</span><span class=o>-</span><span class=mf>0.326003</span><span class=p>,</span> <span class=mf>0.868625</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.373113</span><span class=p>)</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>distance</span> <span class=o>=</span> <span class=mf>5.07724</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>clipping_range</span> <span class=o>=</span> <span class=p>(</span><span class=mf>3.32437</span><span class=p>,</span> <span class=mf>7.29598</span><span class=p>)</span>
-    <span class=k>elif</span> <span class=n>surface_name</span> <span class=o>==</span> <span class=s1>&#39;hills&#39;</span><span class=p>:</span>
+    <span class=k>elif</span> <span class=n>surface_name</span> <span class=o>==</span> <span class=s1>'hills'</span><span class=p>:</span>
         <span class=n>camera</span> <span class=o>=</span> <span class=n>ren</span><span class=o>.</span><span class=n>active_camera</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>position</span> <span class=o>=</span> <span class=p>(</span><span class=mf>18.6531</span><span class=p>,</span> <span class=mf>19.2019</span><span class=p>,</span> <span class=mf>0.192411</span><span class=p>)</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>focal_point</span> <span class=o>=</span> <span class=p>(</span><span class=mf>0.916665</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.0420811</span><span class=p>,</span> <span class=o>-</span><span class=mf>1.13654</span><span class=p>)</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>view_up</span> <span class=o>=</span> <span class=p>(</span><span class=o>-</span><span class=mf>0.735704</span><span class=p>,</span> <span class=mf>0.67718</span><span class=p>,</span> <span class=mf>0.012917</span><span class=p>)</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>distance</span> <span class=o>=</span> <span class=mf>26.2045</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>clipping_range</span> <span class=o>=</span> <span class=p>(</span><span class=mf>14.1162</span><span class=p>,</span> <span class=mf>38.9096</span><span class=p>)</span>
-    <span class=k>elif</span> <span class=n>surface_name</span> <span class=o>==</span> <span class=s1>&#39;mobius&#39;</span><span class=p>:</span>
+    <span class=k>elif</span> <span class=n>surface_name</span> <span class=o>==</span> <span class=s1>'mobius'</span><span class=p>:</span>
         <span class=n>camera</span> <span class=o>=</span> <span class=n>ren</span><span class=o>.</span><span class=n>active_camera</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>position</span> <span class=o>=</span> <span class=p>(</span><span class=o>-</span><span class=mf>0.0240281</span><span class=p>,</span> <span class=mf>3.76986</span><span class=p>,</span> <span class=mf>5.26467</span><span class=p>)</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>focal_point</span> <span class=o>=</span> <span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mf>0.119814</span><span class=p>)</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>view_up</span> <span class=o>=</span> <span class=p>(</span><span class=mf>0.00874791</span><span class=p>,</span> <span class=mf>0.80662</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.591006</span><span class=p>)</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>distance</span> <span class=o>=</span> <span class=mf>6.37824</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>clipping_range</span> <span class=o>=</span> <span class=p>(</span><span class=mf>4.20174</span><span class=p>,</span> <span class=mf>9.13339</span><span class=p>)</span>
-    <span class=k>elif</span> <span class=n>surface_name</span> <span class=o>==</span> <span class=s1>&#39;parametric hills&#39;</span><span class=p>:</span>
+    <span class=k>elif</span> <span class=n>surface_name</span> <span class=o>==</span> <span class=s1>'parametric hills'</span><span class=p>:</span>
         <span class=n>camera</span> <span class=o>=</span> <span class=n>ren</span><span class=o>.</span><span class=n>GetActiveCamera</span><span class=p>()</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>position</span> <span class=o>=</span> <span class=p>(</span><span class=mf>7.68312</span><span class=p>,</span> <span class=mf>50.6754</span><span class=p>,</span> <span class=mf>37.3518</span><span class=p>)</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>focal_point</span> <span class=o>=</span> <span class=p>(</span><span class=mf>2.09893</span><span class=p>,</span> <span class=mf>7.79798</span><span class=p>,</span> <span class=mf>7.36641</span><span class=p>)</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>view_up</span> <span class=o>=</span> <span class=p>(</span><span class=o>-</span><span class=mf>0.0355891</span><span class=p>,</span> <span class=mf>0.575838</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.816789</span><span class=p>)</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>distance</span> <span class=o>=</span> <span class=mf>52.6192</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>clipping_range</span> <span class=o>=</span> <span class=p>(</span><span class=mf>31.3381</span><span class=p>,</span> <span class=mf>80.4166</span><span class=p>)</span>
-    <span class=k>elif</span> <span class=n>surface_name</span> <span class=o>==</span> <span class=s1>&#39;torus&#39;</span><span class=p>:</span>
+    <span class=k>elif</span> <span class=n>surface_name</span> <span class=o>==</span> <span class=s1>'torus'</span><span class=p>:</span>
         <span class=n>camera</span> <span class=o>=</span> <span class=n>ren</span><span class=o>.</span><span class=n>active_camera</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>position</span> <span class=o>=</span> <span class=p>(</span><span class=mf>0.0647173</span><span class=p>,</span> <span class=mf>6.46555</span><span class=p>,</span> <span class=mf>5.32778</span><span class=p>)</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>focal_point</span> <span class=o>=</span> <span class=p>(</span><span class=o>-</span><span class=mf>0.00608208</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.153614</span><span class=p>,</span> <span class=mf>0.133234</span><span class=p>)</span>
@@ -1276,7 +1276,7 @@ function registerListener(event, func) {
         <span class=n>VTK_TEXT_TOP</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>2</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>sys</span>
 
     <span class=n>main</span><span class=p>(</span><span class=n>sys</span><span class=o>.</span><span class=n>argv</span><span class=p>)</span>

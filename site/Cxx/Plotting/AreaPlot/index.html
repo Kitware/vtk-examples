@@ -123,25 +123,25 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=c1>// Set up a 2D scene, add an XY chart to it.</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkContextView</span><span class=o>&gt;</span><span class=w> </span><span class=n>view</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>view</span><span class=o>-&gt;</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>640</span><span class=p>,</span><span class=w> </span><span class=mi>480</span><span class=p>);</span>
-<span class=w>  </span><span class=n>view</span><span class=o>-&gt;</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;AreaPlot&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>view</span><span class=o>-&gt;</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"AreaPlot"</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkChartXY</span><span class=o>&gt;</span><span class=w> </span><span class=n>chart</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>chart</span><span class=o>-&gt;</span><span class=n>SetTitle</span><span class=p>(</span><span class=s>&quot;Area Plot&quot;</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>chart</span><span class=o>-&gt;</span><span class=n>SetTitle</span><span class=p>(</span><span class=s>"Area Plot"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>chart</span><span class=o>-&gt;</span><span class=n>GetTitleProperties</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetFontSize</span><span class=p>(</span><span class=mi>36</span><span class=p>);</span>
-<span class=w>  </span><span class=n>chart</span><span class=o>-&gt;</span><span class=n>GetTitleProperties</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Banana&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>chart</span><span class=o>-&gt;</span><span class=n>GetTitleProperties</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Banana"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=w>  </span><span class=n>chart</span><span class=o>-&gt;</span><span class=n>GetAxis</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span><span class=o>-&gt;</span><span class=n>GetTitleProperties</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetFontSize</span><span class=p>(</span><span class=mi>24</span><span class=p>);</span>
 <span class=w>  </span><span class=n>chart</span><span class=o>-&gt;</span><span class=n>GetAxis</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span><span class=o>-&gt;</span><span class=n>GetTitleProperties</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
-<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;orange&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"orange"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=n>chart</span><span class=o>-&gt;</span><span class=n>GetAxis</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span><span class=o>-&gt;</span><span class=n>GetLabelProperties</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
-<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;beige&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"beige"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=n>chart</span><span class=o>-&gt;</span><span class=n>GetAxis</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span><span class=o>-&gt;</span><span class=n>GetLabelProperties</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetFontSize</span><span class=p>(</span><span class=mi>18</span><span class=p>);</span>
 
 <span class=w>  </span><span class=n>chart</span><span class=o>-&gt;</span><span class=n>GetAxis</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span><span class=o>-&gt;</span><span class=n>GetTitleProperties</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetFontSize</span><span class=p>(</span><span class=mi>24</span><span class=p>);</span>
 <span class=w>  </span><span class=n>chart</span><span class=o>-&gt;</span><span class=n>GetAxis</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span><span class=o>-&gt;</span><span class=n>GetTitleProperties</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
-<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;orange&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"orange"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=n>chart</span><span class=o>-&gt;</span><span class=n>GetAxis</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span><span class=o>-&gt;</span><span class=n>GetLabelProperties</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
-<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;beige&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"beige"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=n>chart</span><span class=o>-&gt;</span><span class=n>GetAxis</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span><span class=o>-&gt;</span><span class=n>GetLabelProperties</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetFontSize</span><span class=p>(</span><span class=mi>18</span><span class=p>);</span>
 
 <span class=w>  </span><span class=n>view</span><span class=o>-&gt;</span><span class=n>GetScene</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>AddItem</span><span class=p>(</span><span class=n>chart</span><span class=p>);</span>
@@ -150,31 +150,31 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTable</span><span class=o>&gt;</span><span class=w> </span><span class=n>table</span><span class=p>;</span>
 </span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkFloatArray</span><span class=o>&gt;</span><span class=w> </span><span class=n>arrX</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>arrX</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>&quot;X Axis&quot;</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>arrX</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>"X Axis"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>table</span><span class=o>-&gt;</span><span class=n>AddColumn</span><span class=p>(</span><span class=n>arrX</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkFloatArray</span><span class=o>&gt;</span><span class=w> </span><span class=n>arrC</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>arrC</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>&quot;Cosine&quot;</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>arrC</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>"Cosine"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>table</span><span class=o>-&gt;</span><span class=n>AddColumn</span><span class=p>(</span><span class=n>arrC</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkFloatArray</span><span class=o>&gt;</span><span class=w> </span><span class=n>arrS</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>arrS</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>&quot;Sine&quot;</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>arrS</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>"Sine"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>table</span><span class=o>-&gt;</span><span class=n>AddColumn</span><span class=p>(</span><span class=n>arrS</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkFloatArray</span><span class=o>&gt;</span><span class=w> </span><span class=n>arrS2</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>arrS2</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>&quot;Sine2&quot;</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>arrS2</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>"Sine2"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>table</span><span class=o>-&gt;</span><span class=n>AddColumn</span><span class=p>(</span><span class=n>arrS2</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkFloatArray</span><span class=o>&gt;</span><span class=w> </span><span class=n>arrS3</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>arrS3</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>&quot;Sine3&quot;</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>arrS3</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>"Sine3"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>table</span><span class=o>-&gt;</span><span class=n>AddColumn</span><span class=p>(</span><span class=n>arrS3</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkFloatArray</span><span class=o>&gt;</span><span class=w> </span><span class=n>arr1</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>arr1</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>&quot;One&quot;</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>arr1</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>"One"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>table</span><span class=o>-&gt;</span><span class=n>AddColumn</span><span class=p>(</span><span class=n>arr1</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkCharArray</span><span class=o>&gt;</span><span class=w> </span><span class=n>validMask</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>validMask</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>&quot;ValidMask&quot;</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>validMask</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>"ValidMask"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>table</span><span class=o>-&gt;</span><span class=n>AddColumn</span><span class=p>(</span><span class=n>validMask</span><span class=p>);</span>
 
 <span class=w>  </span><span class=c1>// Test charting with a few more points...</span>
@@ -194,14 +194,14 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=p>}</span>
 
 <span class=w>  </span><span class=c1>// Add multiple line plots, setting the colors etc.</span>
-<span class=hll><span class=w>  </span><span class=n>vtkColor3d</span><span class=w> </span><span class=n>color3d</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;tomato&quot;</span><span class=p>);</span>
+<span class=hll><span class=w>  </span><span class=n>vtkColor3d</span><span class=w> </span><span class=n>color3d</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"tomato"</span><span class=p>);</span>
 </span><span class=hll><span class=w>  </span><span class=n>vtkPlotArea</span><span class=o>*</span><span class=w> </span><span class=n>area</span><span class=w> </span><span class=o>=</span>
 </span><span class=hll><span class=w>      </span><span class=k>dynamic_cast</span><span class=o>&lt;</span><span class=n>vtkPlotArea</span><span class=o>*&gt;</span><span class=p>(</span><span class=n>chart</span><span class=o>-&gt;</span><span class=n>AddPlot</span><span class=p>(</span><span class=n>vtkChart</span><span class=o>::</span><span class=n>AREA</span><span class=p>));</span>
 </span><span class=w>  </span><span class=n>area</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>table</span><span class=p>);</span>
-<span class=w>  </span><span class=n>area</span><span class=o>-&gt;</span><span class=n>SetInputArray</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=s>&quot;X Axis&quot;</span><span class=p>);</span>
-<span class=w>  </span><span class=n>area</span><span class=o>-&gt;</span><span class=n>SetInputArray</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=s>&quot;Sine&quot;</span><span class=p>);</span>
-<span class=w>  </span><span class=n>area</span><span class=o>-&gt;</span><span class=n>SetInputArray</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span><span class=w> </span><span class=s>&quot;Sine2&quot;</span><span class=p>);</span>
-<span class=w>  </span><span class=n>area</span><span class=o>-&gt;</span><span class=n>SetValidPointMaskName</span><span class=p>(</span><span class=s>&quot;ValidMask&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>area</span><span class=o>-&gt;</span><span class=n>SetInputArray</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=s>"X Axis"</span><span class=p>);</span>
+<span class=w>  </span><span class=n>area</span><span class=o>-&gt;</span><span class=n>SetInputArray</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=s>"Sine"</span><span class=p>);</span>
+<span class=w>  </span><span class=n>area</span><span class=o>-&gt;</span><span class=n>SetInputArray</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span><span class=w> </span><span class=s>"Sine2"</span><span class=p>);</span>
+<span class=w>  </span><span class=n>area</span><span class=o>-&gt;</span><span class=n>SetValidPointMaskName</span><span class=p>(</span><span class=s>"ValidMask"</span><span class=p>);</span>
 <span class=cp>#if VTK_HAS_SETCOLORF</span>
 <span class=w>  </span><span class=n>area</span><span class=o>-&gt;</span><span class=n>GetBrush</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColorF</span><span class=p>(</span><span class=n>color3d</span><span class=p>.</span><span class=n>GetRed</span><span class=p>(),</span><span class=w> </span><span class=n>color3d</span><span class=p>.</span><span class=n>GetGreen</span><span class=p>(),</span>
 <span class=w>                              </span><span class=n>color3d</span><span class=p>.</span><span class=n>GetBlue</span><span class=p>(),</span><span class=w> </span><span class=mf>0.6</span><span class=p>);</span>
@@ -213,7 +213,7 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>chart</span><span class=o>-&gt;</span><span class=n>GetAxis</span><span class=p>(</span><span class=n>vtkAxis</span><span class=o>::</span><span class=n>LEFT</span><span class=p>)</span><span class=o>-&gt;</span><span class=n>SetLogScale</span><span class=p>(</span><span class=nb>true</span><span class=p>);</span>
 </span>
 <span class=w>  </span><span class=c1>// Render the scene.</span>
-<span class=w>  </span><span class=n>view</span><span class=o>-&gt;</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;SlateGray&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>view</span><span class=o>-&gt;</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"SlateGray"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=n>view</span><span class=o>-&gt;</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetMultiSamples</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span>
 <span class=w>  </span><span class=n>view</span><span class=o>-&gt;</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
 <span class=w>  </span><span class=n>view</span><span class=o>-&gt;</span><span class=n>GetInteractor</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>Initialize</span><span class=p>();</span>
@@ -241,11 +241,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;AreaPlot: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"AreaPlot: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>AreaPlot</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>AreaPlot.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>AreaPlot</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

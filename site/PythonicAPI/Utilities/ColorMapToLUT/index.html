@@ -78,15 +78,15 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_program_parameters</span><span class=p>():</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>argparse</span>
-<span class=hll>    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;Display a cone using the vtkDiscretizableColorTransferFunction to generate the colormap.&#39;</span>
-</span>    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;</span>
-<span class=s1>    &#39;&#39;&#39;</span>
+<span class=hll>    <span class=n>description</span> <span class=o>=</span> <span class=s1>'Display a cone using the vtkDiscretizableColorTransferFunction to generate the colormap.'</span>
+</span>    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>'''</span>
+<span class=s1>    '''</span>
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
                                      <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawDescriptionHelpFormatter</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-s&#39;</span><span class=p>,</span> <span class=s1>&#39;--sphere&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_true&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Use a sphere.&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-c&#39;</span><span class=p>,</span> <span class=s1>&#39;--continuous&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_true&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Build a continuous colormap.&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-r&#39;</span><span class=p>,</span> <span class=s1>&#39;--reverse&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_true&#39;</span><span class=p>,</span>
-                        <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Reverse the colormap.&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-s'</span><span class=p>,</span> <span class=s1>'--sphere'</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>'store_true'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'Use a sphere.'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-c'</span><span class=p>,</span> <span class=s1>'--continuous'</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>'store_true'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'Build a continuous colormap.'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-r'</span><span class=p>,</span> <span class=s1>'--reverse'</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>'store_true'</span><span class=p>,</span>
+                        <span class=n>help</span><span class=o>=</span><span class=s1>'Reverse the colormap.'</span><span class=p>)</span>
 
     <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
     <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>sphere</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>continuous</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>reverse</span>
@@ -98,8 +98,8 @@ function registerListener(event, func) {
 
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
-<span class=hll>    <span class=n>ren</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;ParaViewBlueGrayBkg&#39;</span><span class=p>))</span>
-</span><span class=hll>    <span class=n>ren_win</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>size</span><span class=o>=</span><span class=p>(</span><span class=mi>640</span><span class=p>,</span> <span class=mi>480</span><span class=p>),</span> <span class=n>window_name</span><span class=o>=</span><span class=sa>f</span><span class=s1>&#39;</span><span class=si>{</span><span class=n>Path</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>])</span><span class=o>.</span><span class=n>stem</span><span class=si>:</span><span class=s1>s</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+<span class=hll>    <span class=n>ren</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'ParaViewBlueGrayBkg'</span><span class=p>))</span>
+</span><span class=hll>    <span class=n>ren_win</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>size</span><span class=o>=</span><span class=p>(</span><span class=mi>640</span><span class=p>,</span> <span class=mi>480</span><span class=p>),</span> <span class=n>window_name</span><span class=o>=</span><span class=sa>f</span><span class=s1>'</span><span class=si>{</span><span class=n>Path</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>])</span><span class=o>.</span><span class=n>stem</span><span class=si>:</span><span class=s1>s</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
 </span>
     <span class=n>ren_win</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>ren</span><span class=p>)</span>
 <span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
@@ -135,7 +135,7 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_fast_ctf</span><span class=p>(</span><span class=n>discretize</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>reverse</span><span class=o>=</span><span class=kc>False</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Generate the color transfer function.</span>
 
 <span class=sd>    name: Fast, creator: Francesca Samsel, and Alan W. Scott</span>
@@ -145,7 +145,7 @@ function registerListener(event, func) {
 <span class=sd>    :param discretize: Selects whether the CTF is discretized or not.</span>
 <span class=sd>    :param reverse: Reverse the colors in the CTF.</span>
 <span class=sd>    :return: The color transfer function.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 
     <span class=c1># The points and RGB values.</span>
     <span class=n>pts_rgb</span> <span class=o>=</span> <span class=p>{</span>
@@ -216,7 +216,7 @@ function registerListener(event, func) {
         <span class=n>VTK_SCALAR_MODE_USE_FIELD_DATA</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>5</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>sys</span>
 
     <span class=n>main</span><span class=p>(</span><span class=n>sys</span><span class=o>.</span><span class=n>argv</span><span class=p>)</span>

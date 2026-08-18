@@ -81,16 +81,16 @@ function registerListener(event, func) {
 </span><span class=hll>    <span class=n>vtkRenderer</span>
 </span><span class=p>)</span>
 
-<span class=sd>&quot;&quot;&quot;</span>
+<span class=sd>"""</span>
 <span class=sd>There are two alternative ways to apply the transform.</span>
 <span class=hll><span class=sd> 1) Use vtkTransformFilter to create a new transformed polydata.</span>
 </span><span class=sd>    This method is useful if the transformed polydata is needed</span>
 <span class=sd>      later in the pipeline</span>
 <span class=sd>    To do this, set USER_MATRIX = True</span>
-<span class=hll><span class=sd> 2) Apply the transform directly to the actor using vtkProp3D&#39;s SetUserMatrix.</span>
+<span class=hll><span class=sd> 2) Apply the transform directly to the actor using vtkProp3D's SetUserMatrix.</span>
 </span><span class=sd>    No new data is produced.</span>
 <span class=sd>    To do this, set USER_MATRIX = False</span>
-<span class=sd>&quot;&quot;&quot;</span>
+<span class=sd>"""</span>
 <span class=n>USER_MATRIX</span> <span class=o>=</span> <span class=kc>True</span>
 
 
@@ -98,7 +98,7 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
     <span class=c1># Set the background color.</span>
-    <span class=n>colors</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=s1>&#39;BkgColor&#39;</span><span class=p>,</span> <span class=mi>26</span><span class=p>,</span> <span class=mi>51</span><span class=p>,</span> <span class=mi>77</span><span class=p>,</span> <span class=mi>255</span><span class=p>)</span>
+    <span class=n>colors</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=s1>'BkgColor'</span><span class=p>,</span> <span class=mi>26</span><span class=p>,</span> <span class=mi>51</span><span class=p>,</span> <span class=mi>77</span><span class=p>,</span> <span class=mi>255</span><span class=p>)</span>
 
     <span class=c1># Create a cylinder.</span>
     <span class=c1># Cylinder height vector is (0,1,0).</span>
@@ -164,24 +164,24 @@ function registerListener(event, func) {
     <span class=k>else</span><span class=p>:</span>
         <span class=n>cylinder_source</span> <span class=o>&gt;&gt;</span> <span class=n>transform_pd</span> <span class=o>&gt;&gt;</span> <span class=n>mapper</span>
     <span class=n>actor</span><span class=o>.</span><span class=n>mapper</span> <span class=o>=</span> <span class=n>mapper</span>
-    <span class=n>actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Cyan&#39;</span><span class=p>)</span>
+    <span class=n>actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Cyan'</span><span class=p>)</span>
 
     <span class=c1># Create spheres for the start and end points.</span>
 <span class=hll>    <span class=n>sphere_start_source</span> <span class=o>=</span> <span class=n>vtkSphereSource</span><span class=p>(</span><span class=n>center</span><span class=o>=</span><span class=n>start_point</span><span class=p>,</span> <span class=n>radius</span><span class=o>=</span><span class=mf>0.8</span><span class=p>)</span>
 </span><span class=hll>    <span class=n>sphere_start_mapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>sphere_start_source</span> <span class=o>&gt;&gt;</span> <span class=n>sphere_start_mapper</span>
 <span class=hll>    <span class=n>sphere_start</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>(</span><span class=n>mapper</span><span class=o>=</span><span class=n>sphere_start_mapper</span><span class=p>)</span>
-</span>    <span class=n>sphere_start</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Yellow&#39;</span><span class=p>)</span>
+</span>    <span class=n>sphere_start</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Yellow'</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>sphere_end_source</span> <span class=o>=</span> <span class=n>vtkSphereSource</span><span class=p>(</span><span class=n>center</span><span class=o>=</span><span class=n>end_point</span><span class=p>,</span> <span class=n>radius</span><span class=o>=</span><span class=mf>0.8</span><span class=p>)</span>
 </span><span class=hll>    <span class=n>sphere_end_mapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>sphere_end_source</span> <span class=o>&gt;&gt;</span> <span class=n>sphere_end_mapper</span>
 <span class=hll>    <span class=n>sphere_end</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>(</span><span class=n>mapper</span><span class=o>=</span><span class=n>sphere_end_mapper</span><span class=p>)</span>
-</span>    <span class=n>sphere_end</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Magenta&#39;</span><span class=p>)</span>
+</span>    <span class=n>sphere_end</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Magenta'</span><span class=p>)</span>
 
     <span class=c1># Create a renderer, render window, and interactor</span>
-<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;BkgColor&#39;</span><span class=p>))</span>
-</span><span class=hll>    <span class=n>render_window</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>window_name</span><span class=o>=</span><span class=s1>&#39;OrientedCylinder&#39;</span><span class=p>)</span>
+<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'BkgColor'</span><span class=p>))</span>
+</span><span class=hll>    <span class=n>render_window</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>window_name</span><span class=o>=</span><span class=s1>'OrientedCylinder'</span><span class=p>)</span>
 </span>    <span class=n>render_window</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>)</span>
 <span class=hll>    <span class=n>render_window_interactor</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>render_window_interactor</span><span class=o>.</span><span class=n>render_window</span> <span class=o>=</span> <span class=n>render_window</span>
@@ -196,6 +196,6 @@ function registerListener(event, func) {
     <span class=n>render_window_interactor</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

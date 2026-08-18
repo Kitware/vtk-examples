@@ -117,7 +117,7 @@ function registerListener(event, func) {
 <span class=hll><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkLookupTable</span><span class=o>&gt;</span><span class=w> </span><span class=n>MakeLUT</span><span class=p>();</span>
 </span><span class=p>}</span><span class=w> </span><span class=c1>// namespace</span>
 
-<span class=kt>int</span><span class=w> </span><span class=n>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=p>[])</span>
+<span class=kt>int</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=p>[])</span>
 <span class=p>{</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span><span class=w> </span><span class=n>colors</span><span class=p>;</span>
 </span>
@@ -129,7 +129,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>triangleFilter</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkPolyData</span><span class=o>*</span><span class=w> </span><span class=n>mesh</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>triangleFilter</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>();</span>
-</span><span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;There are &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>mesh</span><span class=o>-&gt;</span><span class=n>GetNumberOfCells</span><span class=p>()</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; cells.&quot;</span>
+</span><span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"There are "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>mesh</span><span class=o>-&gt;</span><span class=n>GetNumberOfCells</span><span class=p>()</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" cells."</span>
 <span class=w>            </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkMeshQuality</span><span class=o>&gt;</span><span class=w> </span><span class=n>qualityFilter</span><span class=p>;</span>
@@ -138,14 +138,14 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>qualityFilter</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 
 <span class=hll><span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>qualityArray</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>dynamic_cast</span><span class=o>&lt;</span><span class=n>vtkDoubleArray</span><span class=o>*&gt;</span><span class=p>(</span>
-</span><span class=w>      </span><span class=n>qualityFilter</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetCellData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetArray</span><span class=p>(</span><span class=s>&quot;Quality&quot;</span><span class=p>));</span>
+</span><span class=w>      </span><span class=n>qualityFilter</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetCellData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetArray</span><span class=p>(</span><span class=s>"Quality"</span><span class=p>));</span>
 
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;There are &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>qualityArray</span><span class=o>-&gt;</span><span class=n>GetNumberOfTuples</span><span class=p>()</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; values.&quot;</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"There are "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>qualityArray</span><span class=o>-&gt;</span><span class=n>GetNumberOfTuples</span><span class=p>()</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" values."</span>
 <span class=w>            </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 
 <span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=n>vtkIdType</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>qualityArray</span><span class=o>-&gt;</span><span class=n>GetNumberOfTuples</span><span class=p>();</span><span class=w> </span><span class=n>i</span><span class=o>++</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;value &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; : &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>qualityArray</span><span class=o>-&gt;</span><span class=n>GetValue</span><span class=p>(</span><span class=n>i</span><span class=p>)</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"value "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" : "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>qualityArray</span><span class=o>-&gt;</span><span class=n>GetValue</span><span class=p>(</span><span class=n>i</span><span class=p>)</span>
 <span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 
@@ -170,13 +170,13 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderer</span><span class=p>;</span>
 </span><span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderWindow</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;MeshQuality&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"MeshQuality"</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderWindowInteractor</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>renderWindowInteractor</span><span class=o>-&gt;</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renderWindow</span><span class=p>);</span>
 
 <span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;SlateGray&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"SlateGray"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
 <span class=w>  </span><span class=n>renderWindowInteractor</span><span class=o>-&gt;</span><span class=n>Start</span><span class=p>();</span>
@@ -229,11 +229,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;MeshQuality: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"MeshQuality: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>MeshQuality</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>MeshQuality.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>MeshQuality</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

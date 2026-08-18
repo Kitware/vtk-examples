@@ -104,7 +104,7 @@ function registerListener(event, func) {
 
 <span class=hll><span class=cm>This example demonstrates how to use the vtkLineWidget to seed and</span>
 </span><span class=cm>manipulate streamlines. Two line widgets are created. The first is invoked</span>
-<span class=cm>by pressing &#39;i&#39;, the second by pressing &#39;L&#39; (capital). Both can exist</span>
+<span class=cm>by pressing 'i', the second by pressing 'L' (capital). Both can exist</span>
 <span class=cm>together.</span>
 
 <span class=cm>If the fourth parameter is non-zero:</span>
@@ -148,7 +148,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>EnableActorCallback</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=hll><span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=n>Execute</span><span class=p>(</span><span class=n>vtkObject</span><span class=o>*</span><span class=w> </span><span class=cm>/*caller*/</span><span class=p>,</span><span class=w> </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>long</span><span class=p>,</span><span class=w> </span><span class=kt>void</span><span class=o>*</span><span class=p>)</span><span class=w> </span><span class=k>override</span>
+<span class=hll><span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=nf>Execute</span><span class=p>(</span><span class=n>vtkObject</span><span class=o>*</span><span class=w> </span><span class=cm>/*caller*/</span><span class=p>,</span><span class=w> </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>long</span><span class=p>,</span><span class=w> </span><span class=kt>void</span><span class=o>*</span><span class=p>)</span><span class=w> </span><span class=k>override</span>
 </span><span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>actor</span><span class=o>-&gt;</span><span class=n>VisibilityOn</span><span class=p>();</span>
 <span class=w>  </span><span class=p>}</span>
@@ -184,18 +184,18 @@ function registerListener(event, func) {
 <span class=p>{</span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>argc</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=mi>3</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Usage: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span>
-<span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; filename1 filename2 [numOfStreamLines] [illustration]&quot;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Usage: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span>
+<span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" filename1 filename2 [numOfStreamLines] [illustration]"</span>
 <span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;where: filename1 is combxyz.bin and filename2 is combq.bin.&quot;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"where: filename1 is combxyz.bin and filename2 is combq.bin."</span>
 <span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span>
-<span class=w>        </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;       numOfStreamLines is the number of streamlines, default 25&quot;</span>
+<span class=w>        </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"       numOfStreamLines is the number of streamlines, default 25"</span>
 <span class=w>        </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;       illustration, if non-zero, reproduce Fig 7-39 of the &quot;</span>
-<span class=w>                 </span><span class=s>&quot;VTK Textbook.&quot;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"       illustration, if non-zero, reproduce Fig 7-39 of the "</span>
+<span class=w>                 </span><span class=s>"VTK Textbook."</span>
 <span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;e.g. combxyz.bin combq.bin 10 1&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"e.g. combxyz.bin combq.bin 10 1"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>EXIT_FAILURE</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>numOfStreamLines</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>25</span><span class=p>;</span>
@@ -275,7 +275,7 @@ function registerListener(event, func) {
 </span><span class=w>  </span><span class=n>lineWidget2</span><span class=o>-&gt;</span><span class=n>SetResolution</span><span class=p>(</span><span class=n>numOfStreamLines</span><span class=p>);</span>
 <span class=w>  </span><span class=n>lineWidget2</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>pl3d_output</span><span class=p>);</span>
 <span class=w>  </span><span class=n>lineWidget2</span><span class=o>-&gt;</span><span class=n>GetPolyData</span><span class=p>(</span><span class=n>seeds2</span><span class=p>);</span>
-<span class=w>  </span><span class=n>lineWidget2</span><span class=o>-&gt;</span><span class=n>SetKeyPressActivationValue</span><span class=p>(</span><span class=sc>&#39;L&#39;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>lineWidget2</span><span class=o>-&gt;</span><span class=n>SetKeyPressActivationValue</span><span class=p>(</span><span class=sc>'L'</span><span class=p>);</span>
 <span class=w>  </span><span class=n>lineWidget2</span><span class=o>-&gt;</span><span class=n>SetAlignToZAxis</span><span class=p>();</span>
 <span class=w>  </span><span class=n>lineWidget</span><span class=o>-&gt;</span><span class=n>ClampToBoundsOn</span><span class=p>();</span>
 <span class=w>  </span><span class=n>lineWidget2</span><span class=o>-&gt;</span><span class=n>PlaceWidget</span><span class=p>();</span>
@@ -336,7 +336,7 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span><span class=w> </span><span class=n>outlineMapper</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>outlineMapper</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>outline</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>outlineActor</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>outlineActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Black&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+</span><span class=w>  </span><span class=n>outlineActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Black"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=n>outlineActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>outlineMapper</span><span class=p>);</span>
 
 <span class=w>  </span><span class=c1>// Add the actors to the renderer, set the background and size.</span>
@@ -344,7 +344,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>streamline</span><span class=p>);</span>
 <span class=w>  </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>streamline2</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>512</span><span class=p>,</span><span class=w> </span><span class=mi>512</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;StreamlinesWithLineWidget&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"StreamlinesWithLineWidget"</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkCamera</span><span class=o>*</span><span class=w> </span><span class=n>cam</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>GetActiveCamera</span><span class=p>();</span>
 </span><span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>illustration</span><span class=p>)</span>
@@ -359,7 +359,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=n>cam</span><span class=o>-&gt;</span><span class=n>SetFocalPoint</span><span class=p>(</span><span class=mf>9.718210</span><span class=p>,</span><span class=w> </span><span class=mf>0.458166</span><span class=p>,</span><span class=w> </span><span class=mf>29.399900</span><span class=p>);</span>
 <span class=w>    </span><span class=n>cam</span><span class=o>-&gt;</span><span class=n>SetPosition</span><span class=p>(</span><span class=mf>-15.827551</span><span class=p>,</span><span class=w> </span><span class=mf>-16.997463</span><span class=p>,</span><span class=w> </span><span class=mf>54.003120</span><span class=p>);</span>
 <span class=w>    </span><span class=n>cam</span><span class=o>-&gt;</span><span class=n>SetViewUp</span><span class=p>(</span><span class=mf>0.616076</span><span class=p>,</span><span class=w> </span><span class=mf>0.179428</span><span class=p>,</span><span class=w> </span><span class=mf>0.766979</span><span class=p>);</span>
-<span class=w>    </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Silver&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>    </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Silver"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=w>  </span><span class=k>else</span>
 <span class=w>  </span><span class=p>{</span>
@@ -372,7 +372,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=n>cam</span><span class=o>-&gt;</span><span class=n>SetFocalPoint</span><span class=p>(</span><span class=mf>9.71821</span><span class=p>,</span><span class=w> </span><span class=mf>0.458166</span><span class=p>,</span><span class=w> </span><span class=mf>29.3999</span><span class=p>);</span>
 <span class=w>    </span><span class=n>cam</span><span class=o>-&gt;</span><span class=n>SetPosition</span><span class=p>(</span><span class=mf>2.7439</span><span class=p>,</span><span class=w> </span><span class=mf>-37.3196</span><span class=p>,</span><span class=w> </span><span class=mf>38.7167</span><span class=p>);</span>
 <span class=w>    </span><span class=n>cam</span><span class=o>-&gt;</span><span class=n>SetViewUp</span><span class=p>(</span><span class=mf>-0.16123</span><span class=p>,</span><span class=w> </span><span class=mf>0.264271</span><span class=p>,</span><span class=w> </span><span class=mf>0.950876</span><span class=p>);</span>
-<span class=w>    </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Silver&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>    </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Silver"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=p>}</span>
 
 <span class=w>  </span><span class=n>iren</span><span class=o>-&gt;</span><span class=n>Initialize</span><span class=p>();</span>
@@ -403,11 +403,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;StreamlinesWithLineWidget: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"StreamlinesWithLineWidget: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>StreamlinesWithLineWidget</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>StreamlinesWithLineWidget.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>StreamlinesWithLineWidget</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

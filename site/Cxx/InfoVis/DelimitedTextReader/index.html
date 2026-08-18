@@ -64,7 +64,7 @@ function registerListener(event, func) {
 
 ###Code
 **DelimitedTextReader.cxx**
-``` c++ hl_lines=&quot;1 2 3 4 5 6 7 8 9 10 11 12 14 20 32 38 40 41 72 76 81 84 89 90 94&quot;
+``` c++ hl_lines="1 2 3 4 5 6 7 8 9 10 11 12 14 20 32 38 40 41 72 76 81 84 89 90 94"
 
 #include &lt;vtkActor.h&gt;
 #include &lt;vtkDelimitedTextReader.h&gt;
@@ -90,7 +90,7 @@ int main(int argc, char* argv[])
   // Verify input arguments
   if (argc != 2)
   {
-    std::cout &lt;&lt; &quot;Usage: &quot; &lt;&lt; argv[0] &lt;&lt; &quot; Filename e.g DelimitedData.txt&quot;
+    std::cout &lt;&lt; "Usage: " &lt;&lt; argv[0] &lt;&lt; " Filename e.g DelimitedData.txt"
               &lt;&lt; std::endl;
     return EXIT_FAILURE;
   }
@@ -100,7 +100,7 @@ int main(int argc, char* argv[])
   vtkNew&lt;vtkDelimitedTextReader&gt; reader;
   reader-&gt;SetFileName(inputFilename.c_str());
   reader-&gt;DetectNumericColumnsOn();
-  reader-&gt;SetFieldDelimiterCharacters(&quot; &quot;);
+  reader-&gt;SetFieldDelimiterCharacters(" ");
   reader-&gt;Update();
 
   vtkTable* table = reader-&gt;GetOutput();
@@ -110,16 +110,16 @@ int main(int argc, char* argv[])
 
   normals-&gt;SetNumberOfComponents(3); // 3d normals (ie x,y,z)
 
-  std::cout &lt;&lt; &quot;Table has &quot; &lt;&lt; table-&gt;GetNumberOfRows() &lt;&lt; &quot; rows.&quot;
+  std::cout &lt;&lt; "Table has " &lt;&lt; table-&gt;GetNumberOfRows() &lt;&lt; " rows."
             &lt;&lt; std::endl;
-  std::cout &lt;&lt; &quot;Table has &quot; &lt;&lt; table-&gt;GetNumberOfColumns() &lt;&lt; &quot; columns.&quot;
+  std::cout &lt;&lt; "Table has " &lt;&lt; table-&gt;GetNumberOfColumns() &lt;&lt; " columns."
             &lt;&lt; std::endl;
 
   for (vtkIdType i = 0; i &lt; table-&gt;GetNumberOfRows(); i++)
   {
-    std::cout &lt;&lt; &quot;x: &quot; &lt;&lt; (table-&gt;GetValue(i, 0)).ToDouble()
-              &lt;&lt; &quot; y: &quot; &lt;&lt; (table-&gt;GetValue(i, 1)).ToDouble()
-              &lt;&lt; &quot; z: &quot; &lt;&lt; (table-&gt;GetValue(i, 2)).ToDouble();
+    std::cout &lt;&lt; "x: " &lt;&lt; (table-&gt;GetValue(i, 0)).ToDouble()
+              &lt;&lt; " y: " &lt;&lt; (table-&gt;GetValue(i, 1)).ToDouble()
+              &lt;&lt; " z: " &lt;&lt; (table-&gt;GetValue(i, 2)).ToDouble();
 
     points-&gt;InsertNextPoint((table-&gt;GetValue(i, 0)).ToDouble(),
                             (table-&gt;GetValue(i, 1)).ToDouble(),
@@ -130,11 +130,11 @@ int main(int argc, char* argv[])
     n[1] = (table-&gt;GetValue(i, 4)).ToDouble();
     n[2] = (table-&gt;GetValue(i, 5)).ToDouble();
 
-    std::cout &lt;&lt; &quot; n: &quot; &lt;&lt; n[0] &lt;&lt; &quot; &quot; &lt;&lt; n[1] &lt;&lt; &quot; &quot; &lt;&lt; n[2] &lt;&lt; std::endl;
+    std::cout &lt;&lt; " n: " &lt;&lt; n[0] &lt;&lt; " " &lt;&lt; n[1] &lt;&lt; " " &lt;&lt; n[2] &lt;&lt; std::endl;
     normals-&gt;InsertNextTuple(n);
   }
 
-  std::cout &lt;&lt; &quot;There are &quot; &lt;&lt; points-&gt;GetNumberOfPoints() &lt;&lt; &quot; points.&quot;
+  std::cout &lt;&lt; "There are " &lt;&lt; points-&gt;GetNumberOfPoints() &lt;&lt; " points."
             &lt;&lt; std::endl;
 
   vtkNew&lt;vtkPolyData&gt; polydata;
@@ -152,18 +152,18 @@ int main(int argc, char* argv[])
   vtkNew&lt;vtkActor&gt; actor;
   actor-&gt;SetMapper(mapper);
   actor-&gt;GetProperty()-&gt;SetPointSize(30);
-  actor-&gt;GetProperty()-&gt;SetColor(colors-&gt;GetColor3d(&quot;Tomato&quot;).GetData());
+  actor-&gt;GetProperty()-&gt;SetColor(colors-&gt;GetColor3d("Tomato").GetData());
 
   vtkNew&lt;vtkRenderer&gt; renderer;
   vtkNew&lt;vtkRenderWindow&gt; renderWindow;
   renderWindow-&gt;AddRenderer(renderer);
-  renderWindow-&gt;SetWindowName(&quot;DelimitedTextReader&quot;);
+  renderWindow-&gt;SetWindowName("DelimitedTextReader");
 
   vtkNew&lt;vtkRenderWindowInteractor&gt; renderWindowInteractor;
   renderWindowInteractor-&gt;SetRenderWindow(renderWindow);
 
   renderer-&gt;AddActor(actor);
-  renderer-&gt;SetBackground(colors-&gt;GetColor3d(&quot;Mint&quot;).GetData());
+  renderer-&gt;SetBackground(colors-&gt;GetColor3d("Mint").GetData());
 
   renderWindow-&gt;Render();
   renderWindowInteractor-&gt;Start();
@@ -189,11 +189,11 @@ int main(int argc, char* argv[])
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;DelimitedTextReader: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"DelimitedTextReader: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>DelimitedTextReader</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>DelimitedTextReader.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>DelimitedTextReader</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

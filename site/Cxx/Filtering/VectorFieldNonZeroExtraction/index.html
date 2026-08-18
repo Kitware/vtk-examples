@@ -72,7 +72,7 @@ function registerListener(event, func) {
 </span><span class=hll><span class=kt>void</span><span class=w> </span><span class=nf>WriteVectorField</span><span class=p>(</span><span class=n>vtkPolyData</span><span class=o>*</span><span class=w> </span><span class=n>vectorField</span><span class=p>,</span><span class=w> </span><span class=k>const</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>&amp;</span><span class=w> </span><span class=n>fileName</span><span class=p>);</span>
 </span><span class=p>}</span><span class=w> </span><span class=c1>// namespace</span>
 
-<span class=kt>int</span><span class=w> </span><span class=n>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=p>[])</span>
+<span class=kt>int</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=p>[])</span>
 <span class=p>{</span>
 <span class=w>  </span><span class=c1>// Create an image</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageData</span><span class=o>&gt;</span><span class=w> </span><span class=n>image</span><span class=p>;</span>
@@ -81,11 +81,11 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageMagnitude</span><span class=o>&gt;</span><span class=w> </span><span class=n>magnitudeFilter</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>magnitudeFilter</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>image</span><span class=p>);</span>
 <span class=w>  </span><span class=n>magnitudeFilter</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span><span class=w> </span><span class=c1>// This filter produces a vtkImageData with an</span>
-<span class=w>                             </span><span class=c1>// array named &quot;Magnitude&quot;.</span>
+<span class=w>                             </span><span class=c1>// array named "Magnitude".</span>
 
 <span class=w>  </span><span class=n>image</span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>AddArray</span><span class=p>(</span>
 <span class=w>      </span><span class=n>magnitudeFilter</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetScalars</span><span class=p>());</span>
-<span class=w>  </span><span class=n>image</span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetActiveScalars</span><span class=p>(</span><span class=s>&quot;Magnitude&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>image</span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetActiveScalars</span><span class=p>(</span><span class=s>"Magnitude"</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkThresholdPoints</span><span class=o>&gt;</span><span class=w> </span><span class=n>thresholdPoints</span><span class=p>;</span>
 </span><span class=w>  </span><span class=c1>// thresholdPoints-&gt;SetInputConnection(magnitudeFilter-&gt;GetOutputPort());</span>
@@ -94,8 +94,8 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>thresholdPoints</span><span class=o>-&gt;</span><span class=n>SetThresholdFunction</span><span class=p>(</span><span class=n>vtkThresholdPoints</span><span class=o>::</span><span class=n>THRESHOLD_UPPER</span><span class=p>);</span>
 </span><span class=w>  </span><span class=n>thresholdPoints</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 
-<span class=w>  </span><span class=n>WriteImage</span><span class=p>(</span><span class=n>image</span><span class=p>,</span><span class=w> </span><span class=s>&quot;input.vti&quot;</span><span class=p>);</span>
-<span class=w>  </span><span class=n>WriteVectorField</span><span class=p>(</span><span class=n>thresholdPoints</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>(),</span><span class=w> </span><span class=s>&quot;output.vtp&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>WriteImage</span><span class=p>(</span><span class=n>image</span><span class=p>,</span><span class=w> </span><span class=s>"input.vti"</span><span class=p>);</span>
+<span class=w>  </span><span class=n>WriteVectorField</span><span class=p>(</span><span class=n>thresholdPoints</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>(),</span><span class=w> </span><span class=s>"output.vtp"</span><span class=p>);</span>
 
 <span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>EXIT_SUCCESS</span><span class=p>;</span>
 <span class=p>}</span>
@@ -133,7 +133,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>pixel</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mf>10.0</span><span class=p>;</span>
 <span class=w>  </span><span class=n>pixel</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mf>0.0</span><span class=p>;</span>
 
-<span class=w>  </span><span class=n>image</span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetActiveVectors</span><span class=p>(</span><span class=s>&quot;ImageScalars&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>image</span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetActiveVectors</span><span class=p>(</span><span class=s>"ImageScalars"</span><span class=p>);</span>
 
 <span class=w>  </span><span class=n>image</span><span class=o>-&gt;</span><span class=n>Modified</span><span class=p>();</span>
 <span class=p>}</span>
@@ -168,11 +168,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;VectorFieldNonZeroExtraction: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"VectorFieldNonZeroExtraction: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>VectorFieldNonZeroExtraction</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>VectorFieldNonZeroExtraction.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>VectorFieldNonZeroExtraction</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

@@ -161,8 +161,8 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=kt>double</span><span class=w> </span><span class=n>maxz</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>bounds</span><span class=p>[</span><span class=mi>5</span><span class=p>];</span>
 
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=p>.</span><span class=n>precision</span><span class=p>(</span><span class=mi>3</span><span class=p>);</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;minz: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>right</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>setw</span><span class=p>(</span><span class=mi>6</span><span class=p>)</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>minz</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;maxz: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>right</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>setw</span><span class=p>(</span><span class=mi>6</span><span class=p>)</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>maxz</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"minz: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>right</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>setw</span><span class=p>(</span><span class=mi>6</span><span class=p>)</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>minz</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"maxz: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>right</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>setw</span><span class=p>(</span><span class=mi>6</span><span class=p>)</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>maxz</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=p>.</span><span class=n>precision</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span>
 
 <span class=w>  </span><span class=c1>// Create the color map.</span>
@@ -173,9 +173,9 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=c1>// Generate the colors for each point based on the color map.</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkUnsignedCharArray</span><span class=o>&gt;</span><span class=w> </span><span class=n>colors</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>SetNumberOfComponents</span><span class=p>(</span><span class=mi>3</span><span class=p>);</span>
-<span class=w>  </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>&quot;Colors&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>"Colors"</span><span class=p>);</span>
 
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;There are &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>outputPolyData</span><span class=o>-&gt;</span><span class=n>GetNumberOfPoints</span><span class=p>()</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; points.&quot;</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"There are "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>outputPolyData</span><span class=o>-&gt;</span><span class=n>GetNumberOfPoints</span><span class=p>()</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" points."</span>
 <span class=w>            </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=p>.</span><span class=n>precision</span><span class=p>(</span><span class=mi>6</span><span class=p>);</span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>fixed</span><span class=p>;</span>
@@ -186,8 +186,8 @@ function registerListener(event, func) {
 
 <span class=w>    </span><span class=kt>double</span><span class=w> </span><span class=n>dcolor</span><span class=p>[</span><span class=mi>3</span><span class=p>];</span>
 <span class=w>    </span><span class=n>colorLookupTable</span><span class=o>-&gt;</span><span class=n>GetColor</span><span class=p>(</span><span class=n>p</span><span class=p>[</span><span class=mi>2</span><span class=p>],</span><span class=w> </span><span class=n>dcolor</span><span class=p>);</span>
-<span class=w>    </span><span class=c1>// std::cout &lt;&lt; &quot;dcolor: &quot; &lt;&lt; std::right &lt;&lt; std::setw(8) &lt;&lt; dcolor[0] &lt;&lt; &quot; &quot;</span>
-<span class=w>    </span><span class=c1>//          &lt;&lt; std::right &lt;&lt; std::setw(8)&lt;&lt; dcolor[1] &lt;&lt; &quot; &quot;</span>
+<span class=w>    </span><span class=c1>// std::cout &lt;&lt; "dcolor: " &lt;&lt; std::right &lt;&lt; std::setw(8) &lt;&lt; dcolor[0] &lt;&lt; " "</span>
+<span class=w>    </span><span class=c1>//          &lt;&lt; std::right &lt;&lt; std::setw(8)&lt;&lt; dcolor[1] &lt;&lt; " "</span>
 <span class=w>    </span><span class=c1>//          &lt;&lt; std::right &lt;&lt; std::setw(8) &lt;&lt; dcolor[2]</span>
 <span class=w>    </span><span class=c1>//          &lt;&lt; std::endl;</span>
 <span class=w>    </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>char</span><span class=w> </span><span class=n>color</span><span class=p>[</span><span class=mi>3</span><span class=p>];</span>
@@ -195,8 +195,8 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=p>{</span>
 <span class=w>      </span><span class=n>color</span><span class=p>[</span><span class=n>j</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>static_cast</span><span class=o>&lt;</span><span class=kt>unsigned</span><span class=w> </span><span class=kt>char</span><span class=o>&gt;</span><span class=p>(</span><span class=mf>255.0</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=n>dcolor</span><span class=p>[</span><span class=n>j</span><span class=p>]);</span>
 <span class=w>    </span><span class=p>}</span>
-<span class=w>    </span><span class=c1>// std::cout &lt;&lt; &quot;color:  &quot; &lt;&lt; std::right &lt;&lt; std::setw(8) &lt;&lt; (int)color[0]</span>
-<span class=w>    </span><span class=c1>//          &lt;&lt; &quot; &quot; &lt;&lt; std::right &lt;&lt; std::setw(8) &lt;&lt; (int)color[1] &lt;&lt; &quot; &quot;</span>
+<span class=w>    </span><span class=c1>// std::cout &lt;&lt; "color:  " &lt;&lt; std::right &lt;&lt; std::setw(8) &lt;&lt; (int)color[0]</span>
+<span class=w>    </span><span class=c1>//          &lt;&lt; " " &lt;&lt; std::right &lt;&lt; std::setw(8) &lt;&lt; (int)color[1] &lt;&lt; " "</span>
 <span class=w>    </span><span class=c1>//          &lt;&lt; std::right &lt;&lt; std::setw(8)</span>
 <span class=w>    </span><span class=c1>//          &lt;&lt; (int)color[2] &lt;&lt; std::endl;</span>
 
@@ -219,11 +219,11 @@ function registerListener(event, func) {
 </span><span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>);</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderWindowInteractor</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>renderWindowInteractor</span><span class=o>-&gt;</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renderWindow</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;ColoredElevationMap&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"ColoredElevationMap"</span><span class=p>);</span>
 
 <span class=w>  </span><span class=c1>// Add the actor to the scene.</span>
 <span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>namedColors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;DarkSlateGray&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>namedColors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"DarkSlateGray"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=w>  </span><span class=c1>// Render and interact.</span>
 <span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
@@ -249,11 +249,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;ColoredElevationMap: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"ColoredElevationMap: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>ColoredElevationMap</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>ColoredElevationMap.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>ColoredElevationMap</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

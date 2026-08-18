@@ -75,7 +75,7 @@ function registerListener(event, func) {
 <span class=w>            </span><span class=n>VectorFieldNonZeroExtraction</span><span class=p>();</span>
 <span class=w>         </span><span class=p>}</span>
 <span class=w>         </span><span class=k>catch</span><span class=p>(</span><span class=n>Exception</span><span class=w> </span><span class=n>ex</span><span class=p>)</span><span class=w> </span><span class=p>{</span>
-<span class=w>            </span><span class=n>MessageBox</span><span class=p>.</span><span class=n>Show</span><span class=p>(</span><span class=n>ex</span><span class=p>.</span><span class=n>Message</span><span class=p>,</span><span class=w> </span><span class=s>&quot;Exception&quot;</span><span class=p>,</span><span class=w> </span><span class=n>MessageBoxButtons</span><span class=p>.</span><span class=n>OK</span><span class=p>);</span>
+<span class=w>            </span><span class=n>MessageBox</span><span class=p>.</span><span class=n>Show</span><span class=p>(</span><span class=n>ex</span><span class=p>.</span><span class=n>Message</span><span class=p>,</span><span class=w> </span><span class=s>"Exception"</span><span class=p>,</span><span class=w> </span><span class=n>MessageBoxButtons</span><span class=p>.</span><span class=n>OK</span><span class=p>);</span>
 <span class=w>         </span><span class=p>}</span>
 <span class=w>      </span><span class=p>}</span>
 
@@ -85,13 +85,13 @@ function registerListener(event, func) {
 <span class=hll><span class=w>         </span><span class=n>vtkImageData</span><span class=w> </span><span class=n>image</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>vtkImageData</span><span class=p>.</span><span class=n>New</span><span class=p>();</span>
 </span><span class=w>         </span><span class=n>CreateVectorField</span><span class=p>(</span><span class=k>ref</span><span class=w> </span><span class=n>image</span><span class=p>);</span>
 
-<span class=w>         </span><span class=c1>// This filter produces a vtkImageData with an array named &quot;Magnitude&quot;</span>
+<span class=w>         </span><span class=c1>// This filter produces a vtkImageData with an array named "Magnitude"</span>
 <span class=hll><span class=w>         </span><span class=n>vtkImageMagnitude</span><span class=w> </span><span class=n>magnitudeFilter</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>vtkImageMagnitude</span><span class=p>.</span><span class=n>New</span><span class=p>();</span>
 </span><span class=w>         </span><span class=n>magnitudeFilter</span><span class=p>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>image</span><span class=p>.</span><span class=n>GetProducerPort</span><span class=p>());</span>
 <span class=w>         </span><span class=n>magnitudeFilter</span><span class=p>.</span><span class=n>Update</span><span class=p>();</span><span class=w> </span>
 
 <span class=w>         </span><span class=n>image</span><span class=p>.</span><span class=n>GetPointData</span><span class=p>().</span><span class=n>AddArray</span><span class=p>(</span><span class=n>magnitudeFilter</span><span class=p>.</span><span class=n>GetOutput</span><span class=p>().</span><span class=n>GetPointData</span><span class=p>().</span><span class=n>GetScalars</span><span class=p>());</span>
-<span class=w>         </span><span class=n>image</span><span class=p>.</span><span class=n>GetPointData</span><span class=p>().</span><span class=n>SetActiveScalars</span><span class=p>(</span><span class=s>&quot;Magnitude&quot;</span><span class=p>);</span>
+<span class=w>         </span><span class=n>image</span><span class=p>.</span><span class=n>GetPointData</span><span class=p>().</span><span class=n>SetActiveScalars</span><span class=p>(</span><span class=s>"Magnitude"</span><span class=p>);</span>
 
 <span class=hll><span class=w>         </span><span class=n>vtkThresholdPoints</span><span class=w> </span><span class=n>thresholdVector</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>vtkThresholdPoints</span><span class=p>.</span><span class=n>New</span><span class=p>();</span>
 </span><span class=w>         </span><span class=n>thresholdVector</span><span class=p>.</span><span class=n>SetInput</span><span class=p>(</span><span class=n>image</span><span class=p>);</span>
@@ -100,13 +100,13 @@ function registerListener(event, func) {
 <span class=w>            </span><span class=mi>0</span><span class=p>,</span><span class=w> </span>
 <span class=hll><span class=w>            </span><span class=p>(</span><span class=kt>int</span><span class=p>)</span><span class=n>vtkDataObject</span><span class=p>.</span><span class=n>FieldAssociations</span><span class=p>.</span><span class=n>FIELD_ASSOCIATION_POINTS</span><span class=p>,</span><span class=w> </span>
 </span><span class=hll><span class=w>            </span><span class=p>(</span><span class=kt>int</span><span class=p>)</span><span class=n>vtkDataSetAttributes</span><span class=p>.</span><span class=n>AttributeTypes</span><span class=p>.</span><span class=n>SCALARS</span><span class=p>,</span>
-</span><span class=w>            </span><span class=s>&quot;Magnitude&quot;</span><span class=p>);</span>
+</span><span class=w>            </span><span class=s>"Magnitude"</span><span class=p>);</span>
 <span class=w>         </span><span class=n>thresholdVector</span><span class=p>.</span><span class=n>ThresholdByUpper</span><span class=p>(</span><span class=mf>0.00001</span><span class=p>);</span>
 <span class=w>         </span><span class=n>thresholdVector</span><span class=p>.</span><span class=n>Update</span><span class=p>();</span>
 
 <span class=w>         </span><span class=c1>// in case you want to save imageData</span>
 <span class=w>         </span><span class=c1>//vtkXMLPolyDataWriter writer = vtkXMLPolyDataWriter.New();</span>
-<span class=w>         </span><span class=c1>//writer.SetFileName(&quot;output.vtp&quot;);</span>
+<span class=w>         </span><span class=c1>//writer.SetFileName("output.vtp");</span>
 <span class=w>         </span><span class=c1>//writer.SetInputConnection(thresholdPoints.GetOutputPort());</span>
 <span class=w>         </span><span class=c1>//writer.Write();</span>
 
@@ -118,12 +118,12 @@ function registerListener(event, func) {
 <span class=hll><span class=w>         </span><span class=n>vtkGlyph3D</span><span class=w> </span><span class=n>glyph</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>vtkGlyph3D</span><span class=p>.</span><span class=n>New</span><span class=p>();</span>
 </span><span class=w>         </span><span class=n>glyph</span><span class=p>.</span><span class=n>SetInput</span><span class=p>(</span><span class=n>image</span><span class=p>);</span>
 <span class=w>         </span><span class=n>glyph</span><span class=p>.</span><span class=n>SetSourceConnection</span><span class=p>(</span><span class=n>cubeSource</span><span class=p>.</span><span class=n>GetOutputPort</span><span class=p>());</span>
-<span class=w>         </span><span class=c1>// don&#39;t scale glyphs according to any scalar data</span>
+<span class=w>         </span><span class=c1>// don't scale glyphs according to any scalar data</span>
 <span class=w>         </span><span class=n>glyph</span><span class=p>.</span><span class=n>SetScaleModeToDataScalingOff</span><span class=p>();</span>
 
 <span class=hll><span class=w>         </span><span class=n>vtkPolyDataMapper</span><span class=w> </span><span class=n>glyphMapper</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>vtkPolyDataMapper</span><span class=p>.</span><span class=n>New</span><span class=p>();</span>
 </span><span class=w>         </span><span class=n>glyphMapper</span><span class=p>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>glyph</span><span class=p>.</span><span class=n>GetOutputPort</span><span class=p>());</span>
-<span class=w>         </span><span class=c1>// don&#39;t color glyphs according to scalar data</span>
+<span class=w>         </span><span class=c1>// don't color glyphs according to scalar data</span>
 <span class=w>         </span><span class=n>glyphMapper</span><span class=p>.</span><span class=n>ScalarVisibilityOff</span><span class=p>();</span>
 <span class=w>         </span><span class=n>glyphMapper</span><span class=p>.</span><span class=n>SetScalarModeToDefault</span><span class=p>();</span>
 
@@ -137,16 +137,16 @@ function registerListener(event, func) {
 </span>
 <span class=w>         </span><span class=kt>int</span><span class=w> </span><span class=n>n</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>image</span><span class=p>.</span><span class=n>GetPointData</span><span class=p>().</span><span class=n>GetNumberOfArrays</span><span class=p>();</span>
 <span class=w>         </span><span class=k>for</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>n</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=o>++</span><span class=p>)</span><span class=w> </span><span class=p>{</span>
-<span class=w>            </span><span class=n>Debug</span><span class=p>.</span><span class=n>WriteLine</span><span class=p>(</span><span class=s>&quot;name of array[&quot;</span><span class=o>+</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&quot;]: &quot;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>image</span><span class=p>.</span><span class=n>GetPointData</span><span class=p>().</span><span class=n>GetArrayName</span><span class=p>(</span><span class=n>i</span><span class=p>));</span>
+<span class=w>            </span><span class=n>Debug</span><span class=p>.</span><span class=n>WriteLine</span><span class=p>(</span><span class=s>"name of array["</span><span class=o>+</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>"]: "</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>image</span><span class=p>.</span><span class=n>GetPointData</span><span class=p>().</span><span class=n>GetArrayName</span><span class=p>(</span><span class=n>i</span><span class=p>));</span>
 <span class=w>         </span><span class=p>}</span>
 
 <span class=hll><span class=w>         </span><span class=n>vtkPolyData</span><span class=w> </span><span class=n>tmp</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>thresholdVector</span><span class=p>.</span><span class=n>GetOutput</span><span class=p>();</span>
-</span><span class=w>         </span><span class=n>Debug</span><span class=p>.</span><span class=n>WriteLine</span><span class=p>(</span><span class=s>&quot;number of thresholded points: &quot;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>tmp</span><span class=p>.</span><span class=n>GetNumberOfPoints</span><span class=p>());</span>
+</span><span class=w>         </span><span class=n>Debug</span><span class=p>.</span><span class=n>WriteLine</span><span class=p>(</span><span class=s>"number of thresholded points: "</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>tmp</span><span class=p>.</span><span class=n>GetNumberOfPoints</span><span class=p>());</span>
 <span class=w>         </span><span class=n>vectorGlyph</span><span class=p>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>thresholdVector</span><span class=p>.</span><span class=n>GetOutputPort</span><span class=p>());</span>
 
 <span class=w>         </span><span class=c1>// in case you want the point glyphs to be oriented according to </span>
-<span class=w>         </span><span class=c1>// scalar values in array &quot;ImageScalars&quot; uncomment the following line</span>
-<span class=w>         </span><span class=n>image</span><span class=p>.</span><span class=n>GetPointData</span><span class=p>().</span><span class=n>SetActiveVectors</span><span class=p>(</span><span class=s>&quot;ImageScalars&quot;</span><span class=p>);</span>
+<span class=w>         </span><span class=c1>// scalar values in array "ImageScalars" uncomment the following line</span>
+<span class=w>         </span><span class=n>image</span><span class=p>.</span><span class=n>GetPointData</span><span class=p>().</span><span class=n>SetActiveVectors</span><span class=p>(</span><span class=s>"ImageScalars"</span><span class=p>);</span>
 
 <span class=w>         </span><span class=n>vectorGlyph</span><span class=p>.</span><span class=n>SetSourceConnection</span><span class=p>(</span><span class=n>arrowSource</span><span class=p>.</span><span class=n>GetOutputPort</span><span class=p>());</span>
 <span class=w>         </span><span class=n>vectorGlyph</span><span class=p>.</span><span class=n>SetScaleModeToScaleByVector</span><span class=p>();</span>
@@ -158,7 +158,7 @@ function registerListener(event, func) {
 <span class=w>            </span><span class=mi>0</span><span class=p>,</span>
 <span class=hll><span class=w>            </span><span class=p>(</span><span class=kt>int</span><span class=p>)</span><span class=n>vtkDataObject</span><span class=p>.</span><span class=n>FieldAssociations</span><span class=p>.</span><span class=n>FIELD_ASSOCIATION_POINTS</span><span class=p>,</span>
 </span><span class=hll><span class=w>            </span><span class=p>(</span><span class=kt>int</span><span class=p>)</span><span class=n>vtkDataSetAttributes</span><span class=p>.</span><span class=n>AttributeTypes</span><span class=p>.</span><span class=n>SCALARS</span><span class=p>,</span>
-</span><span class=w>            </span><span class=s>&quot;ImageScalars&quot;</span><span class=p>);</span>
+</span><span class=w>            </span><span class=s>"ImageScalars"</span><span class=p>);</span>
 
 <span class=w>         </span><span class=n>vectorGlyph</span><span class=p>.</span><span class=n>Update</span><span class=p>();</span>
 

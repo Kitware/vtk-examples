@@ -128,7 +128,7 @@ function registerListener(event, func) {
 </span>
 <span class=p>}</span>
 
-<span class=kt>int</span><span class=w> </span><span class=n>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=p>[])</span>
+<span class=kt>int</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=p>[])</span>
 <span class=p>{</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span><span class=w> </span><span class=n>colors</span><span class=p>;</span>
 </span>
@@ -150,10 +150,10 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkIdTypeArray</span><span class=o>&gt;</span><span class=w> </span><span class=n>ids</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>ids</span><span class=o>-&gt;</span><span class=n>SetNumberOfComponents</span><span class=p>(</span><span class=mi>1</span><span class=p>);</span>
 
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Connected vertices: &quot;</span><span class=p>;</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Connected vertices: "</span><span class=p>;</span>
 <span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=n>vtkIdType</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>connectedVertices</span><span class=o>-&gt;</span><span class=n>GetNumberOfIds</span><span class=p>();</span><span class=w> </span><span class=n>i</span><span class=o>++</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>connectedVertices</span><span class=o>-&gt;</span><span class=n>GetId</span><span class=p>(</span><span class=n>i</span><span class=p>)</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; &quot;</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>connectedVertices</span><span class=o>-&gt;</span><span class=n>GetId</span><span class=p>(</span><span class=n>i</span><span class=p>)</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" "</span><span class=p>;</span>
 <span class=w>    </span><span class=n>ids</span><span class=o>-&gt;</span><span class=n>InsertNextValue</span><span class=p>(</span><span class=n>connectedVertices</span><span class=o>-&gt;</span><span class=n>GetId</span><span class=p>(</span><span class=n>i</span><span class=p>));</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
@@ -185,7 +185,7 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>connectedVertexActor</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>connectedVertexActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>connectedVertexMapper</span><span class=p>);</span>
 <span class=w>  </span><span class=n>connectedVertexActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
-<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Red&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Red"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=n>connectedVertexActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetPointSize</span><span class=p>(</span><span class=mi>5</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkDataSetMapper</span><span class=o>&gt;</span><span class=w> </span><span class=n>queryVertexMapper</span><span class=p>;</span>
@@ -219,20 +219,20 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>queryVertexActor</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>queryVertexActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>queryVertexMapper</span><span class=p>);</span>
 <span class=w>  </span><span class=n>queryVertexActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
-<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Lime&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Lime"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=n>queryVertexActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetPointSize</span><span class=p>(</span><span class=mi>5</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkDataSetMapper</span><span class=o>&gt;</span><span class=w> </span><span class=n>sphereMapper</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>sphereMapper</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>extractEdges</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>sphereActor</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>sphereActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>sphereMapper</span><span class=p>);</span>
-<span class=w>  </span><span class=n>sphereActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Snow&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>sphereActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Snow"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=w>  </span><span class=c1>// Create a renderer, render window, and interactor</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderer</span><span class=p>;</span>
 </span><span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderWindow</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;VertexConnectivity&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"VertexConnectivity"</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderWindowInteractor</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>renderWindowInteractor</span><span class=o>-&gt;</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renderWindow</span><span class=p>);</span>
@@ -241,7 +241,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>sphereActor</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>queryVertexActor</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>connectedVertexActor</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;DarkSlateGray&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"DarkSlateGray"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=w>  </span><span class=c1>// Render and interact</span>
 <span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
@@ -256,37 +256,37 @@ function registerListener(event, func) {
 </span><span class=p>{</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkIdList</span><span class=o>&gt;</span><span class=w> </span><span class=n>connectedVertices</span><span class=p>;</span>
 </span>
-<span class=w>  </span><span class=c1>// Get all cells that vertex &#39;id&#39; is a part of.</span>
+<span class=w>  </span><span class=c1>// Get all cells that vertex 'id' is a part of.</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkIdList</span><span class=o>&gt;</span><span class=w> </span><span class=n>cellIdList</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>mesh</span><span class=o>-&gt;</span><span class=n>GetPointCells</span><span class=p>(</span><span class=n>id</span><span class=p>,</span><span class=w> </span><span class=n>cellIdList</span><span class=p>);</span>
 
 <span class=w>  </span><span class=cm>/*</span>
-<span class=cm>  cout &lt;&lt; &quot;Vertex 0 is used in cells &quot;;</span>
+<span class=cm>  cout &lt;&lt; "Vertex 0 is used in cells ";</span>
 <span class=cm>  for(vtkIdType i = 0; i &lt; cellIdList-&gt;GetNumberOfIds(); i++)</span>
 <span class=cm>    {</span>
-<span class=cm>    cout &lt;&lt; cellIdList-&gt;GetId(i) &lt;&lt; &quot;, &quot;;</span>
+<span class=cm>    cout &lt;&lt; cellIdList-&gt;GetId(i) &lt;&lt; ", ";</span>
 <span class=cm>    }</span>
 <span class=cm>  cout &lt;&lt; endl;</span>
 <span class=cm>  */</span>
 
 <span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=n>vtkIdType</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>cellIdList</span><span class=o>-&gt;</span><span class=n>GetNumberOfIds</span><span class=p>();</span><span class=w> </span><span class=n>i</span><span class=o>++</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=c1>// cout &lt;&lt; &quot;id &quot; &lt;&lt; i &lt;&lt; &quot; : &quot; &lt;&lt; cellIdList-&gt;GetId(i) &lt;&lt; endl;</span>
+<span class=w>    </span><span class=c1>// cout &lt;&lt; "id " &lt;&lt; i &lt;&lt; " : " &lt;&lt; cellIdList-&gt;GetId(i) &lt;&lt; endl;</span>
 
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkIdList</span><span class=o>&gt;</span><span class=w> </span><span class=n>pointIdList</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>mesh</span><span class=o>-&gt;</span><span class=n>GetCellPoints</span><span class=p>(</span><span class=n>cellIdList</span><span class=o>-&gt;</span><span class=n>GetId</span><span class=p>(</span><span class=n>i</span><span class=p>),</span><span class=w> </span><span class=n>pointIdList</span><span class=p>);</span>
 
-<span class=w>    </span><span class=c1>// cout &lt;&lt; &quot;End points are &quot; &lt;&lt; pointIdList-&gt;GetId(0) &lt;&lt; &quot; and &quot; &lt;&lt;</span>
+<span class=w>    </span><span class=c1>// cout &lt;&lt; "End points are " &lt;&lt; pointIdList-&gt;GetId(0) &lt;&lt; " and " &lt;&lt;</span>
 <span class=w>    </span><span class=c1>// pointIdList-&gt;GetId(1) &lt;&lt; endl;</span>
 
 <span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>pointIdList</span><span class=o>-&gt;</span><span class=n>GetId</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=n>id</span><span class=p>)</span>
 <span class=w>    </span><span class=p>{</span>
-<span class=w>      </span><span class=c1>// cout &lt;&lt; &quot;Connected to &quot; &lt;&lt; pointIdList-&gt;GetId(0) &lt;&lt; endl;</span>
+<span class=w>      </span><span class=c1>// cout &lt;&lt; "Connected to " &lt;&lt; pointIdList-&gt;GetId(0) &lt;&lt; endl;</span>
 <span class=w>      </span><span class=n>connectedVertices</span><span class=o>-&gt;</span><span class=n>InsertNextId</span><span class=p>(</span><span class=n>pointIdList</span><span class=o>-&gt;</span><span class=n>GetId</span><span class=p>(</span><span class=mi>0</span><span class=p>));</span>
 <span class=w>    </span><span class=p>}</span>
 <span class=w>    </span><span class=k>else</span>
 <span class=w>    </span><span class=p>{</span>
-<span class=w>      </span><span class=c1>// cout &lt;&lt; &quot;Connected to &quot; &lt;&lt; pointIdList-&gt;GetId(1) &lt;&lt; endl;</span>
+<span class=w>      </span><span class=c1>// cout &lt;&lt; "Connected to " &lt;&lt; pointIdList-&gt;GetId(1) &lt;&lt; endl;</span>
 <span class=w>      </span><span class=n>connectedVertices</span><span class=o>-&gt;</span><span class=n>InsertNextId</span><span class=p>(</span><span class=n>pointIdList</span><span class=o>-&gt;</span><span class=n>GetId</span><span class=p>(</span><span class=mi>1</span><span class=p>));</span>
 <span class=w>    </span><span class=p>}</span>
 <span class=w>  </span><span class=p>}</span>
@@ -316,11 +316,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;VertexConnectivity: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"VertexConnectivity: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>VertexConnectivity</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>VertexConnectivity.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>VertexConnectivity</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

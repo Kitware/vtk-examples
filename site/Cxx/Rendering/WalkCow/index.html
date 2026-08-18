@@ -157,18 +157,18 @@ function registerListener(event, func) {
 <span class=hll><span class=kt>void</span><span class=w> </span><span class=nf>Screenshot</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>fileName</span><span class=p>,</span><span class=w> </span><span class=n>vtkRenderWindow</span><span class=o>*</span><span class=w> </span><span class=n>renWin</span><span class=p>);</span>
 </span><span class=p>}</span><span class=w> </span><span class=c1>// namespace</span>
 
-<span class=kt>int</span><span class=w> </span><span class=n>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>argv</span><span class=p>[])</span>
+<span class=kt>int</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>argv</span><span class=p>[])</span>
 <span class=p>{</span>
 <span class=w>  </span><span class=kt>int</span><span class=w> </span><span class=n>figure</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>argc</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=mi>2</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Usage: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; filename [figure]&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;where: filename is the file cow.g&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;       figure is 0, 1, or 2, default 0&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Usage: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" filename [figure]"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"where: filename is the file cow.g"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"       figure is 0, 1, or 2, default 0"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span>
-<span class=w>        </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Options 0, 1 and 2 are provided to let you generate&quot;</span>
-<span class=w>           </span><span class=s>&quot; approximations to the following figures:</span><span class=se>\n</span><span class=s> Figure 3-32,&quot;</span>
-<span class=w>           </span><span class=s>&quot; Figure 3-33a and Figure 3-33b in Chapter 3 of the VTK Textbook.&quot;</span>
+<span class=w>        </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Options 0, 1 and 2 are provided to let you generate"</span>
+<span class=w>           </span><span class=s>" approximations to the following figures:</span><span class=se>\n</span><span class=s> Figure 3-32,"</span>
+<span class=w>           </span><span class=s>" Figure 3-33a and Figure 3-33b in Chapter 3 of the VTK Textbook."</span>
 <span class=w>        </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>EXIT_FAILURE</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
@@ -184,9 +184,9 @@ function registerListener(event, func) {
 </span>
 <span class=w>  </span><span class=c1>// Set the background color.</span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>unsigned</span><span class=w> </span><span class=kt>char</span><span class=p>,</span><span class=w> </span><span class=mi>4</span><span class=o>&gt;</span><span class=w> </span><span class=n>bkg1</span><span class=p>{{</span><span class=mi>60</span><span class=p>,</span><span class=w> </span><span class=mi>93</span><span class=p>,</span><span class=w> </span><span class=mi>144</span><span class=p>,</span><span class=w> </span><span class=mi>255</span><span class=p>}};</span>
-<span class=w>  </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=s>&quot;BkgColor1&quot;</span><span class=p>,</span><span class=w> </span><span class=n>bkg1</span><span class=p>.</span><span class=n>data</span><span class=p>());</span>
+<span class=w>  </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=s>"BkgColor1"</span><span class=p>,</span><span class=w> </span><span class=n>bkg1</span><span class=p>.</span><span class=n>data</span><span class=p>());</span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>unsigned</span><span class=w> </span><span class=kt>char</span><span class=p>,</span><span class=w> </span><span class=mi>4</span><span class=o>&gt;</span><span class=w> </span><span class=n>bkg2</span><span class=p>{{</span><span class=mi>26</span><span class=p>,</span><span class=w> </span><span class=mi>51</span><span class=p>,</span><span class=w> </span><span class=mi>102</span><span class=p>,</span><span class=w> </span><span class=mi>255</span><span class=p>}};</span>
-<span class=w>  </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=s>&quot;BkgColor2&quot;</span><span class=p>,</span><span class=w> </span><span class=n>bkg2</span><span class=p>.</span><span class=n>data</span><span class=p>());</span>
+<span class=w>  </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=s>"BkgColor2"</span><span class=p>,</span><span class=w> </span><span class=n>bkg2</span><span class=p>.</span><span class=n>data</span><span class=p>());</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span><span class=w> </span><span class=n>ren</span><span class=p>;</span>
 </span><span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span><span class=w> </span><span class=n>renWin</span><span class=p>;</span>
@@ -206,7 +206,7 @@ function registerListener(event, func) {
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>cowActor</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>cowActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>cowMapper</span><span class=p>);</span>
-<span class=w>  </span><span class=n>cowActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Wheat&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>cowActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Wheat"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=w>  </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>cowActor</span><span class=p>);</span>
 
@@ -224,9 +224,9 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>cowAxes</span><span class=p>);</span>
 
-<span class=w>  </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;BkgColor1&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"BkgColor1"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>600</span><span class=p>,</span><span class=w> </span><span class=mi>480</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;WalkCow&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"WalkCow"</span><span class=p>);</span>
 
 <span class=w>  </span><span class=n>iren</span><span class=o>-&gt;</span><span class=n>Initialize</span><span class=p>();</span>
 <span class=w>  </span><span class=n>cowAxes</span><span class=o>-&gt;</span><span class=n>VisibilityOn</span><span class=p>();</span>
@@ -244,7 +244,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>Rotate_Z</span><span class=p>(</span><span class=n>cowActor</span><span class=p>,</span><span class=w> </span><span class=n>ren</span><span class=p>,</span><span class=w> </span><span class=n>renWin</span><span class=p>);</span>
 <span class=w>  </span><span class=n>Rotate_XY</span><span class=p>(</span><span class=n>cowActor</span><span class=p>,</span><span class=w> </span><span class=n>ren</span><span class=p>,</span><span class=w> </span><span class=n>renWin</span><span class=p>);</span>
 
-<span class=w>  </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;BkgColor2&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"BkgColor2"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=k>switch</span><span class=w> </span><span class=p>(</span><span class=n>figure</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=w>  </span><span class=k>default</span><span class=o>:</span>
@@ -300,7 +300,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
 <span class=w>    </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=n>Screenshot</span><span class=p>(</span><span class=s>&quot;Fig3-31a.png&quot;</span><span class=p>,</span><span class=w> </span><span class=n>renWin</span><span class=p>);</span>
+<span class=w>  </span><span class=n>Screenshot</span><span class=p>(</span><span class=s>"Fig3-31a.png"</span><span class=p>,</span><span class=w> </span><span class=n>renWin</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>EraseOn</span><span class=p>();</span>
 <span class=p>}</span>
 
@@ -333,7 +333,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
 <span class=w>    </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=n>Screenshot</span><span class=p>(</span><span class=s>&quot;Fig3-31b.png&quot;</span><span class=p>,</span><span class=w> </span><span class=n>renWin</span><span class=p>);</span>
+<span class=w>  </span><span class=n>Screenshot</span><span class=p>(</span><span class=s>"Fig3-31b.png"</span><span class=p>,</span><span class=w> </span><span class=n>renWin</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>EraseOn</span><span class=p>();</span>
 <span class=p>}</span>
 
@@ -366,7 +366,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
 <span class=w>    </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=n>Screenshot</span><span class=p>(</span><span class=s>&quot;Fig3-31c.png&quot;</span><span class=p>,</span><span class=w> </span><span class=n>renWin</span><span class=p>);</span>
+<span class=w>  </span><span class=n>Screenshot</span><span class=p>(</span><span class=s>"Fig3-31c.png"</span><span class=p>,</span><span class=w> </span><span class=n>renWin</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>EraseOn</span><span class=p>();</span>
 <span class=p>}</span>
 
@@ -401,7 +401,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=w>  </span><span class=n>cowActor</span><span class=o>-&gt;</span><span class=n>RotateX</span><span class=p>(</span><span class=mi>-60</span><span class=p>);</span>
-<span class=w>  </span><span class=n>Screenshot</span><span class=p>(</span><span class=s>&quot;Fig3-31d.png&quot;</span><span class=p>,</span><span class=w> </span><span class=n>renWin</span><span class=p>);</span>
+<span class=w>  </span><span class=n>Screenshot</span><span class=p>(</span><span class=s>"Fig3-31d.png"</span><span class=p>,</span><span class=w> </span><span class=n>renWin</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>EraseOn</span><span class=p>();</span>
 <span class=p>}</span>
 
@@ -440,7 +440,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
 <span class=w>    </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=n>Screenshot</span><span class=p>(</span><span class=s>&quot;Fig3-33a.png&quot;</span><span class=p>,</span><span class=w> </span><span class=n>renWin</span><span class=p>);</span>
+<span class=w>  </span><span class=n>Screenshot</span><span class=p>(</span><span class=s>"Fig3-33a.png"</span><span class=p>,</span><span class=w> </span><span class=n>renWin</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>EraseOn</span><span class=p>();</span>
 <span class=w>  </span><span class=c1>// Put the cow back on the origin.</span>
 <span class=w>  </span><span class=c1>// for (int idx = 0; idx &lt; 6; idx++)</span>
@@ -472,7 +472,7 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransform</span><span class=o>&gt;</span><span class=w> </span><span class=n>cowPos</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>cowPos</span><span class=o>-&gt;</span><span class=n>Identity</span><span class=p>();</span>
 <span class=w>  </span><span class=n>cowPos</span><span class=o>-&gt;</span><span class=n>SetMatrix</span><span class=p>(</span><span class=n>cowActor</span><span class=o>-&gt;</span><span class=n>GetMatrix</span><span class=p>());</span>
-<span class=w>  </span><span class=n>cowActor</span><span class=o>-&gt;</span><span class=n>SetOrigin</span><span class=p>(</span><span class=mf>6.11414</span><span class=p>,</span><span class=w> </span><span class=mf>1.27386</span><span class=p>,</span><span class=w> </span><span class=mf>0.015175</span><span class=p>);</span><span class=w> </span><span class=c1>// The cow&#39;s nose</span>
+<span class=w>  </span><span class=n>cowActor</span><span class=o>-&gt;</span><span class=n>SetOrigin</span><span class=p>(</span><span class=mf>6.11414</span><span class=p>,</span><span class=w> </span><span class=mf>1.27386</span><span class=p>,</span><span class=w> </span><span class=mf>0.015175</span><span class=p>);</span><span class=w> </span><span class=c1>// The cow's nose</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransform</span><span class=o>&gt;</span><span class=w> </span><span class=n>cowTransform</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>cowTransform</span><span class=o>-&gt;</span><span class=n>Identity</span><span class=p>();</span>
 <span class=w>  </span><span class=n>cowActor</span><span class=o>-&gt;</span><span class=n>SetUserMatrix</span><span class=p>(</span><span class=n>cowTransform</span><span class=o>-&gt;</span><span class=n>GetMatrix</span><span class=p>());</span>
@@ -489,7 +489,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
 <span class=w>    </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=n>Screenshot</span><span class=p>(</span><span class=s>&quot;Fig3-33b.png&quot;</span><span class=p>,</span><span class=w> </span><span class=n>renWin</span><span class=p>);</span>
+<span class=w>  </span><span class=n>Screenshot</span><span class=p>(</span><span class=s>"Fig3-33b.png"</span><span class=p>,</span><span class=w> </span><span class=n>renWin</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>EraseOn</span><span class=p>();</span>
 <span class=w>  </span><span class=c1>// Put the cow back on the origin.</span>
 <span class=w>  </span><span class=c1>// for (int idx = 0; idx &lt; 6; idx++)</span>
@@ -501,7 +501,7 @@ function registerListener(event, func) {
 
 <span class=hll><span class=kt>void</span><span class=w> </span><span class=nf>Walk</span><span class=p>(</span><span class=n>vtkActor</span><span class=o>*</span><span class=w> </span><span class=n>cowActor</span><span class=p>,</span><span class=w> </span><span class=n>vtkRenderer</span><span class=o>*</span><span class=w> </span><span class=n>ren</span><span class=p>,</span><span class=w> </span><span class=n>vtkRenderWindow</span><span class=o>*</span><span class=w> </span><span class=n>renWin</span><span class=p>)</span>
 </span><span class=p>{</span>
-<span class=w>  </span><span class=c1>// The cow &quot;walking&quot; around the global origin</span>
+<span class=w>  </span><span class=c1>// The cow "walking" around the global origin</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransform</span><span class=o>&gt;</span><span class=w> </span><span class=n>cowPos</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>cowPos</span><span class=o>-&gt;</span><span class=n>Identity</span><span class=p>();</span>
 <span class=w>  </span><span class=n>cowPos</span><span class=o>-&gt;</span><span class=n>SetMatrix</span><span class=p>(</span><span class=n>cowActor</span><span class=o>-&gt;</span><span class=n>GetMatrix</span><span class=p>());</span>
@@ -535,7 +535,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
 <span class=w>    </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=n>Screenshot</span><span class=p>(</span><span class=s>&quot;Fig3-32.png&quot;</span><span class=p>,</span><span class=w> </span><span class=n>renWin</span><span class=p>);</span>
+<span class=w>  </span><span class=n>Screenshot</span><span class=p>(</span><span class=s>"Fig3-32.png"</span><span class=p>,</span><span class=w> </span><span class=n>renWin</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>EraseOn</span><span class=p>();</span>
 <span class=w>  </span><span class=c1>// Walkies are over, put the cow back on the origin.</span>
 <span class=w>  </span><span class=c1>// cowActor-&gt;SetUserMatrix(cowPos-&gt;GetMatrix());</span>
@@ -547,14 +547,14 @@ function registerListener(event, func) {
 <span class=cm>                                   void* vtkNotUsed(clientData),</span>
 <span class=cm>                                   void* vtkNotUsed(callData))</span>
 <span class=cm>{</span>
-<span class=cm>  std::cout &lt;&lt; caller-&gt;GetClassName() &lt;&lt; &quot; modified&quot; &lt;&lt; std::endl;</span>
+<span class=cm>  std::cout &lt;&lt; caller-&gt;GetClassName() &lt;&lt; " modified" &lt;&lt; std::endl;</span>
 <span class=hll><span class=cm>  vtkCamera* camera = static_cast&lt;vtkCamera*&gt;(caller);</span>
 </span><span class=cm>  // Print the interesting stuff.</span>
-<span class=cm>  std::cout &lt;&lt; &quot;\tPosition: &quot; &lt;&lt; camera-&gt;GetPosition()[0] &lt;&lt; &quot;, &quot;</span>
-<span class=cm>            &lt;&lt; camera-&gt;GetPosition()[1] &lt;&lt; &quot;, &quot; &lt;&lt; camera-&gt;GetPosition()[2]</span>
+<span class=cm>  std::cout &lt;&lt; "\tPosition: " &lt;&lt; camera-&gt;GetPosition()[0] &lt;&lt; ", "</span>
+<span class=cm>            &lt;&lt; camera-&gt;GetPosition()[1] &lt;&lt; ", " &lt;&lt; camera-&gt;GetPosition()[2]</span>
 <span class=cm>            &lt;&lt; std::endl;</span>
-<span class=cm>  std::cout &lt;&lt; &quot;\tFocal point: &quot; &lt;&lt; camera-&gt;GetFocalPoint()[0] &lt;&lt; &quot;, &quot;</span>
-<span class=cm>            &lt;&lt; camera-&gt;GetFocalPoint()[1] &lt;&lt; &quot;, &quot; &lt;&lt; camera-&gt;GetFocalPoint()[2]</span>
+<span class=cm>  std::cout &lt;&lt; "\tFocal point: " &lt;&lt; camera-&gt;GetFocalPoint()[0] &lt;&lt; ", "</span>
+<span class=cm>            &lt;&lt; camera-&gt;GetFocalPoint()[1] &lt;&lt; ", " &lt;&lt; camera-&gt;GetFocalPoint()[2]</span>
 <span class=cm>            &lt;&lt; std::endl;</span>
 <span class=cm>}</span>
 <span class=cm>*/</span>
@@ -601,11 +601,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;WalkCow: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"WalkCow: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>WalkCow</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>WalkCow.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>WalkCow</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

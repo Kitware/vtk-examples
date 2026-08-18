@@ -136,7 +136,7 @@ function registerListener(event, func) {
 <span class=p>{</span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>argc</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=mi>3</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Usage: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; combxyz.bin combq.bin&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Usage: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" combxyz.bin combq.bin"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>EXIT_FAILURE</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 
@@ -226,12 +226,12 @@ function registerListener(event, func) {
 <span class=w>                                             </span><span class=mi>0</span><span class=p>);</span><span class=w> </span><span class=c1>// relative to Position;</span>
 <span class=w>  </span><span class=n>xyplot</span><span class=o>-&gt;</span><span class=n>SetXValuesToArcLength</span><span class=p>();</span>
 <span class=w>  </span><span class=n>xyplot</span><span class=o>-&gt;</span><span class=n>SetNumberOfXLabels</span><span class=p>(</span><span class=mi>6</span><span class=p>);</span>
-<span class=w>  </span><span class=n>xyplot</span><span class=o>-&gt;</span><span class=n>SetTitle</span><span class=p>(</span><span class=s>&quot;Pressure vs. Arc Length (Zoomed View)&quot;</span><span class=p>);</span>
-<span class=w>  </span><span class=n>xyplot</span><span class=o>-&gt;</span><span class=n>SetXTitle</span><span class=p>(</span><span class=s>&quot;&quot;</span><span class=p>);</span>
-<span class=w>  </span><span class=n>xyplot</span><span class=o>-&gt;</span><span class=n>SetYTitle</span><span class=p>(</span><span class=s>&quot;P&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>xyplot</span><span class=o>-&gt;</span><span class=n>SetTitle</span><span class=p>(</span><span class=s>"Pressure vs. Arc Length (Zoomed View)"</span><span class=p>);</span>
+<span class=w>  </span><span class=n>xyplot</span><span class=o>-&gt;</span><span class=n>SetXTitle</span><span class=p>(</span><span class=s>""</span><span class=p>);</span>
+<span class=w>  </span><span class=n>xyplot</span><span class=o>-&gt;</span><span class=n>SetYTitle</span><span class=p>(</span><span class=s>"P"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>xyplot</span><span class=o>-&gt;</span><span class=n>SetXRange</span><span class=p>(</span><span class=mf>.1</span><span class=p>,</span><span class=w> </span><span class=mf>.35</span><span class=p>);</span>
 <span class=w>  </span><span class=n>xyplot</span><span class=o>-&gt;</span><span class=n>SetYRange</span><span class=p>(</span><span class=mf>.2</span><span class=p>,</span><span class=w> </span><span class=mf>.4</span><span class=p>);</span>
-<span class=w>  </span><span class=n>xyplot</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Black&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>xyplot</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Black"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=n>xyplot</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetLineWidth</span><span class=p>(</span><span class=mi>2</span><span class=p>);</span>
 <span class=w>  </span><span class=c1>// Set text prop color</span>
 <span class=w>  </span><span class=c1>// Assign same object to all text props</span>
@@ -251,12 +251,12 @@ function registerListener(event, func) {
 <span class=w>                                              </span><span class=mi>0</span><span class=p>);</span><span class=w> </span><span class=c1>// relative to Position;</span>
 <span class=w>  </span><span class=n>xyplot2</span><span class=o>-&gt;</span><span class=n>SetXValuesToNormalizedArcLength</span><span class=p>();</span>
 <span class=w>  </span><span class=n>xyplot2</span><span class=o>-&gt;</span><span class=n>SetNumberOfXLabels</span><span class=p>(</span><span class=mi>6</span><span class=p>);</span>
-<span class=w>  </span><span class=n>xyplot2</span><span class=o>-&gt;</span><span class=n>SetTitle</span><span class=p>(</span><span class=s>&quot;Pressure vs. Normalized Arc Length&quot;</span><span class=p>);</span>
-<span class=w>  </span><span class=n>xyplot2</span><span class=o>-&gt;</span><span class=n>SetXTitle</span><span class=p>(</span><span class=s>&quot;&quot;</span><span class=p>);</span>
-<span class=w>  </span><span class=n>xyplot2</span><span class=o>-&gt;</span><span class=n>SetYTitle</span><span class=p>(</span><span class=s>&quot;P&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>xyplot2</span><span class=o>-&gt;</span><span class=n>SetTitle</span><span class=p>(</span><span class=s>"Pressure vs. Normalized Arc Length"</span><span class=p>);</span>
+<span class=w>  </span><span class=n>xyplot2</span><span class=o>-&gt;</span><span class=n>SetXTitle</span><span class=p>(</span><span class=s>""</span><span class=p>);</span>
+<span class=w>  </span><span class=n>xyplot2</span><span class=o>-&gt;</span><span class=n>SetYTitle</span><span class=p>(</span><span class=s>"P"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>xyplot2</span><span class=o>-&gt;</span><span class=n>PlotPointsOn</span><span class=p>();</span>
 <span class=w>  </span><span class=n>xyplot2</span><span class=o>-&gt;</span><span class=n>PlotLinesOff</span><span class=p>();</span>
-<span class=w>  </span><span class=n>xyplot2</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Tomato&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>xyplot2</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Tomato"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=n>xyplot2</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetPointSize</span><span class=p>(</span><span class=mi>5</span><span class=p>);</span>
 <span class=w>  </span><span class=c1>// Set text prop color</span>
 <span class=w>  </span><span class=c1>// Assign same object to all text props</span>
@@ -276,11 +276,11 @@ function registerListener(event, func) {
 <span class=w>                                              </span><span class=mi>0</span><span class=p>);</span><span class=w> </span><span class=c1>// relative to Position;</span>
 <span class=w>  </span><span class=n>xyplot3</span><span class=o>-&gt;</span><span class=n>SetXValuesToIndex</span><span class=p>();</span>
 <span class=w>  </span><span class=n>xyplot3</span><span class=o>-&gt;</span><span class=n>SetNumberOfXLabels</span><span class=p>(</span><span class=mi>6</span><span class=p>);</span>
-<span class=w>  </span><span class=n>xyplot3</span><span class=o>-&gt;</span><span class=n>SetTitle</span><span class=p>(</span><span class=s>&quot;Pressure vs. Point Id&quot;</span><span class=p>);</span>
-<span class=w>  </span><span class=n>xyplot3</span><span class=o>-&gt;</span><span class=n>SetXTitle</span><span class=p>(</span><span class=s>&quot;Probe Length&quot;</span><span class=p>);</span>
-<span class=w>  </span><span class=n>xyplot3</span><span class=o>-&gt;</span><span class=n>SetYTitle</span><span class=p>(</span><span class=s>&quot;P&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>xyplot3</span><span class=o>-&gt;</span><span class=n>SetTitle</span><span class=p>(</span><span class=s>"Pressure vs. Point Id"</span><span class=p>);</span>
+<span class=w>  </span><span class=n>xyplot3</span><span class=o>-&gt;</span><span class=n>SetXTitle</span><span class=p>(</span><span class=s>"Probe Length"</span><span class=p>);</span>
+<span class=w>  </span><span class=n>xyplot3</span><span class=o>-&gt;</span><span class=n>SetYTitle</span><span class=p>(</span><span class=s>"P"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>xyplot3</span><span class=o>-&gt;</span><span class=n>PlotPointsOn</span><span class=p>();</span>
-<span class=w>  </span><span class=n>xyplot3</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Peacock&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>xyplot3</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Peacock"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=n>xyplot3</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetPointSize</span><span class=p>(</span><span class=mi>3</span><span class=p>);</span>
 <span class=w>  </span><span class=c1>// Set text prop color</span>
 <span class=w>  </span><span class=c1>// Assign same object to all text props</span>
@@ -296,7 +296,7 @@ function registerListener(event, func) {
 </span><span class=w>  </span><span class=n>outlineMapper</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>outline</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>outlineActor</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>outlineActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>outlineMapper</span><span class=p>);</span>
-<span class=w>  </span><span class=n>outlineActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Black&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>outlineActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Black"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=w>  </span><span class=c1>// Create the Renderers, RenderWindow, and RenderWindowInteractor.</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderer</span><span class=p>;</span>
@@ -310,14 +310,14 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=c1>// Set the background, viewport (necessary because we want to have the</span>
 <span class=w>  </span><span class=c1>// renderers draw to different parts of the render window) of the first</span>
 <span class=w>  </span><span class=c1>// renderer. Add the outline and line actors to the renderer.</span>
-<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;blue_light&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"blue_light"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetViewport</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mf>.5</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>outlineActor</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>lineActor</span><span class=p>);</span>
 
 <span class=w>  </span><span class=c1>// Set the background and viewport of the second renderer.  Add the</span>
 <span class=w>  </span><span class=c1>// xy-plot actors to the renderer.  Set the size of the render window.</span>
-<span class=w>  </span><span class=n>renderer2</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;silver&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>renderer2</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"silver"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=n>renderer2</span><span class=o>-&gt;</span><span class=n>SetViewport</span><span class=p>(</span><span class=mf>0.5</span><span class=p>,</span><span class=w> </span><span class=mf>0.0</span><span class=p>,</span><span class=w> </span><span class=mf>1.0</span><span class=p>,</span><span class=w> </span><span class=mf>1.0</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renderer2</span><span class=o>-&gt;</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>xyplot</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renderer2</span><span class=o>-&gt;</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>xyplot2</span><span class=p>);</span>
@@ -332,10 +332,10 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>cam1</span><span class=o>-&gt;</span><span class=n>SetViewUp</span><span class=p>(</span><span class=mf>0.060772</span><span class=p>,</span><span class=w> </span><span class=mf>-0.319905</span><span class=p>,</span><span class=w> </span><span class=mf>0.945498</span><span class=p>);</span>
 
 <span class=w>  </span><span class=n>interactor</span><span class=o>-&gt;</span><span class=n>Initialize</span><span class=p>();</span>
-<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;XYPlot&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"XYPlot"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
 
-<span class=w>  </span><span class=c1>// Position the renderer&#39;s camera.</span>
+<span class=w>  </span><span class=c1>// Position the renderer's camera.</span>
 <span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>camera</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>GetActiveCamera</span><span class=p>();</span>
 <span class=w>  </span><span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetPosition</span><span class=p>(</span><span class=mf>-23.3284</span><span class=p>,</span><span class=w> </span><span class=mf>47.8882</span><span class=p>,</span><span class=w> </span><span class=mf>47.4064</span><span class=p>);</span>
 <span class=w>  </span><span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetFocalPoint</span><span class=p>(</span><span class=mf>8.88908</span><span class=p>,</span><span class=w> </span><span class=mf>0.595038</span><span class=p>,</span><span class=w> </span><span class=mf>29.3342</span><span class=p>);</span>
@@ -370,11 +370,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;XYPlot: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"XYPlot: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>XYPlot</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>XYPlot.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>XYPlot</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

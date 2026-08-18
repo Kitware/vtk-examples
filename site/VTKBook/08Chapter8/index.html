@@ -360,7 +360,7 @@ k = \text{int}\left( \frac{z-z_0}{z_1 - z_0} \right)
           A convenience method to return the (minimum, maximum) range of the scalar attribute data associated with the dataset.
 
      dataSet = NewInstance()
-          Make a copy of the current dataset. A &quot;virtual&quot; constructor. (Typically, reference counting methods are used to copy data.)
+          Make a copy of the current dataset. A "virtual" constructor. (Typically, reference counting methods are used to copy data.)
 
      CopyStructure(dataSet)
           Update the current structure definition (i.e., geometry and topology) with the supplied dataset.
@@ -414,14 +414,14 @@ k = \text{int}\left( \frac{z-z_0}{z_1 - z_0} \right)
      Contour(value, cellScalars, locator, verts, lines, polys, inputPointData, outputPointData)
           Given a contour value and scalar values at the cell points, generate contour primitives
           (vertices, lines, or polygons with associated points and attribute data values). The
-          points are placed in a locator object (see [&quot;Searching&quot;](/VTKBook/08Chapter8/#searching_1) in this Chapter) which merges
+          points are placed in a locator object (see ["Searching"](/VTKBook/08Chapter8/#searching_1) in this Chapter) which merges
           coincident points, and the attribute data values are interpolated (along the cell edge) from
           the inputPointData to the outputPointData.
 
      Clip(value, cellScalars, locator, cells, inputPointData, outputPointData, insideOut)
           Given a contour value and scalar values at the cell points, clip the cell to generate new
           cells of the same topological dimension as the original cell. The points are placed in a
-          locator object (see [&quot;Searching&quot;](/VTKBook/08Chapter8/#87-searching) in [Chapter 8](/VTKBook/08Chapter8)) which merges coincident points, and the
+          locator object (see ["Searching"](/VTKBook/08Chapter8/#87-searching) in [Chapter 8](/VTKBook/08Chapter8)) which merges coincident points, and the
           attribute data values are interpolated (or copied) from the inputPointData to the
           outputPointData. The clipped cells are placed in the cells list.
 

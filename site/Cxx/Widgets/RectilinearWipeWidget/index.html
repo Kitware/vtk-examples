@@ -130,25 +130,25 @@ function registerListener(event, func) {
 <span class=hll><span class=w>      </span><span class=n>vtkRenderWindowInteractor</span><span class=o>*</span><span class=w> </span><span class=n>rwi</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Interactor</span><span class=p>;</span>
 </span><span class=w>      </span><span class=k>switch</span><span class=w> </span><span class=p>(</span><span class=n>rwi</span><span class=o>-&gt;</span><span class=n>GetKeyCode</span><span class=p>())</span>
 <span class=w>      </span><span class=p>{</span>
-<span class=w>      </span><span class=k>case</span><span class=w> </span><span class=sc>&#39;0&#39;</span><span class=p>:</span>
+<span class=w>      </span><span class=k>case</span><span class=w> </span><span class=sc>'0'</span><span class=p>:</span>
 <span class=w>        </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Wipe</span><span class=o>-&gt;</span><span class=n>SetWipe</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span>
 <span class=w>        </span><span class=k>break</span><span class=p>;</span>
-<span class=w>      </span><span class=k>case</span><span class=w> </span><span class=sc>&#39;1&#39;</span><span class=p>:</span>
+<span class=w>      </span><span class=k>case</span><span class=w> </span><span class=sc>'1'</span><span class=p>:</span>
 <span class=w>        </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Wipe</span><span class=o>-&gt;</span><span class=n>SetWipe</span><span class=p>(</span><span class=mi>1</span><span class=p>);</span>
 <span class=w>        </span><span class=k>break</span><span class=p>;</span>
-<span class=w>      </span><span class=k>case</span><span class=w> </span><span class=sc>&#39;2&#39;</span><span class=p>:</span>
+<span class=w>      </span><span class=k>case</span><span class=w> </span><span class=sc>'2'</span><span class=p>:</span>
 <span class=w>        </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Wipe</span><span class=o>-&gt;</span><span class=n>SetWipe</span><span class=p>(</span><span class=mi>2</span><span class=p>);</span>
 <span class=w>        </span><span class=k>break</span><span class=p>;</span>
-<span class=w>      </span><span class=k>case</span><span class=w> </span><span class=sc>&#39;3&#39;</span><span class=p>:</span>
+<span class=w>      </span><span class=k>case</span><span class=w> </span><span class=sc>'3'</span><span class=p>:</span>
 <span class=w>        </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Wipe</span><span class=o>-&gt;</span><span class=n>SetWipe</span><span class=p>(</span><span class=mi>3</span><span class=p>);</span>
 <span class=w>        </span><span class=k>break</span><span class=p>;</span>
-<span class=w>      </span><span class=k>case</span><span class=w> </span><span class=sc>&#39;4&#39;</span><span class=p>:</span>
+<span class=w>      </span><span class=k>case</span><span class=w> </span><span class=sc>'4'</span><span class=p>:</span>
 <span class=w>        </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Wipe</span><span class=o>-&gt;</span><span class=n>SetWipe</span><span class=p>(</span><span class=mi>4</span><span class=p>);</span>
 <span class=w>        </span><span class=k>break</span><span class=p>;</span>
-<span class=w>      </span><span class=k>case</span><span class=w> </span><span class=sc>&#39;5&#39;</span><span class=p>:</span>
+<span class=w>      </span><span class=k>case</span><span class=w> </span><span class=sc>'5'</span><span class=p>:</span>
 <span class=w>        </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Wipe</span><span class=o>-&gt;</span><span class=n>SetWipe</span><span class=p>(</span><span class=mi>5</span><span class=p>);</span>
 <span class=w>        </span><span class=k>break</span><span class=p>;</span>
-<span class=w>      </span><span class=k>case</span><span class=w> </span><span class=sc>&#39;6&#39;</span><span class=p>:</span>
+<span class=w>      </span><span class=k>case</span><span class=w> </span><span class=sc>'6'</span><span class=p>:</span>
 <span class=w>        </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Wipe</span><span class=o>-&gt;</span><span class=n>SetWipe</span><span class=p>(</span><span class=mi>6</span><span class=p>);</span>
 <span class=w>        </span><span class=k>break</span><span class=p>;</span>
 <span class=w>      </span><span class=k>default</span><span class=o>:</span>
@@ -178,8 +178,8 @@ function registerListener(event, func) {
 <span class=p>{</span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>argc</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=mi>3</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cerr</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Usage: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span>
-<span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; Input1Filename Input2Filename e.g. Gourds2.jpg Ox.jpg&quot;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cerr</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Usage: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span>
+<span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" Input1Filename Input2Filename e.g. Gourds2.jpg Ox.jpg"</span>
 <span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>EXIT_FAILURE</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
@@ -211,11 +211,11 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=c1>// Create the RenderWindow, Renderer and both Actors.</span>
 <span class=w>  </span><span class=c1>//</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span><span class=w> </span><span class=n>ren1</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>ren1</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Wheat&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+</span><span class=w>  </span><span class=n>ren1</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Wheat"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span><span class=w> </span><span class=n>renWin</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>ren1</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;RectilinearWipeWidget&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"RectilinearWipeWidget"</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span><span class=w> </span><span class=n>iren</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>iren</span><span class=o>-&gt;</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renWin</span><span class=p>);</span>
@@ -275,11 +275,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;RectilinearWipeWidget: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"RectilinearWipeWidget: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>RectilinearWipeWidget</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>RectilinearWipeWidget.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>RectilinearWipeWidget</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

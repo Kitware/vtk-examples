@@ -88,19 +88,19 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>low_res_mapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span><span class=hll>    <span class=n>vtkSphereSource</span><span class=p>()</span> <span class=o>&gt;&gt;</span> <span class=n>low_res_mapper</span>
 </span>
-<span class=hll>    <span class=n>property_low_res</span> <span class=o>=</span> <span class=n>vtkProperty</span><span class=p>(</span><span class=n>diffuse_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;BlanchedAlmond&#39;</span><span class=p>),</span>
+<span class=hll>    <span class=n>property_low_res</span> <span class=o>=</span> <span class=n>vtkProperty</span><span class=p>(</span><span class=n>diffuse_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'BlanchedAlmond'</span><span class=p>),</span>
 </span>                                 <span class=n>interpolation</span><span class=o>=</span><span class=n>Property</span><span class=o>.</span><span class=n>Interpolation</span><span class=o>.</span><span class=n>VTK_FLAT</span><span class=p>)</span>
-<span class=hll>    <span class=n>property_high_res</span> <span class=o>=</span> <span class=n>vtkProperty</span><span class=p>(</span><span class=n>diffuse_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;MistyRose&#39;</span><span class=p>),</span>
+<span class=hll>    <span class=n>property_high_res</span> <span class=o>=</span> <span class=n>vtkProperty</span><span class=p>(</span><span class=n>diffuse_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'MistyRose'</span><span class=p>),</span>
 </span>                                  <span class=n>interpolation</span><span class=o>=</span><span class=n>Property</span><span class=o>.</span><span class=n>Interpolation</span><span class=o>.</span><span class=n>VTK_FLAT</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>prop</span> <span class=o>=</span> <span class=n>vtkLODProp3D</span><span class=p>(</span><span class=n>automatic_lod_selection</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
 </span>    <span class=n>prop</span><span class=o>.</span><span class=n>AddLOD</span><span class=p>(</span><span class=n>low_res_mapper</span><span class=p>,</span> <span class=n>property_low_res</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>)</span>
     <span class=n>prop</span><span class=o>.</span><span class=n>AddLOD</span><span class=p>(</span><span class=n>high_res_mapper</span><span class=p>,</span> <span class=n>property_high_res</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>)</span>
-    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;There are </span><span class=si>{</span><span class=n>prop</span><span class=o>.</span><span class=n>GetNumberOfLODs</span><span class=p>()</span><span class=si>}</span><span class=s1> LODs&#39;</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'There are </span><span class=si>{</span><span class=n>prop</span><span class=o>.</span><span class=n>GetNumberOfLODs</span><span class=p>()</span><span class=si>}</span><span class=s1> LODs'</span><span class=p>)</span>
 
     <span class=c1># A renderer and render window.</span>
-<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;SlateGray&#39;</span><span class=p>))</span>
-</span><span class=hll>    <span class=n>render_window</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>window_name</span><span class=o>=</span><span class=s1>&#39;LODProp3D&#39;</span><span class=p>)</span>
+<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'SlateGray'</span><span class=p>))</span>
+</span><span class=hll>    <span class=n>render_window</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>window_name</span><span class=o>=</span><span class=s1>'LODProp3D'</span><span class=p>)</span>
 </span>    <span class=n>render_window</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>)</span>
     <span class=c1># prop.SetAllocatedRenderTime(1.0e-6,renderer)</span>
     <span class=n>prop</span><span class=o>.</span><span class=n>SetAllocatedRenderTime</span><span class=p>(</span><span class=mf>1.0e-12</span><span class=p>,</span> <span class=n>renderer</span><span class=p>)</span>
@@ -119,39 +119,39 @@ function registerListener(event, func) {
     <span class=k>if</span> <span class=n>use_function_callback</span><span class=p>:</span>
         <span class=n>refresh_callback</span><span class=o>.</span><span class=n>prop</span> <span class=o>=</span> <span class=n>prop</span>
         <span class=c1># Register the callback with the object that it is observing.</span>
-        <span class=n>render_window</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=s1>&#39;ModifiedEvent&#39;</span><span class=p>,</span> <span class=n>refresh_callback</span><span class=p>)</span>
+        <span class=n>render_window</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=s1>'ModifiedEvent'</span><span class=p>,</span> <span class=n>refresh_callback</span><span class=p>)</span>
     <span class=k>else</span><span class=p>:</span>
-        <span class=n>render_window</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=s1>&#39;ModifiedEvent&#39;</span><span class=p>,</span> <span class=n>RefreshObserver</span><span class=p>(</span><span class=n>prop</span><span class=p>))</span>
+        <span class=n>render_window</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=s1>'ModifiedEvent'</span><span class=p>,</span> <span class=n>RefreshObserver</span><span class=p>(</span><span class=n>prop</span><span class=p>))</span>
         <span class=c1># Or:</span>
         <span class=c1># observer = RefreshObserver(prop)</span>
-        <span class=c1># render_window.AddObserver(&#39;ModifiedEvent&#39;,observer)</span>
+        <span class=c1># render_window.AddObserver('ModifiedEvent',observer)</span>
 
     <span class=c1># Begin mouse interaction.</span>
     <span class=n>render_window_interactor</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>refresh_callback</span><span class=p>(</span><span class=n>caller</span><span class=p>,</span> <span class=n>event</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    We must do this before we register the callback in the calling function:</span>
 <span class=sd>       refresh_callback.prop = prop</span>
 
 <span class=sd>    :param caller:</span>
 <span class=sd>    :param event:</span>
 <span class=sd>    :return:</span>
-<span class=sd>    &quot;&quot;&quot;</span>
-    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;Last rendered LOD ID: </span><span class=si>{</span><span class=n>refresh_callback</span><span class=o>.</span><span class=n>prop</span><span class=o>.</span><span class=n>last_rendered_lodid</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+<span class=sd>    """</span>
+    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'Last rendered LOD ID: </span><span class=si>{</span><span class=n>refresh_callback</span><span class=o>.</span><span class=n>prop</span><span class=o>.</span><span class=n>last_rendered_lodid</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
 
 
 <span class=k>class</span><span class=w> </span><span class=nc>RefreshObserver</span><span class=p>:</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    The alternative approach using a class.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 
     <span class=k>def</span><span class=w> </span><span class=fm>__init__</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>prop</span><span class=p>):</span>
         <span class=bp>self</span><span class=o>.</span><span class=n>prop</span> <span class=o>=</span> <span class=n>prop</span>
 
     <span class=k>def</span><span class=w> </span><span class=fm>__call__</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>caller</span><span class=p>,</span> <span class=n>ev</span><span class=p>):</span>
-        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;Last rendered LOD ID: </span><span class=si>{</span><span class=bp>self</span><span class=o>.</span><span class=n>prop</span><span class=o>.</span><span class=n>last_rendered_lodid</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'Last rendered LOD ID: </span><span class=si>{</span><span class=bp>self</span><span class=o>.</span><span class=n>prop</span><span class=o>.</span><span class=n>last_rendered_lodid</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
 
 <span class=nd>@dataclass</span><span class=p>(</span><span class=n>frozen</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
 <span class=k>class</span><span class=w> </span><span class=nc>Property</span><span class=p>:</span>
@@ -169,6 +169,6 @@ function registerListener(event, func) {
         <span class=n>VTK_SURFACE</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>2</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

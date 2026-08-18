@@ -59,7 +59,7 @@ function registerListener(event, func) {
 <span class=c1># from vtkmodules.vtkRenderingCore import vtkTextProperty</span>
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_text_positions</span><span class=p>(</span><span class=n>names</span><span class=p>,</span> <span class=n>justification</span><span class=o>=</span><span class=mi>0</span><span class=p>,</span> <span class=n>vertical_justification</span><span class=o>=</span><span class=mi>0</span><span class=p>,</span> <span class=n>width</span><span class=o>=</span><span class=mf>0.96</span><span class=p>,</span> <span class=n>height</span><span class=o>=</span><span class=mf>0.1</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Get viewport positioning information for a list of names.</span>
 
 <span class=sd>    :param names: The list of names.</span>
@@ -68,7 +68,7 @@ function registerListener(event, func) {
 <span class=sd>    :param width: Width of the bounding_box of the text in screen coordinates.</span>
 <span class=sd>    :param height: Height of the bounding_box of the text in screen coordinates.</span>
 <span class=sd>    :return: A list of positioning information.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=c1># The gap between the left or right edge of the screen and the text.</span>
     <span class=n>dx</span> <span class=o>=</span> <span class=mf>0.02</span>
     <span class=n>width</span> <span class=o>=</span> <span class=nb>abs</span><span class=p>(</span><span class=n>width</span><span class=p>)</span>
@@ -115,9 +115,9 @@ function registerListener(event, func) {
 
         <span class=c1># For debugging!</span>
         <span class=c1># print(</span>
-        <span class=c1>#     f&#39;{k:16s}: (x0, y0) = ({x0:3.2f}, {y0:3.2f}), (x1, y1) = ({x0 + delta_sz:3.2f}, {y0 + dy:3.2f})&#39;</span>
-        <span class=c1>#     f&#39;, width={delta_sz:3.2f}, height={dy:3.2f}&#39;)</span>
-        <span class=n>text_positions</span><span class=p>[</span><span class=n>k</span><span class=p>]</span> <span class=o>=</span> <span class=p>{</span><span class=s1>&#39;p&#39;</span><span class=p>:</span> <span class=p>[</span><span class=n>x0</span><span class=p>,</span> <span class=n>y0</span><span class=p>,</span> <span class=mi>0</span><span class=p>],</span> <span class=s1>&#39;p2&#39;</span><span class=p>:</span> <span class=p>[</span><span class=n>delta_sz</span><span class=p>,</span> <span class=n>dy</span><span class=p>,</span> <span class=mi>0</span><span class=p>]}</span>
+        <span class=c1>#     f'{k:16s}: (x0, y0) = ({x0:3.2f}, {y0:3.2f}), (x1, y1) = ({x0 + delta_sz:3.2f}, {y0 + dy:3.2f})'</span>
+        <span class=c1>#     f', width={delta_sz:3.2f}, height={dy:3.2f}')</span>
+        <span class=n>text_positions</span><span class=p>[</span><span class=n>k</span><span class=p>]</span> <span class=o>=</span> <span class=p>{</span><span class=s1>'p'</span><span class=p>:</span> <span class=p>[</span><span class=n>x0</span><span class=p>,</span> <span class=n>y0</span><span class=p>,</span> <span class=mi>0</span><span class=p>],</span> <span class=s1>'p2'</span><span class=p>:</span> <span class=p>[</span><span class=n>delta_sz</span><span class=p>,</span> <span class=n>dy</span><span class=p>,</span> <span class=mi>0</span><span class=p>]}</span>
 
     <span class=k>return</span> <span class=n>text_positions</span>
 

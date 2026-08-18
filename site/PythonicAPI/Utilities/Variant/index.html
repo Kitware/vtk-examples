@@ -79,9 +79,9 @@ function registerListener(event, func) {
 
 <span class=c1># Unicode string for demonstration (etre with circumflex i.e. être)</span>
 <span class=k>if</span> <span class=n>sys</span><span class=o>.</span><span class=n>hexversion</span> <span class=o>&gt;=</span> <span class=mh>0x03000000</span><span class=p>:</span>
-    <span class=n>unicodeEtre</span> <span class=o>=</span> <span class=s1>&#39;</span><span class=se>\xea</span><span class=s1>tre&#39;</span>  <span class=c1># unicode in Python 3</span>
+    <span class=n>unicodeEtre</span> <span class=o>=</span> <span class=s1>'</span><span class=se>\xea</span><span class=s1>tre'</span>  <span class=c1># unicode in Python 3</span>
 <span class=k>else</span><span class=p>:</span>
-    <span class=n>unicodeEtre</span> <span class=o>=</span> <span class=n>unicode</span><span class=p>(</span><span class=s1>&#39;</span><span class=se>\xea</span><span class=s1>tre&#39;</span><span class=p>,</span> <span class=s1>&#39;latin1&#39;</span><span class=p>)</span>  <span class=c1># noqa: F821</span>
+    <span class=n>unicodeEtre</span> <span class=o>=</span> <span class=n>unicode</span><span class=p>(</span><span class=s1>'</span><span class=se>\xea</span><span class=s1>tre'</span><span class=p>,</span> <span class=s1>'latin1'</span><span class=p>)</span>  <span class=c1># noqa: F821</span>
 
 <span class=c1>#</span>
 <span class=c1># Basic vtkVariant usage</span>
@@ -89,67 +89,67 @@ function registerListener(event, func) {
 
 <span class=c1># Default constructor</span>
 <span class=hll><span class=n>v</span> <span class=o>=</span> <span class=n>vtkVariant</span><span class=p>()</span>
-</span><span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&quot;Invalid variant: </span><span class=si>{</span><span class=nb>repr</span><span class=p>(</span><span class=n>v</span><span class=p>)</span><span class=si>}</span><span class=s2>, &#39;</span><span class=si>{</span><span class=n>v</span><span class=o>.</span><span class=n>GetTypeAsString</span><span class=p>()</span><span class=si>}</span><span class=s2>&#39;&quot;</span><span class=p>)</span>
+</span><span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>"Invalid variant: </span><span class=si>{</span><span class=nb>repr</span><span class=p>(</span><span class=n>v</span><span class=p>)</span><span class=si>}</span><span class=s2>, '</span><span class=si>{</span><span class=n>v</span><span class=o>.</span><span class=n>GetTypeAsString</span><span class=p>()</span><span class=si>}</span><span class=s2>'"</span><span class=p>)</span>
 
 <span class=c1># Copy constructor</span>
-<span class=hll><span class=n>v</span> <span class=o>=</span> <span class=n>vtkVariant</span><span class=p>(</span><span class=n>vtkVariant</span><span class=p>(</span><span class=s2>&quot;variant&quot;</span><span class=p>))</span>
-</span><span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&quot;Copied variant: </span><span class=si>{</span><span class=nb>repr</span><span class=p>(</span><span class=n>v</span><span class=p>)</span><span class=si>}</span><span class=s2>, &#39;</span><span class=si>{</span><span class=n>v</span><span class=o>.</span><span class=n>GetTypeAsString</span><span class=p>()</span><span class=si>}</span><span class=s2>&#39;&quot;</span><span class=p>)</span>
+<span class=hll><span class=n>v</span> <span class=o>=</span> <span class=n>vtkVariant</span><span class=p>(</span><span class=n>vtkVariant</span><span class=p>(</span><span class=s2>"variant"</span><span class=p>))</span>
+</span><span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>"Copied variant: </span><span class=si>{</span><span class=nb>repr</span><span class=p>(</span><span class=n>v</span><span class=p>)</span><span class=si>}</span><span class=s2>, '</span><span class=si>{</span><span class=n>v</span><span class=o>.</span><span class=n>GetTypeAsString</span><span class=p>()</span><span class=si>}</span><span class=s2>'"</span><span class=p>)</span>
 
 <span class=c1># Conversion constructors</span>
 <span class=hll><span class=n>v</span> <span class=o>=</span> <span class=n>vtkVariant</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
-</span><span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&quot;Integer variant: </span><span class=si>{</span><span class=nb>repr</span><span class=p>(</span><span class=n>v</span><span class=p>)</span><span class=si>}</span><span class=s2>, &#39;</span><span class=si>{</span><span class=n>v</span><span class=o>.</span><span class=n>GetTypeAsString</span><span class=p>()</span><span class=si>}</span><span class=s2>&#39;&quot;</span><span class=p>)</span>
+</span><span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>"Integer variant: </span><span class=si>{</span><span class=nb>repr</span><span class=p>(</span><span class=n>v</span><span class=p>)</span><span class=si>}</span><span class=s2>, '</span><span class=si>{</span><span class=n>v</span><span class=o>.</span><span class=n>GetTypeAsString</span><span class=p>()</span><span class=si>}</span><span class=s2>'"</span><span class=p>)</span>
 <span class=hll><span class=n>v</span> <span class=o>=</span> <span class=n>vtkVariant</span><span class=p>(</span><span class=mf>1.0</span><span class=p>)</span>
-</span><span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&quot;Float variant: </span><span class=si>{</span><span class=nb>repr</span><span class=p>(</span><span class=n>v</span><span class=p>)</span><span class=si>}</span><span class=s2>, &#39;</span><span class=si>{</span><span class=n>v</span><span class=o>.</span><span class=n>GetTypeAsString</span><span class=p>()</span><span class=si>}</span><span class=s2>&#39;&quot;</span><span class=p>)</span>
-<span class=hll><span class=n>v</span> <span class=o>=</span> <span class=n>vtkVariant</span><span class=p>(</span><span class=s2>&quot;hello&quot;</span><span class=p>)</span>
-</span><span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&quot;String variant: </span><span class=si>{</span><span class=nb>repr</span><span class=p>(</span><span class=n>v</span><span class=p>)</span><span class=si>}</span><span class=s2>, &#39;</span><span class=si>{</span><span class=n>v</span><span class=o>.</span><span class=n>GetTypeAsString</span><span class=p>()</span><span class=si>}</span><span class=s2>&#39;&quot;</span><span class=p>)</span>
+</span><span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>"Float variant: </span><span class=si>{</span><span class=nb>repr</span><span class=p>(</span><span class=n>v</span><span class=p>)</span><span class=si>}</span><span class=s2>, '</span><span class=si>{</span><span class=n>v</span><span class=o>.</span><span class=n>GetTypeAsString</span><span class=p>()</span><span class=si>}</span><span class=s2>'"</span><span class=p>)</span>
+<span class=hll><span class=n>v</span> <span class=o>=</span> <span class=n>vtkVariant</span><span class=p>(</span><span class=s2>"hello"</span><span class=p>)</span>
+</span><span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>"String variant: </span><span class=si>{</span><span class=nb>repr</span><span class=p>(</span><span class=n>v</span><span class=p>)</span><span class=si>}</span><span class=s2>, '</span><span class=si>{</span><span class=n>v</span><span class=o>.</span><span class=n>GetTypeAsString</span><span class=p>()</span><span class=si>}</span><span class=s2>'"</span><span class=p>)</span>
 <span class=hll><span class=n>v</span> <span class=o>=</span> <span class=n>vtkVariant</span><span class=p>(</span><span class=n>unicodeEtre</span><span class=p>)</span>
-</span><span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&quot;Unicode variant: </span><span class=si>{</span><span class=nb>repr</span><span class=p>(</span><span class=n>v</span><span class=p>)</span><span class=si>}</span><span class=s2>, &#39;</span><span class=si>{</span><span class=n>v</span><span class=o>.</span><span class=n>GetTypeAsString</span><span class=p>()</span><span class=si>}</span><span class=s2>&#39;&quot;</span><span class=p>)</span>
+</span><span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>"Unicode variant: </span><span class=si>{</span><span class=nb>repr</span><span class=p>(</span><span class=n>v</span><span class=p>)</span><span class=si>}</span><span class=s2>, '</span><span class=si>{</span><span class=n>v</span><span class=o>.</span><span class=n>GetTypeAsString</span><span class=p>()</span><span class=si>}</span><span class=s2>'"</span><span class=p>)</span>
 <span class=hll><span class=n>v</span> <span class=o>=</span> <span class=n>vtkVariant</span><span class=p>(</span><span class=n>vtkStringArray</span><span class=p>())</span>
-</span><span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&quot;Object variant: </span><span class=si>{</span><span class=nb>repr</span><span class=p>(</span><span class=n>v</span><span class=p>)</span><span class=si>}</span><span class=s2>, &#39;</span><span class=si>{</span><span class=n>v</span><span class=o>.</span><span class=n>GetTypeAsString</span><span class=p>()</span><span class=si>}</span><span class=s2>&#39;&quot;</span><span class=p>)</span>
+</span><span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>"Object variant: </span><span class=si>{</span><span class=nb>repr</span><span class=p>(</span><span class=n>v</span><span class=p>)</span><span class=si>}</span><span class=s2>, '</span><span class=si>{</span><span class=n>v</span><span class=o>.</span><span class=n>GetTypeAsString</span><span class=p>()</span><span class=si>}</span><span class=s2>'"</span><span class=p>)</span>
 
 <span class=c1># Explicit type constructor</span>
 <span class=hll><span class=n>v1</span> <span class=o>=</span> <span class=n>vtkVariant</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>VTK_UNSIGNED_SHORT</span><span class=p>)</span>
 </span><span class=hll><span class=n>v2</span> <span class=o>=</span> <span class=n>vtkVariant</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span> <span class=n>v1</span><span class=o>.</span><span class=n>GetType</span><span class=p>())</span>
-</span><span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&quot;UShort variant: </span><span class=si>{</span><span class=nb>repr</span><span class=p>(</span><span class=n>v1</span><span class=p>)</span><span class=si>}</span><span class=s2>, &#39;</span><span class=si>{</span><span class=n>v1</span><span class=o>.</span><span class=n>GetTypeAsString</span><span class=p>()</span><span class=si>}</span><span class=s2>&#39;&quot;</span><span class=p>)</span>
+</span><span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>"UShort variant: </span><span class=si>{</span><span class=nb>repr</span><span class=p>(</span><span class=n>v1</span><span class=p>)</span><span class=si>}</span><span class=s2>, '</span><span class=si>{</span><span class=n>v1</span><span class=o>.</span><span class=n>GetTypeAsString</span><span class=p>()</span><span class=si>}</span><span class=s2>'"</span><span class=p>)</span>
 
 <span class=c1># Type checking</span>
 <span class=k>if</span> <span class=n>v2</span><span class=o>.</span><span class=n>IsUnsignedShort</span><span class=p>():</span>
-    <span class=nb>print</span><span class=p>(</span><span class=s2>&quot;v2 is UnsignedShort&quot;</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s2>"v2 is UnsignedShort"</span><span class=p>)</span>
 <span class=k>else</span><span class=p>:</span>
-    <span class=nb>print</span><span class=p>(</span><span class=s2>&quot;v2 is not UnsignedShort, it is&quot;</span><span class=p>,</span> <span class=n>v2</span><span class=o>.</span><span class=n>GetTypeAsString</span><span class=p>())</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s2>"v2 is not UnsignedShort, it is"</span><span class=p>,</span> <span class=n>v2</span><span class=o>.</span><span class=n>GetTypeAsString</span><span class=p>())</span>
 
 <span class=c1># Explicit value extraction</span>
 <span class=n>s</span> <span class=o>=</span> <span class=n>v2</span><span class=o>.</span><span class=n>ToString</span><span class=p>()</span>
-<span class=nb>print</span><span class=p>(</span><span class=s2>&quot;String value: </span><span class=si>%s</span><span class=s2>, </span><span class=si>%s</span><span class=s2>&quot;</span> <span class=o>%</span> <span class=p>(</span><span class=n>s</span><span class=p>,</span> <span class=nb>type</span><span class=p>(</span><span class=n>s</span><span class=p>)))</span>
+<span class=nb>print</span><span class=p>(</span><span class=s2>"String value: </span><span class=si>%s</span><span class=s2>, </span><span class=si>%s</span><span class=s2>"</span> <span class=o>%</span> <span class=p>(</span><span class=n>s</span><span class=p>,</span> <span class=nb>type</span><span class=p>(</span><span class=n>s</span><span class=p>)))</span>
 <span class=n>i</span> <span class=o>=</span> <span class=n>v2</span><span class=o>.</span><span class=n>ToInt</span><span class=p>()</span>
-<span class=nb>print</span><span class=p>(</span><span class=s2>&quot;Int value: </span><span class=si>%i</span><span class=s2>, </span><span class=si>%s</span><span class=s2>&quot;</span> <span class=o>%</span> <span class=p>(</span><span class=n>i</span><span class=p>,</span> <span class=nb>type</span><span class=p>(</span><span class=n>i</span><span class=p>)))</span>
+<span class=nb>print</span><span class=p>(</span><span class=s2>"Int value: </span><span class=si>%i</span><span class=s2>, </span><span class=si>%s</span><span class=s2>"</span> <span class=o>%</span> <span class=p>(</span><span class=n>i</span><span class=p>,</span> <span class=nb>type</span><span class=p>(</span><span class=n>i</span><span class=p>)))</span>
 
 <span class=c1># Automatic argument conversion</span>
 <span class=hll><span class=n>a</span> <span class=o>=</span> <span class=n>vtkVariantArray</span><span class=p>()</span>
 </span><span class=hll><span class=n>a</span><span class=o>.</span><span class=n>InsertNextValue</span><span class=p>(</span><span class=n>vtkVariant</span><span class=p>())</span>
 </span><span class=n>a</span><span class=o>.</span><span class=n>InsertNextValue</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
 <span class=n>a</span><span class=o>.</span><span class=n>InsertNextValue</span><span class=p>(</span><span class=mf>2.0</span><span class=p>)</span>
-<span class=n>a</span><span class=o>.</span><span class=n>InsertNextValue</span><span class=p>(</span><span class=s2>&quot;hello&quot;</span><span class=p>)</span>
+<span class=n>a</span><span class=o>.</span><span class=n>InsertNextValue</span><span class=p>(</span><span class=s2>"hello"</span><span class=p>)</span>
 <span class=n>a</span><span class=o>.</span><span class=n>InsertNextValue</span><span class=p>(</span><span class=n>unicodeEtre</span><span class=p>)</span>
 <span class=hll><span class=n>a</span><span class=o>.</span><span class=n>InsertNextValue</span><span class=p>(</span><span class=n>vtkVariantArray</span><span class=p>())</span>
-</span><span class=nb>print</span><span class=p>(</span><span class=s2>&quot;Variant array:&quot;</span><span class=p>)</span>
+</span><span class=nb>print</span><span class=p>(</span><span class=s2>"Variant array:"</span><span class=p>)</span>
 <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=n>a</span><span class=o>.</span><span class=n>GetNumberOfValues</span><span class=p>()):</span>
     <span class=n>v</span> <span class=o>=</span> <span class=n>a</span><span class=o>.</span><span class=n>GetValue</span><span class=p>(</span><span class=n>i</span><span class=p>)</span>
-    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&quot;</span><span class=si>{</span><span class=n>i</span><span class=si>}</span><span class=s2>: </span><span class=si>{</span><span class=nb>repr</span><span class=p>(</span><span class=n>v</span><span class=p>)</span><span class=si>}</span><span class=s2>, &#39;</span><span class=si>{</span><span class=n>v</span><span class=o>.</span><span class=n>GetTypeAsString</span><span class=p>()</span><span class=si>}</span><span class=s2>&#39;&quot;</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>"</span><span class=si>{</span><span class=n>i</span><span class=si>}</span><span class=s2>: </span><span class=si>{</span><span class=nb>repr</span><span class=p>(</span><span class=n>v</span><span class=p>)</span><span class=si>}</span><span class=s2>, '</span><span class=si>{</span><span class=n>v</span><span class=o>.</span><span class=n>GetTypeAsString</span><span class=p>()</span><span class=si>}</span><span class=s2>'"</span><span class=p>)</span>
 
 <span class=c1># Comparison</span>
 <span class=hll><span class=k>if</span> <span class=n>v2</span> <span class=o>==</span> <span class=n>vtkVariant</span><span class=p>(</span><span class=mi>2</span><span class=p>):</span>
-</span>    <span class=nb>print</span><span class=p>(</span><span class=s2>&quot;v2 is equal to 2&quot;</span><span class=p>)</span>
+</span>    <span class=nb>print</span><span class=p>(</span><span class=s2>"v2 is equal to 2"</span><span class=p>)</span>
 <span class=hll><span class=k>if</span> <span class=n>v2</span> <span class=o>&gt;</span> <span class=n>vtkVariant</span><span class=p>(</span><span class=mi>1</span><span class=p>):</span>
-</span>    <span class=nb>print</span><span class=p>(</span><span class=s2>&quot;v2 is greater than 1&quot;</span><span class=p>)</span>
+</span>    <span class=nb>print</span><span class=p>(</span><span class=s2>"v2 is greater than 1"</span><span class=p>)</span>
 <span class=hll><span class=k>if</span> <span class=n>v2</span> <span class=o>&lt;</span> <span class=n>vtkVariant</span><span class=p>(</span><span class=mi>3</span><span class=p>):</span>
-</span>    <span class=nb>print</span><span class=p>(</span><span class=s2>&quot;v2 is less than 3&quot;</span><span class=p>)</span>
-<span class=hll><span class=k>if</span> <span class=n>v2</span> <span class=o>==</span> <span class=n>vtkVariant</span><span class=p>(</span><span class=s2>&quot;2&quot;</span><span class=p>):</span>
-</span>    <span class=nb>print</span><span class=p>(</span><span class=s2>&quot;v2 is equal to &#39;2&#39;&quot;</span><span class=p>)</span>
+</span>    <span class=nb>print</span><span class=p>(</span><span class=s2>"v2 is less than 3"</span><span class=p>)</span>
+<span class=hll><span class=k>if</span> <span class=n>v2</span> <span class=o>==</span> <span class=n>vtkVariant</span><span class=p>(</span><span class=s2>"2"</span><span class=p>):</span>
+</span>    <span class=nb>print</span><span class=p>(</span><span class=s2>"v2 is equal to '2'"</span><span class=p>)</span>
 
 <span class=c1># Use as a dict key (hashed as a string)</span>
-<span class=hll><span class=n>d</span> <span class=o>=</span> <span class=p>{</span><span class=n>vtkVariant</span><span class=p>(</span><span class=mi>1</span><span class=p>):</span> <span class=mi>0</span><span class=p>,</span> <span class=n>vtkVariant</span><span class=p>(</span><span class=s1>&#39;1&#39;</span><span class=p>):</span> <span class=mi>1</span><span class=p>,</span> <span class=n>vtkVariant</span><span class=p>():</span> <span class=mi>3</span><span class=p>}</span>
-</span><span class=hll><span class=nb>print</span><span class=p>(</span><span class=s2>&quot;Index is </span><span class=si>%i</span><span class=s2>&quot;</span> <span class=o>%</span> <span class=n>d</span><span class=p>[</span><span class=n>vtkVariant</span><span class=p>(</span><span class=mf>1.0</span><span class=p>)])</span>
+<span class=hll><span class=n>d</span> <span class=o>=</span> <span class=p>{</span><span class=n>vtkVariant</span><span class=p>(</span><span class=mi>1</span><span class=p>):</span> <span class=mi>0</span><span class=p>,</span> <span class=n>vtkVariant</span><span class=p>(</span><span class=s1>'1'</span><span class=p>):</span> <span class=mi>1</span><span class=p>,</span> <span class=n>vtkVariant</span><span class=p>():</span> <span class=mi>3</span><span class=p>}</span>
+</span><span class=hll><span class=nb>print</span><span class=p>(</span><span class=s2>"Index is </span><span class=si>%i</span><span class=s2>"</span> <span class=o>%</span> <span class=n>d</span><span class=p>[</span><span class=n>vtkVariant</span><span class=p>(</span><span class=mf>1.0</span><span class=p>)])</span>
 </span>
 <span class=c1>#</span>
 <span class=c1># Extra functionality from vtk.util.vtkVariant</span>
@@ -157,27 +157,27 @@ function registerListener(event, func) {
 <span class=c1># These are templated functions in C++, but in Python</span>
 <span class=c1># they take the template arg as a string instead,</span>
 <span class=c1># e.g. vtkVariantCreate&lt;unsigned int&gt;(1) becomes</span>
-<span class=c1>#      vtkVariantCreate(1, &#39;unsigned int&#39;)</span>
+<span class=c1>#      vtkVariantCreate(1, 'unsigned int')</span>
 
 <span class=c1># Creation</span>
-<span class=hll><span class=n>v</span> <span class=o>=</span> <span class=n>vtkVariantCreate</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=s1>&#39;unsigned int&#39;</span><span class=p>)</span>
+<span class=hll><span class=n>v</span> <span class=o>=</span> <span class=n>vtkVariantCreate</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=s1>'unsigned int'</span><span class=p>)</span>
 </span>
 <span class=c1># Value extraction</span>
 <span class=hll><span class=n>v</span> <span class=o>=</span> <span class=n>vtkVariant</span><span class=p>(</span><span class=mf>6.0</span><span class=p>)</span>
 </span><span class=hll><span class=n>f</span> <span class=o>=</span> <span class=n>vtkVariantExtract</span><span class=p>(</span><span class=n>v</span><span class=p>)</span>
 </span>
 <span class=c1># Value extraction with type specified</span>
-<span class=hll><span class=n>f</span> <span class=o>=</span> <span class=n>vtkVariantExtract</span><span class=p>(</span><span class=n>v</span><span class=p>,</span> <span class=s1>&#39;double&#39;</span><span class=p>)</span>
+<span class=hll><span class=n>f</span> <span class=o>=</span> <span class=n>vtkVariantExtract</span><span class=p>(</span><span class=n>v</span><span class=p>,</span> <span class=s1>'double'</span><span class=p>)</span>
 </span>
 <span class=c1># Casting a variant</span>
-<span class=hll><span class=n>v</span> <span class=o>=</span> <span class=n>vtkVariant</span><span class=p>(</span><span class=s2>&quot;10&quot;</span><span class=p>)</span>
-</span><span class=hll><span class=n>i</span> <span class=o>=</span> <span class=n>vtkVariantCast</span><span class=p>(</span><span class=n>v</span><span class=p>,</span> <span class=s1>&#39;int&#39;</span><span class=p>)</span>
-</span><span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&quot;Valid cast result: </span><span class=si>{</span><span class=nb>repr</span><span class=p>(</span><span class=n>i</span><span class=p>)</span><span class=si>}</span><span class=s2>&quot;</span><span class=p>)</span>
+<span class=hll><span class=n>v</span> <span class=o>=</span> <span class=n>vtkVariant</span><span class=p>(</span><span class=s2>"10"</span><span class=p>)</span>
+</span><span class=hll><span class=n>i</span> <span class=o>=</span> <span class=n>vtkVariantCast</span><span class=p>(</span><span class=n>v</span><span class=p>,</span> <span class=s1>'int'</span><span class=p>)</span>
+</span><span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>"Valid cast result: </span><span class=si>{</span><span class=nb>repr</span><span class=p>(</span><span class=n>i</span><span class=p>)</span><span class=si>}</span><span class=s2>"</span><span class=p>)</span>
 
 <span class=c1># A failed cast returns None</span>
-<span class=hll><span class=n>v</span> <span class=o>=</span> <span class=n>vtkVariant</span><span class=p>(</span><span class=s2>&quot;hello&quot;</span><span class=p>)</span>
-</span><span class=hll><span class=n>i</span> <span class=o>=</span> <span class=n>vtkVariantCast</span><span class=p>(</span><span class=n>v</span><span class=p>,</span> <span class=s1>&#39;int&#39;</span><span class=p>)</span>
-</span><span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&quot;Invalid cast result: </span><span class=si>{</span><span class=nb>repr</span><span class=p>(</span><span class=n>i</span><span class=p>)</span><span class=si>}</span><span class=s2>&quot;</span><span class=p>)</span>
+<span class=hll><span class=n>v</span> <span class=o>=</span> <span class=n>vtkVariant</span><span class=p>(</span><span class=s2>"hello"</span><span class=p>)</span>
+</span><span class=hll><span class=n>i</span> <span class=o>=</span> <span class=n>vtkVariantCast</span><span class=p>(</span><span class=n>v</span><span class=p>,</span> <span class=s1>'int'</span><span class=p>)</span>
+</span><span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>"Invalid cast result: </span><span class=si>{</span><span class=nb>repr</span><span class=p>(</span><span class=n>i</span><span class=p>)</span><span class=si>}</span><span class=s2>"</span><span class=p>)</span>
 
 <span class=c1>#</span>
 <span class=c1># Comparisons and sorting: See VTK docs for more info</span>
@@ -185,23 +185,23 @@ function registerListener(event, func) {
 
 <span class=c1># Special function vtk.vtkVariantStrictWeakOrder:</span>
 <span class=c1># Compare variants by type first, and then by value.  For Python 2, the</span>
-<span class=c1># return values are -1, 0, 1 like the Python 2 &quot;cmp()&quot; method.  This is</span>
+<span class=c1># return values are -1, 0, 1 like the Python 2 "cmp()" method.  This is</span>
 <span class=c1># in contrast with the Python 3 and C++ versions of this function, which</span>
 <span class=c1># check if (v1 &lt; v2) and return True or False.</span>
 <span class=hll><span class=n>v1</span> <span class=o>=</span> <span class=n>vtkVariant</span><span class=p>(</span><span class=mi>10</span><span class=p>)</span>
-</span><span class=hll><span class=n>v2</span> <span class=o>=</span> <span class=n>vtkVariant</span><span class=p>(</span><span class=s2>&quot;10&quot;</span><span class=p>)</span>
+</span><span class=hll><span class=n>v2</span> <span class=o>=</span> <span class=n>vtkVariant</span><span class=p>(</span><span class=s2>"10"</span><span class=p>)</span>
 </span><span class=n>r</span> <span class=o>=</span> <span class=n>vtkVariantStrictWeakOrder</span><span class=p>(</span><span class=n>v1</span><span class=p>,</span> <span class=n>v2</span><span class=p>)</span>
-<span class=nb>print</span><span class=p>(</span><span class=s2>&quot;Strict weak order (10, &#39;10&#39;) -&gt;&quot;</span><span class=p>,</span> <span class=n>r</span><span class=p>)</span>
+<span class=nb>print</span><span class=p>(</span><span class=s2>"Strict weak order (10, '10') -&gt;"</span><span class=p>,</span> <span class=n>r</span><span class=p>)</span>
 
 <span class=c1># Sorting by strict weak order, using a key function:</span>
-<span class=hll><span class=n>unsorted</span> <span class=o>=</span> <span class=p>[</span><span class=mi>1</span><span class=p>,</span> <span class=mf>2.5</span><span class=p>,</span> <span class=n>vtkVariant</span><span class=p>(),</span> <span class=s2>&quot;0&quot;</span><span class=p>,</span> <span class=n>unicodeEtre</span><span class=p>]</span>
+<span class=hll><span class=n>unsorted</span> <span class=o>=</span> <span class=p>[</span><span class=mi>1</span><span class=p>,</span> <span class=mf>2.5</span><span class=p>,</span> <span class=n>vtkVariant</span><span class=p>(),</span> <span class=s2>"0"</span><span class=p>,</span> <span class=n>unicodeEtre</span><span class=p>]</span>
 </span><span class=hll><span class=n>l</span> <span class=o>=</span> <span class=p>[</span><span class=n>vtkVariant</span><span class=p>(</span><span class=n>x</span><span class=p>)</span> <span class=k>for</span> <span class=n>x</span> <span class=ow>in</span> <span class=n>unsorted</span><span class=p>]</span>
 </span><span class=n>l</span><span class=o>.</span><span class=n>sort</span><span class=p>(</span><span class=n>key</span><span class=o>=</span><span class=n>vtkVariantStrictWeakOrderKey</span><span class=p>)</span>
-<span class=nb>print</span><span class=p>(</span><span class=s2>&quot;Sort by weak order -&gt;&quot;</span><span class=p>,</span> <span class=n>l</span><span class=p>)</span>
+<span class=nb>print</span><span class=p>(</span><span class=s2>"Sort by weak order -&gt;"</span><span class=p>,</span> <span class=n>l</span><span class=p>)</span>
 
 <span class=c1># Check two variants for strict equality of type and value.</span>
 <span class=n>b</span> <span class=o>=</span> <span class=n>vtkVariantStrictEquality</span><span class=p>(</span><span class=n>v1</span><span class=p>,</span> <span class=n>v2</span><span class=p>)</span>
-<span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&quot;Strict equality (10, &#39;10&#39;) -&gt; </span><span class=si>{</span><span class=n>b</span><span class=si>}</span><span class=s2>&quot;</span><span class=p>)</span>
+<span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>"Strict equality (10, '10') -&gt; </span><span class=si>{</span><span class=n>b</span><span class=si>}</span><span class=s2>"</span><span class=p>)</span>
 
 <span class=c1># Two special-purpose methods.</span>
 <span class=c1># First is identical to (v1 &lt; v2)</span>

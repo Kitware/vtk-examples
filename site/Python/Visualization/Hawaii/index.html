@@ -89,7 +89,7 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
     <span class=c1># Set the background color.</span>
-    <span class=n>colors</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=s2>&quot;BkgColor&quot;</span><span class=p>,</span> <span class=p>[</span><span class=mi>26</span><span class=p>,</span> <span class=mi>51</span><span class=p>,</span> <span class=mi>102</span><span class=p>,</span> <span class=mi>255</span><span class=p>])</span>
+    <span class=n>colors</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=s2>"BkgColor"</span><span class=p>,</span> <span class=p>[</span><span class=mi>26</span><span class=p>,</span> <span class=mi>51</span><span class=p>,</span> <span class=mi>102</span><span class=p>,</span> <span class=mi>255</span><span class=p>])</span>
 
     <span class=c1># Read a vtk file</span>
     <span class=c1>#</span>
@@ -130,7 +130,7 @@ function registerListener(event, func) {
     <span class=c1># Match the window shape to the object.</span>
     <span class=c1># renWin.SetSize(500, int(500 * bounds[1] / bounds[3]))</span>
     <span class=n>renWin</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>500</span><span class=p>,</span> <span class=mi>500</span><span class=p>)</span>
-    <span class=n>renWin</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;Hawaii&#39;</span><span class=p>)</span>
+    <span class=n>renWin</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>'Hawaii'</span><span class=p>)</span>
 
     <span class=n>iren</span><span class=o>.</span><span class=n>Initialize</span><span class=p>()</span>
 
@@ -139,7 +139,7 @@ function registerListener(event, func) {
     <span class=c1># Diamond Head is the crater lower left.</span>
     <span class=c1># Punchbowl is the crater in the centre.</span>
     <span class=n>renWin</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
-    <span class=n>ren</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;BkgColor&quot;</span><span class=p>))</span>
+    <span class=n>ren</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>"BkgColor"</span><span class=p>))</span>
     <span class=n>ren</span><span class=o>.</span><span class=n>GetActiveCamera</span><span class=p>()</span><span class=o>.</span><span class=n>Zoom</span><span class=p>(</span><span class=mf>1.5</span><span class=p>)</span>
     <span class=n>ren</span><span class=o>.</span><span class=n>GetActiveCamera</span><span class=p>()</span><span class=o>.</span><span class=n>Roll</span><span class=p>(</span><span class=o>-</span><span class=mi>90</span><span class=p>)</span>
 
@@ -149,32 +149,32 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_program_parameters</span><span class=p>():</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>argparse</span>
-    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;Produce figure 6–12 from the VTK Textbook.&#39;</span>
-    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;</span>
+    <span class=n>description</span> <span class=o>=</span> <span class=s1>'Produce figure 6–12 from the VTK Textbook.'</span>
+    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>'''</span>
 <span class=s1>        Produce figure 6–12 from the VTK Textbook.</span>
 <span class=s1>        It is a translation of the original hawaii.tcl with a few additional enhancements.</span>
-<span class=s1>        The image is centered on Honolulu, O&#39;ahu.</span>
+<span class=s1>        The image is centered on Honolulu, O'ahu.</span>
 <span class=s1>        Diamond Head is the crater lower left. Punchbowl is the crater in the centre.</span>
 
 <span class=s1>        The color_scheme option allows you to select a series of colour schemes.</span>
-<span class=s1>        0: The default, a lookup using a &quot;Brewer&quot; palette.</span>
+<span class=s1>        0: The default, a lookup using a "Brewer" palette.</span>
 <span class=s1>        1: The original: A lookup table of 256 colours ranging from deep blue (water) to yellow-white (mountain top).</span>
 <span class=s1>        2: A lookup table with a preset number of colours.</span>
 
-<span class=s1>   &#39;&#39;&#39;</span>
+<span class=s1>   '''</span>
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;filename&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;honolulu.vtk&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;color_scheme&#39;</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mi>0</span><span class=p>,</span> <span class=nb>type</span><span class=o>=</span><span class=nb>int</span><span class=p>,</span> <span class=n>nargs</span><span class=o>=</span><span class=s1>&#39;?&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The particular color scheme to use.&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'filename'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'honolulu.vtk'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'color_scheme'</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mi>0</span><span class=p>,</span> <span class=nb>type</span><span class=o>=</span><span class=nb>int</span><span class=p>,</span> <span class=n>nargs</span><span class=o>=</span><span class=s1>'?'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'The particular color scheme to use.'</span><span class=p>)</span>
     <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
     <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>filename</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>color_scheme</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>MakeLUT</span><span class=p>(</span><span class=n>color_scheme</span><span class=o>=</span><span class=mi>0</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Make a lookup table.</span>
 <span class=sd>    :param color_scheme: Select the type of lookup table.</span>
 <span class=sd>    :return: The lookup table.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>    <span class=k>if</span> <span class=n>color_scheme</span> <span class=o>==</span> <span class=mi>1</span><span class=p>:</span>
         <span class=c1># A lookup table of 256 colours ranging from</span>
@@ -188,15 +188,15 @@ function registerListener(event, func) {
         <span class=c1># Make the lookup table with a preset number of colours.</span>
 <span class=hll>        <span class=n>colorSeries</span> <span class=o>=</span> <span class=n>vtkColorSeries</span><span class=p>()</span>
 </span>        <span class=n>colorSeries</span><span class=o>.</span><span class=n>SetNumberOfColors</span><span class=p>(</span><span class=mi>8</span><span class=p>)</span>
-        <span class=n>colorSeries</span><span class=o>.</span><span class=n>SetColorSchemeName</span><span class=p>(</span><span class=s1>&#39;Hawaii&#39;</span><span class=p>)</span>
-        <span class=n>colorSeries</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s2>&quot;turquoise_blue&quot;</span><span class=p>))</span>
-        <span class=n>colorSeries</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s2>&quot;sea_green_medium&quot;</span><span class=p>))</span>
-        <span class=n>colorSeries</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s2>&quot;sap_green&quot;</span><span class=p>))</span>
-        <span class=n>colorSeries</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=mi>3</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s2>&quot;green_dark&quot;</span><span class=p>))</span>
-        <span class=n>colorSeries</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=mi>4</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s2>&quot;tan&quot;</span><span class=p>))</span>
-        <span class=n>colorSeries</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=mi>5</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s2>&quot;beige&quot;</span><span class=p>))</span>
-        <span class=n>colorSeries</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=mi>6</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s2>&quot;light_beige&quot;</span><span class=p>))</span>
-        <span class=n>colorSeries</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=mi>7</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s2>&quot;bisque&quot;</span><span class=p>))</span>
+        <span class=n>colorSeries</span><span class=o>.</span><span class=n>SetColorSchemeName</span><span class=p>(</span><span class=s1>'Hawaii'</span><span class=p>)</span>
+        <span class=n>colorSeries</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s2>"turquoise_blue"</span><span class=p>))</span>
+        <span class=n>colorSeries</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s2>"sea_green_medium"</span><span class=p>))</span>
+        <span class=n>colorSeries</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s2>"sap_green"</span><span class=p>))</span>
+        <span class=n>colorSeries</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=mi>3</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s2>"green_dark"</span><span class=p>))</span>
+        <span class=n>colorSeries</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=mi>4</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s2>"tan"</span><span class=p>))</span>
+        <span class=n>colorSeries</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=mi>5</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s2>"beige"</span><span class=p>))</span>
+        <span class=n>colorSeries</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=mi>6</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s2>"light_beige"</span><span class=p>))</span>
+        <span class=n>colorSeries</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=mi>7</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s2>"bisque"</span><span class=p>))</span>
 <span class=hll>        <span class=n>lut</span> <span class=o>=</span> <span class=n>vtkLookupTable</span><span class=p>()</span>
 </span>        <span class=n>colorSeries</span><span class=o>.</span><span class=n>BuildLookupTable</span><span class=p>(</span><span class=n>lut</span><span class=p>,</span> <span class=n>colorSeries</span><span class=o>.</span><span class=n>ORDINAL</span><span class=p>)</span>
         <span class=n>lut</span><span class=o>.</span><span class=n>SetNanColor</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
@@ -212,6 +212,6 @@ function registerListener(event, func) {
     <span class=k>return</span> <span class=n>lut</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

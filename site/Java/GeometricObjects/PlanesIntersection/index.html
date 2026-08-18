@@ -66,7 +66,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>vtkNativeLibrary</span><span class=p>.</span><span class=na>LoadAllNativeLibraries</span><span class=p>())</span><span class=w> </span><span class=p>{</span>
 <span class=w>      </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=n>vtkNativeLibrary</span><span class=w> </span><span class=n>lib</span><span class=w> </span><span class=p>:</span><span class=w> </span><span class=n>vtkNativeLibrary</span><span class=p>.</span><span class=na>values</span><span class=p>())</span><span class=w> </span><span class=p>{</span>
 <span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>lib</span><span class=p>.</span><span class=na>IsLoaded</span><span class=p>())</span><span class=w> </span><span class=p>{</span>
-<span class=w>          </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&quot; not loaded&quot;</span><span class=p>);</span>
+<span class=w>          </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>" not loaded"</span><span class=p>);</span>
 <span class=w>        </span><span class=p>}</span>
 <span class=w>      </span><span class=p>}</span>
 <span class=w>    </span><span class=p>}</span>
@@ -105,7 +105,7 @@ function registerListener(event, func) {
 </span><span class=w>    </span><span class=n>PlanesIntersection</span><span class=p>.</span><span class=na>SetBounds</span><span class=p>(</span><span class=n>bounds</span><span class=p>);</span>
 
 <span class=w>    </span><span class=kt>int</span><span class=w> </span><span class=n>intersects</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>PlanesIntersection</span><span class=p>.</span><span class=na>IntersectsRegion</span><span class=p>(</span><span class=n>Box</span><span class=p>);</span>
-<span class=w>    </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>print</span><span class=p>(</span><span class=s>&quot;Intersects:&quot;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>intersects</span><span class=w> </span><span class=p>);</span>
+<span class=w>    </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>print</span><span class=p>(</span><span class=s>"Intersects:"</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>intersects</span><span class=w> </span><span class=p>);</span>
 
 <span class=w>  </span><span class=p>}</span><span class=w>  </span>
 <span class=p>}</span><span class=w>   </span>

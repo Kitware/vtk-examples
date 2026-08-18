@@ -120,22 +120,22 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_program_parameters</span><span class=p>():</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>argparse</span>
-    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;Demonstrates point data subdivision with the glyphing of normals on the surface.&#39;</span>
-    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;</span>
+    <span class=n>description</span> <span class=o>=</span> <span class=s1>'Demonstrates point data subdivision with the glyphing of normals on the surface.'</span>
+    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>'''</span>
 <span class=s1>        This program takes a surface and displays three surfaces.</span>
 
 <span class=s1>        The first surface is the original surface and the second and third surfaces have</span>
 <span class=s1>         had linear and butterfly interpolation applied respectively.</span>
 <span class=s1>        The user can control the object to use, normals generation, type of shading</span>
 <span class=s1>         and number of points to use for the normals.</span>
-<span class=s1>    &#39;&#39;&#39;</span>
+<span class=s1>    '''</span>
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;sourceToUse&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The surface to use.&#39;</span><span class=p>,</span> <span class=n>nargs</span><span class=o>=</span><span class=s1>&#39;?&#39;</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=s1>&#39;Boy&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-g&#39;</span><span class=p>,</span> <span class=s1>&#39;--glyphPoints&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Number of points to be used for glyphing.&#39;</span><span class=p>,</span> <span class=n>nargs</span><span class=o>=</span><span class=s1>&#39;?&#39;</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mi>50</span><span class=p>,</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'sourceToUse'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'The surface to use.'</span><span class=p>,</span> <span class=n>nargs</span><span class=o>=</span><span class=s1>'?'</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=s1>'Boy'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-g'</span><span class=p>,</span> <span class=s1>'--glyphPoints'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'Number of points to be used for glyphing.'</span><span class=p>,</span> <span class=n>nargs</span><span class=o>=</span><span class=s1>'?'</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mi>50</span><span class=p>,</span>
                         <span class=nb>type</span><span class=o>=</span><span class=nb>int</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;--no-normals&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Do not display normals.&#39;</span><span class=p>,</span> <span class=n>dest</span><span class=o>=</span><span class=s1>&#39;displayNormals&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_false&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;--no-gouraud&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Use flat interpolation. Gouraud interpolation is used by default.&#39;</span><span class=p>,</span>
-                        <span class=n>dest</span><span class=o>=</span><span class=s1>&#39;gouraudInterpolation&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_false&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'--no-normals'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'Do not display normals.'</span><span class=p>,</span> <span class=n>dest</span><span class=o>=</span><span class=s1>'displayNormals'</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>'store_false'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'--no-gouraud'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'Use flat interpolation. Gouraud interpolation is used by default.'</span><span class=p>,</span>
+                        <span class=n>dest</span><span class=o>=</span><span class=s1>'gouraudInterpolation'</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>'store_false'</span><span class=p>)</span>
     <span class=n>parser</span><span class=o>.</span><span class=n>set_defaults</span><span class=p>(</span><span class=n>displayNormals</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
     <span class=n>parser</span><span class=o>.</span><span class=n>set_defaults</span><span class=p>(</span><span class=n>gouraudInterpolation</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
     <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
@@ -143,7 +143,7 @@ function registerListener(event, func) {
 
 
 <span class=k>class</span><span class=w> </span><span class=nc>Sources</span><span class=p>:</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    This class acts as a storage vehicle for the various sources.</span>
 
 <span class=sd>    If you add more sources, you may need to provide one or all of these filters:</span>
@@ -154,15 +154,15 @@ function registerListener(event, func) {
 <span class=sd>     - For parametric sources, we may need to apply one of both of JoinUOff() or JoinVOff().</span>
 
 <span class=sd>    Use the representative sources provided here as templates.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 
     <span class=k>def</span><span class=w> </span><span class=fm>__init__</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
         <span class=c1># If you add more sources update this dictionary.</span>
-        <span class=bp>self</span><span class=o>.</span><span class=n>sources</span> <span class=o>=</span> <span class=p>{</span><span class=s1>&#39;parametric torus&#39;</span><span class=p>:</span> <span class=bp>self</span><span class=o>.</span><span class=n>parametric_torus_source</span><span class=p>(),</span>
-                        <span class=s1>&#39;parametric ellipsoid&#39;</span><span class=p>:</span> <span class=bp>self</span><span class=o>.</span><span class=n>ellipsoid_source</span><span class=p>(),</span>
-                        <span class=s1>&#39;boy&#39;</span><span class=p>:</span> <span class=bp>self</span><span class=o>.</span><span class=n>boy_source</span><span class=p>(),</span> <span class=s1>&#39;sphere&#39;</span><span class=p>:</span> <span class=bp>self</span><span class=o>.</span><span class=n>sphere_source</span><span class=p>(),</span> <span class=s1>&#39;mobius&#39;</span><span class=p>:</span> <span class=bp>self</span><span class=o>.</span><span class=n>mobius_source</span><span class=p>(),</span>
-                        <span class=s1>&#39;cone&#39;</span><span class=p>:</span> <span class=bp>self</span><span class=o>.</span><span class=n>cone_source</span><span class=p>(),</span> <span class=s1>&#39;random hills&#39;</span><span class=p>:</span> <span class=bp>self</span><span class=o>.</span><span class=n>parametric_random_hills</span><span class=p>(),</span>
-                        <span class=s1>&#39;superquadric&#39;</span><span class=p>:</span> <span class=bp>self</span><span class=o>.</span><span class=n>superquadric_source</span><span class=p>()}</span>
+        <span class=bp>self</span><span class=o>.</span><span class=n>sources</span> <span class=o>=</span> <span class=p>{</span><span class=s1>'parametric torus'</span><span class=p>:</span> <span class=bp>self</span><span class=o>.</span><span class=n>parametric_torus_source</span><span class=p>(),</span>
+                        <span class=s1>'parametric ellipsoid'</span><span class=p>:</span> <span class=bp>self</span><span class=o>.</span><span class=n>ellipsoid_source</span><span class=p>(),</span>
+                        <span class=s1>'boy'</span><span class=p>:</span> <span class=bp>self</span><span class=o>.</span><span class=n>boy_source</span><span class=p>(),</span> <span class=s1>'sphere'</span><span class=p>:</span> <span class=bp>self</span><span class=o>.</span><span class=n>sphere_source</span><span class=p>(),</span> <span class=s1>'mobius'</span><span class=p>:</span> <span class=bp>self</span><span class=o>.</span><span class=n>mobius_source</span><span class=p>(),</span>
+                        <span class=s1>'cone'</span><span class=p>:</span> <span class=bp>self</span><span class=o>.</span><span class=n>cone_source</span><span class=p>(),</span> <span class=s1>'random hills'</span><span class=p>:</span> <span class=bp>self</span><span class=o>.</span><span class=n>parametric_random_hills</span><span class=p>(),</span>
+                        <span class=s1>'superquadric'</span><span class=p>:</span> <span class=bp>self</span><span class=o>.</span><span class=n>superquadric_source</span><span class=p>()}</span>
 
     <span class=nd>@staticmethod</span>
     <span class=k>def</span><span class=w> </span><span class=nf>parametric_torus_source</span><span class=p>():</span>
@@ -212,9 +212,9 @@ function registerListener(event, func) {
 
     <span class=nd>@staticmethod</span>
     <span class=k>def</span><span class=w> </span><span class=nf>superquadric_source</span><span class=p>():</span>
-<span class=w>        </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>        </span><span class=sd>"""</span>
 <span class=sd>        Make a torus as the source.</span>
-<span class=sd>        &quot;&quot;&quot;</span>
+<span class=sd>        """</span>
 <span class=hll>        <span class=n>source</span> <span class=o>=</span> <span class=n>vtkSuperquadricSource</span><span class=p>(</span><span class=n>center</span><span class=o>=</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>),</span> <span class=n>scale</span><span class=o>=</span><span class=p>(</span><span class=mf>1.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>),</span>
 </span>                                       <span class=n>phi_resolution</span><span class=o>=</span><span class=mi>64</span><span class=p>,</span> <span class=n>theta_resolution</span><span class=o>=</span><span class=mi>64</span><span class=p>,</span> <span class=n>theta_roundness</span><span class=o>=</span><span class=mf>1.0</span><span class=p>,</span>
                                        <span class=n>size</span><span class=o>=</span><span class=mi>10</span><span class=p>,</span> <span class=n>toroidal</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
@@ -224,7 +224,7 @@ function registerListener(event, func) {
 <span class=hll>        <span class=n>tri</span> <span class=o>=</span> <span class=n>vtkTriangleFilter</span><span class=p>()</span>
 </span>
         <span class=c1># The quadric has nasty discontinuities from the way the edges are generated</span>
-        <span class=c1># so let&#39;s pass it though a CleanPolyDataFilter and merge any points which</span>
+        <span class=c1># so let's pass it though a CleanPolyDataFilter and merge any points which</span>
         <span class=c1># are coincident, or very close</span>
 <span class=hll>        <span class=n>cleaner</span> <span class=o>=</span> <span class=n>vtkCleanPolyData</span><span class=p>(</span><span class=n>tolerance</span><span class=o>=</span><span class=mf>0.005</span><span class=p>)</span>
 </span>        <span class=n>source</span> <span class=o>&gt;&gt;</span> <span class=n>tri</span> <span class=o>&gt;&gt;</span> <span class=n>cleaner</span>
@@ -249,17 +249,17 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>make_lut</span><span class=p>(</span><span class=n>scalarRange</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Make a lookup table using a predefined color series.</span>
 
 <span class=sd>    :param scalarRange: The range of the scalars to be coloured.</span>
 <span class=sd>    :return:  A lookup table.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 <span class=hll>    <span class=n>color_series</span> <span class=o>=</span> <span class=n>vtkColorSeries</span><span class=p>()</span>
 </span>    <span class=c1># Select a color scheme.</span>
     <span class=c1># for i in range(0,62):</span>
     <span class=c1>#     color_series.SetColorScheme(i)</span>
-    <span class=c1>#     s = f&#39;Colour scheme {color_series.GetColorScheme():2d}: {color_series.GetColorSchemeName():s}&#39;</span>
+    <span class=c1>#     s = f'Colour scheme {color_series.GetColorScheme():2d}: {color_series.GetColorSchemeName():s}'</span>
     <span class=c1>#     print(s)</span>
 
     <span class=c1># Colour scheme 61: Brewer Qualitative Set3</span>
@@ -279,7 +279,7 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>glyph_actor</span><span class=p>(</span><span class=n>source</span><span class=p>,</span> <span class=n>glyph_points</span><span class=p>,</span> <span class=n>scalar_range</span><span class=p>,</span> <span class=n>scale_factor</span><span class=p>,</span> <span class=n>lut</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Create the actor for glyphing the normals.</span>
 
 <span class=sd>    :param: source: the surface.</span>
@@ -289,7 +289,7 @@ function registerListener(event, func) {
 <span class=sd>    :param: lut: The lookup table to use.</span>
 
 <span class=sd>    :return: The glyph actor.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 <span class=hll>    <span class=n>arrow_source</span> <span class=o>=</span> <span class=n>vtkArrowSource</span><span class=p>()</span>
 </span>    <span class=c1># Subsample the dataset.</span>
 <span class=hll>    <span class=n>mask_pts</span> <span class=o>=</span> <span class=n>vtkMaskPoints</span><span class=p>(</span><span class=n>random_mode</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span>
@@ -314,7 +314,7 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>make_surface_actor</span><span class=p>(</span><span class=n>surface</span><span class=p>,</span> <span class=n>scalar_range</span><span class=p>,</span> <span class=n>lut</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Create the actor for a surface.</span>
 
 <span class=sd>    :param: surface: The surface.</span>
@@ -322,7 +322,7 @@ function registerListener(event, func) {
 <span class=sd>    :param: lut: The lookup table to use.</span>
 
 <span class=sd>    :return: The actor for the surface.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 <span class=hll>    <span class=n>mapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>(</span><span class=n>lookup_table</span><span class=o>=</span><span class=n>lut</span><span class=p>,</span> <span class=n>scalar_range</span><span class=o>=</span><span class=n>scalar_range</span><span class=p>)</span>
 </span>    <span class=n>surface</span> <span class=o>&gt;&gt;</span> <span class=n>mapper</span>
     <span class=n>mapper</span><span class=o>.</span><span class=n>SetColorModeToMapScalars</span><span class=p>()</span>
@@ -333,13 +333,13 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>make_axes_actor</span><span class=p>():</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Make an axis actor.</span>
 
 <span class=sd>    :return: The axis actor.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 <span class=hll>    <span class=n>axes</span> <span class=o>=</span> <span class=n>vtkAxesActor</span><span class=p>(</span><span class=n>shaft_type</span><span class=o>=</span><span class=n>vtkAxesActor</span><span class=o>.</span><span class=n>CYLINDER_SHAFT</span><span class=p>,</span> <span class=n>tip_type</span><span class=o>=</span><span class=n>vtkAxesActor</span><span class=o>.</span><span class=n>CONE_TIP</span><span class=p>,</span>
-</span>                        <span class=n>x_axis_label_text</span><span class=o>=</span><span class=s1>&#39;X&#39;</span><span class=p>,</span> <span class=n>y_axis_label_text</span><span class=o>=</span><span class=s1>&#39;Y&#39;</span><span class=p>,</span> <span class=n>z_axis_label_text</span><span class=o>=</span><span class=s1>&#39;Z&#39;</span><span class=p>,</span>
+</span>                        <span class=n>x_axis_label_text</span><span class=o>=</span><span class=s1>'X'</span><span class=p>,</span> <span class=n>y_axis_label_text</span><span class=o>=</span><span class=s1>'Y'</span><span class=p>,</span> <span class=n>z_axis_label_text</span><span class=o>=</span><span class=s1>'Z'</span><span class=p>,</span>
                         <span class=n>total_length</span><span class=o>=</span><span class=p>(</span><span class=mf>1.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>))</span>
     <span class=n>axes</span><span class=o>.</span><span class=n>cylinder_radius</span> <span class=o>=</span> <span class=mf>1.0</span> <span class=o>*</span> <span class=n>axes</span><span class=o>.</span><span class=n>cylinder_radius</span>
     <span class=n>axes</span><span class=o>.</span><span class=n>cone_radius</span> <span class=o>=</span> <span class=mf>1.75</span> <span class=o>*</span> <span class=n>axes</span><span class=o>.</span><span class=n>cone_radius</span>
@@ -357,22 +357,22 @@ function registerListener(event, func) {
 
     <span class=c1># Now color the labels.</span>
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
-</span>    <span class=n>axes</span><span class=o>.</span><span class=n>x_axis_caption_actor2d</span><span class=o>.</span><span class=n>caption_text_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;FireBrick&#39;</span><span class=p>)</span>
-    <span class=n>axes</span><span class=o>.</span><span class=n>y_axis_caption_actor2d</span><span class=o>.</span><span class=n>caption_text_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;DarkGreen&#39;</span><span class=p>)</span>
-    <span class=n>axes</span><span class=o>.</span><span class=n>z_axis_caption_actor2d</span><span class=o>.</span><span class=n>caption_text_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;DarkBlue&#39;</span><span class=p>)</span>
+</span>    <span class=n>axes</span><span class=o>.</span><span class=n>x_axis_caption_actor2d</span><span class=o>.</span><span class=n>caption_text_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'FireBrick'</span><span class=p>)</span>
+    <span class=n>axes</span><span class=o>.</span><span class=n>y_axis_caption_actor2d</span><span class=o>.</span><span class=n>caption_text_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'DarkGreen'</span><span class=p>)</span>
+    <span class=n>axes</span><span class=o>.</span><span class=n>z_axis_caption_actor2d</span><span class=o>.</span><span class=n>caption_text_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'DarkBlue'</span><span class=p>)</span>
 
     <span class=k>return</span> <span class=n>axes</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>make_orientation_marker</span><span class=p>(</span><span class=n>renderer</span><span class=p>,</span> <span class=n>iren</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Create an orientation marker for a given renderer.</span>
 
 <span class=sd>    :param renderer: The renderer.</span>
 <span class=sd>    :param iren: The interactor.</span>
 
 <span class=sd>    :return: The orientation marker.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 <span class=hll>    <span class=n>om</span> <span class=o>=</span> <span class=n>vtkOrientationMarkerWidget</span><span class=p>()</span>
 </span>    <span class=n>om</span><span class=o>.</span><span class=n>SetOrientationMarker</span><span class=p>(</span><span class=n>make_axes_actor</span><span class=p>())</span>
     <span class=c1># Position lower left in the viewport.</span>
@@ -386,7 +386,7 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_text_positions</span><span class=p>(</span><span class=n>names</span><span class=p>,</span> <span class=n>justification</span><span class=o>=</span><span class=mi>0</span><span class=p>,</span> <span class=n>vertical_justification</span><span class=o>=</span><span class=mi>0</span><span class=p>,</span> <span class=n>width</span><span class=o>=</span><span class=mf>0.96</span><span class=p>,</span> <span class=n>height</span><span class=o>=</span><span class=mf>0.1</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Get viewport positioning information for a list of names.</span>
 
 <span class=sd>    :param names: The list of names.</span>
@@ -395,7 +395,7 @@ function registerListener(event, func) {
 <span class=sd>    :param width: Width of the bounding_box of the text in screen coordinates.</span>
 <span class=sd>    :param height: Height of the bounding_box of the text in screen coordinates.</span>
 <span class=sd>    :return: A list of positioning information.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=c1># The gap between the left or right edge of the screen and the text.</span>
     <span class=n>dx</span> <span class=o>=</span> <span class=mf>0.02</span>
     <span class=n>width</span> <span class=o>=</span> <span class=nb>abs</span><span class=p>(</span><span class=n>width</span><span class=p>)</span>
@@ -442,20 +442,20 @@ function registerListener(event, func) {
 
         <span class=c1># For debugging!</span>
         <span class=c1># print(</span>
-        <span class=c1>#     f&#39;{k:16s}: (x0, y0) = ({x0:3.2f}, {y0:3.2f}), (x1, y1) = ({x0 + delta_sz:3.2f}, {y0 + dy:3.2f})&#39;</span>
-        <span class=c1>#     f&#39;, width={delta_sz:3.2f}, height={dy:3.2f}&#39;)</span>
-        <span class=n>text_positions</span><span class=p>[</span><span class=n>k</span><span class=p>]</span> <span class=o>=</span> <span class=p>{</span><span class=s1>&#39;p&#39;</span><span class=p>:</span> <span class=p>[</span><span class=n>x0</span><span class=p>,</span> <span class=n>y0</span><span class=p>,</span> <span class=mi>0</span><span class=p>],</span> <span class=s1>&#39;p2&#39;</span><span class=p>:</span> <span class=p>[</span><span class=n>delta_sz</span><span class=p>,</span> <span class=n>dy</span><span class=p>,</span> <span class=mi>0</span><span class=p>]}</span>
+        <span class=c1>#     f'{k:16s}: (x0, y0) = ({x0:3.2f}, {y0:3.2f}), (x1, y1) = ({x0 + delta_sz:3.2f}, {y0 + dy:3.2f})'</span>
+        <span class=c1>#     f', width={delta_sz:3.2f}, height={dy:3.2f}')</span>
+        <span class=n>text_positions</span><span class=p>[</span><span class=n>k</span><span class=p>]</span> <span class=o>=</span> <span class=p>{</span><span class=s1>'p'</span><span class=p>:</span> <span class=p>[</span><span class=n>x0</span><span class=p>,</span> <span class=n>y0</span><span class=p>,</span> <span class=mi>0</span><span class=p>],</span> <span class=s1>'p2'</span><span class=p>:</span> <span class=p>[</span><span class=n>delta_sz</span><span class=p>,</span> <span class=n>dy</span><span class=p>,</span> <span class=mi>0</span><span class=p>]}</span>
 
     <span class=k>return</span> <span class=n>text_positions</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>write_png</span><span class=p>(</span><span class=n>ren</span><span class=p>,</span> <span class=n>fn</span><span class=p>,</span> <span class=n>magnification</span><span class=o>=</span><span class=mi>1</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Save the image as a PNG</span>
 <span class=sd>    :param: ren - the renderer.</span>
 <span class=sd>    :param: fn - the file name.</span>
 <span class=sd>    :param: magnification - the magnification, usually 1.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 <span class=hll>    <span class=n>ren_lge_im</span> <span class=o>=</span> <span class=n>vtkRenderLargeImage</span><span class=p>(</span><span class=nb>input</span><span class=o>=</span><span class=n>ren</span><span class=p>,</span> <span class=n>magnification</span><span class=o>=</span><span class=n>magnification</span><span class=p>)</span>
 </span><span class=hll>    <span class=n>img_writer</span> <span class=o>=</span> <span class=n>vtkPNGWriter</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=n>fn</span><span class=p>)</span>
 </span>    <span class=n>ren_lge_im</span> <span class=o>&gt;&gt;</span> <span class=n>img_writer</span>
@@ -475,22 +475,22 @@ function registerListener(event, func) {
 
     <span class=n>source_to_use</span><span class=p>,</span> <span class=n>display_normals</span><span class=p>,</span> <span class=n>use_gouraud_interpolation</span><span class=p>,</span> <span class=n>glyph_points</span> <span class=o>=</span> <span class=n>get_program_parameters</span><span class=p>()</span>
 
-    <span class=n>available_sources</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;boy&#39;</span><span class=p>,</span> <span class=s1>&#39;cone&#39;</span><span class=p>,</span> <span class=s1>&#39;parametric ellipsoid&#39;</span><span class=p>,</span> <span class=s1>&#39;mobius&#39;</span><span class=p>,</span>
-                         <span class=s1>&#39;random hills&#39;</span><span class=p>,</span> <span class=s1>&#39;parametric torus&#39;</span><span class=p>,</span> <span class=s1>&#39;sphere&#39;</span><span class=p>,</span> <span class=s1>&#39;superquadric&#39;</span><span class=p>]</span>
+    <span class=n>available_sources</span> <span class=o>=</span> <span class=p>[</span><span class=s1>'boy'</span><span class=p>,</span> <span class=s1>'cone'</span><span class=p>,</span> <span class=s1>'parametric ellipsoid'</span><span class=p>,</span> <span class=s1>'mobius'</span><span class=p>,</span>
+                         <span class=s1>'random hills'</span><span class=p>,</span> <span class=s1>'parametric torus'</span><span class=p>,</span> <span class=s1>'sphere'</span><span class=p>,</span> <span class=s1>'superquadric'</span><span class=p>]</span>
     <span class=n>source_names</span> <span class=o>=</span> <span class=p>[</span><span class=n>available_sources</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>title</span><span class=p>()</span> <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=nb>len</span><span class=p>(</span><span class=n>available_sources</span><span class=p>))]</span>
-    <span class=n>source_name</span> <span class=o>=</span> <span class=s1>&#39; &#39;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>source_to_use</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span><span class=o>.</span><span class=n>replace</span><span class=p>(</span><span class=s1>&#39;_&#39;</span><span class=p>,</span> <span class=s1>&#39; &#39;</span><span class=p>)</span><span class=o>.</span><span class=n>split</span><span class=p>())</span>
+    <span class=n>source_name</span> <span class=o>=</span> <span class=s1>' '</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>source_to_use</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span><span class=o>.</span><span class=n>replace</span><span class=p>(</span><span class=s1>'_'</span><span class=p>,</span> <span class=s1>' '</span><span class=p>)</span><span class=o>.</span><span class=n>split</span><span class=p>())</span>
     <span class=k>if</span> <span class=n>source_name</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span> <span class=ow>not</span> <span class=ow>in</span> <span class=n>available_sources</span><span class=p>:</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Nonexistent surface:&#39;</span><span class=p>,</span> <span class=n>source_name</span><span class=p>)</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Available sources are:&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'Nonexistent surface:'</span><span class=p>,</span> <span class=n>source_name</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'Available sources are:'</span><span class=p>)</span>
         <span class=n>asl</span> <span class=o>=</span> <span class=nb>sorted</span><span class=p>(</span><span class=n>available_sources</span><span class=p>)</span>
         <span class=n>asl</span> <span class=o>=</span> <span class=p>[</span><span class=n>asl</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>title</span><span class=p>()</span> <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=nb>len</span><span class=p>(</span><span class=n>asl</span><span class=p>))]</span>
         <span class=n>asl</span> <span class=o>=</span> <span class=p>[</span><span class=n>asl</span><span class=p>[</span><span class=n>i</span><span class=p>:</span><span class=n>i</span> <span class=o>+</span> <span class=mi>5</span><span class=p>]</span> <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=nb>len</span><span class=p>(</span><span class=n>asl</span><span class=p>),</span> <span class=mi>5</span><span class=p>)]</span>
         <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=nb>len</span><span class=p>(</span><span class=n>asl</span><span class=p>)):</span>
-            <span class=n>s</span> <span class=o>=</span> <span class=s1>&#39;, &#39;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>asl</span><span class=p>[</span><span class=n>i</span><span class=p>])</span>
+            <span class=n>s</span> <span class=o>=</span> <span class=s1>', '</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>asl</span><span class=p>[</span><span class=n>i</span><span class=p>])</span>
             <span class=k>if</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=nb>len</span><span class=p>(</span><span class=n>asl</span><span class=p>)</span> <span class=o>-</span> <span class=mi>1</span><span class=p>:</span>
-                <span class=n>s</span> <span class=o>+=</span> <span class=s1>&#39;,&#39;</span>
-            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;   </span><span class=si>{</span><span class=n>s</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;If a name has spaces in it, delineate the name with quotes e.g. &quot;random hills&quot;&#39;</span><span class=p>)</span>
+                <span class=n>s</span> <span class=o>+=</span> <span class=s1>','</span>
+            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'   </span><span class=si>{</span><span class=n>s</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'If a name has spaces in it, delineate the name with quotes e.g. "random hills"'</span><span class=p>)</span>
         <span class=k>return</span>
 
     <span class=n>src</span> <span class=o>=</span> <span class=n>Sources</span><span class=p>()</span><span class=o>.</span><span class=n>sources</span><span class=p>[</span><span class=n>source_name</span><span class=p>]</span>
@@ -505,10 +505,10 @@ function registerListener(event, func) {
     <span class=n>bounds</span> <span class=o>=</span> <span class=n>src_pd</span><span class=o>.</span><span class=n>bounds</span>
     <span class=c1># Use this to scale the normal glyph.</span>
     <span class=n>scale_factor</span> <span class=o>=</span> <span class=nb>min</span><span class=p>(</span><span class=nb>map</span><span class=p>(</span><span class=k>lambda</span> <span class=n>x</span><span class=p>,</span> <span class=n>y</span><span class=p>:</span> <span class=n>x</span> <span class=o>-</span> <span class=n>y</span><span class=p>,</span> <span class=n>bounds</span><span class=p>[</span><span class=mi>1</span><span class=p>::</span><span class=mi>2</span><span class=p>],</span> <span class=n>bounds</span><span class=p>[::</span><span class=mi>2</span><span class=p>]))</span> <span class=o>*</span> <span class=mf>0.2</span>
-    <span class=n>src_pd</span><span class=o>.</span><span class=n>point_data</span><span class=o>.</span><span class=n>GetScalars</span><span class=p>()</span><span class=o>.</span><span class=n>SetName</span><span class=p>(</span><span class=s2>&quot;Elevation&quot;</span><span class=p>)</span>
+    <span class=n>src_pd</span><span class=o>.</span><span class=n>point_data</span><span class=o>.</span><span class=n>GetScalars</span><span class=p>()</span><span class=o>.</span><span class=n>SetName</span><span class=p>(</span><span class=s2>"Elevation"</span><span class=p>)</span>
     <span class=n>scalar_range</span> <span class=o>=</span> <span class=n>src_pd</span><span class=o>.</span><span class=n>scalar_range</span>
 
-    <span class=n>text</span> <span class=o>=</span> <span class=p>{</span><span class=mi>0</span><span class=p>:</span> <span class=s1>&#39;Original&#39;</span><span class=p>,</span> <span class=mi>1</span><span class=p>:</span> <span class=s1>&#39;Linear Subdivision&#39;</span><span class=p>,</span> <span class=mi>2</span><span class=p>:</span> <span class=s1>&#39;Butterfly Subdivision&#39;</span><span class=p>}</span>
+    <span class=n>text</span> <span class=o>=</span> <span class=p>{</span><span class=mi>0</span><span class=p>:</span> <span class=s1>'Original'</span><span class=p>,</span> <span class=mi>1</span><span class=p>:</span> <span class=s1>'Linear Subdivision'</span><span class=p>,</span> <span class=mi>2</span><span class=p>:</span> <span class=s1>'Butterfly Subdivision'</span><span class=p>}</span>
 
     <span class=c1># Define viewport ranges [x_min, y_min, x_max, y_max]</span>
     <span class=n>viewports</span> <span class=o>=</span> <span class=p>{</span><span class=mi>0</span><span class=p>:</span> <span class=p>[</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>1.0</span> <span class=o>/</span> <span class=mf>3.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>],</span>
@@ -530,14 +530,14 @@ function registerListener(event, func) {
     <span class=n>actors</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>make_surface_actor</span><span class=p>(</span><span class=n>linear</span><span class=p>,</span> <span class=n>scalar_range</span><span class=p>,</span> <span class=n>lut</span><span class=p>))</span>
     <span class=n>actors</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>make_surface_actor</span><span class=p>(</span><span class=n>butterfly</span><span class=p>,</span> <span class=n>scalar_range</span><span class=p>,</span> <span class=n>lut</span><span class=p>))</span>
 
-    <span class=c1># Let&#39;s visualise the normals.</span>
+    <span class=c1># Let's visualise the normals.</span>
     <span class=n>glyph_actors</span> <span class=o>=</span> <span class=nb>list</span><span class=p>()</span>
     <span class=k>if</span> <span class=n>display_normals</span><span class=p>:</span>
         <span class=n>glyph_actors</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>glyph_actor</span><span class=p>(</span><span class=n>src</span><span class=p>,</span> <span class=n>glyph_points</span><span class=p>,</span> <span class=n>scalar_range</span><span class=p>,</span> <span class=n>scale_factor</span><span class=p>,</span> <span class=n>lut</span><span class=p>))</span>
         <span class=n>glyph_actors</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>glyph_actor</span><span class=p>(</span><span class=n>linear</span><span class=p>,</span> <span class=n>glyph_points</span><span class=p>,</span> <span class=n>scalar_range</span><span class=p>,</span> <span class=n>scale_factor</span><span class=p>,</span> <span class=n>lut</span><span class=p>))</span>
         <span class=n>glyph_actors</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>glyph_actor</span><span class=p>(</span><span class=n>butterfly</span><span class=p>,</span> <span class=n>glyph_points</span><span class=p>,</span> <span class=n>scalar_range</span><span class=p>,</span> <span class=n>scale_factor</span><span class=p>,</span> <span class=n>lut</span><span class=p>))</span>
 
-<span class=hll>    <span class=n>ren_win</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>size</span><span class=o>=</span><span class=p>(</span><span class=n>ren_win_x_size</span><span class=p>,</span> <span class=n>ren_win_y_size</span><span class=p>),</span> <span class=n>window_name</span><span class=o>=</span><span class=s1>&#39;PointDataSubdivision&#39;</span><span class=p>)</span>
+<span class=hll>    <span class=n>ren_win</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>size</span><span class=o>=</span><span class=p>(</span><span class=n>ren_win_x_size</span><span class=p>,</span> <span class=n>ren_win_y_size</span><span class=p>),</span> <span class=n>window_name</span><span class=o>=</span><span class=s1>'PointDataSubdivision'</span><span class=p>)</span>
 </span><span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>iren</span><span class=o>.</span><span class=n>render_window</span> <span class=o>=</span> <span class=n>ren_win</span>
 
@@ -551,18 +551,18 @@ function registerListener(event, func) {
                                          <span class=n>vertical_justification</span><span class=o>=</span><span class=n>TextProperty</span><span class=o>.</span><span class=n>VerticalJustification</span><span class=o>.</span><span class=n>VTK_TEXT_TOP</span><span class=p>,</span>
                                          <span class=n>width</span><span class=o>=</span><span class=mf>0.65</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>title_property</span> <span class=o>=</span> <span class=n>vtkTextProperty</span><span class=p>(</span><span class=n>color</span><span class=o>=</span><span class=n>nc</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Gold&#39;</span><span class=p>),</span> <span class=n>bold</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>italic</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>shadow</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span>
+<span class=hll>    <span class=n>title_property</span> <span class=o>=</span> <span class=n>vtkTextProperty</span><span class=p>(</span><span class=n>color</span><span class=o>=</span><span class=n>nc</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Gold'</span><span class=p>),</span> <span class=n>bold</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>italic</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>shadow</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span>
 </span>                                     <span class=n>font_size</span><span class=o>=</span><span class=mi>16</span><span class=p>,</span>
                                      <span class=n>justification</span><span class=o>=</span><span class=n>TextProperty</span><span class=o>.</span><span class=n>Justification</span><span class=o>.</span><span class=n>VTK_TEXT_LEFT</span><span class=p>)</span>
 <span class=hll>    <span class=n>title_actor</span> <span class=o>=</span> <span class=n>vtkTextActor</span><span class=p>(</span><span class=nb>input</span><span class=o>=</span><span class=n>title</span><span class=p>,</span> <span class=n>text_scale_mode</span><span class=o>=</span><span class=n>vtkTextActor</span><span class=o>.</span><span class=n>TEXT_SCALE_MODE_NONE</span><span class=p>,</span>
 </span>                               <span class=n>text_property</span><span class=o>=</span><span class=n>title_property</span><span class=p>)</span>
     <span class=c1># Create the text representation. Used for positioning the text actor.</span>
 <span class=hll>    <span class=n>title_representation</span> <span class=o>=</span> <span class=n>vtkTextRepresentation</span><span class=p>(</span><span class=n>enforce_normalized_viewport_bounds</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
-</span>    <span class=n>title_representation</span><span class=o>.</span><span class=n>position_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>title_positions</span><span class=p>[</span><span class=n>title</span><span class=p>][</span><span class=s1>&#39;p&#39;</span><span class=p>]</span>
-    <span class=n>title_representation</span><span class=o>.</span><span class=n>position2_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>title_positions</span><span class=p>[</span><span class=n>title</span><span class=p>][</span><span class=s1>&#39;p2&#39;</span><span class=p>]</span>
+</span>    <span class=n>title_representation</span><span class=o>.</span><span class=n>position_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>title_positions</span><span class=p>[</span><span class=n>title</span><span class=p>][</span><span class=s1>'p'</span><span class=p>]</span>
+    <span class=n>title_representation</span><span class=o>.</span><span class=n>position2_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>title_positions</span><span class=p>[</span><span class=n>title</span><span class=p>][</span><span class=s1>'p2'</span><span class=p>]</span>
 
-<span class=hll>    <span class=n>text_property</span> <span class=o>=</span> <span class=n>vtkTextProperty</span><span class=p>(</span><span class=n>color</span><span class=o>=</span><span class=n>nc</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Gold&#39;</span><span class=p>),</span> <span class=n>bold</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>italic</span><span class=o>=</span><span class=kc>False</span><span class=p>,</span> <span class=n>shadow</span><span class=o>=</span><span class=kc>False</span><span class=p>,</span>
-</span>                                    <span class=n>font_size</span><span class=o>=</span><span class=mi>12</span><span class=p>,</span> <span class=n>font_family_as_string</span><span class=o>=</span><span class=s1>&#39;Courier&#39;</span><span class=p>,</span>
+<span class=hll>    <span class=n>text_property</span> <span class=o>=</span> <span class=n>vtkTextProperty</span><span class=p>(</span><span class=n>color</span><span class=o>=</span><span class=n>nc</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Gold'</span><span class=p>),</span> <span class=n>bold</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>italic</span><span class=o>=</span><span class=kc>False</span><span class=p>,</span> <span class=n>shadow</span><span class=o>=</span><span class=kc>False</span><span class=p>,</span>
+</span>                                    <span class=n>font_size</span><span class=o>=</span><span class=mi>12</span><span class=p>,</span> <span class=n>font_family_as_string</span><span class=o>=</span><span class=s1>'Courier'</span><span class=p>,</span>
                                     <span class=n>justification</span><span class=o>=</span><span class=n>TextProperty</span><span class=o>.</span><span class=n>Justification</span><span class=o>.</span><span class=n>VTK_TEXT_CENTERED</span><span class=p>,</span>
                                     <span class=n>vertical_justification</span><span class=o>=</span><span class=n>TextProperty</span><span class=o>.</span><span class=n>VerticalJustification</span><span class=o>.</span><span class=n>VTK_TEXT_CENTERED</span><span class=p>)</span>
 
@@ -580,7 +580,7 @@ function registerListener(event, func) {
     <span class=n>om</span> <span class=o>=</span> <span class=nb>list</span><span class=p>()</span>
     <span class=n>camera</span> <span class=o>=</span> <span class=kc>None</span>
     <span class=k>for</span> <span class=n>k</span> <span class=ow>in</span> <span class=n>text</span><span class=o>.</span><span class=n>keys</span><span class=p>():</span>
-<span class=hll>        <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>nc</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;SlateGray&#39;</span><span class=p>),</span> <span class=n>viewport</span><span class=o>=</span><span class=n>viewports</span><span class=p>[</span><span class=n>k</span><span class=p>])</span>
+<span class=hll>        <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>nc</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'SlateGray'</span><span class=p>),</span> <span class=n>viewport</span><span class=o>=</span><span class=n>viewports</span><span class=p>[</span><span class=n>k</span><span class=p>])</span>
 </span>
         <span class=c1># Add the actors.</span>
         <span class=n>renderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actors</span><span class=p>[</span><span class=n>k</span><span class=p>])</span>
@@ -603,8 +603,8 @@ function registerListener(event, func) {
 </span>
         <span class=c1># Create the text representation. Used for positioning the text actor.</span>
 <span class=hll>        <span class=n>text_representations</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>vtkTextRepresentation</span><span class=p>(</span><span class=n>enforce_normalized_viewport_bounds</span><span class=o>=</span><span class=kc>True</span><span class=p>))</span>
-</span>        <span class=n>text_representations</span><span class=p>[</span><span class=n>k</span><span class=p>]</span><span class=o>.</span><span class=n>position_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>text_positions</span><span class=p>[</span><span class=n>label</span><span class=p>][</span><span class=s1>&#39;p&#39;</span><span class=p>]</span>
-        <span class=n>text_representations</span><span class=p>[</span><span class=n>k</span><span class=p>]</span><span class=o>.</span><span class=n>position2_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>text_positions</span><span class=p>[</span><span class=n>label</span><span class=p>][</span><span class=s1>&#39;p2&#39;</span><span class=p>]</span>
+</span>        <span class=n>text_representations</span><span class=p>[</span><span class=n>k</span><span class=p>]</span><span class=o>.</span><span class=n>position_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>text_positions</span><span class=p>[</span><span class=n>label</span><span class=p>][</span><span class=s1>'p'</span><span class=p>]</span>
+        <span class=n>text_representations</span><span class=p>[</span><span class=n>k</span><span class=p>]</span><span class=o>.</span><span class=n>position2_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>text_positions</span><span class=p>[</span><span class=n>label</span><span class=p>][</span><span class=s1>'p2'</span><span class=p>]</span>
 
         <span class=c1># Create the TextWidget for the subdivision names.</span>
         <span class=n>text_widgets</span><span class=o>.</span><span class=n>append</span><span class=p>(</span>
@@ -630,7 +630,7 @@ function registerListener(event, func) {
         <span class=n>text_widgets</span><span class=p>[</span><span class=n>k</span><span class=p>]</span><span class=o>.</span><span class=n>On</span><span class=p>()</span>
 
     <span class=n>iren</span><span class=o>.</span><span class=n>Initialize</span><span class=p>()</span>
-    <span class=c1># write_png(iren.GetRenderWindow().GetRenderers().GetFirstRenderer(), &#39;TestPointDataSubdivision.png&#39;)</span>
+    <span class=c1># write_png(iren.GetRenderWindow().GetRenderers().GetFirstRenderer(), 'TestPointDataSubdivision.png')</span>
     <span class=n>iren</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
 
@@ -702,6 +702,6 @@ function registerListener(event, func) {
         <span class=n>VTK_TEXT_TOP</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>2</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

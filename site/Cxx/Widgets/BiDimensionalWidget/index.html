@@ -119,7 +119,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkBiDimensionalCallback</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 
-<span class=hll><span class=w>  </span><span class=k>virtual</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=n>Execute</span><span class=p>(</span><span class=n>vtkObject</span><span class=o>*</span><span class=w> </span><span class=n>caller</span><span class=p>,</span><span class=w> </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>long</span><span class=p>,</span><span class=w> </span><span class=kt>void</span><span class=o>*</span><span class=p>)</span>
+<span class=hll><span class=w>  </span><span class=k>virtual</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>Execute</span><span class=p>(</span><span class=n>vtkObject</span><span class=o>*</span><span class=w> </span><span class=n>caller</span><span class=p>,</span><span class=w> </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>long</span><span class=p>,</span><span class=w> </span><span class=kt>void</span><span class=o>*</span><span class=p>)</span>
 </span><span class=w>  </span><span class=p>{</span>
 
 <span class=hll><span class=w>    </span><span class=n>vtkBiDimensionalWidget</span><span class=o>*</span><span class=w> </span><span class=n>biDimensionalWidget</span><span class=w> </span><span class=o>=</span>
@@ -138,8 +138,8 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=kt>double</span><span class=w> </span><span class=n>p4</span><span class=p>[</span><span class=mi>3</span><span class=p>];</span>
 <span class=w>    </span><span class=n>representation</span><span class=o>-&gt;</span><span class=n>GetPoint1DisplayPosition</span><span class=p>(</span><span class=n>p4</span><span class=p>);</span>
 
-<span class=w>    </span><span class=c1>// Display one of the points, just so we know it&#39;s working</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;P1: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>p1</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>p1</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>p1</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=c1>// Display one of the points, just so we know it's working</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"P1: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>p1</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>p1</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>p1</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=w>  </span><span class=n>vtkBiDimensionalCallback</span><span class=p>()</span>
 <span class=w>  </span><span class=p>{</span>
@@ -160,16 +160,16 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>actor</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>actor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>);</span>
 <span class=w>  </span><span class=n>actor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
-<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;DarkOliveGreen&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"DarkOliveGreen"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=w>  </span><span class=c1>// A renderer and render window.</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderer</span><span class=p>;</span>
 </span><span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderWindow</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;BiDimensionalWidget&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"BiDimensionalWidget"</span><span class=p>);</span>
 
 <span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;SteelBlue&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"SteelBlue"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=w>  </span><span class=c1>// An interactor</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderWindowInteractor</span><span class=p>;</span>
@@ -214,11 +214,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;BiDimensionalWidget: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"BiDimensionalWidget: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>BiDimensionalWidget</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>BiDimensionalWidget.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>BiDimensionalWidget</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

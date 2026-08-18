@@ -119,25 +119,25 @@ function registerListener(event, func) {
 
 <span class=hll>    <span class=n>actor</span> <span class=o>=</span> <span class=n>vtkSpiderPlotActor</span><span class=p>()</span>
 </span>    <span class=n>actor</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>dobj</span><span class=p>)</span>
-    <span class=n>actor</span><span class=o>.</span><span class=n>SetTitle</span><span class=p>(</span><span class=s2>&quot;Spider Plot&quot;</span><span class=p>)</span>
+    <span class=n>actor</span><span class=o>.</span><span class=n>SetTitle</span><span class=p>(</span><span class=s2>"Spider Plot"</span><span class=p>)</span>
     <span class=n>actor</span><span class=o>.</span><span class=n>SetIndependentVariablesToColumns</span><span class=p>()</span>
     <span class=n>actor</span><span class=o>.</span><span class=n>GetPositionCoordinate</span><span class=p>()</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=mf>0.05</span><span class=p>,</span> <span class=mf>0.1</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>)</span>
     <span class=n>actor</span><span class=o>.</span><span class=n>GetPosition2Coordinate</span><span class=p>()</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=mf>0.95</span><span class=p>,</span> <span class=mf>0.85</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>)</span>
-    <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Red&#39;</span><span class=p>))</span>
+    <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Red'</span><span class=p>))</span>
 
-    <span class=n>actor</span><span class=o>.</span><span class=n>SetAxisLabel</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=s2>&quot;Bitter&quot;</span><span class=p>)</span>
+    <span class=n>actor</span><span class=o>.</span><span class=n>SetAxisLabel</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=s2>"Bitter"</span><span class=p>)</span>
     <span class=n>actor</span><span class=o>.</span><span class=n>SetAxisRange</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>10</span><span class=p>)</span>
 
-    <span class=n>actor</span><span class=o>.</span><span class=n>SetAxisLabel</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=s2>&quot;Crispy&quot;</span><span class=p>)</span>
+    <span class=n>actor</span><span class=o>.</span><span class=n>SetAxisLabel</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=s2>"Crispy"</span><span class=p>)</span>
     <span class=n>actor</span><span class=o>.</span><span class=n>SetAxisRange</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
 
-    <span class=n>actor</span><span class=o>.</span><span class=n>SetAxisLabel</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span> <span class=s2>&quot;Crunchy&quot;</span><span class=p>)</span>
+    <span class=n>actor</span><span class=o>.</span><span class=n>SetAxisLabel</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span> <span class=s2>"Crunchy"</span><span class=p>)</span>
     <span class=n>actor</span><span class=o>.</span><span class=n>SetAxisRange</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>100</span><span class=p>)</span>
 
-    <span class=n>actor</span><span class=o>.</span><span class=n>SetAxisLabel</span><span class=p>(</span><span class=mi>3</span><span class=p>,</span> <span class=s2>&quot;Salty&quot;</span><span class=p>)</span>
+    <span class=n>actor</span><span class=o>.</span><span class=n>SetAxisLabel</span><span class=p>(</span><span class=mi>3</span><span class=p>,</span> <span class=s2>"Salty"</span><span class=p>)</span>
     <span class=n>actor</span><span class=o>.</span><span class=n>SetAxisRange</span><span class=p>(</span><span class=mi>3</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>10</span><span class=p>)</span>
 
-    <span class=n>actor</span><span class=o>.</span><span class=n>SetAxisLabel</span><span class=p>(</span><span class=mi>4</span><span class=p>,</span> <span class=s2>&quot;Oily&quot;</span><span class=p>)</span>
+    <span class=n>actor</span><span class=o>.</span><span class=n>SetAxisLabel</span><span class=p>(</span><span class=mi>4</span><span class=p>,</span> <span class=s2>"Oily"</span><span class=p>)</span>
     <span class=n>actor</span><span class=o>.</span><span class=n>SetAxisRange</span><span class=p>(</span><span class=mi>4</span><span class=p>,</span> <span class=mi>5</span><span class=p>,</span> <span class=mi>25</span><span class=p>)</span>
     <span class=n>actor</span><span class=o>.</span><span class=n>GetLegendActor</span><span class=p>()</span><span class=o>.</span><span class=n>SetNumberOfEntries</span><span class=p>(</span><span class=n>numTuples</span><span class=p>)</span>
 
@@ -152,8 +152,8 @@ function registerListener(event, func) {
 
     <span class=n>actor</span><span class=o>.</span><span class=n>LegendVisibilityOn</span><span class=p>()</span>
 
-    <span class=n>actor</span><span class=o>.</span><span class=n>GetTitleTextProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;MistyRose&#39;</span><span class=p>))</span>
-    <span class=n>actor</span><span class=o>.</span><span class=n>GetLabelTextProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;MistyRose&#39;</span><span class=p>))</span>
+    <span class=n>actor</span><span class=o>.</span><span class=n>GetTitleTextProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'MistyRose'</span><span class=p>))</span>
+    <span class=n>actor</span><span class=o>.</span><span class=n>GetLabelTextProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'MistyRose'</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>ren1</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>()</span>
 </span><span class=hll>    <span class=n>renWin</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>()</span>
@@ -161,15 +161,15 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>iren</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renWin</span><span class=p>)</span>
     <span class=n>ren1</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor</span><span class=p>)</span>
-    <span class=n>ren1</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;DarkSlateGray&#39;</span><span class=p>))</span>
+    <span class=n>ren1</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'DarkSlateGray'</span><span class=p>))</span>
     <span class=n>renWin</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>600</span><span class=p>,</span> <span class=mi>500</span><span class=p>)</span>
-    <span class=n>renWin</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;SpiderPlot&#39;</span><span class=p>)</span>
+    <span class=n>renWin</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>'SpiderPlot'</span><span class=p>)</span>
 
     <span class=n>iren</span><span class=o>.</span><span class=n>Initialize</span><span class=p>()</span>
     <span class=n>renWin</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
     <span class=n>iren</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

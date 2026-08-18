@@ -91,9 +91,9 @@ function registerListener(event, func) {
 </span>
     <span class=n>file_name</span> <span class=o>=</span> <span class=n>get_program_parameters</span><span class=p>()</span>
 
-    <span class=n>colors</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=s1>&#39;SkinColor&#39;</span><span class=p>,</span> <span class=p>[</span><span class=mi>240</span><span class=p>,</span> <span class=mi>184</span><span class=p>,</span> <span class=mi>160</span><span class=p>,</span> <span class=mi>255</span><span class=p>])</span>
-    <span class=n>colors</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=s1>&#39;BackfaceColor&#39;</span><span class=p>,</span> <span class=p>[</span><span class=mi>255</span><span class=p>,</span> <span class=mi>229</span><span class=p>,</span> <span class=mi>200</span><span class=p>,</span> <span class=mi>255</span><span class=p>])</span>
-    <span class=n>colors</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=s1>&#39;BkgColor&#39;</span><span class=p>,</span> <span class=p>[</span><span class=mi>51</span><span class=p>,</span> <span class=mi>77</span><span class=p>,</span> <span class=mi>102</span><span class=p>,</span> <span class=mi>255</span><span class=p>])</span>
+    <span class=n>colors</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=s1>'SkinColor'</span><span class=p>,</span> <span class=p>[</span><span class=mi>240</span><span class=p>,</span> <span class=mi>184</span><span class=p>,</span> <span class=mi>160</span><span class=p>,</span> <span class=mi>255</span><span class=p>])</span>
+    <span class=n>colors</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=s1>'BackfaceColor'</span><span class=p>,</span> <span class=p>[</span><span class=mi>255</span><span class=p>,</span> <span class=mi>229</span><span class=p>,</span> <span class=mi>200</span><span class=p>,</span> <span class=mi>255</span><span class=p>])</span>
+    <span class=n>colors</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=s1>'BkgColor'</span><span class=p>,</span> <span class=p>[</span><span class=mi>51</span><span class=p>,</span> <span class=mi>77</span><span class=p>,</span> <span class=mi>102</span><span class=p>,</span> <span class=mi>255</span><span class=p>])</span>
 
     <span class=c1># Create the renderer, the render window, and the interactor. The renderer</span>
     <span class=c1># draws into the render window, the interactor enables mouse- and</span>
@@ -127,10 +127,10 @@ function registerListener(event, func) {
 
 <span class=hll>    <span class=n>skin</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>skin</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>skin_mapper</span><span class=p>)</span>
-    <span class=n>skin</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetDiffuseColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;SkinColor&#39;</span><span class=p>))</span>
+    <span class=n>skin</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetDiffuseColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'SkinColor'</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>back_prop</span> <span class=o>=</span> <span class=n>vtkProperty</span><span class=p>()</span>
-</span>    <span class=n>back_prop</span><span class=o>.</span><span class=n>SetDiffuseColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;BackfaceColor&#39;</span><span class=p>))</span>
+</span>    <span class=n>back_prop</span><span class=o>.</span><span class=n>SetDiffuseColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'BackfaceColor'</span><span class=p>))</span>
     <span class=n>skin</span><span class=o>.</span><span class=n>SetBackfaceProperty</span><span class=p>(</span><span class=n>back_prop</span><span class=p>)</span>
 
     <span class=c1># An outline provides context around the data.</span>
@@ -143,7 +143,7 @@ function registerListener(event, func) {
 
 <span class=hll>    <span class=n>outline</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>outline</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>map_outline</span><span class=p>)</span>
-    <span class=n>outline</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Black&#39;</span><span class=p>))</span>
+    <span class=n>outline</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Black'</span><span class=p>))</span>
 
     <span class=c1># It is convenient to create an initial view of the data. The FocalPoint</span>
     <span class=c1># and Position form a vector direction. Later on (ResetCamera() method)</span>
@@ -168,9 +168,9 @@ function registerListener(event, func) {
 
     <span class=c1># Set a background color for the renderer and set the size of the</span>
     <span class=c1># render window (expressed in pixels).</span>
-    <span class=n>a_renderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;BkgColor&#39;</span><span class=p>))</span>
+    <span class=n>a_renderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'BkgColor'</span><span class=p>))</span>
     <span class=n>ren_win</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>640</span><span class=p>,</span> <span class=mi>480</span><span class=p>)</span>
-    <span class=n>ren_win</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;MedicalDemo1&#39;</span><span class=p>)</span>
+    <span class=n>ren_win</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>'MedicalDemo1'</span><span class=p>)</span>
 
     <span class=c1># Note that when camera movement occurs (as it does in the Dolly()</span>
     <span class=c1># method), the clipping planes often need adjusting. Clipping planes</span>
@@ -187,28 +187,28 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_program_parameters</span><span class=p>():</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>argparse</span>
-    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;The skin extracted from a CT dataset of the head.&#39;</span>
-    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;</span>
+    <span class=n>description</span> <span class=o>=</span> <span class=s1>'The skin extracted from a CT dataset of the head.'</span>
+    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>'''</span>
 <span class=s1>    Derived from VTK/Examples/Cxx/Medical1.cxx</span>
 <span class=s1>    This example reads a volume dataset, extracts an isosurface that</span>
 <span class=s1>     represents the skin and displays it.</span>
-<span class=s1>    &#39;&#39;&#39;</span>
+<span class=s1>    '''</span>
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
                                      <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawDescriptionHelpFormatter</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;filename&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;FullHead.mhd.&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'filename'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'FullHead.mhd.'</span><span class=p>)</span>
     <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
     <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>filename</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>vtk_version_ok</span><span class=p>(</span><span class=n>major</span><span class=p>,</span> <span class=n>minor</span><span class=p>,</span> <span class=n>build</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Check the VTK version.</span>
 
 <span class=sd>    :param major: Major version.</span>
 <span class=sd>    :param minor: Minor version.</span>
 <span class=sd>    :param build: Build version.</span>
 <span class=sd>    :return: True if the requested VTK version is greater or equal to the actual VTK version.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=n>needed_version</span> <span class=o>=</span> <span class=mi>10000000000</span> <span class=o>*</span> <span class=nb>int</span><span class=p>(</span><span class=n>major</span><span class=p>)</span> <span class=o>+</span> <span class=mi>100000000</span> <span class=o>*</span> <span class=nb>int</span><span class=p>(</span><span class=n>minor</span><span class=p>)</span> <span class=o>+</span> <span class=nb>int</span><span class=p>(</span><span class=n>build</span><span class=p>)</span>
     <span class=k>try</span><span class=p>:</span>
         <span class=n>vtk_version_number</span> <span class=o>=</span> <span class=n>VTK_VERSION_NUMBER</span>
@@ -222,6 +222,6 @@ function registerListener(event, func) {
         <span class=k>return</span> <span class=kc>False</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

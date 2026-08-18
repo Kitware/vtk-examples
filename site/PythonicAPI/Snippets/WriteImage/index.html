@@ -70,7 +70,7 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>write_image</span><span class=p>(</span><span class=n>file_name</span><span class=p>,</span> <span class=n>ren_win</span><span class=p>,</span> <span class=n>rgba</span><span class=o>=</span><span class=kc>True</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Write the render window view to an image file.</span>
 
 <span class=sd>    Image types supported are:</span>
@@ -81,23 +81,23 @@ function registerListener(event, func) {
 <span class=sd>    :param ren_win: The render window.</span>
 <span class=sd>    :param rgba: Used to set the buffer type.</span>
 <span class=sd>    :return:</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 
     <span class=k>if</span> <span class=n>file_name</span><span class=p>:</span>
-        <span class=n>valid_suffixes</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;.bmp&#39;</span><span class=p>,</span> <span class=s1>&#39;.jpg&#39;</span><span class=p>,</span> <span class=s1>&#39;.png&#39;</span><span class=p>,</span> <span class=s1>&#39;.pnm&#39;</span><span class=p>,</span> <span class=s1>&#39;.ps&#39;</span><span class=p>,</span> <span class=s1>&#39;.tiff&#39;</span><span class=p>]</span>
+        <span class=n>valid_suffixes</span> <span class=o>=</span> <span class=p>[</span><span class=s1>'.bmp'</span><span class=p>,</span> <span class=s1>'.jpg'</span><span class=p>,</span> <span class=s1>'.png'</span><span class=p>,</span> <span class=s1>'.pnm'</span><span class=p>,</span> <span class=s1>'.ps'</span><span class=p>,</span> <span class=s1>'.tiff'</span><span class=p>]</span>
         <span class=c1># Select the writer to use.</span>
         <span class=n>parent</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span><span class=o>.</span><span class=n>resolve</span><span class=p>()</span><span class=o>.</span><span class=n>parent</span>
         <span class=n>path</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>parent</span><span class=p>)</span> <span class=o>/</span> <span class=n>file_name</span>
         <span class=k>if</span> <span class=n>path</span><span class=o>.</span><span class=n>suffix</span><span class=p>:</span>
             <span class=n>ext</span> <span class=o>=</span> <span class=n>path</span><span class=o>.</span><span class=n>suffix</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span>
         <span class=k>else</span><span class=p>:</span>
-            <span class=n>ext</span> <span class=o>=</span> <span class=s1>&#39;.png&#39;</span>
+            <span class=n>ext</span> <span class=o>=</span> <span class=s1>'.png'</span>
             <span class=n>path</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=nb>str</span><span class=p>(</span><span class=n>path</span><span class=p>))</span><span class=o>.</span><span class=n>with_suffix</span><span class=p>(</span><span class=n>ext</span><span class=p>)</span>
         <span class=k>if</span> <span class=n>path</span><span class=o>.</span><span class=n>suffix</span> <span class=ow>not</span> <span class=ow>in</span> <span class=n>valid_suffixes</span><span class=p>:</span>
-            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;No writer for this file suffix: </span><span class=si>{</span><span class=n>ext</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'No writer for this file suffix: </span><span class=si>{</span><span class=n>ext</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
             <span class=k>return</span>
 
-        <span class=k>if</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>&#39;.ps&#39;</span><span class=p>:</span>
+        <span class=k>if</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>'.ps'</span><span class=p>:</span>
             <span class=n>rgba</span> <span class=o>=</span> <span class=kc>False</span>
 
         <span class=n>wtif</span> <span class=o>=</span> <span class=n>vtkWindowToImageFilter</span><span class=p>(</span><span class=nb>input</span><span class=o>=</span><span class=n>ren_win</span><span class=p>,</span> <span class=n>scale</span><span class=o>=</span><span class=mi>1</span><span class=p>)</span>
@@ -110,15 +110,15 @@ function registerListener(event, func) {
             <span class=n>wtif</span><span class=o>.</span><span class=n>read_front_buffer</span> <span class=o>=</span> <span class=kc>False</span>
             <span class=n>wtif</span><span class=o>.</span><span class=n>update</span><span class=p>()</span>
 
-        <span class=k>if</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>&#39;.bmp&#39;</span><span class=p>:</span>
+        <span class=k>if</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>'.bmp'</span><span class=p>:</span>
             <span class=n>writer</span> <span class=o>=</span> <span class=n>vtkBMPWriter</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=n>path</span><span class=p>)</span>
-        <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>&#39;.jpg&#39;</span><span class=p>:</span>
+        <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>'.jpg'</span><span class=p>:</span>
             <span class=n>writer</span> <span class=o>=</span> <span class=n>vtkJPEGWriter</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=n>path</span><span class=p>)</span>
-        <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>&#39;.pnm&#39;</span><span class=p>:</span>
+        <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>'.pnm'</span><span class=p>:</span>
             <span class=n>writer</span> <span class=o>=</span> <span class=n>vtkPNMWriter</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=n>path</span><span class=p>)</span>
-        <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>&#39;.ps&#39;</span><span class=p>:</span>
+        <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>'.ps'</span><span class=p>:</span>
             <span class=n>writer</span> <span class=o>=</span> <span class=n>vtkPostScriptWriter</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=n>path</span><span class=p>)</span>
-        <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>&#39;.tiff&#39;</span><span class=p>:</span>
+        <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>'.tiff'</span><span class=p>:</span>
             <span class=n>writer</span> <span class=o>=</span> <span class=n>vtkTIFFWriter</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=n>path</span><span class=p>)</span>
         <span class=k>else</span><span class=p>:</span>
             <span class=n>writer</span> <span class=o>=</span> <span class=n>vtkPNGWriter</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=n>path</span><span class=p>)</span>
@@ -126,7 +126,7 @@ function registerListener(event, func) {
         <span class=n>wtif</span> <span class=o>&gt;&gt;</span> <span class=n>writer</span>
         <span class=n>writer</span><span class=o>.</span><span class=n>Write</span><span class=p>()</span>
     <span class=k>else</span><span class=p>:</span>
-        <span class=k>raise</span> <span class=ne>RuntimeError</span><span class=p>(</span><span class=s1>&#39;Need a filename.&#39;</span><span class=p>)</span>
+        <span class=k>raise</span> <span class=ne>RuntimeError</span><span class=p>(</span><span class=s1>'Need a filename.'</span><span class=p>)</span>
 
 
 <span class=nd>@dataclass</span><span class=p>(</span><span class=n>frozen</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>

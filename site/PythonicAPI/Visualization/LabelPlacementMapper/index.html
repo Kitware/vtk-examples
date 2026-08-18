@@ -94,19 +94,19 @@ function registerListener(event, func) {
 </span>    <span class=n>point_source</span><span class=o>.</span><span class=n>update</span><span class=p>()</span>
 
     <span class=c1># Add label array.</span>
-<span class=hll>    <span class=n>labels</span> <span class=o>=</span> <span class=n>vtkStringArray</span><span class=p>(</span><span class=n>name</span><span class=o>=</span><span class=s1>&#39;labels&#39;</span><span class=p>)</span>
+<span class=hll>    <span class=n>labels</span> <span class=o>=</span> <span class=n>vtkStringArray</span><span class=p>(</span><span class=n>name</span><span class=o>=</span><span class=s1>'labels'</span><span class=p>)</span>
 </span>    <span class=n>labels</span><span class=o>.</span><span class=n>SetNumberOfValues</span><span class=p>(</span><span class=mi>6</span><span class=p>)</span>
-    <span class=c1># labels.SetName(&#39;labels&#39;)</span>
-    <span class=n>labels</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=s1>&#39;Priority 10&#39;</span><span class=p>)</span>
-    <span class=n>labels</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=s1>&#39;Priority 7&#39;</span><span class=p>)</span>
-    <span class=n>labels</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span> <span class=s1>&#39;Priority 6&#39;</span><span class=p>)</span>
-    <span class=n>labels</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=mi>3</span><span class=p>,</span> <span class=s1>&#39;Priority 4&#39;</span><span class=p>)</span>
-    <span class=n>labels</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=mi>4</span><span class=p>,</span> <span class=s1>&#39;Priority 4&#39;</span><span class=p>)</span>
-    <span class=n>labels</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=mi>5</span><span class=p>,</span> <span class=s1>&#39;Priority 4&#39;</span><span class=p>)</span>
+    <span class=c1># labels.SetName('labels')</span>
+    <span class=n>labels</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=s1>'Priority 10'</span><span class=p>)</span>
+    <span class=n>labels</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=s1>'Priority 7'</span><span class=p>)</span>
+    <span class=n>labels</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span> <span class=s1>'Priority 6'</span><span class=p>)</span>
+    <span class=n>labels</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=mi>3</span><span class=p>,</span> <span class=s1>'Priority 4'</span><span class=p>)</span>
+    <span class=n>labels</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=mi>4</span><span class=p>,</span> <span class=s1>'Priority 4'</span><span class=p>)</span>
+    <span class=n>labels</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=mi>5</span><span class=p>,</span> <span class=s1>'Priority 4'</span><span class=p>)</span>
     <span class=n>point_source</span><span class=o>.</span><span class=n>output</span><span class=o>.</span><span class=n>point_data</span><span class=o>.</span><span class=n>AddArray</span><span class=p>(</span><span class=n>labels</span><span class=p>)</span>
 
     <span class=c1># Add priority array.</span>
-<span class=hll>    <span class=n>sizes</span> <span class=o>=</span> <span class=n>vtkIntArray</span><span class=p>(</span><span class=n>name</span><span class=o>=</span><span class=s1>&#39;sizes&#39;</span><span class=p>)</span>
+<span class=hll>    <span class=n>sizes</span> <span class=o>=</span> <span class=n>vtkIntArray</span><span class=p>(</span><span class=n>name</span><span class=o>=</span><span class=s1>'sizes'</span><span class=p>)</span>
 </span>    <span class=n>sizes</span><span class=o>.</span><span class=n>SetNumberOfValues</span><span class=p>(</span><span class=mi>6</span><span class=p>)</span>
     <span class=n>sizes</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>10</span><span class=p>)</span>
     <span class=n>sizes</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mi>7</span><span class=p>)</span>
@@ -123,22 +123,22 @@ function registerListener(event, func) {
 </span>
     <span class=c1># Map the points to spheres.</span>
     <span class=n>sphere_actor</span> <span class=o>=</span> <span class=n>point_to_glyph</span><span class=p>(</span><span class=n>point_source</span><span class=o>.</span><span class=n>output</span><span class=o>.</span><span class=n>GetPoints</span><span class=p>(),</span> <span class=mf>0.05</span><span class=p>)</span>
-    <span class=n>sphere_actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;MistyRose&#39;</span><span class=p>)</span>
+    <span class=n>sphere_actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'MistyRose'</span><span class=p>)</span>
 
     <span class=c1># Generate the label hierarchy.</span>
-<span class=hll>    <span class=n>point_set_to_label_hierarchy_filter</span> <span class=o>=</span> <span class=n>vtkPointSetToLabelHierarchy</span><span class=p>(</span><span class=n>label_array_name</span><span class=o>=</span><span class=s1>&#39;labels&#39;</span><span class=p>,</span>
-</span>                                                                      <span class=n>size_array_name</span><span class=o>=</span><span class=s1>&#39;sizes&#39;</span><span class=p>)</span>
+<span class=hll>    <span class=n>point_set_to_label_hierarchy_filter</span> <span class=o>=</span> <span class=n>vtkPointSetToLabelHierarchy</span><span class=p>(</span><span class=n>label_array_name</span><span class=o>=</span><span class=s1>'labels'</span><span class=p>,</span>
+</span>                                                                      <span class=n>size_array_name</span><span class=o>=</span><span class=s1>'sizes'</span><span class=p>)</span>
     <span class=n>point_source</span> <span class=o>&gt;&gt;</span> <span class=n>point_set_to_label_hierarchy_filter</span>
 
     <span class=c1># Create a mapper and actor for the labels.</span>
 <span class=hll>    <span class=n>label_mapper</span> <span class=o>=</span> <span class=n>vtkLabelPlacementMapper</span><span class=p>()</span>
 </span>    <span class=n>point_source</span> <span class=o>&gt;&gt;</span> <span class=n>point_set_to_label_hierarchy_filter</span> <span class=o>&gt;&gt;</span> <span class=n>label_mapper</span>
 <span class=hll>    <span class=n>label_actor</span> <span class=o>=</span> <span class=n>vtkActor2D</span><span class=p>(</span><span class=n>mapper</span><span class=o>=</span><span class=n>label_mapper</span><span class=p>)</span>
-</span>    <span class=c1># label_actor.property.color = colors.GetColor3d(&#39;Yellow&#39;)</span>
+</span>    <span class=c1># label_actor.property.color = colors.GetColor3d('Yellow')</span>
 
     <span class=c1># Create a renderer, render window, and interactor.</span>
-<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;DarkSlateGray&#39;</span><span class=p>))</span>
-</span><span class=hll>    <span class=n>render_window</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>window_name</span><span class=o>=</span><span class=s1>&#39;LabelPlacementMapper&#39;</span><span class=p>)</span>
+<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'DarkSlateGray'</span><span class=p>))</span>
+</span><span class=hll>    <span class=n>render_window</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>window_name</span><span class=o>=</span><span class=s1>'LabelPlacementMapper'</span><span class=p>)</span>
 </span>    <span class=n>render_window</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>)</span>
 <span class=hll>    <span class=n>render_window_interactor</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>render_window_interactor</span><span class=o>.</span><span class=n>render_window</span> <span class=o>=</span> <span class=n>render_window</span>
@@ -168,6 +168,6 @@ function registerListener(event, func) {
 <span class=hll>    <span class=k>return</span> <span class=n>vtkActor</span><span class=p>(</span><span class=n>mapper</span><span class=o>=</span><span class=n>mapper</span><span class=p>)</span>
 </span>
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

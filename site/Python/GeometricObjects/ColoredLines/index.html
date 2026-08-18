@@ -101,13 +101,13 @@ function registerListener(event, func) {
 
     <span class=c1># Create the first line (between Origin and P0)</span>
 <span class=hll>    <span class=n>line0</span> <span class=o>=</span> <span class=n>vtkLine</span><span class=p>()</span>
-</span>    <span class=n>line0</span><span class=o>.</span><span class=n>GetPointIds</span><span class=p>()</span><span class=o>.</span><span class=n>SetId</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>  <span class=c1># the second 0 is the index of the Origin in linesPolyData&#39;s points</span>
-    <span class=n>line0</span><span class=o>.</span><span class=n>GetPointIds</span><span class=p>()</span><span class=o>.</span><span class=n>SetId</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>  <span class=c1># the second 1 is the index of P0 in linesPolyData&#39;s points</span>
+</span>    <span class=n>line0</span><span class=o>.</span><span class=n>GetPointIds</span><span class=p>()</span><span class=o>.</span><span class=n>SetId</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>  <span class=c1># the second 0 is the index of the Origin in linesPolyData's points</span>
+    <span class=n>line0</span><span class=o>.</span><span class=n>GetPointIds</span><span class=p>()</span><span class=o>.</span><span class=n>SetId</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>  <span class=c1># the second 1 is the index of P0 in linesPolyData's points</span>
 
     <span class=c1># Create the second line (between Origin and P1)</span>
 <span class=hll>    <span class=n>line1</span> <span class=o>=</span> <span class=n>vtkLine</span><span class=p>()</span>
-</span>    <span class=n>line1</span><span class=o>.</span><span class=n>GetPointIds</span><span class=p>()</span><span class=o>.</span><span class=n>SetId</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>  <span class=c1># the second 0 is the index of the Origin in linesPolyData&#39;s points</span>
-    <span class=n>line1</span><span class=o>.</span><span class=n>GetPointIds</span><span class=p>()</span><span class=o>.</span><span class=n>SetId</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>)</span>  <span class=c1># 2 is the index of P1 in linesPolyData&#39;s points</span>
+</span>    <span class=n>line1</span><span class=o>.</span><span class=n>GetPointIds</span><span class=p>()</span><span class=o>.</span><span class=n>SetId</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>  <span class=c1># the second 0 is the index of the Origin in linesPolyData's points</span>
+    <span class=n>line1</span><span class=o>.</span><span class=n>GetPointIds</span><span class=p>()</span><span class=o>.</span><span class=n>SetId</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>)</span>  <span class=c1># 2 is the index of P1 in linesPolyData's points</span>
 
     <span class=c1># Create a vtkCellArray container and store the lines in it</span>
 <span class=hll>    <span class=n>lines</span> <span class=o>=</span> <span class=n>vtkCellArray</span><span class=p>()</span>
@@ -123,12 +123,12 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkUnsignedCharArray</span><span class=p>()</span>
 </span>    <span class=n>colors</span><span class=o>.</span><span class=n>SetNumberOfComponents</span><span class=p>(</span><span class=mi>3</span><span class=p>)</span>
     <span class=k>try</span><span class=p>:</span>
-        <span class=n>colors</span><span class=o>.</span><span class=n>InsertNextTupleValue</span><span class=p>(</span><span class=n>namedColors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s2>&quot;Tomato&quot;</span><span class=p>))</span>
-        <span class=n>colors</span><span class=o>.</span><span class=n>InsertNextTupleValue</span><span class=p>(</span><span class=n>namedColors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s2>&quot;Mint&quot;</span><span class=p>))</span>
+        <span class=n>colors</span><span class=o>.</span><span class=n>InsertNextTupleValue</span><span class=p>(</span><span class=n>namedColors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s2>"Tomato"</span><span class=p>))</span>
+        <span class=n>colors</span><span class=o>.</span><span class=n>InsertNextTupleValue</span><span class=p>(</span><span class=n>namedColors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s2>"Mint"</span><span class=p>))</span>
     <span class=k>except</span> <span class=ne>AttributeError</span><span class=p>:</span>
         <span class=c1># For compatibility with new VTK generic data arrays.</span>
-        <span class=n>colors</span><span class=o>.</span><span class=n>InsertNextTypedTuple</span><span class=p>(</span><span class=n>namedColors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s2>&quot;Tomato&quot;</span><span class=p>))</span>
-        <span class=n>colors</span><span class=o>.</span><span class=n>InsertNextTypedTuple</span><span class=p>(</span><span class=n>namedColors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s2>&quot;Mint&quot;</span><span class=p>))</span>
+        <span class=n>colors</span><span class=o>.</span><span class=n>InsertNextTypedTuple</span><span class=p>(</span><span class=n>namedColors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s2>"Tomato"</span><span class=p>))</span>
+        <span class=n>colors</span><span class=o>.</span><span class=n>InsertNextTypedTuple</span><span class=p>(</span><span class=n>namedColors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s2>"Mint"</span><span class=p>))</span>
 
     <span class=c1># Color the lines.</span>
     <span class=c1># SetScalars() automatically associates the values in the data array passed as parameter</span>
@@ -149,10 +149,10 @@ function registerListener(event, func) {
 
 <span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>()</span>
 </span>    <span class=n>renderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor</span><span class=p>)</span>
-    <span class=n>renderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>namedColors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;SlateGray&quot;</span><span class=p>))</span>
+    <span class=n>renderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>namedColors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>"SlateGray"</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>window</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>()</span>
-</span>    <span class=n>window</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s2>&quot;ColoredLines&quot;</span><span class=p>)</span>
+</span>    <span class=n>window</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s2>"ColoredLines"</span><span class=p>)</span>
     <span class=n>window</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>interactor</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
@@ -163,6 +163,6 @@ function registerListener(event, func) {
     <span class=n>interactor</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

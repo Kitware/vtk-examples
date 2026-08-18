@@ -71,9 +71,9 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span><span class=w> </span><span class=n>colors</span><span class=p>;</span>
 </span>
 <span class=hll><span class=w>  </span><span class=n>vtkColor3ub</span><span class=w> </span><span class=n>color1</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor</span><span class=p>(</span><span class=s>&quot;Black&quot;</span><span class=p>,</span><span class=w> </span><span class=n>color1</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor</span><span class=p>(</span><span class=s>"Black"</span><span class=p>,</span><span class=w> </span><span class=n>color1</span><span class=p>);</span>
 <span class=hll><span class=w>  </span><span class=n>vtkColor3ub</span><span class=w> </span><span class=n>color2</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor</span><span class=p>(</span><span class=s>&quot;Red&quot;</span><span class=p>,</span><span class=w> </span><span class=n>color2</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor</span><span class=p>(</span><span class=s>"Red"</span><span class=p>,</span><span class=w> </span><span class=n>color2</span><span class=p>);</span>
 
 <span class=w>  </span><span class=c1>// Create an image (will be used as the R channel)</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageCanvasSource2D</span><span class=o>&gt;</span><span class=w> </span><span class=n>red</span><span class=p>;</span>
@@ -139,25 +139,25 @@ function registerListener(event, func) {
 </span><span class=w>  </span><span class=n>redRenderer</span><span class=o>-&gt;</span><span class=n>SetViewport</span><span class=p>(</span><span class=n>redViewport</span><span class=p>);</span>
 <span class=w>  </span><span class=n>redRenderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>redActor</span><span class=p>);</span>
 <span class=w>  </span><span class=n>redRenderer</span><span class=o>-&gt;</span><span class=n>ResetCamera</span><span class=p>();</span>
-<span class=w>  </span><span class=n>redRenderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Tomato&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>redRenderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Tomato"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span><span class=w> </span><span class=n>greenRenderer</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>greenRenderer</span><span class=o>-&gt;</span><span class=n>SetViewport</span><span class=p>(</span><span class=n>greenViewport</span><span class=p>);</span>
 <span class=w>  </span><span class=n>greenRenderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>greenActor</span><span class=p>);</span>
 <span class=w>  </span><span class=n>greenRenderer</span><span class=o>-&gt;</span><span class=n>ResetCamera</span><span class=p>();</span>
-<span class=w>  </span><span class=n>greenRenderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Mint&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>greenRenderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Mint"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span><span class=w> </span><span class=n>blueRenderer</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>blueRenderer</span><span class=o>-&gt;</span><span class=n>SetViewport</span><span class=p>(</span><span class=n>blueViewport</span><span class=p>);</span>
 <span class=w>  </span><span class=n>blueRenderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>blueActor</span><span class=p>);</span>
 <span class=w>  </span><span class=n>blueRenderer</span><span class=o>-&gt;</span><span class=n>ResetCamera</span><span class=p>();</span>
-<span class=w>  </span><span class=n>blueRenderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Peacock&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>blueRenderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Peacock"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span><span class=w> </span><span class=n>combinedRenderer</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>combinedRenderer</span><span class=o>-&gt;</span><span class=n>SetViewport</span><span class=p>(</span><span class=n>combinedViewport</span><span class=p>);</span>
 <span class=w>  </span><span class=n>combinedRenderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>combinedActor</span><span class=p>);</span>
 <span class=w>  </span><span class=n>combinedRenderer</span><span class=o>-&gt;</span><span class=n>ResetCamera</span><span class=p>();</span>
-<span class=w>  </span><span class=n>combinedRenderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Snow&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>combinedRenderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Snow"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=w>  </span><span class=c1>// Setup render window</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderWindow</span><span class=p>;</span>
@@ -166,7 +166,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>greenRenderer</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>blueRenderer</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>combinedRenderer</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;CombiningRGBChannels&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"CombiningRGBChannels"</span><span class=p>);</span>
 
 <span class=w>  </span><span class=c1>// Setup render window interactor</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderWindowInteractor</span><span class=p>;</span>
@@ -201,11 +201,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;CombiningRGBChannels: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"CombiningRGBChannels: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>CombiningRGBChannels</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>CombiningRGBChannels.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>CombiningRGBChannels</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

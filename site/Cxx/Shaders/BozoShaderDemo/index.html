@@ -112,12 +112,12 @@ function registerListener(event, func) {
 <span class=hll><span class=w>    </span><span class=n>vtkShaderProgram</span><span class=o>*</span><span class=w> </span><span class=n>program</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>reinterpret_cast</span><span class=o>&lt;</span><span class=n>vtkShaderProgram</span><span class=o>*&gt;</span><span class=p>(</span><span class=n>calldata</span><span class=p>);</span>
 </span><span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>program</span><span class=p>)</span>
 <span class=w>    </span><span class=p>{</span>
-<span class=w>      </span><span class=n>program</span><span class=o>-&gt;</span><span class=n>SetUniformf</span><span class=p>(</span><span class=s>&quot;k&quot;</span><span class=p>,</span><span class=w> </span><span class=n>k</span><span class=p>);</span>
+<span class=w>      </span><span class=n>program</span><span class=o>-&gt;</span><span class=n>SetUniformf</span><span class=p>(</span><span class=s>"k"</span><span class=p>,</span><span class=w> </span><span class=n>k</span><span class=p>);</span>
 <span class=w>    </span><span class=p>}</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=nf>Print</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>ostream</span><span class=o>&amp;</span><span class=w> </span><span class=n>os</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>os</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;k: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>k</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>os</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"k: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>k</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 
 <span class=w>  </span><span class=n>vtkShaderCallback</span><span class=p>()</span>
@@ -137,8 +137,8 @@ function registerListener(event, func) {
 <span class=p>{</span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>argc</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=mi>2</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Usage: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; PerlnNoise.glsl &quot;</span>
-<span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;[polydataFile] &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;[k(5)]&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Usage: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" PerlnNoise.glsl "</span>
+<span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"[polydataFile] "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"[k(5)]"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>EXIT_FAILURE</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span><span class=w> </span><span class=n>colors</span><span class=p>;</span>
@@ -154,7 +154,7 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;&gt;</span><span class=w> </span><span class=n>renderers</span><span class=p>;</span>
 </span><span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>2</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>argc</span><span class=p>;</span><span class=w> </span><span class=o>++</span><span class=n>i</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Reading file: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Reading file: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=n>polyData</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>ReadPolyData</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=n>i</span><span class=p>]);</span>
 <span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>ifstream</span><span class=w> </span><span class=nf>shaderFile</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>]);</span>
 <span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>ostringstream</span><span class=w> </span><span class=n>shaderCode</span><span class=p>;</span>
@@ -182,7 +182,7 @@ function registerListener(event, func) {
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>actor</span><span class=p>;</span>
 </span><span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderer</span><span class=p>;</span>
 </span><span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkOpenGLPolyDataMapper</span><span class=o>&gt;</span><span class=w> </span><span class=n>mapper</span><span class=p>;</span>
-</span><span class=w>    </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Burlywood&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+</span><span class=w>    </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Burlywood"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=w>    </span><span class=n>renderers</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>renderer</span><span class=p>);</span>
 <span class=w>    </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>);</span>
@@ -223,38 +223,38 @@ function registerListener(event, func) {
 <span class=cp>#if USE_SHADER_PROPERTIES</span>
 <span class=hll><span class=w>    </span><span class=n>vtkShaderProperty</span><span class=o>*</span><span class=w> </span><span class=n>sp</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>actor</span><span class=o>-&gt;</span><span class=n>GetShaderProperty</span><span class=p>();</span>
 </span><span class=w>    </span><span class=n>sp</span><span class=o>-&gt;</span><span class=n>AddVertexShaderReplacement</span><span class=p>(</span>
-<span class=w>        </span><span class=s>&quot;//VTK::Normal::Dec&quot;</span><span class=p>,</span><span class=w>  </span><span class=c1>// replace the normal block</span>
+<span class=w>        </span><span class=s>"//VTK::Normal::Dec"</span><span class=p>,</span><span class=w>  </span><span class=c1>// replace the normal block</span>
 <span class=w>        </span><span class=nb>true</span><span class=p>,</span><span class=w>                  </span><span class=c1>// before the standard replacements</span>
-<span class=w>        </span><span class=s>&quot;//VTK::Normal::Dec</span><span class=se>\n</span><span class=s>&quot;</span><span class=w> </span><span class=c1>// we still want the default</span>
-<span class=w>        </span><span class=s>&quot;  out vec4 myVertexMC;</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>,</span>
+<span class=w>        </span><span class=s>"//VTK::Normal::Dec</span><span class=se>\n</span><span class=s>"</span><span class=w> </span><span class=c1>// we still want the default</span>
+<span class=w>        </span><span class=s>"  out vec4 myVertexMC;</span><span class=se>\n</span><span class=s>"</span><span class=p>,</span>
 <span class=w>        </span><span class=nb>false</span><span class=w> </span><span class=c1>// only do it once</span>
 <span class=w>    </span><span class=p>);</span>
 <span class=cp>#else</span>
 <span class=w>    </span><span class=n>mapper</span><span class=o>-&gt;</span><span class=n>AddShaderReplacement</span><span class=p>(</span>
 <span class=hll><span class=w>        </span><span class=n>vtkShader</span><span class=o>::</span><span class=n>Vertex</span><span class=p>,</span>
-</span><span class=w>        </span><span class=s>&quot;//VTK::Normal::Dec&quot;</span><span class=p>,</span><span class=w>  </span><span class=c1>// replace the normal block</span>
+</span><span class=w>        </span><span class=s>"//VTK::Normal::Dec"</span><span class=p>,</span><span class=w>  </span><span class=c1>// replace the normal block</span>
 <span class=w>        </span><span class=nb>true</span><span class=p>,</span><span class=w>                  </span><span class=c1>// before the standard replacements</span>
-<span class=w>        </span><span class=s>&quot;//VTK::Normal::Dec</span><span class=se>\n</span><span class=s>&quot;</span><span class=w> </span><span class=c1>// we still want the default</span>
-<span class=w>        </span><span class=s>&quot;  out vec4 myVertexMC;</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>,</span>
+<span class=w>        </span><span class=s>"//VTK::Normal::Dec</span><span class=se>\n</span><span class=s>"</span><span class=w> </span><span class=c1>// we still want the default</span>
+<span class=w>        </span><span class=s>"  out vec4 myVertexMC;</span><span class=se>\n</span><span class=s>"</span><span class=p>,</span>
 <span class=w>        </span><span class=nb>false</span><span class=w> </span><span class=c1>// only do it once</span>
 <span class=w>    </span><span class=p>);</span>
 <span class=cp>#endif</span>
 <span class=cp>#if USE_SHADER_PROPERTIES</span>
 <span class=w>    </span><span class=n>sp</span><span class=o>-&gt;</span><span class=n>AddVertexShaderReplacement</span><span class=p>(</span>
-<span class=w>        </span><span class=s>&quot;//VTK::Normal::Impl&quot;</span><span class=p>,</span><span class=w>  </span><span class=c1>// replace the normal block</span>
+<span class=w>        </span><span class=s>"//VTK::Normal::Impl"</span><span class=p>,</span><span class=w>  </span><span class=c1>// replace the normal block</span>
 <span class=w>        </span><span class=nb>true</span><span class=p>,</span><span class=w>                   </span><span class=c1>// before the standard replacements</span>
-<span class=w>        </span><span class=s>&quot;//VTK::Normal::Impl</span><span class=se>\n</span><span class=s>&quot;</span><span class=w> </span><span class=c1>// we still want the default</span>
-<span class=w>        </span><span class=s>&quot;  myVertexMC = vertexMC;</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>,</span>
+<span class=w>        </span><span class=s>"//VTK::Normal::Impl</span><span class=se>\n</span><span class=s>"</span><span class=w> </span><span class=c1>// we still want the default</span>
+<span class=w>        </span><span class=s>"  myVertexMC = vertexMC;</span><span class=se>\n</span><span class=s>"</span><span class=p>,</span>
 <span class=w>        </span><span class=nb>false</span><span class=w> </span><span class=c1>// only do it once</span>
 <span class=w>    </span><span class=p>);</span>
 
 <span class=cp>#else</span>
 <span class=w>    </span><span class=n>mapper</span><span class=o>-&gt;</span><span class=n>AddShaderReplacement</span><span class=p>(</span>
 <span class=hll><span class=w>        </span><span class=n>vtkShader</span><span class=o>::</span><span class=n>Vertex</span><span class=p>,</span>
-</span><span class=w>        </span><span class=s>&quot;//VTK::Normal::Impl&quot;</span><span class=p>,</span><span class=w>  </span><span class=c1>// replace the normal block</span>
+</span><span class=w>        </span><span class=s>"//VTK::Normal::Impl"</span><span class=p>,</span><span class=w>  </span><span class=c1>// replace the normal block</span>
 <span class=w>        </span><span class=nb>true</span><span class=p>,</span><span class=w>                   </span><span class=c1>// before the standard replacements</span>
-<span class=w>        </span><span class=s>&quot;//VTK::Normal::Impl</span><span class=se>\n</span><span class=s>&quot;</span><span class=w> </span><span class=c1>// we still want the default</span>
-<span class=w>        </span><span class=s>&quot;  myVertexMC = vertexMC;</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>,</span>
+<span class=w>        </span><span class=s>"//VTK::Normal::Impl</span><span class=se>\n</span><span class=s>"</span><span class=w> </span><span class=c1>// we still want the default</span>
+<span class=w>        </span><span class=s>"  myVertexMC = vertexMC;</span><span class=se>\n</span><span class=s>"</span><span class=p>,</span>
 <span class=w>        </span><span class=nb>false</span><span class=w> </span><span class=c1>// only do it once</span>
 <span class=w>    </span><span class=p>);</span>
 
@@ -263,13 +263,13 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=c1>// These functions need to be defined outside of main. Use the System::Dec</span>
 <span class=w>    </span><span class=c1>// to declare and implement</span>
 <span class=cp>#if USE_SHADER_PROPERTIES</span>
-<span class=w>    </span><span class=n>sp</span><span class=o>-&gt;</span><span class=n>AddFragmentShaderReplacement</span><span class=p>(</span><span class=s>&quot;//VTK::System::Dec&quot;</span><span class=p>,</span>
+<span class=w>    </span><span class=n>sp</span><span class=o>-&gt;</span><span class=n>AddFragmentShaderReplacement</span><span class=p>(</span><span class=s>"//VTK::System::Dec"</span><span class=p>,</span>
 <span class=w>                                     </span><span class=nb>false</span><span class=p>,</span><span class=w> </span><span class=c1>// before the standard replacements</span>
 <span class=w>                                     </span><span class=n>shaderCode</span><span class=p>.</span><span class=n>str</span><span class=p>(),</span>
 <span class=w>                                     </span><span class=nb>false</span><span class=w> </span><span class=c1>// only do it once</span>
 <span class=w>    </span><span class=p>);</span>
 <span class=cp>#else</span>
-<span class=w>    </span><span class=n>mapper</span><span class=o>-&gt;</span><span class=n>AddShaderReplacement</span><span class=p>(</span><span class=n>vtkShader</span><span class=o>::</span><span class=n>Fragment</span><span class=p>,</span><span class=w> </span><span class=s>&quot;//VTK::System::Dec&quot;</span><span class=p>,</span>
+<span class=w>    </span><span class=n>mapper</span><span class=o>-&gt;</span><span class=n>AddShaderReplacement</span><span class=p>(</span><span class=n>vtkShader</span><span class=o>::</span><span class=n>Fragment</span><span class=p>,</span><span class=w> </span><span class=s>"//VTK::System::Dec"</span><span class=p>,</span>
 <span class=w>                                 </span><span class=nb>false</span><span class=p>,</span><span class=w> </span><span class=c1>// before the standard replacements</span>
 <span class=w>                                 </span><span class=n>shaderCode</span><span class=p>.</span><span class=n>str</span><span class=p>(),</span>
 <span class=w>                                 </span><span class=nb>false</span><span class=w> </span><span class=c1>// only do it once</span>
@@ -279,100 +279,100 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=c1>// Define varying and uniforms for the fragment shader here</span>
 <span class=cp>#if USE_SHADER_PROPERTIES</span>
 <span class=w>    </span><span class=n>sp</span><span class=o>-&gt;</span><span class=n>AddFragmentShaderReplacement</span><span class=p>(</span>
-<span class=w>        </span><span class=s>&quot;//VTK::Normal::Dec&quot;</span><span class=p>,</span><span class=w>  </span><span class=c1>// replace the normal block</span>
+<span class=w>        </span><span class=s>"//VTK::Normal::Dec"</span><span class=p>,</span><span class=w>  </span><span class=c1>// replace the normal block</span>
 <span class=w>        </span><span class=nb>true</span><span class=p>,</span><span class=w>                  </span><span class=c1>// before the standard replacements</span>
-<span class=w>        </span><span class=s>&quot;//VTK::Normal::Dec</span><span class=se>\n</span><span class=s>&quot;</span><span class=w> </span><span class=c1>// we still want the default</span>
-<span class=w>        </span><span class=s>&quot;  varying vec4 myVertexMC;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;  uniform float k = 1.0;</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>,</span>
+<span class=w>        </span><span class=s>"//VTK::Normal::Dec</span><span class=se>\n</span><span class=s>"</span><span class=w> </span><span class=c1>// we still want the default</span>
+<span class=w>        </span><span class=s>"  varying vec4 myVertexMC;</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"  uniform float k = 1.0;</span><span class=se>\n</span><span class=s>"</span><span class=p>,</span>
 <span class=w>        </span><span class=nb>false</span><span class=w> </span><span class=c1>// only do it once</span>
 <span class=w>    </span><span class=p>);</span>
 <span class=cp>#else</span>
 <span class=w>    </span><span class=n>mapper</span><span class=o>-&gt;</span><span class=n>AddShaderReplacement</span><span class=p>(</span>
 <span class=w>        </span><span class=n>vtkShader</span><span class=o>::</span><span class=n>Fragment</span><span class=p>,</span><span class=w>   </span><span class=c1>// in the fragment shader</span>
-<span class=w>        </span><span class=s>&quot;//VTK::Normal::Dec&quot;</span><span class=p>,</span><span class=w>  </span><span class=c1>// replace the normal block</span>
+<span class=w>        </span><span class=s>"//VTK::Normal::Dec"</span><span class=p>,</span><span class=w>  </span><span class=c1>// replace the normal block</span>
 <span class=w>        </span><span class=nb>true</span><span class=p>,</span><span class=w>                  </span><span class=c1>// before the standard replacements</span>
-<span class=w>        </span><span class=s>&quot;//VTK::Normal::Dec</span><span class=se>\n</span><span class=s>&quot;</span><span class=w> </span><span class=c1>// we still want the default</span>
-<span class=w>        </span><span class=s>&quot;  varying vec4 myVertexMC;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;  uniform float k = 1.0;</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>,</span>
+<span class=w>        </span><span class=s>"//VTK::Normal::Dec</span><span class=se>\n</span><span class=s>"</span><span class=w> </span><span class=c1>// we still want the default</span>
+<span class=w>        </span><span class=s>"  varying vec4 myVertexMC;</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"  uniform float k = 1.0;</span><span class=se>\n</span><span class=s>"</span><span class=p>,</span>
 <span class=w>        </span><span class=nb>false</span><span class=w> </span><span class=c1>// only do it once</span>
 <span class=w>    </span><span class=p>);</span>
 <span class=cp>#endif</span>
 
 <span class=cp>#if USE_SHADER_PROPERTIES</span>
 <span class=w>    </span><span class=n>sp</span><span class=o>-&gt;</span><span class=n>AddFragmentShaderReplacement</span><span class=p>(</span>
-<span class=w>        </span><span class=s>&quot;//VTK::Light::Impl&quot;</span><span class=p>,</span><span class=w>  </span><span class=c1>// replace the light block</span>
+<span class=w>        </span><span class=s>"//VTK::Light::Impl"</span><span class=p>,</span><span class=w>  </span><span class=c1>// replace the light block</span>
 <span class=w>        </span><span class=nb>false</span><span class=p>,</span><span class=w>                 </span><span class=c1>// after the standard replacements</span>
-<span class=w>        </span><span class=s>&quot;//VTK::Light::Impl</span><span class=se>\n</span><span class=s>&quot;</span><span class=w> </span><span class=c1>// we still want the default calc</span>
-<span class=w>        </span><span class=s>&quot;#define pnoise(x) ((noise(x) + 1.0) / 2.0)</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;  vec3 noisyColor;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;  noisyColor.r = noise(k * 10.0 * myVertexMC);</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;  noisyColor.g = noise(k * 11.0 * myVertexMC);</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;  noisyColor.b = noise(k * 12.0 * myVertexMC);</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;  /* map ranges of noise values into different colors */</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;  int i;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;  float lowerValue = .3;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;  float upperValue = .6;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;  for ( i=0; i&lt;3; i+=1)</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;  {</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;    noisyColor[i] = (noisyColor[i] + 1.0) / 2.0;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;    if (noisyColor[i] &lt; lowerValue) </span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;    {</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;      noisyColor[i] = lowerValue;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;    }</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;    else</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;    {</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;      if (noisyColor[i] &lt; upperValue)</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;      {</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;        noisyColor[i] = upperValue;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;      }</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;      else</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;      {</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;        noisyColor[i] = 1.0;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;      }</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;    }</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;  }</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;  fragOutput0.rgb = opacity * vec3(ambientColor + noisyColor * &quot;</span>
-<span class=w>        </span><span class=s>&quot;diffuse + specular);</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;  fragOutput0.a = opacity;</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>,</span>
+<span class=w>        </span><span class=s>"//VTK::Light::Impl</span><span class=se>\n</span><span class=s>"</span><span class=w> </span><span class=c1>// we still want the default calc</span>
+<span class=w>        </span><span class=s>"#define pnoise(x) ((noise(x) + 1.0) / 2.0)</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"  vec3 noisyColor;</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"  noisyColor.r = noise(k * 10.0 * myVertexMC);</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"  noisyColor.g = noise(k * 11.0 * myVertexMC);</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"  noisyColor.b = noise(k * 12.0 * myVertexMC);</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"  /* map ranges of noise values into different colors */</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"  int i;</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"  float lowerValue = .3;</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"  float upperValue = .6;</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"  for ( i=0; i&lt;3; i+=1)</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"  {</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"    noisyColor[i] = (noisyColor[i] + 1.0) / 2.0;</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"    if (noisyColor[i] &lt; lowerValue) </span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"    {</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"      noisyColor[i] = lowerValue;</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"    }</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"    else</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"    {</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"      if (noisyColor[i] &lt; upperValue)</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"      {</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"        noisyColor[i] = upperValue;</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"      }</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"      else</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"      {</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"        noisyColor[i] = 1.0;</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"      }</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"    }</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"  }</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"  fragOutput0.rgb = opacity * vec3(ambientColor + noisyColor * "</span>
+<span class=w>        </span><span class=s>"diffuse + specular);</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"  fragOutput0.a = opacity;</span><span class=se>\n</span><span class=s>"</span><span class=p>,</span>
 <span class=w>        </span><span class=nb>false</span><span class=w> </span><span class=c1>// only do it once</span>
 <span class=w>    </span><span class=p>);</span>
 <span class=cp>#else</span>
 <span class=w>    </span><span class=n>mapper</span><span class=o>-&gt;</span><span class=n>AddShaderReplacement</span><span class=p>(</span>
 <span class=w>        </span><span class=n>vtkShader</span><span class=o>::</span><span class=n>Fragment</span><span class=p>,</span><span class=w>   </span><span class=c1>// in the fragment shader</span>
-<span class=w>        </span><span class=s>&quot;//VTK::Light::Impl&quot;</span><span class=p>,</span><span class=w>  </span><span class=c1>// replace the light block</span>
+<span class=w>        </span><span class=s>"//VTK::Light::Impl"</span><span class=p>,</span><span class=w>  </span><span class=c1>// replace the light block</span>
 <span class=w>        </span><span class=nb>false</span><span class=p>,</span><span class=w>                 </span><span class=c1>// after the standard replacements</span>
-<span class=w>        </span><span class=s>&quot;//VTK::Light::Impl</span><span class=se>\n</span><span class=s>&quot;</span><span class=w> </span><span class=c1>// we still want the default calc</span>
-<span class=w>        </span><span class=s>&quot;#define pnoise(x) ((noise(x) + 1.0) / 2.0)</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;  vec3 noisyColor;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;  noisyColor.r = noise(k * 10.0 * myVertexMC);</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;  noisyColor.g = noise(k * 11.0 * myVertexMC);</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;  noisyColor.b = noise(k * 12.0 * myVertexMC);</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;  /* map ranges of noise values into different colors */</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;  int i;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;  float lowerValue = .3;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;  float upperValue = .6;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;  for ( i=0; i&lt;3; i+=1)</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;  {</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;    noisyColor[i] = (noisyColor[i] + 1.0) / 2.0;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;    if (noisyColor[i] &lt; lowerValue) </span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;    {</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;      noisyColor[i] = lowerValue;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;    }</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;    else</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;    {</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;      if (noisyColor[i] &lt; upperValue)</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;      {</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;        noisyColor[i] = upperValue;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;      }</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;      else</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;      {</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;        noisyColor[i] = 1.0;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;      }</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;    }</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;  }</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;  fragOutput0.rgb = opacity * vec3(ambientColor + noisyColor * &quot;</span>
-<span class=w>        </span><span class=s>&quot;diffuse + specular);</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>        </span><span class=s>&quot;  fragOutput0.a = opacity;</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>,</span>
+<span class=w>        </span><span class=s>"//VTK::Light::Impl</span><span class=se>\n</span><span class=s>"</span><span class=w> </span><span class=c1>// we still want the default calc</span>
+<span class=w>        </span><span class=s>"#define pnoise(x) ((noise(x) + 1.0) / 2.0)</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"  vec3 noisyColor;</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"  noisyColor.r = noise(k * 10.0 * myVertexMC);</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"  noisyColor.g = noise(k * 11.0 * myVertexMC);</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"  noisyColor.b = noise(k * 12.0 * myVertexMC);</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"  /* map ranges of noise values into different colors */</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"  int i;</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"  float lowerValue = .3;</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"  float upperValue = .6;</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"  for ( i=0; i&lt;3; i+=1)</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"  {</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"    noisyColor[i] = (noisyColor[i] + 1.0) / 2.0;</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"    if (noisyColor[i] &lt; lowerValue) </span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"    {</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"      noisyColor[i] = lowerValue;</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"    }</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"    else</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"    {</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"      if (noisyColor[i] &lt; upperValue)</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"      {</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"        noisyColor[i] = upperValue;</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"      }</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"      else</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"      {</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"        noisyColor[i] = 1.0;</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"      }</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"    }</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"  }</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"  fragOutput0.rgb = opacity * vec3(ambientColor + noisyColor * "</span>
+<span class=w>        </span><span class=s>"diffuse + specular);</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>        </span><span class=s>"  fragOutput0.a = opacity;</span><span class=se>\n</span><span class=s>"</span><span class=p>,</span>
 <span class=w>        </span><span class=nb>false</span><span class=w> </span><span class=c1>// only do it once</span>
 <span class=w>    </span><span class=p>);</span>
 <span class=cp>#endif</span>
@@ -411,7 +411,7 @@ function registerListener(event, func) {
 </span><span class=w>  </span><span class=n>interactor</span><span class=o>-&gt;</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renderWindow</span><span class=p>);</span>
 
 <span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
-<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;BozoShaderDemo&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"BozoShaderDemo"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
 <span class=w>  </span><span class=n>interactor</span><span class=o>-&gt;</span><span class=n>Start</span><span class=p>();</span>
 
@@ -424,42 +424,42 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span><span class=w> </span><span class=n>polyData</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>extension</span><span class=w> </span><span class=o>=</span>
 <span class=w>      </span><span class=n>vtksys</span><span class=o>::</span><span class=n>SystemTools</span><span class=o>::</span><span class=n>GetFilenameExtension</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=p>(</span><span class=n>fileName</span><span class=p>));</span>
-<span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;.ply&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>".ply"</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPLYReader</span><span class=o>&gt;</span><span class=w> </span><span class=n>reader</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>fileName</span><span class=p>);</span>
 <span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 <span class=w>    </span><span class=n>polyData</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>();</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;.vtp&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>".vtp"</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkXMLPolyDataReader</span><span class=o>&gt;</span><span class=w> </span><span class=n>reader</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>fileName</span><span class=p>);</span>
 <span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 <span class=w>    </span><span class=n>polyData</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>();</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;.obj&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>".obj"</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkOBJReader</span><span class=o>&gt;</span><span class=w> </span><span class=n>reader</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>fileName</span><span class=p>);</span>
 <span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 <span class=w>    </span><span class=n>polyData</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>();</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;.stl&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>".stl"</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkSTLReader</span><span class=o>&gt;</span><span class=w> </span><span class=n>reader</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>fileName</span><span class=p>);</span>
 <span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 <span class=w>    </span><span class=n>polyData</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>();</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;.vtk&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>".vtk"</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataReader</span><span class=o>&gt;</span><span class=w> </span><span class=n>reader</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>fileName</span><span class=p>);</span>
 <span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 <span class=w>    </span><span class=n>polyData</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>();</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;.g&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>".g"</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkBYUReader</span><span class=o>&gt;</span><span class=w> </span><span class=n>reader</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>SetGeometryFileName</span><span class=p>(</span><span class=n>fileName</span><span class=p>);</span>
@@ -501,11 +501,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;BozoShaderDemo: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"BozoShaderDemo: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>BozoShaderDemo</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>BozoShaderDemo.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>BozoShaderDemo</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

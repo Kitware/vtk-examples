@@ -63,8 +63,8 @@ function registerListener(event, func) {
 </span><span class=hll><span class=kn>import</span><span class=w> </span><span class=nn>vtk.vtkPolyDataMapper</span><span class=p>;</span>
 </span><span class=hll><span class=kn>import</span><span class=w> </span><span class=nn>vtk.vtkActor</span><span class=p>;</span>
 </span><span class=hll><span class=kn>import</span><span class=w> </span><span class=nn>vtk.vtkImageTracerWidget</span><span class=p>;</span>
-</span><span class=hll><span class=kn>import</span><span class=w> </span><span class=nn>vtk.vtkInteractorStyleTrackball</span><span class=p>;</span>
-</span><span class=hll><span class=kn>import</span><span class=w> </span><span class=nn>vtk.vtkSphereSource</span><span class=p>;</span>
+</span><span class=kn>import</span><span class=w> </span><span class=nn>vtk.vtkInteractorStyleTrackball</span><span class=p>;</span>
+<span class=hll><span class=kn>import</span><span class=w> </span><span class=nn>vtk.vtkSphereSource</span><span class=p>;</span>
 </span>
 <span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>ImageTracerWidgetNonPlanar</span><span class=w> </span>
 <span class=p>{</span>
@@ -78,7 +78,7 @@ function registerListener(event, func) {
 <span class=w>      </span><span class=p>{</span>
 <span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>lib</span><span class=p>.</span><span class=na>IsLoaded</span><span class=p>())</span><span class=w> </span>
 <span class=w>        </span><span class=p>{</span>
-<span class=w>          </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&quot; not loaded&quot;</span><span class=p>);</span>
+<span class=w>          </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>" not loaded"</span><span class=p>);</span>
 <span class=w>        </span><span class=p>}</span>
 <span class=w>      </span><span class=p>}</span>
 <span class=w>    </span><span class=p>}</span>
@@ -95,7 +95,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=kt>double</span><span class=w> </span><span class=n>BgColor</span><span class=o>[]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=kt>double</span><span class=o>[</span><span class=mi>4</span><span class=o>]</span><span class=p>;</span>
 
 <span class=w>    </span><span class=c1>//Change Color Name to Use your own Color for Renderer Background</span>
-<span class=w>    </span><span class=n>Color</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>&quot;LightCoral&quot;</span><span class=p>,</span><span class=n>BgColor</span><span class=p>);</span>
+<span class=w>    </span><span class=n>Color</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>"LightCoral"</span><span class=p>,</span><span class=n>BgColor</span><span class=p>);</span>
 
 <span class=w>    </span><span class=c1>//Create a Sphere</span>
 <span class=hll><span class=w>    </span><span class=n>vtkSphereSource</span><span class=w> </span><span class=n>Sphere</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkSphereSource</span><span class=p>();</span>
@@ -118,8 +118,8 @@ function registerListener(event, func) {
 <span class=hll><span class=w>    </span><span class=n>vtkRenderWindowInteractor</span><span class=w> </span><span class=n>iren</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkRenderWindowInteractor</span><span class=p>();</span>
 </span><span class=w>    </span><span class=n>iren</span><span class=p>.</span><span class=na>SetRenderWindow</span><span class=p>(</span><span class=n>renWin</span><span class=p>);</span>
 
-<span class=hll><span class=w>    </span><span class=n>vtkInteractorStyleTrackball</span><span class=w> </span><span class=n>Style</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkInteractorStyleTrackball</span><span class=p>();</span>
-</span><span class=w>    </span><span class=n>iren</span><span class=p>.</span><span class=na>SetInteractorStyle</span><span class=p>(</span><span class=n>Style</span><span class=p>);</span><span class=w>  </span>
+<span class=w>    </span><span class=n>vtkInteractorStyleTrackball</span><span class=w> </span><span class=n>Style</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkInteractorStyleTrackball</span><span class=p>();</span>
+<span class=w>    </span><span class=n>iren</span><span class=p>.</span><span class=na>SetInteractorStyle</span><span class=p>(</span><span class=n>Style</span><span class=p>);</span><span class=w>  </span>
 
 <span class=hll><span class=w>    </span><span class=n>vtkImageTracerWidget</span><span class=w> </span><span class=n>TracerWidget</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkImageTracerWidget</span><span class=p>();</span>
 </span><span class=w>    </span><span class=n>TracerWidget</span><span class=p>.</span><span class=na>SetInteractor</span><span class=p>(</span><span class=n>iren</span><span class=p>);</span>

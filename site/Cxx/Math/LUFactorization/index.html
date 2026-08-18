@@ -83,8 +83,8 @@ function registerListener(event, func) {
 
 <span class=kt>void</span><span class=w> </span><span class=n>OutputMatrix</span><span class=p>(</span><span class=kt>double</span><span class=o>**</span><span class=w> </span><span class=n>a</span><span class=p>)</span>
 <span class=p>{</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;[ &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>a</span><span class=p>[</span><span class=mi>0</span><span class=p>][</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>a</span><span class=p>[</span><span class=mi>0</span><span class=p>][</span><span class=mi>1</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;  &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>a</span><span class=p>[</span><span class=mi>1</span><span class=p>][</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>a</span><span class=p>[</span><span class=mi>1</span><span class=p>][</span><span class=mi>1</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; ]&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"[ "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>a</span><span class=p>[</span><span class=mi>0</span><span class=p>][</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>a</span><span class=p>[</span><span class=mi>0</span><span class=p>][</span><span class=mi>1</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"  "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>a</span><span class=p>[</span><span class=mi>1</span><span class=p>][</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>a</span><span class=p>[</span><span class=mi>1</span><span class=p>][</span><span class=mi>1</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" ]"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=p>}</span>
 <span class=p>}</span><span class=w> </span><span class=c1>// namespace</span>
 
@@ -112,7 +112,7 @@ function registerListener(event, func) {
 <span class=cm>    [6 3; 4 3] decomposes to [1 0; 3/2 1] * [4 3; 0 -3/2]</span>
 <span class=cm>  */</span>
 
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;a&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"a"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>  </span><span class=n>OutputMatrix</span><span class=p>(</span><span class=n>a</span><span class=p>);</span>
 
 <span class=w>  </span><span class=kt>int</span><span class=w> </span><span class=n>pivotIndices</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>{</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>};</span>
@@ -120,11 +120,11 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=c1>// Decompose matrix A into the LU form.</span>
 <span class=hll><span class=w>  </span><span class=n>vtkMath</span><span class=o>::</span><span class=n>LUFactorLinearSystem</span><span class=p>(</span><span class=n>a</span><span class=p>,</span><span class=w> </span><span class=n>pivotIndices</span><span class=p>,</span><span class=w> </span><span class=n>n</span><span class=p>);</span>
 </span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;A decomposed into (unit lower triangular) L and U:&quot;</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"A decomposed into (unit lower triangular) L and U:"</span>
 <span class=w>            </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>  </span><span class=n>OutputMatrix</span><span class=p>(</span><span class=n>a</span><span class=p>);</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;pivotIndices = (&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>pivotIndices</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;, &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>pivotIndices</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span>
-<span class=w>            </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;)&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>endl</span><span class=p>;</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"pivotIndices = ("</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>pivotIndices</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>", "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>pivotIndices</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span>
+<span class=w>            </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>")"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>endl</span><span class=p>;</span>
 
 <span class=w>  </span><span class=cm>/*</span>
 <span class=cm>  The resulting matrix: [6 3; 0.666667 1] is a superposition of L and U,</span>
@@ -134,7 +134,7 @@ function registerListener(event, func) {
 <span class=cm>  In other words, the diagonal of the resulting matrix A is the diagonal of U.</span>
 <span class=cm>  The upper right triangle of A is the upper right triangle of U.</span>
 <span class=cm>  The lower left triangle of A is the lower left triangle of L</span>
-<span class=cm>  (and remember, the diagonal of L is all 1&#39;s).</span>
+<span class=cm>  (and remember, the diagonal of L is all 1's).</span>
 
 <span class=cm>  To show that the resulting interpretation of the output matrix A is correct,</span>
 <span class=cm>  we form the matrices following the description above and show that they</span>
@@ -155,11 +155,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;LUFactorization: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"LUFactorization: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>LUFactorization</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>LUFactorization.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>LUFactorization</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

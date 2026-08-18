@@ -82,13 +82,13 @@ function registerListener(event, func) {
     <span class=c1># Create the data.</span>
 <span class=hll>    <span class=n>var_x_solution</span> <span class=o>=</span> <span class=n>vtkTable</span><span class=p>()</span>
 </span>
-<span class=hll>    <span class=n>arr_x0</span> <span class=o>=</span> <span class=n>vtkFloatArray</span><span class=p>(</span><span class=n>name</span><span class=o>=</span><span class=s1>&#39;X&#39;</span><span class=p>)</span>
+<span class=hll>    <span class=n>arr_x0</span> <span class=o>=</span> <span class=n>vtkFloatArray</span><span class=p>(</span><span class=n>name</span><span class=o>=</span><span class=s1>'X'</span><span class=p>)</span>
 </span>    <span class=n>var_x_solution</span><span class=o>.</span><span class=n>AddColumn</span><span class=p>(</span><span class=n>arr_x0</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>arr_x1</span> <span class=o>=</span> <span class=n>vtkFloatArray</span><span class=p>(</span><span class=n>name</span><span class=o>=</span><span class=s1>&#39;Y&#39;</span><span class=p>)</span>
+<span class=hll>    <span class=n>arr_x1</span> <span class=o>=</span> <span class=n>vtkFloatArray</span><span class=p>(</span><span class=n>name</span><span class=o>=</span><span class=s1>'Y'</span><span class=p>)</span>
 </span>    <span class=n>var_x_solution</span><span class=o>.</span><span class=n>AddColumn</span><span class=p>(</span><span class=n>arr_x1</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>arr_x2</span> <span class=o>=</span> <span class=n>vtkFloatArray</span><span class=p>(</span><span class=n>name</span><span class=o>=</span><span class=s1>&#39;Z&#39;</span><span class=p>)</span>
+<span class=hll>    <span class=n>arr_x2</span> <span class=o>=</span> <span class=n>vtkFloatArray</span><span class=p>(</span><span class=n>name</span><span class=o>=</span><span class=s1>'Z'</span><span class=p>)</span>
 </span>    <span class=n>var_x_solution</span><span class=o>.</span><span class=n>AddColumn</span><span class=p>(</span><span class=n>arr_x2</span><span class=p>)</span>
 
     <span class=n>number_of_time_points</span> <span class=o>=</span> <span class=mi>1000</span>
@@ -109,20 +109,20 @@ function registerListener(event, func) {
     <span class=c1># Set up a 3D scene and add an XYZ chart to it.</span>
 <span class=hll>    <span class=n>view</span> <span class=o>=</span> <span class=n>vtkContextView</span><span class=p>()</span>
 </span>    <span class=n>view</span><span class=o>.</span><span class=n>render_window</span><span class=o>.</span><span class=n>size</span> <span class=o>=</span> <span class=p>(</span><span class=mi>640</span><span class=p>,</span> <span class=mi>480</span><span class=p>)</span>
-    <span class=n>view</span><span class=o>.</span><span class=n>render_window</span><span class=o>.</span><span class=n>window_name</span> <span class=o>=</span> <span class=s1>&#39;PlotLine3D&#39;</span>
+    <span class=n>view</span><span class=o>.</span><span class=n>render_window</span><span class=o>.</span><span class=n>window_name</span> <span class=o>=</span> <span class=s1>'PlotLine3D'</span>
 
 <span class=hll>    <span class=n>chart</span> <span class=o>=</span> <span class=n>vtkChartXYZ</span><span class=p>(</span><span class=n>geometry</span><span class=o>=</span><span class=n>vtkRectf</span><span class=p>(</span><span class=mf>5.0</span><span class=p>,</span> <span class=mf>5.0</span><span class=p>,</span> <span class=mf>635.0</span><span class=p>,</span> <span class=mf>475.0</span><span class=p>))</span>
 </span>    <span class=n>view</span><span class=o>.</span><span class=n>scene</span><span class=o>.</span><span class=n>AddItem</span><span class=p>(</span><span class=n>chart</span><span class=p>)</span>
 
     <span class=c1># Add a line plot.</span>
 <span class=hll>    <span class=n>plot</span> <span class=o>=</span> <span class=n>vtkPlotLine3D</span><span class=p>(</span><span class=n>input_data</span><span class=o>=</span><span class=n>var_x_solution</span><span class=p>)</span>
-</span>    <span class=n>plot</span><span class=o>.</span><span class=n>pen</span><span class=o>.</span><span class=n>color_f</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;LightCoral&#39;</span><span class=p>)</span>
+</span>    <span class=n>plot</span><span class=o>.</span><span class=n>pen</span><span class=o>.</span><span class=n>color_f</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'LightCoral'</span><span class=p>)</span>
     <span class=n>view</span><span class=o>.</span><span class=n>render_window</span><span class=o>.</span><span class=n>multi_samples</span> <span class=o>=</span> <span class=mi>0</span>
     <span class=n>plot</span><span class=o>.</span><span class=n>pen</span><span class=o>.</span><span class=n>width</span> <span class=o>=</span> <span class=mf>2.0</span>
     <span class=n>chart</span><span class=o>.</span><span class=n>AddPlot</span><span class=p>(</span><span class=n>plot</span><span class=p>)</span>
 
     <span class=c1># Finally render the scene.</span>
-    <span class=n>view</span><span class=o>.</span><span class=n>renderer</span><span class=o>.</span><span class=n>background</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;DarkOliveGreen&#39;</span><span class=p>)</span>
+    <span class=n>view</span><span class=o>.</span><span class=n>renderer</span><span class=o>.</span><span class=n>background</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'DarkOliveGreen'</span><span class=p>)</span>
     <span class=n>view</span><span class=o>.</span><span class=n>render_window</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
     <span class=n>view</span><span class=o>.</span><span class=n>renderer</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
     <span class=n>view</span><span class=o>.</span><span class=n>interactor</span><span class=o>.</span><span class=n>Initialize</span><span class=p>()</span>
@@ -130,10 +130,10 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>lorenz</span><span class=p>(</span><span class=n>var_x</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Plot the solution to the Lorenz attractor.</span>
 <span class=sd>    [Lorenz system](https://en.wikipedia.org/wiki/Lorenz_system)</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 
     <span class=n>sigma</span> <span class=o>=</span> <span class=mf>10.0</span>
     <span class=n>rho</span> <span class=o>=</span> <span class=mf>28.0</span>
@@ -148,6 +148,6 @@ function registerListener(event, func) {
     <span class=k>return</span> <span class=n>var_x_derivative</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

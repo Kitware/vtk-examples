@@ -75,7 +75,7 @@ function registerListener(event, func) {
 <span class=w>            </span><span class=n>ColoredLines</span><span class=p>();</span>
 <span class=w>         </span><span class=p>}</span>
 <span class=w>         </span><span class=k>catch</span><span class=p>(</span><span class=n>Exception</span><span class=w> </span><span class=n>ex</span><span class=p>)</span><span class=w> </span><span class=p>{</span>
-<span class=w>            </span><span class=n>MessageBox</span><span class=p>.</span><span class=n>Show</span><span class=p>(</span><span class=n>ex</span><span class=p>.</span><span class=n>Message</span><span class=p>,</span><span class=w> </span><span class=s>&quot;Exception&quot;</span><span class=p>,</span><span class=w> </span><span class=n>MessageBoxButtons</span><span class=p>.</span><span class=n>OK</span><span class=p>);</span>
+<span class=w>            </span><span class=n>MessageBox</span><span class=p>.</span><span class=n>Show</span><span class=p>(</span><span class=n>ex</span><span class=p>.</span><span class=n>Message</span><span class=p>,</span><span class=w> </span><span class=s>"Exception"</span><span class=p>,</span><span class=w> </span><span class=n>MessageBoxButtons</span><span class=p>.</span><span class=n>OK</span><span class=p>);</span>
 <span class=w>         </span><span class=p>}</span>
 <span class=w>      </span><span class=p>}</span>
 
@@ -100,7 +100,7 @@ function registerListener(event, func) {
 <span class=w>         </span><span class=c1>// Setup the colors array</span>
 <span class=hll><span class=w>         </span><span class=n>vtkUnsignedCharArray</span><span class=w> </span><span class=n>colors</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>vtkUnsignedCharArray</span><span class=p>.</span><span class=n>New</span><span class=p>();</span>
 </span><span class=w>         </span><span class=n>colors</span><span class=p>.</span><span class=n>SetNumberOfComponents</span><span class=p>(</span><span class=mi>3</span><span class=p>);</span>
-<span class=w>         </span><span class=n>colors</span><span class=p>.</span><span class=n>SetName</span><span class=p>(</span><span class=s>&quot;Colors&quot;</span><span class=p>);</span>
+<span class=w>         </span><span class=n>colors</span><span class=p>.</span><span class=n>SetName</span><span class=p>(</span><span class=s>"Colors"</span><span class=p>);</span>
 
 <span class=w>         </span><span class=c1>// Add the colors we created to the colors array</span>
 <span class=w>         </span><span class=n>colors</span><span class=p>.</span><span class=n>InsertNextValue</span><span class=p>(</span><span class=n>red</span><span class=p>[</span><span class=mi>0</span><span class=p>]);</span>

@@ -151,7 +151,7 @@ function registerListener(event, func) {
 </span><span class=hll><span class=kt>void</span><span class=w> </span><span class=nf>case14</span><span class=p>(</span><span class=n>vtkFloatArray</span><span class=o>*</span><span class=p>,</span><span class=w> </span><span class=n>vtkVectorText</span><span class=o>*</span><span class=p>,</span><span class=w> </span><span class=kt>int</span><span class=p>,</span><span class=w> </span><span class=kt>int</span><span class=p>);</span>
 </span><span class=p>}</span><span class=w> </span><span class=c1>// namespace</span>
 
-<span class=kt>int</span><span class=w> </span><span class=n>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>argv</span><span class=p>[])</span>
+<span class=kt>int</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>argv</span><span class=p>[])</span>
 <span class=p>{</span>
 <span class=hll><span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=kt>int</span><span class=p>,</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=p>(</span><span class=o>*</span><span class=p>)(</span><span class=n>vtkFloatArray</span><span class=o>*</span><span class=p>,</span><span class=w> </span><span class=n>vtkVectorText</span><span class=o>*</span><span class=p>,</span><span class=w> </span><span class=kt>int</span><span class=p>,</span><span class=w> </span><span class=kt>int</span><span class=p>)</span><span class=o>&gt;</span><span class=w> </span><span class=n>cases</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>cases</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=o>&amp;</span><span class=n>case0</span><span class=p>;</span>
@@ -192,7 +192,7 @@ function registerListener(event, func) {
 <span class=w>      </span><span class=n>mcCase</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>abs</span><span class=p>(</span><span class=n>atoi</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=n>i</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=mi>2</span><span class=p>]));</span>
 <span class=w>      </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>abs</span><span class=p>(</span><span class=n>mcCase</span><span class=p>)</span><span class=w> </span><span class=o>&gt;</span><span class=w> </span><span class=mi>14</span><span class=p>)</span>
 <span class=w>      </span><span class=p>{</span>
-<span class=w>        </span><span class=n>std</span><span class=o>::</span><span class=n>cerr</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; bad case number &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>mcCase</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>        </span><span class=n>std</span><span class=o>::</span><span class=n>cerr</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" bad case number "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>mcCase</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>EXIT_FAILURE</span><span class=p>;</span>
 <span class=w>      </span><span class=p>}</span>
 <span class=w>      </span><span class=n>mcCases</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>mcCase</span><span class=p>);</span>
@@ -216,7 +216,7 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>mcCases</span><span class=p>.</span><span class=n>size</span><span class=p>()</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=mi>1</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Case: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>mcCases</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Case: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>mcCases</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=w>  </span><span class=k>else</span>
 <span class=w>  </span><span class=p>{</span>
@@ -224,12 +224,12 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=p>{</span>
 <span class=w>      </span><span class=n>std</span><span class=o>::</span><span class=n>ostringstream</span><span class=w> </span><span class=n>ss</span><span class=p>;</span>
 <span class=w>      </span><span class=n>std</span><span class=o>::</span><span class=n>copy</span><span class=p>(</span><span class=n>mcCases</span><span class=p>.</span><span class=n>begin</span><span class=p>(),</span><span class=w> </span><span class=n>mcCases</span><span class=p>.</span><span class=n>end</span><span class=p>()</span><span class=w> </span><span class=o>-</span><span class=w> </span><span class=mi>1</span><span class=p>,</span>
-<span class=w>                </span><span class=n>std</span><span class=o>::</span><span class=n>ostream_iterator</span><span class=o>&lt;</span><span class=kt>int</span><span class=o>&gt;</span><span class=p>(</span><span class=n>ss</span><span class=p>,</span><span class=w> </span><span class=s>&quot;, &quot;</span><span class=p>));</span>
+<span class=w>                </span><span class=n>std</span><span class=o>::</span><span class=n>ostream_iterator</span><span class=o>&lt;</span><span class=kt>int</span><span class=o>&gt;</span><span class=p>(</span><span class=n>ss</span><span class=p>,</span><span class=w> </span><span class=s>", "</span><span class=p>));</span>
 <span class=w>      </span><span class=n>ss</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>mcCases</span><span class=p>.</span><span class=n>back</span><span class=p>();</span>
-<span class=w>      </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Cases: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>ss</span><span class=p>.</span><span class=n>str</span><span class=p>()</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>      </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Cases: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>ss</span><span class=p>.</span><span class=n>str</span><span class=p>()</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=p>}</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Rotated: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>rotation</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=mi>90</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; degrees.&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Rotated: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>rotation</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=mi>90</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" degrees."</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span><span class=w> </span><span class=n>color</span><span class=p>;</span>
 </span>
@@ -250,7 +250,7 @@ function registerListener(event, func) {
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderer</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>renderers</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>renderer</span><span class=p>);</span>
 <span class=w>    </span><span class=c1>// Set the background color.</span>
-<span class=w>    </span><span class=n>renderers</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>color</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;slate_grey&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>    </span><span class=n>renderers</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>color</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"slate_grey"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>    </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>);</span>
 <span class=w>  </span><span class=p>}</span>
 
@@ -319,7 +319,7 @@ function registerListener(event, func) {
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>triangleEdgeActor</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>triangleEdgeActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>triangleEdgeMapper</span><span class=p>);</span>
 <span class=w>    </span><span class=n>triangleEdgeActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetDiffuseColor</span><span class=p>(</span>
-<span class=w>        </span><span class=n>color</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;lamp_black&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>        </span><span class=n>color</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"lamp_black"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>    </span><span class=n>triangleEdgeActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetSpecular</span><span class=p>(</span><span class=mf>.4</span><span class=p>);</span>
 <span class=w>    </span><span class=n>triangleEdgeActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetSpecularPower</span><span class=p>(</span><span class=mi>10</span><span class=p>);</span>
 
@@ -336,7 +336,7 @@ function registerListener(event, func) {
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>triangles</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>triangles</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>aMapper</span><span class=p>);</span>
 <span class=w>    </span><span class=n>triangles</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetDiffuseColor</span><span class=p>(</span>
-<span class=w>        </span><span class=n>color</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;banana&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>        </span><span class=n>color</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"banana"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>    </span><span class=n>triangles</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetOpacity</span><span class=p>(</span><span class=mf>.6</span><span class=p>);</span>
 
 <span class=w>    </span><span class=c1>// Draw a cube the same size and at the same position as the one</span>
@@ -361,7 +361,7 @@ function registerListener(event, func) {
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>cubeEdges</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>cubeEdges</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>tubeMapper</span><span class=p>);</span>
 <span class=w>    </span><span class=n>cubeEdges</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetDiffuseColor</span><span class=p>(</span>
-<span class=w>        </span><span class=n>color</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;khaki&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>        </span><span class=n>color</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"khaki"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>    </span><span class=n>cubeEdges</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetSpecular</span><span class=p>(</span><span class=mf>.4</span><span class=p>);</span>
 <span class=w>    </span><span class=n>cubeEdges</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetSpecularPower</span><span class=p>(</span><span class=mi>10</span><span class=p>);</span>
 
@@ -389,11 +389,11 @@ function registerListener(event, func) {
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>cubeVertices</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>cubeVertices</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>sphereMapper</span><span class=p>);</span>
 <span class=w>    </span><span class=n>cubeVertices</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetDiffuseColor</span><span class=p>(</span>
-<span class=w>        </span><span class=n>color</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;tomato&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>        </span><span class=n>color</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"tomato"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=w>    </span><span class=c1>// Define the text for the label</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkVectorText</span><span class=o>&gt;</span><span class=w> </span><span class=n>caseLabel</span><span class=p>;</span>
-</span><span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>&quot;Case 1&quot;</span><span class=p>);</span>
+</span><span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>"Case 1"</span><span class=p>);</span>
 
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>labelActor</span><span class=p>;</span>
 </span>
@@ -510,11 +510,11 @@ function registerListener(event, func) {
 <span class=w>      </span><span class=o>?</span><span class=w> </span><span class=k>static_cast</span><span class=o>&lt;</span><span class=kt>int</span><span class=o>&gt;</span><span class=p>(</span><span class=n>mcCases</span><span class=p>.</span><span class=n>size</span><span class=p>())</span>
 <span class=w>      </span><span class=o>:</span><span class=w> </span><span class=mi>4</span><span class=p>;</span>
 <span class=w>  </span><span class=kt>int</span><span class=w> </span><span class=n>yGridDimensions</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>(</span><span class=k>static_cast</span><span class=o>&lt;</span><span class=kt>int</span><span class=o>&gt;</span><span class=p>(</span><span class=n>mcCases</span><span class=p>.</span><span class=n>size</span><span class=p>())</span><span class=w> </span><span class=o>-</span><span class=w> </span><span class=mi>1</span><span class=p>)</span><span class=w> </span><span class=o>/</span><span class=w> </span><span class=mi>4</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=mi>1</span><span class=p>;</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Grid dimensions: (x, y): (&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>xGridDimensions</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;, &quot;</span>
-<span class=w>            </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>yGridDimensions</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;)&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Grid dimensions: (x, y): ("</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>xGridDimensions</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>", "</span>
+<span class=w>            </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>yGridDimensions</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>")"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=n>rendererSize</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=n>xGridDimensions</span><span class=p>,</span>
 <span class=w>                  </span><span class=n>rendererSize</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=n>yGridDimensions</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;MarchingCases&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"MarchingCases"</span><span class=p>);</span>
 
 <span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>row</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>row</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>yGridDimensions</span><span class=p>;</span><span class=w> </span><span class=n>row</span><span class=o>++</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
@@ -543,24 +543,24 @@ function registerListener(event, func) {
 <span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=nf>ProgramParameters</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>programName</span><span class=p>)</span>
 <span class=p>{</span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>ret</span><span class=w> </span><span class=o>=</span>
-<span class=w>      </span><span class=s>&quot;Usage: &quot;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>programName</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&quot; [n [cases [cases ...]] [rotation] [label]</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>;</span>
-<span class=w>  </span><span class=n>ret</span><span class=w> </span><span class=o>+=</span><span class=w> </span><span class=s>&quot;</span><span class=se>\n</span><span class=s>Marching cubes cases for 3D isosurface generation.</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>;</span>
-<span class=w>  </span><span class=n>ret</span><span class=w> </span><span class=o>+=</span><span class=w> </span><span class=s>&quot;arguments:</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>;</span>
-<span class=w>  </span><span class=n>ret</span><span class=w> </span><span class=o>+=</span><span class=w> </span><span class=s>&quot;n         The number of cases</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>;</span>
-<span class=w>  </span><span class=n>ret</span><span class=w> </span><span class=o>+=</span><span class=w> </span><span class=s>&quot;cases     A list of integers i such that 0 &lt;= i &lt; 14</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>;</span>
-<span class=w>  </span><span class=n>ret</span><span class=w> </span><span class=o>+=</span><span class=w> </span><span class=s>&quot;            corresponding to the cases desired.</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>;</span>
-<span class=w>  </span><span class=n>ret</span><span class=w> </span><span class=o>+=</span><span class=w> </span><span class=s>&quot;rotation  Rotate camera around the cube, for i such that 0 &lt;= abs(i) &quot;</span>
-<span class=w>         </span><span class=s>&quot;&lt; 4,</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>;</span>
-<span class=w>  </span><span class=n>ret</span><span class=w> </span><span class=o>+=</span><span class=w> </span><span class=s>&quot;            corresponding to 0, 90, 180, 270 degrees. Default = 0</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>;</span>
-<span class=w>  </span><span class=n>ret</span><span class=w> </span><span class=o>+=</span><span class=w> </span><span class=s>&quot;label     Display a label entering 0 corresponds to false any other &quot;</span>
-<span class=w>         </span><span class=s>&quot;number is true.</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>;</span>
-<span class=w>  </span><span class=n>ret</span><span class=w> </span><span class=o>+=</span><span class=w> </span><span class=s>&quot;            Default is  true, 0 == false.</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>;</span>
-<span class=w>  </span><span class=n>ret</span><span class=w> </span><span class=o>+=</span><span class=w> </span><span class=s>&quot;</span><span class=se>\n</span><span class=s>Example parameter lists:</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>;</span>
+<span class=w>      </span><span class=s>"Usage: "</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>programName</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>" [n [cases [cases ...]] [rotation] [label]</span><span class=se>\n</span><span class=s>"</span><span class=p>;</span>
+<span class=w>  </span><span class=n>ret</span><span class=w> </span><span class=o>+=</span><span class=w> </span><span class=s>"</span><span class=se>\n</span><span class=s>Marching cubes cases for 3D isosurface generation.</span><span class=se>\n</span><span class=s>"</span><span class=p>;</span>
+<span class=w>  </span><span class=n>ret</span><span class=w> </span><span class=o>+=</span><span class=w> </span><span class=s>"arguments:</span><span class=se>\n</span><span class=s>"</span><span class=p>;</span>
+<span class=w>  </span><span class=n>ret</span><span class=w> </span><span class=o>+=</span><span class=w> </span><span class=s>"n         The number of cases</span><span class=se>\n</span><span class=s>"</span><span class=p>;</span>
+<span class=w>  </span><span class=n>ret</span><span class=w> </span><span class=o>+=</span><span class=w> </span><span class=s>"cases     A list of integers i such that 0 &lt;= i &lt; 14</span><span class=se>\n</span><span class=s>"</span><span class=p>;</span>
+<span class=w>  </span><span class=n>ret</span><span class=w> </span><span class=o>+=</span><span class=w> </span><span class=s>"            corresponding to the cases desired.</span><span class=se>\n</span><span class=s>"</span><span class=p>;</span>
+<span class=w>  </span><span class=n>ret</span><span class=w> </span><span class=o>+=</span><span class=w> </span><span class=s>"rotation  Rotate camera around the cube, for i such that 0 &lt;= abs(i) "</span>
+<span class=w>         </span><span class=s>"&lt; 4,</span><span class=se>\n</span><span class=s>"</span><span class=p>;</span>
+<span class=w>  </span><span class=n>ret</span><span class=w> </span><span class=o>+=</span><span class=w> </span><span class=s>"            corresponding to 0, 90, 180, 270 degrees. Default = 0</span><span class=se>\n</span><span class=s>"</span><span class=p>;</span>
+<span class=w>  </span><span class=n>ret</span><span class=w> </span><span class=o>+=</span><span class=w> </span><span class=s>"label     Display a label entering 0 corresponds to false any other "</span>
+<span class=w>         </span><span class=s>"number is true.</span><span class=se>\n</span><span class=s>"</span><span class=p>;</span>
+<span class=w>  </span><span class=n>ret</span><span class=w> </span><span class=o>+=</span><span class=w> </span><span class=s>"            Default is  true, 0 == false.</span><span class=se>\n</span><span class=s>"</span><span class=p>;</span>
+<span class=w>  </span><span class=n>ret</span><span class=w> </span><span class=o>+=</span><span class=w> </span><span class=s>"</span><span class=se>\n</span><span class=s>Example parameter lists:</span><span class=se>\n</span><span class=s>"</span><span class=p>;</span>
 <span class=w>  </span><span class=n>ret</span><span class=w> </span><span class=o>+=</span>
-<span class=w>      </span><span class=s>&quot;</span><span class=se>\n</span><span class=s>3 1 7 12 3 0 Display three cubes: 7, 12, 3 rotated by 270 degrees</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>;</span>
-<span class=w>  </span><span class=n>ret</span><span class=w> </span><span class=o>+=</span><span class=w> </span><span class=s>&quot;               around the y-axis with no labels.</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>;</span>
-<span class=w>  </span><span class=n>ret</span><span class=w> </span><span class=o>+=</span><span class=w> </span><span class=s>&quot;1 7         Display one cube: 7, no rotation with a label.</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>;</span>
-<span class=w>  </span><span class=n>ret</span><span class=w> </span><span class=o>+=</span><span class=w> </span><span class=s>&quot;1 7 0 0     Display one cube: 7, no rotation, no label.</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>;</span>
+<span class=w>      </span><span class=s>"</span><span class=se>\n</span><span class=s>3 1 7 12 3 0 Display three cubes: 7, 12, 3 rotated by 270 degrees</span><span class=se>\n</span><span class=s>"</span><span class=p>;</span>
+<span class=w>  </span><span class=n>ret</span><span class=w> </span><span class=o>+=</span><span class=w> </span><span class=s>"               around the y-axis with no labels.</span><span class=se>\n</span><span class=s>"</span><span class=p>;</span>
+<span class=w>  </span><span class=n>ret</span><span class=w> </span><span class=o>+=</span><span class=w> </span><span class=s>"1 7         Display one cube: 7, no rotation with a label.</span><span class=se>\n</span><span class=s>"</span><span class=p>;</span>
+<span class=w>  </span><span class=n>ret</span><span class=w> </span><span class=o>+=</span><span class=w> </span><span class=s>"1 7 0 0     Display one cube: 7, no rotation, no label.</span><span class=se>\n</span><span class=s>"</span><span class=p>;</span>
 
 <span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>ret</span><span class=p>;</span>
 <span class=p>}</span>
@@ -577,11 +577,11 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>7</span><span class=p>,</span><span class=w> </span><span class=n>OUT</span><span class=p>);</span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>IN</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=mi>1</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>&quot;Case 0 - 00000000&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>"Case 0 - 00000000"</span><span class=p>);</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=w>  </span><span class=k>else</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>&quot;Case 0 - 11111111&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>"Case 0 - 11111111"</span><span class=p>);</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=p>}</span>
 
@@ -597,11 +597,11 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>7</span><span class=p>,</span><span class=w> </span><span class=n>OUT</span><span class=p>);</span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>IN</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=mi>1</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>&quot;Case 1 - 00000001&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>"Case 1 - 00000001"</span><span class=p>);</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=w>  </span><span class=k>else</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>&quot;Case 1c - 11111110&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>"Case 1c - 11111110"</span><span class=p>);</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=p>}</span>
 
@@ -617,11 +617,11 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>7</span><span class=p>,</span><span class=w> </span><span class=n>OUT</span><span class=p>);</span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>IN</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=mi>1</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>&quot;Case 2 - 00000011&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>"Case 2 - 00000011"</span><span class=p>);</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=w>  </span><span class=k>else</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>&quot;Case 2c - 11111100&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>"Case 2c - 11111100"</span><span class=p>);</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=p>}</span>
 
@@ -637,11 +637,11 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>7</span><span class=p>,</span><span class=w> </span><span class=n>OUT</span><span class=p>);</span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>IN</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=mi>1</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>&quot;Case 3 - 00000101&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>"Case 3 - 00000101"</span><span class=p>);</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=w>  </span><span class=k>else</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>&quot;Case 3c - 11111010&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>"Case 3c - 11111010"</span><span class=p>);</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=p>}</span>
 
@@ -657,11 +657,11 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>7</span><span class=p>,</span><span class=w> </span><span class=n>OUT</span><span class=p>);</span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>IN</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=mi>1</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>&quot;Case 4 - 01000001&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>"Case 4 - 01000001"</span><span class=p>);</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=w>  </span><span class=k>else</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>&quot;Case 4c - 10111110&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>"Case 4c - 10111110"</span><span class=p>);</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=p>}</span>
 
@@ -677,11 +677,11 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>7</span><span class=p>,</span><span class=w> </span><span class=n>OUT</span><span class=p>);</span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>IN</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=mi>1</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>&quot;Case 5 - 00110010&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>"Case 5 - 00110010"</span><span class=p>);</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=w>  </span><span class=k>else</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>&quot;Case 5c - 11001101&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>"Case 5c - 11001101"</span><span class=p>);</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=p>}</span>
 
@@ -697,11 +697,11 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>7</span><span class=p>,</span><span class=w> </span><span class=n>OUT</span><span class=p>);</span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>IN</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=mi>1</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>&quot;Case 6 - 00011010&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>"Case 6 - 00011010"</span><span class=p>);</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=w>  </span><span class=k>else</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>&quot;Case 6c - 11100101&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>"Case 6c - 11100101"</span><span class=p>);</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=p>}</span>
 
@@ -717,11 +717,11 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>7</span><span class=p>,</span><span class=w> </span><span class=n>OUT</span><span class=p>);</span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>IN</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=mi>1</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>&quot;Case 7 - 01000011&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>"Case 7 - 01000011"</span><span class=p>);</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=w>  </span><span class=k>else</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>&quot;Case 7c - 10111100&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>"Case 7c - 10111100"</span><span class=p>);</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=p>}</span>
 
@@ -737,11 +737,11 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>7</span><span class=p>,</span><span class=w> </span><span class=n>OUT</span><span class=p>);</span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>IN</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=mi>1</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>&quot;Case 8 - 00110011&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>"Case 8 - 00110011"</span><span class=p>);</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=w>  </span><span class=k>else</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>&quot;Case 8c - 11001100&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>"Case 8c - 11001100"</span><span class=p>);</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=p>}</span>
 
@@ -757,11 +757,11 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>7</span><span class=p>,</span><span class=w> </span><span class=n>OUT</span><span class=p>);</span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>IN</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=mi>1</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>&quot;Case 9 - 01001110&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>"Case 9 - 01001110"</span><span class=p>);</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=w>  </span><span class=k>else</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>&quot;Case 9c - 10110001&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>"Case 9c - 10110001"</span><span class=p>);</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=p>}</span>
 <span class=hll><span class=kt>void</span><span class=w> </span><span class=nf>case10</span><span class=p>(</span><span class=n>vtkFloatArray</span><span class=o>*</span><span class=w> </span><span class=n>scalars</span><span class=p>,</span><span class=w> </span><span class=n>vtkVectorText</span><span class=o>*</span><span class=w> </span><span class=n>caseLabel</span><span class=p>,</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>IN</span><span class=p>,</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>OUT</span><span class=p>)</span>
@@ -776,11 +776,11 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>7</span><span class=p>,</span><span class=w> </span><span class=n>OUT</span><span class=p>);</span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>IN</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=mi>1</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>&quot;Case 10 - 01101001&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>"Case 10 - 01101001"</span><span class=p>);</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=w>  </span><span class=k>else</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>&quot;Case 10c - 10010110&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>"Case 10c - 10010110"</span><span class=p>);</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=p>}</span>
 
@@ -796,11 +796,11 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>7</span><span class=p>,</span><span class=w> </span><span class=n>OUT</span><span class=p>);</span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>IN</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=mi>1</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>&quot;Case 11 - 01110001&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>"Case 11 - 01110001"</span><span class=p>);</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=w>  </span><span class=k>else</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>&quot;Case 11c - 10001110&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>"Case 11c - 10001110"</span><span class=p>);</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=p>}</span>
 
@@ -816,11 +816,11 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>7</span><span class=p>,</span><span class=w> </span><span class=n>OUT</span><span class=p>);</span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>IN</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=mi>1</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>&quot;Case 12 - 00111010&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>"Case 12 - 00111010"</span><span class=p>);</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=w>  </span><span class=k>else</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>&quot;Case 12c - 11000101&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>"Case 12c - 11000101"</span><span class=p>);</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=p>}</span>
 
@@ -836,11 +836,11 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>7</span><span class=p>,</span><span class=w> </span><span class=n>OUT</span><span class=p>);</span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>IN</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=mi>1</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>&quot;Case 13 - 01011010&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>"Case 13 - 01011010"</span><span class=p>);</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=w>  </span><span class=k>else</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>&quot;Case 13c - 10100101&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>"Case 13c - 10100101"</span><span class=p>);</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=p>}</span>
 
@@ -856,11 +856,11 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>scalars</span><span class=o>-&gt;</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>7</span><span class=p>,</span><span class=w> </span><span class=n>IN</span><span class=p>);</span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>IN</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=mi>1</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>&quot;Case 14 - 11101101&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>"Case 14 - 11101101"</span><span class=p>);</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=w>  </span><span class=k>else</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>&quot;Case 14c - 00010010&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>caseLabel</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>"Case 14c - 00010010"</span><span class=p>);</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=p>}</span>
 <span class=p>}</span><span class=w> </span><span class=c1>// namespace</span>
@@ -885,11 +885,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;MarchingCases: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"MarchingCases: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>MarchingCases</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>MarchingCases.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>MarchingCases</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

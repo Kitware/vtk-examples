@@ -90,13 +90,13 @@ function registerListener(event, func) {
 
     <span class=c1># A renderer.</span>
 <span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>()</span>
-</span>    <span class=n>renderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;White&quot;</span><span class=p>))</span>
+</span>    <span class=n>renderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>"White"</span><span class=p>))</span>
 
     <span class=c1># Create background colors for each viewport.</span>
     <span class=n>backgroundColors</span> <span class=o>=</span> <span class=nb>list</span><span class=p>()</span>
-    <span class=n>backgroundColors</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;Cornsilk&quot;</span><span class=p>))</span>
-    <span class=n>backgroundColors</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;NavajoWhite&quot;</span><span class=p>))</span>
-    <span class=n>backgroundColors</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;Tan&quot;</span><span class=p>))</span>
+    <span class=n>backgroundColors</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>"Cornsilk"</span><span class=p>))</span>
+    <span class=n>backgroundColors</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>"NavajoWhite"</span><span class=p>))</span>
+    <span class=n>backgroundColors</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>"Tan"</span><span class=p>))</span>
 
     <span class=c1># Create a renderer for each view port.</span>
     <span class=n>ren</span> <span class=o>=</span> <span class=nb>list</span><span class=p>()</span>
@@ -135,7 +135,7 @@ function registerListener(event, func) {
 
 <span class=hll>        <span class=n>actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>        <span class=n>actor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>)</span>
-        <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetDiffuseColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;Peacock&quot;</span><span class=p>))</span>
+        <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetDiffuseColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>"Peacock"</span><span class=p>))</span>
         <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetDiffuse</span><span class=p>(</span><span class=mf>.7</span><span class=p>)</span>
         <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetSpecularPower</span><span class=p>(</span><span class=mi>20</span><span class=p>)</span>
         <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetSpecular</span><span class=p>(</span><span class=mf>.5</span><span class=p>)</span>
@@ -150,7 +150,7 @@ function registerListener(event, func) {
 </span>    <span class=n>renwin</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>ren</span><span class=p>[</span><span class=mi>0</span><span class=p>])</span>
     <span class=n>renwin</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>ren</span><span class=p>[</span><span class=mi>1</span><span class=p>])</span>
     <span class=n>renwin</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>ren</span><span class=p>[</span><span class=mi>2</span><span class=p>])</span>
-    <span class=n>renwin</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;NormalsDemo&#39;</span><span class=p>)</span>
+    <span class=n>renwin</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>'NormalsDemo'</span><span class=p>)</span>
 
     <span class=c1># An interactor.</span>
 <span class=hll>    <span class=n>interactor</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
@@ -178,16 +178,16 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_program_parameters</span><span class=p>():</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>argparse</span>
-    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;Surface normal generation.&#39;</span>
-    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;</span>
+    <span class=n>description</span> <span class=o>=</span> <span class=s1>'Surface normal generation.'</span>
+    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>'''</span>
 <span class=s1>    (a) Faceted model without normals.</span>
 <span class=s1>    (b) Polygons must be consistently oriented to accurately compute normals.</span>
 <span class=s1>    (c) Sharp edges are poorly represented using shared normals as shown on the corners of this model.</span>
 <span class=s1>    (d) Normal generation with sharp edges split.</span>
-<span class=s1>   &#39;&#39;&#39;</span>
+<span class=s1>   '''</span>
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
                                      <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawDescriptionHelpFormatter</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;filename1&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;42400-IDGH.stl.&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'filename1'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'42400-IDGH.stl.'</span><span class=p>)</span>
     <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
     <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>filename1</span>
 
@@ -196,32 +196,32 @@ function registerListener(event, func) {
     <span class=kn>import</span><span class=w> </span><span class=nn>os</span>
     <span class=n>path</span><span class=p>,</span> <span class=n>extension</span> <span class=o>=</span> <span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>splitext</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
     <span class=n>extension</span> <span class=o>=</span> <span class=n>extension</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span>
-    <span class=k>if</span> <span class=n>extension</span> <span class=o>==</span> <span class=s2>&quot;.ply&quot;</span><span class=p>:</span>
+    <span class=k>if</span> <span class=n>extension</span> <span class=o>==</span> <span class=s2>".ply"</span><span class=p>:</span>
 <span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkPLYReader</span><span class=p>()</span>
 </span>        <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
         <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
         <span class=n>poly_data</span> <span class=o>=</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span>
-    <span class=k>elif</span> <span class=n>extension</span> <span class=o>==</span> <span class=s2>&quot;.vtp&quot;</span><span class=p>:</span>
+    <span class=k>elif</span> <span class=n>extension</span> <span class=o>==</span> <span class=s2>".vtp"</span><span class=p>:</span>
 <span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkXMLPolyDataReader</span><span class=p>()</span>
 </span>        <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
         <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
         <span class=n>poly_data</span> <span class=o>=</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span>
-    <span class=k>elif</span> <span class=n>extension</span> <span class=o>==</span> <span class=s2>&quot;.obj&quot;</span><span class=p>:</span>
+    <span class=k>elif</span> <span class=n>extension</span> <span class=o>==</span> <span class=s2>".obj"</span><span class=p>:</span>
 <span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkOBJReader</span><span class=p>()</span>
 </span>        <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
         <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
         <span class=n>poly_data</span> <span class=o>=</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span>
-    <span class=k>elif</span> <span class=n>extension</span> <span class=o>==</span> <span class=s2>&quot;.stl&quot;</span><span class=p>:</span>
+    <span class=k>elif</span> <span class=n>extension</span> <span class=o>==</span> <span class=s2>".stl"</span><span class=p>:</span>
 <span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkSTLReader</span><span class=p>()</span>
 </span>        <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
         <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
         <span class=n>poly_data</span> <span class=o>=</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span>
-    <span class=k>elif</span> <span class=n>extension</span> <span class=o>==</span> <span class=s2>&quot;.vtk&quot;</span><span class=p>:</span>
+    <span class=k>elif</span> <span class=n>extension</span> <span class=o>==</span> <span class=s2>".vtk"</span><span class=p>:</span>
 <span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkXMLPolyDataReader</span><span class=p>()</span>
 </span>        <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
         <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
         <span class=n>poly_data</span> <span class=o>=</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span>
-    <span class=k>elif</span> <span class=n>extension</span> <span class=o>==</span> <span class=s2>&quot;.g&quot;</span><span class=p>:</span>
+    <span class=k>elif</span> <span class=n>extension</span> <span class=o>==</span> <span class=s2>".g"</span><span class=p>:</span>
 <span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkBYUReader</span><span class=p>()</span>
 </span>        <span class=n>reader</span><span class=o>.</span><span class=n>SetGeometryFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
         <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
@@ -232,6 +232,6 @@ function registerListener(event, func) {
     <span class=k>return</span> <span class=n>poly_data</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

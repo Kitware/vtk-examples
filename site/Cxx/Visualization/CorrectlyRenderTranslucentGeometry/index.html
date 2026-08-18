@@ -171,8 +171,8 @@ function registerListener(event, func) {
 <span class=cm> * [ProgramName] Theta Phi MaximumPeels OcclusionRatio ForceDepthSortingFlag</span>
 <span class=cm> * DoNotUseAnyDepthRelatedAlgorithmFlag</span>
 <span class=cm> * &lt;br&gt;</span>
-<span class=cm> * Theta ... spheres&#39; THETA resolution &lt;br&gt;</span>
-<span class=cm> * Phi ... spheres&#39; PHI resolution &lt;br&gt;</span>
+<span class=cm> * Theta ... spheres' THETA resolution &lt;br&gt;</span>
+<span class=cm> * Phi ... spheres' PHI resolution &lt;br&gt;</span>
 <span class=cm> * MaximumPeels ... maximum number of depth peels (multi-pass rendering) for</span>
 <span class=cm> * depth peeling mode &lt;br&gt;</span>
 <span class=cm> * OcclusionRatio ... occlusion ratio for depth peeling mode (0.0 for a</span>
@@ -183,14 +183,14 @@ function registerListener(event, func) {
 <span class=cm> * DoNotUseAnyDepthRelatedAlgorithmFlag ... neither use depth peeling nor</span>
 <span class=cm> * depth sorting - just render as usual</span>
 <span class=cm> */</span>
-<span class=kt>int</span><span class=w> </span><span class=n>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>argv</span><span class=p>[])</span>
+<span class=kt>int</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>argv</span><span class=p>[])</span>
 <span class=p>{</span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>argc</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=mi>7</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cerr</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Usage: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; Theta Phi MaximumPeels &quot;</span>
-<span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;OcclusionRatio ForceDepthSortingFlag &quot;</span>
-<span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;DoNotUseAnyDepthRelatedAlgorithmFlag&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cerr</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;100 100 50 0.1 0 0&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cerr</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Usage: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" Theta Phi MaximumPeels "</span>
+<span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"OcclusionRatio ForceDepthSortingFlag "</span>
+<span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"DoNotUseAnyDepthRelatedAlgorithmFlag"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cerr</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"100 100 50 0.1 0 0"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>EXIT_FAILURE</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 
@@ -211,7 +211,7 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>actor</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>actor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>);</span>
 <span class=w>  </span><span class=n>actor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetOpacity</span><span class=p>(</span><span class=mf>0.5</span><span class=p>);</span><span class=w> </span><span class=c1>// translucent !!!</span>
-<span class=w>  </span><span class=n>actor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Crimson&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>actor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Crimson"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=n>actor</span><span class=o>-&gt;</span><span class=n>RotateX</span><span class=p>(</span><span class=mi>-72</span><span class=p>);</span><span class=w> </span><span class=c1>// put the objects in a position where it is easy to see</span>
 <span class=w>                       </span><span class=c1>// different overlapping regions</span>
 
@@ -220,14 +220,14 @@ function registerListener(event, func) {
 </span><span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderWindow</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>600</span><span class=p>,</span><span class=w> </span><span class=mi>400</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;CorrectlyRenderTranslucentGeometry&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"CorrectlyRenderTranslucentGeometry"</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderWindowInteractor</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>renderWindowInteractor</span><span class=o>-&gt;</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renderWindow</span><span class=p>);</span>
 
 <span class=w>  </span><span class=c1>// Add the actors to the renderer, set the background and size</span>
 <span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;SlateGray&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"SlateGray"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=w>  </span><span class=c1>// Setup view geometry</span>
 <span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>ResetCamera</span><span class=p>();</span>
@@ -236,27 +236,27 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=c1>// Answer the key question: Does this box support GPU Depth Peeling?</span>
 <span class=w>  </span><span class=kt>bool</span><span class=w> </span><span class=n>useDepthPeeling</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>IsDepthPeelingSupported</span><span class=p>(</span><span class=n>renderWindow</span><span class=p>,</span><span class=w> </span><span class=n>renderer</span><span class=p>,</span><span class=w> </span><span class=nb>true</span><span class=p>);</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;DEPTH PEELING SUPPORT: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=p>(</span><span class=n>useDepthPeeling</span><span class=w> </span><span class=o>?</span><span class=w> </span><span class=s>&quot;YES&quot;</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=s>&quot;NO&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"DEPTH PEELING SUPPORT: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=p>(</span><span class=n>useDepthPeeling</span><span class=w> </span><span class=o>?</span><span class=w> </span><span class=s>"YES"</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=s>"NO"</span><span class=p>)</span>
 <span class=w>            </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 
 <span class=w>  </span><span class=kt>int</span><span class=w> </span><span class=n>success</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>EXIT_SUCCESS</span><span class=p>;</span>
 
 <span class=w>  </span><span class=c1>// Use depth peeling if available and not explicitly prohibited, otherwise we</span>
 <span class=w>  </span><span class=c1>// use manual depth sorting</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;CHOSEN MODE: &quot;</span><span class=p>;</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"CHOSEN MODE: "</span><span class=p>;</span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>useDepthPeeling</span><span class=w> </span><span class=o>&amp;&amp;</span><span class=w> </span><span class=o>!</span><span class=n>forceDepthSort</span><span class=w> </span><span class=o>&amp;&amp;</span><span class=w> </span><span class=o>!</span><span class=n>withoutAnyDepthThings</span><span class=p>)</span><span class=w> </span><span class=c1>// GPU</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=kt>int</span><span class=w> </span><span class=n>maxPeels</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>atoi</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=mi>3</span><span class=p>]);</span>
 <span class=w>    </span><span class=kt>double</span><span class=w> </span><span class=n>occulusionRatio</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>atof</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=mi>4</span><span class=p>]);</span>
 
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;*** DEPTH PEELING ***&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"*** DEPTH PEELING ***"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=c1>// Setup GPU depth peeling with configured parameters</span>
 <span class=w>    </span><span class=n>success</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=o>!</span><span class=n>SetupEnvironmentForDepthPeeling</span><span class=p>(</span><span class=n>renderWindow</span><span class=p>,</span><span class=w> </span><span class=n>renderer</span><span class=p>,</span><span class=w> </span><span class=n>maxPeels</span><span class=p>,</span>
 <span class=w>                                               </span><span class=n>occulusionRatio</span><span class=p>);</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>withoutAnyDepthThings</span><span class=p>)</span><span class=w> </span><span class=c1>// CPU</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;*** DEPTH SORTING ***&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"*** DEPTH SORTING ***"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=c1>// Setup CPU depth sorting filter</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkDepthSortPolyData</span><span class=o>&gt;</span><span class=w> </span><span class=n>depthSort</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>depthSort</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>translucentGeometry</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
@@ -264,13 +264,13 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=n>depthSort</span><span class=o>-&gt;</span><span class=n>SetVector</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>);</span>
 <span class=w>    </span><span class=n>depthSort</span><span class=o>-&gt;</span><span class=n>SetCamera</span><span class=p>(</span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>GetActiveCamera</span><span class=p>());</span>
 <span class=w>    </span><span class=n>depthSort</span><span class=o>-&gt;</span><span class=n>SortScalarsOff</span><span class=p>();</span><span class=w> </span><span class=c1>// do not really need this here</span>
-<span class=w>    </span><span class=c1>// Bring it to the mapper&#39;s input</span>
+<span class=w>    </span><span class=c1>// Bring it to the mapper's input</span>
 <span class=w>    </span><span class=n>mapper</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>depthSort</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 <span class=w>    </span><span class=n>depthSort</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=w>  </span><span class=k>else</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;*** NEITHER DEPTH PEELING NOR DEPTH SORTING ***&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"*** NEITHER DEPTH PEELING NOR DEPTH SORTING ***"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 
 <span class=w>  </span><span class=c1>// Initialize interaction</span>
@@ -296,7 +296,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=p>}</span>
 <span class=w>  </span><span class=n>clock</span><span class=o>-&gt;</span><span class=n>StopTimer</span><span class=p>();</span>
 <span class=w>  </span><span class=kt>double</span><span class=w> </span><span class=n>frameRate</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>(</span><span class=kt>double</span><span class=p>)</span><span class=n>endCount</span><span class=w> </span><span class=o>/</span><span class=w> </span><span class=n>clock</span><span class=o>-&gt;</span><span class=n>GetElapsedTime</span><span class=p>();</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;AVERAGE FRAME RATE: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>frameRate</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; fps&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"AVERAGE FRAME RATE: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>frameRate</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" fps"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 
 <span class=w>  </span><span class=c1>// Start interaction</span>
 <span class=w>  </span><span class=n>renderWindowInteractor</span><span class=o>-&gt;</span><span class=n>Start</span><span class=p>();</span>
@@ -430,11 +430,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;CorrectlyRenderTranslucentGeometry: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"CorrectlyRenderTranslucentGeometry: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>CorrectlyRenderTranslucentGeometry</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>CorrectlyRenderTranslucentGeometry.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>CorrectlyRenderTranslucentGeometry</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

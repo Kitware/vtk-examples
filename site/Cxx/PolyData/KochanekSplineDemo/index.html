@@ -131,7 +131,7 @@ function registerListener(event, func) {
 </span><span class=hll><span class=kt>void</span><span class=w> </span><span class=nf>SetSliderColors</span><span class=p>(</span><span class=n>vtkSliderRepresentation2D</span><span class=o>*</span><span class=w> </span><span class=n>slider</span><span class=p>);</span>
 </span><span class=p>}</span><span class=w> </span><span class=c1>// namespace</span>
 
-<span class=kt>int</span><span class=w> </span><span class=n>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=p>[])</span>
+<span class=kt>int</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=p>[])</span>
 <span class=p>{</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span><span class=w> </span><span class=n>colors</span><span class=p>;</span>
 </span>
@@ -172,7 +172,7 @@ function registerListener(event, func) {
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>actor</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>actor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>);</span>
-<span class=w>  </span><span class=n>actor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;DarkSlateGrey&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>actor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"DarkSlateGrey"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=n>actor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetLineWidth</span><span class=p>(</span><span class=mf>3.0</span><span class=p>);</span>
 
 <span class=w>  </span><span class=c1>// Glyph the points.</span>
@@ -191,7 +191,7 @@ function registerListener(event, func) {
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>pointActor</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>pointActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>pointMapper</span><span class=p>);</span>
-<span class=w>  </span><span class=n>pointActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Peacock&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>pointActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Peacock"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=n>pointActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetOpacity</span><span class=p>(</span><span class=mf>.5</span><span class=p>);</span>
 <span class=w>  </span><span class=p>;</span>
 
@@ -200,7 +200,7 @@ function registerListener(event, func) {
 </span><span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderWindow</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>640</span><span class=p>,</span><span class=w> </span><span class=mi>480</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;KochanekSpline&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"KochanekSpline"</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderWindowInteractor</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>renderWindowInteractor</span><span class=o>-&gt;</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renderWindow</span><span class=p>);</span>
@@ -208,7 +208,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>pointActor</span><span class=p>);</span>
 <span class=w>  </span><span class=p>;</span>
-<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Silver&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Silver"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkSliderWidget</span><span class=o>&gt;</span><span class=w> </span><span class=n>tensionWidget</span><span class=p>;</span>
@@ -237,7 +237,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>SliderCallbackTension</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=hll><span class=w>  </span><span class=k>virtual</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=n>Execute</span><span class=p>(</span><span class=n>vtkObject</span><span class=o>*</span><span class=w> </span><span class=n>caller</span><span class=p>,</span><span class=w> </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>long</span><span class=p>,</span><span class=w> </span><span class=kt>void</span><span class=o>*</span><span class=p>)</span>
+<span class=hll><span class=w>  </span><span class=k>virtual</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>Execute</span><span class=p>(</span><span class=n>vtkObject</span><span class=o>*</span><span class=w> </span><span class=n>caller</span><span class=p>,</span><span class=w> </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>long</span><span class=p>,</span><span class=w> </span><span class=kt>void</span><span class=o>*</span><span class=p>)</span>
 </span><span class=w>  </span><span class=p>{</span>
 <span class=hll><span class=w>    </span><span class=n>vtkSliderWidget</span><span class=o>*</span><span class=w> </span><span class=n>sliderWidget</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>reinterpret_cast</span><span class=o>&lt;</span><span class=n>vtkSliderWidget</span><span class=o>*&gt;</span><span class=p>(</span><span class=n>caller</span><span class=p>);</span>
 </span><span class=hll><span class=w>    </span><span class=kt>double</span><span class=w> </span><span class=n>value</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>static_cast</span><span class=o>&lt;</span><span class=n>vtkSliderRepresentation2D</span><span class=o>*&gt;</span><span class=p>(</span>
@@ -280,7 +280,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>sliderRepTension</span><span class=o>-&gt;</span><span class=n>SetValue</span><span class=p>(</span>
 <span class=hll><span class=w>      </span><span class=k>dynamic_cast</span><span class=o>&lt;</span><span class=n>vtkKochanekSpline</span><span class=o>*&gt;</span><span class=p>(</span><span class=n>parametricSpline</span><span class=o>-&gt;</span><span class=n>GetXSpline</span><span class=p>())</span>
 </span><span class=w>          </span><span class=o>-&gt;</span><span class=n>GetDefaultTension</span><span class=p>());</span>
-<span class=w>  </span><span class=n>sliderRepTension</span><span class=o>-&gt;</span><span class=n>SetTitleText</span><span class=p>(</span><span class=s>&quot;Tension&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>sliderRepTension</span><span class=o>-&gt;</span><span class=n>SetTitleText</span><span class=p>(</span><span class=s>"Tension"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>sliderRepTension</span><span class=o>-&gt;</span><span class=n>SetRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>);</span>
 <span class=w>  </span><span class=n>sliderRepTension</span><span class=o>-&gt;</span><span class=n>GetPoint1Coordinate</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetValue</span><span class=p>(</span><span class=mf>0.1</span><span class=p>,</span><span class=w> </span><span class=mf>0.1</span><span class=p>);</span>
 <span class=w>  </span><span class=n>sliderRepTension</span><span class=o>-&gt;</span><span class=n>GetPoint1Coordinate</span><span class=p>()</span>
@@ -361,7 +361,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>sliderRepContinuity</span><span class=o>-&gt;</span><span class=n>SetValue</span><span class=p>(</span>
 <span class=hll><span class=w>      </span><span class=k>dynamic_cast</span><span class=o>&lt;</span><span class=n>vtkKochanekSpline</span><span class=o>*&gt;</span><span class=p>(</span><span class=n>parametricSpline</span><span class=o>-&gt;</span><span class=n>GetXSpline</span><span class=p>())</span>
 </span><span class=w>          </span><span class=o>-&gt;</span><span class=n>GetDefaultContinuity</span><span class=p>());</span>
-<span class=w>  </span><span class=n>sliderRepContinuity</span><span class=o>-&gt;</span><span class=n>SetTitleText</span><span class=p>(</span><span class=s>&quot;Continuity&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>sliderRepContinuity</span><span class=o>-&gt;</span><span class=n>SetTitleText</span><span class=p>(</span><span class=s>"Continuity"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>sliderRepContinuity</span><span class=o>-&gt;</span><span class=n>SetRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>);</span>
 <span class=w>  </span><span class=n>sliderRepContinuity</span><span class=o>-&gt;</span><span class=n>GetPoint1Coordinate</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetValue</span><span class=p>(</span><span class=mf>0.4</span><span class=p>,</span><span class=w> </span><span class=mf>0.1</span><span class=p>);</span>
 <span class=w>  </span><span class=n>sliderRepContinuity</span><span class=o>-&gt;</span><span class=n>GetPoint1Coordinate</span><span class=p>()</span>
@@ -442,7 +442,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>sliderRepBias</span><span class=o>-&gt;</span><span class=n>SetValue</span><span class=p>(</span>
 <span class=hll><span class=w>      </span><span class=k>dynamic_cast</span><span class=o>&lt;</span><span class=n>vtkKochanekSpline</span><span class=o>*&gt;</span><span class=p>(</span><span class=n>parametricSpline</span><span class=o>-&gt;</span><span class=n>GetXSpline</span><span class=p>())</span>
 </span><span class=w>          </span><span class=o>-&gt;</span><span class=n>GetDefaultBias</span><span class=p>());</span>
-<span class=w>  </span><span class=n>sliderRepBias</span><span class=o>-&gt;</span><span class=n>SetTitleText</span><span class=p>(</span><span class=s>&quot;Bias&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>sliderRepBias</span><span class=o>-&gt;</span><span class=n>SetTitleText</span><span class=p>(</span><span class=s>"Bias"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>sliderRepBias</span><span class=o>-&gt;</span><span class=n>SetRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>);</span>
 <span class=w>  </span><span class=n>sliderRepBias</span><span class=o>-&gt;</span><span class=n>GetPoint1Coordinate</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetValue</span><span class=p>(</span><span class=mf>0.7</span><span class=p>,</span><span class=w> </span><span class=mf>0.1</span><span class=p>);</span>
 <span class=w>  </span><span class=n>sliderRepBias</span><span class=o>-&gt;</span><span class=n>GetPoint1Coordinate</span><span class=p>()</span>
@@ -478,20 +478,20 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span><span class=w> </span><span class=n>colors</span><span class=p>;</span>
 </span><span class=w>  </span><span class=c1>// Set color properties:</span>
 <span class=w>  </span><span class=c1>// Change the color of the knob that slides.</span>
-<span class=w>  </span><span class=n>slider</span><span class=o>-&gt;</span><span class=n>GetSliderProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Peru&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>slider</span><span class=o>-&gt;</span><span class=n>GetSliderProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Peru"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=c1>// Change the color of the text indicating what the slider controls.</span>
 <span class=w>  </span><span class=n>slider</span><span class=o>-&gt;</span><span class=n>GetTitleProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
-<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;OrangeRed&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"OrangeRed"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=c1>// Change the color of the text displaying the value.</span>
 <span class=w>  </span><span class=n>slider</span><span class=o>-&gt;</span><span class=n>GetLabelProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
-<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;OrangeRed&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"OrangeRed"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=c1>// Change the color of the knob when the mouse is held on it.</span>
 <span class=w>  </span><span class=n>slider</span><span class=o>-&gt;</span><span class=n>GetSelectedProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
-<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;DeepPink&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"DeepPink"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=c1>// Change the color of the bar.</span>
-<span class=w>  </span><span class=n>slider</span><span class=o>-&gt;</span><span class=n>GetTubeProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Gold&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>slider</span><span class=o>-&gt;</span><span class=n>GetTubeProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Gold"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=c1>// Change the color of the ends of the bar.</span>
-<span class=w>  </span><span class=n>slider</span><span class=o>-&gt;</span><span class=n>GetCapProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Gold&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>slider</span><span class=o>-&gt;</span><span class=n>GetCapProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Gold"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=p>}</span>
 
 <span class=p>}</span><span class=w> </span><span class=c1>// namespace</span>
@@ -515,11 +515,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;KochanekSplineDemo: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"KochanekSplineDemo: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>KochanekSplineDemo</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>KochanekSplineDemo.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>KochanekSplineDemo</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

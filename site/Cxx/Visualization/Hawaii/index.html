@@ -102,11 +102,11 @@ function registerListener(event, func) {
 <span class=cm>Produce figure 6-12 from the VTK Textbook.</span>
 <span class=cm>It is a translation of the original hawaii.tcl with a few additional</span>
 <span class=cm>enhancements.</span>
-<span class=cm>The image is centered on Honolulu, O&#39;ahu.</span>
+<span class=cm>The image is centered on Honolulu, O'ahu.</span>
 <span class=cm>Diamond Head is the crater lower left. Punchbowl is the crater in the centre.</span>
 
 <span class=cm>The colorScheme option allows you to select a series of colour schemes.</span>
-<span class=cm>0: The default, a lookup using a &quot;Brewer&quot; palette.</span>
+<span class=cm>0: The default, a lookup using a "Brewer" palette.</span>
 <span class=cm>1: The original: A lookup table of 256 colours ranging from deep blue (water) to</span>
 <span class=cm>yellow-white (mountain top).</span>
 <span class=cm>2: A lookup table with a preset number of colours.</span>
@@ -139,14 +139,14 @@ function registerListener(event, func) {
 <span class=hll><span class=kt>void</span><span class=w> </span><span class=nf>MakeLUT</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>colorScheme</span><span class=p>,</span><span class=w> </span><span class=n>vtkLookupTable</span><span class=o>*</span><span class=w> </span><span class=n>lut</span><span class=p>);</span>
 </span><span class=p>}</span><span class=w> </span><span class=c1>// namespace</span>
 
-<span class=kt>int</span><span class=w> </span><span class=n>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>argv</span><span class=p>[])</span>
+<span class=kt>int</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>argv</span><span class=p>[])</span>
 <span class=p>{</span>
 
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>argc</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=mi>2</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Usage: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; filename [colorScheme]&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;where: filename is the file honolulu.vtk.&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;       colorScheme is 0, 1, or 2, default 0&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Usage: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" filename [colorScheme]"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"where: filename is the file honolulu.vtk."</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"       colorScheme is 0, 1, or 2, default 0"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>EXIT_FAILURE</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 
@@ -163,7 +163,7 @@ function registerListener(event, func) {
 </span>
 <span class=w>  </span><span class=c1>// Set the background color.</span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>unsigned</span><span class=w> </span><span class=kt>char</span><span class=p>,</span><span class=w> </span><span class=mi>4</span><span class=o>&gt;</span><span class=w> </span><span class=n>bkg</span><span class=p>{{</span><span class=mi>26</span><span class=p>,</span><span class=w> </span><span class=mi>51</span><span class=p>,</span><span class=w> </span><span class=mi>102</span><span class=p>,</span><span class=w> </span><span class=mi>255</span><span class=p>}};</span>
-<span class=w>  </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=s>&quot;BkgColor&quot;</span><span class=p>,</span><span class=w> </span><span class=n>bkg</span><span class=p>.</span><span class=n>data</span><span class=p>());</span>
+<span class=w>  </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=s>"BkgColor"</span><span class=p>,</span><span class=w> </span><span class=n>bkg</span><span class=p>.</span><span class=n>data</span><span class=p>());</span>
 
 <span class=w>  </span><span class=c1>// Read a vtk file</span>
 <span class=w>  </span><span class=c1>//</span>
@@ -206,14 +206,14 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=c1>// Match the window shape to the object.</span>
 <span class=w>  </span><span class=c1>// renWin-&gt;SetSize(500, int(500 * bounds[1] / bounds[3]));</span>
 <span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>500</span><span class=p>,</span><span class=w> </span><span class=mi>500</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;Hawaii&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"Hawaii"</span><span class=p>);</span>
 
 <span class=w>  </span><span class=c1>// Render the image.</span>
 <span class=w>  </span><span class=c1>// Centered on Honolulu,</span>
 <span class=w>  </span><span class=c1>// Diamond Head is the crater lower left.</span>
 <span class=w>  </span><span class=c1>// Punchbowl is the crater in the centre.</span>
 <span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
-<span class=w>  </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;BkgColor&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"BkgColor"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>GetActiveCamera</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>Zoom</span><span class=p>(</span><span class=mf>1.5</span><span class=p>);</span>
 <span class=w>  </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>GetActiveCamera</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>Roll</span><span class=p>(</span><span class=mi>-90</span><span class=p>);</span>
 <span class=w>  </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>ResetCameraClippingRange</span><span class=p>();</span>
@@ -255,15 +255,15 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=c1>// Make the lookup table with a preset number of colours.</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkColorSeries</span><span class=o>&gt;</span><span class=w> </span><span class=n>colorSeries</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>colorSeries</span><span class=o>-&gt;</span><span class=n>SetNumberOfColors</span><span class=p>(</span><span class=mi>8</span><span class=p>);</span>
-<span class=w>    </span><span class=n>colorSeries</span><span class=o>-&gt;</span><span class=n>SetColorSchemeName</span><span class=p>(</span><span class=s>&quot;Hawaii&quot;</span><span class=p>);</span>
-<span class=w>    </span><span class=n>colorSeries</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s>&quot;turquoise_blue&quot;</span><span class=p>));</span>
-<span class=w>    </span><span class=n>colorSeries</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s>&quot;sea_green_medium&quot;</span><span class=p>));</span>
-<span class=w>    </span><span class=n>colorSeries</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span><span class=w> </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s>&quot;sap_green&quot;</span><span class=p>));</span>
-<span class=w>    </span><span class=n>colorSeries</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=mi>3</span><span class=p>,</span><span class=w> </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s>&quot;green_dark&quot;</span><span class=p>));</span>
-<span class=w>    </span><span class=n>colorSeries</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=mi>4</span><span class=p>,</span><span class=w> </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s>&quot;tan&quot;</span><span class=p>));</span>
-<span class=w>    </span><span class=n>colorSeries</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=mi>5</span><span class=p>,</span><span class=w> </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s>&quot;beige&quot;</span><span class=p>));</span>
-<span class=w>    </span><span class=n>colorSeries</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=mi>6</span><span class=p>,</span><span class=w> </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s>&quot;light_beige&quot;</span><span class=p>));</span>
-<span class=w>    </span><span class=n>colorSeries</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=mi>7</span><span class=p>,</span><span class=w> </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s>&quot;bisque&quot;</span><span class=p>));</span>
+<span class=w>    </span><span class=n>colorSeries</span><span class=o>-&gt;</span><span class=n>SetColorSchemeName</span><span class=p>(</span><span class=s>"Hawaii"</span><span class=p>);</span>
+<span class=w>    </span><span class=n>colorSeries</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s>"turquoise_blue"</span><span class=p>));</span>
+<span class=w>    </span><span class=n>colorSeries</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s>"sea_green_medium"</span><span class=p>));</span>
+<span class=w>    </span><span class=n>colorSeries</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span><span class=w> </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s>"sap_green"</span><span class=p>));</span>
+<span class=w>    </span><span class=n>colorSeries</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=mi>3</span><span class=p>,</span><span class=w> </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s>"green_dark"</span><span class=p>));</span>
+<span class=w>    </span><span class=n>colorSeries</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=mi>4</span><span class=p>,</span><span class=w> </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s>"tan"</span><span class=p>));</span>
+<span class=w>    </span><span class=n>colorSeries</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=mi>5</span><span class=p>,</span><span class=w> </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s>"beige"</span><span class=p>));</span>
+<span class=w>    </span><span class=n>colorSeries</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=mi>6</span><span class=p>,</span><span class=w> </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s>"light_beige"</span><span class=p>));</span>
+<span class=w>    </span><span class=n>colorSeries</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=mi>7</span><span class=p>,</span><span class=w> </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s>"bisque"</span><span class=p>));</span>
 <span class=w>    </span><span class=n>colorSeries</span><span class=o>-&gt;</span><span class=n>BuildLookupTable</span><span class=p>(</span><span class=n>lut</span><span class=p>,</span><span class=w> </span><span class=n>colorSeries</span><span class=o>-&gt;</span><span class=n>ORDINAL</span><span class=p>);</span>
 <span class=w>    </span><span class=n>lut</span><span class=o>-&gt;</span><span class=n>SetNanColor</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>);</span>
 <span class=w>  </span><span class=p>};</span>
@@ -288,11 +288,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;Hawaii: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"Hawaii: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>Hawaii</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>Hawaii.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>Hawaii</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

@@ -66,11 +66,11 @@ function registerListener(event, func) {
 <span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkPolyData.h&gt;</span>
 <span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkSphereSource.h&gt;</span>
 
-<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;algorithm&gt;</span><span class=c1>  // For transform()</span>
-<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;cctype&gt;</span><span class=c1>     // For to_lower</span>
-<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;iostream&gt;</span><span class=c1>   // For std::err</span>
-<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;filesystem&gt;</span><span class=c1> // For extracting parts of the filename</span>
-<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;string&gt;</span><span class=c1>     // For find_last_of()</span>
+<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;algorithm&gt;</span><span class=w>  </span><span class=c1>// For transform()</span>
+<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;cctype&gt;</span><span class=w>     </span><span class=c1>// For to_lower</span>
+<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;iostream&gt;</span><span class=w>   </span><span class=c1>// For std::err</span>
+<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;filesystem&gt;</span><span class=w> </span><span class=c1>// For extracting parts of the filename</span>
+<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;string&gt;</span><span class=w>     </span><span class=c1>// For find_last_of()</span>
 
 <span class=k>namespace</span><span class=w> </span><span class=nn>fs</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nn>std</span><span class=o>::</span><span class=nn>filesystem</span><span class=p>;</span>
 
@@ -90,42 +90,42 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>transform</span><span class=p>(</span><span class=n>extension</span><span class=p>.</span><span class=n>begin</span><span class=p>(),</span><span class=w> </span><span class=n>extension</span><span class=p>.</span><span class=n>end</span><span class=p>(),</span><span class=w> </span><span class=n>extension</span><span class=p>.</span><span class=n>begin</span><span class=p>(),</span>
 <span class=w>                 </span><span class=p>[](</span><span class=kt>char</span><span class=w> </span><span class=n>c</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w> </span><span class=k>return</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>tolower</span><span class=p>(</span><span class=n>c</span><span class=p>);</span><span class=w> </span><span class=p>});</span>
 
-<span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;.ply&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>".ply"</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPLYReader</span><span class=o>&gt;</span><span class=w> </span><span class=n>reader</span><span class=p>;</span>
 <span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>path</span><span class=p>.</span><span class=n>generic_string</span><span class=p>().</span><span class=n>c_str</span><span class=p>());</span>
 <span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 <span class=w>    </span><span class=n>polyData</span><span class=o>-&gt;</span><span class=n>DeepCopy</span><span class=p>(</span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>());</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;.vtp&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>".vtp"</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkXMLPolyDataReader</span><span class=o>&gt;</span><span class=w> </span><span class=n>reader</span><span class=p>;</span>
 <span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>path</span><span class=p>.</span><span class=n>generic_string</span><span class=p>().</span><span class=n>c_str</span><span class=p>());</span>
 <span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 <span class=w>    </span><span class=n>polyData</span><span class=o>-&gt;</span><span class=n>DeepCopy</span><span class=p>(</span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>());</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;.obj&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>".obj"</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkOBJReader</span><span class=o>&gt;</span><span class=w> </span><span class=n>reader</span><span class=p>;</span>
 <span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>path</span><span class=p>.</span><span class=n>generic_string</span><span class=p>().</span><span class=n>c_str</span><span class=p>());</span>
 <span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 <span class=w>    </span><span class=n>polyData</span><span class=o>-&gt;</span><span class=n>DeepCopy</span><span class=p>(</span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>());</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;.stl&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>".stl"</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkSTLReader</span><span class=o>&gt;</span><span class=w> </span><span class=n>reader</span><span class=p>;</span>
 <span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>path</span><span class=p>.</span><span class=n>generic_string</span><span class=p>().</span><span class=n>c_str</span><span class=p>());</span>
 <span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 <span class=w>    </span><span class=n>polyData</span><span class=o>-&gt;</span><span class=n>DeepCopy</span><span class=p>(</span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>());</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;.vtk&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>".vtk"</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataReader</span><span class=o>&gt;</span><span class=w> </span><span class=n>reader</span><span class=p>;</span>
 <span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>path</span><span class=p>.</span><span class=n>generic_string</span><span class=p>().</span><span class=n>c_str</span><span class=p>());</span>
 <span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 <span class=w>    </span><span class=n>polyData</span><span class=o>-&gt;</span><span class=n>DeepCopy</span><span class=p>(</span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>());</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;.g&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>".g"</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkBYUReader</span><span class=o>&gt;</span><span class=w> </span><span class=n>reader</span><span class=p>;</span>
 <span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>SetGeometryFileName</span><span class=p>(</span><span class=n>path</span><span class=p>.</span><span class=n>generic_string</span><span class=p>().</span><span class=n>c_str</span><span class=p>());</span>
@@ -134,8 +134,8 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=p>}</span>
 <span class=w>  </span><span class=k>else</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cerr</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Warning: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>path</span>
-<span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; unknown extension, using a sphere instead.&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cerr</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Warning: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>path</span>
+<span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" unknown extension, using a sphere instead."</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkSphereSource</span><span class=o>&gt;</span><span class=w> </span><span class=n>source</span><span class=p>;</span>
 <span class=w>    </span><span class=n>source</span><span class=o>-&gt;</span><span class=n>SetPhiResolution</span><span class=p>(</span><span class=mi>50</span><span class=p>);</span>
 <span class=w>    </span><span class=n>source</span><span class=o>-&gt;</span><span class=n>SetThetaResolution</span><span class=p>(</span><span class=mi>50</span><span class=p>);</span>

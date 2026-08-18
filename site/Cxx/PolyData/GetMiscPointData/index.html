@@ -69,8 +69,8 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=c1>// Parse command line arguments.</span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>argc</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=mi>3</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Required arguments: Filename ArrayName e.g. cowHead.vtp &quot;</span>
-<span class=w>                 </span><span class=s>&quot;Gauss_Curvature&quot;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Required arguments: Filename ArrayName e.g. cowHead.vtp "</span>
+<span class=w>                 </span><span class=s>"Gauss_Curvature"</span>
 <span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>EXIT_FAILURE</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
@@ -83,7 +83,7 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=c1>// Read the file.</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkXMLPolyDataReader</span><span class=o>&gt;</span><span class=w> </span><span class=n>reader</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Reading &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>filename</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+</span><span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Reading "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>filename</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>  </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>filename</span><span class=p>.</span><span class=n>c_str</span><span class=p>());</span>
 <span class=w>  </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 
@@ -98,8 +98,8 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>array</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Got array &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>arrayName</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; with &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>idNumPointsInFile</span>
-<span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; values&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Got array "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>arrayName</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" with "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>idNumPointsInFile</span>
+<span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" values"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>idNumPointsInFile</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=o>++</span><span class=p>)</span>
 <span class=w>    </span><span class=p>{</span>
 <span class=w>      </span><span class=c1>// Since there could be a lot of points just print the first 10</span>
@@ -107,19 +107,19 @@ function registerListener(event, func) {
 <span class=w>      </span><span class=p>{</span>
 <span class=w>        </span><span class=kt>double</span><span class=w> </span><span class=n>value</span><span class=p>;</span>
 <span class=w>        </span><span class=n>value</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>array</span><span class=o>-&gt;</span><span class=n>GetValue</span><span class=p>(</span><span class=n>i</span><span class=p>);</span>
-<span class=w>        </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>value</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>        </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>": "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>value</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>      </span><span class=p>}</span>
 <span class=w>      </span><span class=k>else</span>
 <span class=w>      </span><span class=p>{</span>
 <span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>i</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=mi>10</span><span class=p>)</span>
-<span class=w>          </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;...&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>          </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"..."</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>      </span><span class=p>}</span>
 <span class=w>    </span><span class=p>}</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=w>  </span><span class=k>else</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;The file &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>filename</span>
-<span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; does not have a PointData array named &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>arrayName</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"The file "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>filename</span>
+<span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" does not have a PointData array named "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>arrayName</span>
 <span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 
@@ -136,11 +136,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;GetMiscPointData: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"GetMiscPointData: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>GetMiscPointData</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>GetMiscPointData.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>GetMiscPointData</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

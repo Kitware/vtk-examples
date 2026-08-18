@@ -90,12 +90,12 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_program_parameters</span><span class=p>():</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>argparse</span>
-    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;ExtractSelection&#39;</span>
-    <span class=n>epilogue</span> <span class=o>=</span> <span class=s2>&quot;&quot;&quot;</span>
-<span class=s2>   &quot;&quot;&quot;</span>
+    <span class=n>description</span> <span class=o>=</span> <span class=s1>'ExtractSelection'</span>
+    <span class=n>epilogue</span> <span class=o>=</span> <span class=s2>"""</span>
+<span class=s2>   """</span>
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
                                      <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawDescriptionHelpFormatter</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-f&#39;</span><span class=p>,</span> <span class=s1>&#39;--file_name&#39;</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Bunny.vtp&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-f'</span><span class=p>,</span> <span class=s1>'--file_name'</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'Bunny.vtp'</span><span class=p>)</span>
     <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
     <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>file_name</span>
 
@@ -108,7 +108,7 @@ function registerListener(event, func) {
     <span class=k>if</span> <span class=n>fn</span><span class=p>:</span>
         <span class=n>fn_path</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>fn</span><span class=p>)</span>
         <span class=k>if</span> <span class=ow>not</span> <span class=n>fn_path</span><span class=o>.</span><span class=n>is_file</span><span class=p>():</span>
-            <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Unable to find: &#39;</span><span class=p>,</span> <span class=n>fn_path</span><span class=p>)</span>
+            <span class=nb>print</span><span class=p>(</span><span class=s1>'Unable to find: '</span><span class=p>,</span> <span class=n>fn_path</span><span class=p>)</span>
             <span class=k>return</span>
         <span class=k>else</span><span class=p>:</span>
 <span class=hll>            <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkXMLPolyDataReader</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=n>fn_path</span><span class=p>)</span>
@@ -124,9 +124,9 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>mapper_data</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>data3d</span> <span class=o>&gt;&gt;</span> <span class=n>mapper_data</span>
 <span class=hll>    <span class=n>actor_data</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>(</span><span class=n>mapper</span><span class=o>=</span><span class=n>mapper_data</span><span class=p>)</span>
-</span>    <span class=n>actor_data</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;Black&quot;</span><span class=p>)</span>
+</span>    <span class=n>actor_data</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>"Black"</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>tmp_rend</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;White&quot;</span><span class=p>))</span>
+<span class=hll>    <span class=n>tmp_rend</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>"White"</span><span class=p>))</span>
 </span>
     <span class=n>tmp_rend</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor_data</span><span class=p>)</span>
     <span class=n>tmp_rend</span><span class=o>.</span><span class=n>ResetCamera</span><span class=p>()</span>
@@ -141,7 +141,7 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>window_to_image_filter</span> <span class=o>=</span> <span class=n>vtkWindowToImageFilter</span><span class=p>(</span><span class=nb>input</span><span class=o>=</span><span class=n>tmp_rw</span><span class=p>,</span> <span class=n>scale</span><span class=o>=</span><span class=mi>2</span><span class=p>)</span>
 </span>    <span class=n>window_to_image_filter</span><span class=o>.</span><span class=n>update</span><span class=p>()</span>
 
-    <span class=c1># writer = vtkPNGWriter(file_name=&quot;ExternalContourWindowPrint.png&quot;)</span>
+    <span class=c1># writer = vtkPNGWriter(file_name="ExternalContourWindowPrint.png")</span>
     <span class=c1># window_to_image_filter &gt;&gt; writer</span>
     <span class=c1># writer.Write()</span>
 
@@ -182,7 +182,7 @@ function registerListener(event, func) {
     <span class=n>contour</span> <span class=o>=</span> <span class=n>tfilter2</span><span class=o>.</span><span class=n>update</span><span class=p>()</span><span class=o>.</span><span class=n>output</span>
 
     <span class=c1># Updating the color of the data.</span>
-    <span class=n>actor_data</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;MistyRose&quot;</span><span class=p>)</span>
+    <span class=n>actor_data</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>"MistyRose"</span><span class=p>)</span>
 
     <span class=c1># Create a mapper and actor of the silhouette.</span>
 <span class=hll>    <span class=n>mapper_contour</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>(</span><span class=n>input_data</span><span class=o>=</span><span class=n>contour</span><span class=p>)</span>
@@ -192,10 +192,10 @@ function registerListener(event, func) {
 
     <span class=c1># Create the renderers, render window, and interactor.</span>
 
-<span class=hll>    <span class=n>renderer1</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>viewport</span><span class=o>=</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.5</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>),</span> <span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;DarkSlateGray&quot;</span><span class=p>))</span>
-</span><span class=hll>    <span class=n>renderer2</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>viewport</span><span class=o>=</span><span class=p>(</span><span class=mf>0.5</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>),</span> <span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;MidnightBlue&quot;</span><span class=p>))</span>
+<span class=hll>    <span class=n>renderer1</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>viewport</span><span class=o>=</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.5</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>),</span> <span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>"DarkSlateGray"</span><span class=p>))</span>
+</span><span class=hll>    <span class=n>renderer2</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>viewport</span><span class=o>=</span><span class=p>(</span><span class=mf>0.5</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>),</span> <span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>"MidnightBlue"</span><span class=p>))</span>
 </span>
-<span class=hll>    <span class=n>render_window</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>size</span><span class=o>=</span><span class=p>(</span><span class=mi>400</span><span class=p>,</span> <span class=mi>400</span><span class=p>),</span> <span class=n>window_name</span><span class=o>=</span><span class=s2>&quot;ExternalContour&quot;</span><span class=p>)</span>
+<span class=hll>    <span class=n>render_window</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>size</span><span class=o>=</span><span class=p>(</span><span class=mi>400</span><span class=p>,</span> <span class=mi>400</span><span class=p>),</span> <span class=n>window_name</span><span class=o>=</span><span class=s2>"ExternalContour"</span><span class=p>)</span>
 </span>    <span class=n>render_window</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer1</span><span class=p>)</span>
     <span class=n>render_window</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer2</span><span class=p>)</span>
 
@@ -222,6 +222,6 @@ function registerListener(event, func) {
     <span class=n>render_window_interactor</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

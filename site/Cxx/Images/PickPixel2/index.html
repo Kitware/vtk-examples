@@ -133,10 +133,10 @@ function registerListener(event, func) {
 <span class=hll><span class=w>    </span><span class=n>message</span><span class=w> </span><span class=o>+=</span><span class=w> </span><span class=n>vtkVariant</span><span class=p>(</span><span class=n>tuple</span><span class=p>[</span><span class=n>c</span><span class=p>]).</span><span class=n>ToString</span><span class=p>();</span>
 </span><span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>c</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=p>(</span><span class=n>components</span><span class=w> </span><span class=o>-</span><span class=w> </span><span class=mi>1</span><span class=p>))</span>
 <span class=w>    </span><span class=p>{</span>
-<span class=w>      </span><span class=n>message</span><span class=w> </span><span class=o>+=</span><span class=w> </span><span class=s>&quot;, &quot;</span><span class=p>;</span>
+<span class=w>      </span><span class=n>message</span><span class=w> </span><span class=o>+=</span><span class=w> </span><span class=s>", "</span><span class=p>;</span>
 <span class=w>    </span><span class=p>}</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=n>message</span><span class=w> </span><span class=o>+=</span><span class=w> </span><span class=s>&quot; )&quot;</span><span class=p>;</span>
+<span class=w>  </span><span class=n>message</span><span class=w> </span><span class=o>+=</span><span class=w> </span><span class=s>" )"</span><span class=p>;</span>
 <span class=p>}</span>
 
 <span class=c1>// The mouse motion callback, to pick the image and recover pixel values.</span>
@@ -212,7 +212,7 @@ function registerListener(event, func) {
 
 <span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>validPick</span><span class=p>)</span>
 <span class=w>    </span><span class=p>{</span>
-<span class=w>      </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Annotation</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=s>&quot;Off Image&quot;</span><span class=p>);</span>
+<span class=w>      </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Annotation</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=s>"Off Image"</span><span class=p>);</span>
 <span class=w>      </span><span class=n>interactor</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
 <span class=w>      </span><span class=c1>// Pass the event further on.</span>
 <span class=w>      </span><span class=n>style</span><span class=o>-&gt;</span><span class=n>OnMouseMove</span><span class=p>();</span>
@@ -245,13 +245,13 @@ function registerListener(event, func) {
 <span class=w>      </span><span class=k>break</span><span class=p>;</span>
 <span class=w>    </span><span class=p>}</span>
 
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>message</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&quot;Location: ( &quot;</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>message</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>"Location: ( "</span><span class=p>;</span>
 <span class=hll><span class=w>    </span><span class=n>message</span><span class=w> </span><span class=o>+=</span><span class=w> </span><span class=n>vtkVariant</span><span class=p>(</span><span class=n>image_coordinate</span><span class=p>[</span><span class=mi>0</span><span class=p>]).</span><span class=n>ToString</span><span class=p>();</span>
-</span><span class=w>    </span><span class=n>message</span><span class=w> </span><span class=o>+=</span><span class=w> </span><span class=s>&quot;, &quot;</span><span class=p>;</span>
+</span><span class=w>    </span><span class=n>message</span><span class=w> </span><span class=o>+=</span><span class=w> </span><span class=s>", "</span><span class=p>;</span>
 <span class=hll><span class=w>    </span><span class=n>message</span><span class=w> </span><span class=o>+=</span><span class=w> </span><span class=n>vtkVariant</span><span class=p>(</span><span class=n>image_coordinate</span><span class=p>[</span><span class=mi>1</span><span class=p>]).</span><span class=n>ToString</span><span class=p>();</span>
-</span><span class=w>    </span><span class=n>message</span><span class=w> </span><span class=o>+=</span><span class=w> </span><span class=s>&quot;, &quot;</span><span class=p>;</span>
+</span><span class=w>    </span><span class=n>message</span><span class=w> </span><span class=o>+=</span><span class=w> </span><span class=s>", "</span><span class=p>;</span>
 <span class=hll><span class=w>    </span><span class=n>message</span><span class=w> </span><span class=o>+=</span><span class=w> </span><span class=n>vtkVariant</span><span class=p>(</span><span class=n>image_coordinate</span><span class=p>[</span><span class=mi>2</span><span class=p>]).</span><span class=n>ToString</span><span class=p>();</span>
-</span><span class=w>    </span><span class=n>message</span><span class=w> </span><span class=o>+=</span><span class=w> </span><span class=s>&quot; )</span><span class=se>\n</span><span class=s>Value: ( &quot;</span><span class=p>;</span>
+</span><span class=w>    </span><span class=n>message</span><span class=w> </span><span class=o>+=</span><span class=w> </span><span class=s>" )</span><span class=se>\n</span><span class=s>Value: ( "</span><span class=p>;</span>
 
 <span class=w>    </span><span class=k>switch</span><span class=w> </span><span class=p>(</span><span class=n>image</span><span class=o>-&gt;</span><span class=n>GetScalarType</span><span class=p>())</span>
 <span class=w>    </span><span class=p>{</span>
@@ -285,10 +285,10 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>argc</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=mi>2</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span>
-<span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; Required parameters: (tif) Filename e.g. ColorCells.tif&quot;</span>
+<span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" Required parameters: (tif) Filename e.g. ColorCells.tif"</span>
 <span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span>
-<span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;missing...&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;A noise image will be created!&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"missing..."</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"A noise image will be created!"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 
 <span class=w>    </span><span class=c1>// Create a noise image.</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageNoiseSource</span><span class=o>&gt;</span><span class=w> </span><span class=n>noiseSource</span><span class=p>;</span>
@@ -314,7 +314,7 @@ function registerListener(event, func) {
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTIFFReader</span><span class=o>&gt;</span><span class=w> </span><span class=n>tiffReader</span><span class=p>;</span>
 </span><span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>tiffReader</span><span class=o>-&gt;</span><span class=n>CanReadFile</span><span class=p>(</span><span class=n>inputFilename</span><span class=p>.</span><span class=n>c_str</span><span class=p>()))</span>
 <span class=w>    </span><span class=p>{</span>
-<span class=w>      </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;: Error reading file &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>inputFilename</span>
+<span class=w>      </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>": Error reading file "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>inputFilename</span>
 <span class=w>                </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>      </span><span class=k>return</span><span class=w> </span><span class=n>EXIT_FAILURE</span><span class=p>;</span>
 <span class=w>    </span><span class=p>}</span>
@@ -339,13 +339,13 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderWindowInteractor</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>imageViewer</span><span class=o>-&gt;</span><span class=n>SetupInteractor</span><span class=p>(</span><span class=n>renderWindowInteractor</span><span class=p>);</span>
 <span class=w>  </span><span class=n>imageViewer</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>600</span><span class=p>,</span><span class=w> </span><span class=mi>600</span><span class=p>);</span>
-<span class=w>  </span><span class=n>imageViewer</span><span class=o>-&gt;</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;PickPixel2&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>imageViewer</span><span class=o>-&gt;</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"PickPixel2"</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkRenderer</span><span class=o>*</span><span class=w> </span><span class=n>renderer</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>imageViewer</span><span class=o>-&gt;</span><span class=n>GetRenderer</span><span class=p>();</span>
 </span><span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>ResetCamera</span><span class=p>();</span>
 <span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>GradientBackgroundOn</span><span class=p>();</span>
-<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;DarkSlateGray&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
-<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground2</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;LightSlateGray&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"DarkSlateGray"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground2</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"LightSlateGray"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=w>  </span><span class=c1>// Annotate the image with window/level and mouse over pixel</span>
 <span class=w>  </span><span class=c1>// information</span>
@@ -353,14 +353,14 @@ function registerListener(event, func) {
 </span><span class=w>  </span><span class=n>cornerAnnotation</span><span class=o>-&gt;</span><span class=n>SetLinearFontScaleFactor</span><span class=p>(</span><span class=mi>2</span><span class=p>);</span>
 <span class=w>  </span><span class=n>cornerAnnotation</span><span class=o>-&gt;</span><span class=n>SetNonlinearFontScaleFactor</span><span class=p>(</span><span class=mi>1</span><span class=p>);</span>
 <span class=w>  </span><span class=n>cornerAnnotation</span><span class=o>-&gt;</span><span class=n>SetMaximumFontSize</span><span class=p>(</span><span class=mi>20</span><span class=p>);</span>
-<span class=w>  </span><span class=n>cornerAnnotation</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=s>&quot;Off Image&quot;</span><span class=p>);</span>
-<span class=w>  </span><span class=n>cornerAnnotation</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=mi>3</span><span class=p>,</span><span class=w> </span><span class=s>&quot;&lt;window&gt;</span><span class=se>\n</span><span class=s>&lt;level&gt;&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>cornerAnnotation</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=s>"Off Image"</span><span class=p>);</span>
+<span class=w>  </span><span class=n>cornerAnnotation</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=mi>3</span><span class=p>,</span><span class=w> </span><span class=s>"&lt;window&gt;</span><span class=se>\n</span><span class=s>&lt;level&gt;"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>cornerAnnotation</span><span class=o>-&gt;</span><span class=n>GetTextProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
-<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;LightGoldenrodYellow&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"LightGoldenrodYellow"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=w>  </span><span class=n>imageViewer</span><span class=o>-&gt;</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>cornerAnnotation</span><span class=p>);</span>
 
-<span class=w>  </span><span class=c1>// Callback listens to MouseMoveEvents invoked by the interactor&#39;s style</span>
+<span class=w>  </span><span class=c1>// Callback listens to MouseMoveEvents invoked by the interactor's style</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageInteractionCallback</span><span class=o>&gt;</span><span class=w> </span><span class=n>callback</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>callback</span><span class=o>-&gt;</span><span class=n>SetViewer</span><span class=p>(</span><span class=n>imageViewer</span><span class=p>);</span>
 <span class=w>  </span><span class=n>callback</span><span class=o>-&gt;</span><span class=n>SetAnnotation</span><span class=p>(</span><span class=n>cornerAnnotation</span><span class=p>);</span>
@@ -371,8 +371,8 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=c1>// 2) left mouse + move = window/level</span>
 <span class=w>  </span><span class=c1>// 3) right mouse + move = camera zoom</span>
 <span class=w>  </span><span class=c1>// 4) middle mouse wheel scroll = zoom</span>
-<span class=w>  </span><span class=c1>// 5) &#39;r&#39; = reset window/level</span>
-<span class=w>  </span><span class=c1>// 6) shift + &#39;r&#39; = reset camera</span>
+<span class=w>  </span><span class=c1>// 5) 'r' = reset window/level</span>
+<span class=w>  </span><span class=c1>// 6) shift + 'r' = reset camera</span>
 <span class=hll><span class=w>  </span><span class=n>vtkInteractorStyleImage</span><span class=o>*</span><span class=w> </span><span class=n>imageStyle</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>imageViewer</span><span class=o>-&gt;</span><span class=n>GetInteractorStyle</span><span class=p>();</span>
 </span><span class=hll><span class=w>  </span><span class=n>imageStyle</span><span class=o>-&gt;</span><span class=n>AddObserver</span><span class=p>(</span><span class=n>vtkCommand</span><span class=o>::</span><span class=n>MouseMoveEvent</span><span class=p>,</span><span class=w> </span><span class=n>callback</span><span class=p>);</span>
 </span>
@@ -403,11 +403,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;PickPixel2: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"PickPixel2: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>PickPixel2</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>PickPixel2.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>PickPixel2</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

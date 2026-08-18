@@ -113,38 +113,38 @@ function registerListener(event, func) {
             <span class=k>if</span> <span class=nb>abs</span><span class=p>(</span><span class=nb>int</span><span class=p>(</span><span class=n>item</span><span class=p>)</span> <span class=o>&gt;</span> <span class=mi>14</span><span class=p>):</span>
                 <span class=n>badCases</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>item</span><span class=p>)</span>
         <span class=k>if</span> <span class=n>badCases</span><span class=p>:</span>
-            <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Bad case number(s)&#39;</span><span class=p>,</span> <span class=s1>&#39;,&#39;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=nb>map</span><span class=p>(</span><span class=nb>str</span><span class=p>,</span> <span class=n>badCases</span><span class=p>)))</span>
+            <span class=nb>print</span><span class=p>(</span><span class=s1>'Bad case number(s)'</span><span class=p>,</span> <span class=s1>','</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=nb>map</span><span class=p>(</span><span class=nb>str</span><span class=p>,</span> <span class=n>badCases</span><span class=p>)))</span>
             <span class=k>for</span> <span class=n>item</span> <span class=ow>in</span> <span class=n>badCases</span><span class=p>:</span>
                 <span class=n>mc_cases</span><span class=o>.</span><span class=n>remove</span><span class=p>(</span><span class=n>item</span><span class=p>)</span>
             <span class=k>if</span> <span class=ow>not</span> <span class=n>mc_cases</span><span class=p>:</span>
-                <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;No cases.&#39;</span><span class=p>)</span>
+                <span class=nb>print</span><span class=p>(</span><span class=s1>'No cases.'</span><span class=p>)</span>
                 <span class=k>return</span>
     <span class=n>marching_cubes</span><span class=p>(</span><span class=n>mc_cases</span><span class=p>,</span> <span class=n>rotation</span><span class=p>,</span> <span class=n>label</span><span class=p>)</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_program_parameters</span><span class=p>():</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>argparse</span>
-    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;Marching cubes cases for 3D isosurface generation.&#39;</span>
-    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;</span>
+    <span class=n>description</span> <span class=o>=</span> <span class=s1>'Marching cubes cases for 3D isosurface generation.'</span>
+    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>'''</span>
 <span class=s1>    Marching cubes cases for 3D isosurface generation.</span>
 <span class=s1>    The 256 possible cases have been reduced to 15 cases using symmetry.</span>
 <span class=s1>    Dark vertices are greater than the selected isosurface value.</span>
 
 <span class=s1>    For the cases, enter them as integers separated by a space e.g: 1 2 3  </span>
-<span class=s1>    &#39;&#39;&#39;</span>
+<span class=s1>    '''</span>
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
                                      <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawDescriptionHelpFormatter</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;cases&#39;</span><span class=p>,</span> <span class=n>nargs</span><span class=o>=</span><span class=s1>&#39;*&#39;</span><span class=p>,</span> <span class=nb>type</span><span class=o>=</span><span class=nb>int</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=p>[],</span>
-                        <span class=n>help</span><span class=o>=</span><span class=s1>&#39;A list of integers i such that 0 &lt;= abs(i) &lt; 14,  corresponding to the cases desired.&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-r&#39;</span><span class=p>,</span> <span class=s1>&#39;--rotation&#39;</span><span class=p>,</span> <span class=nb>type</span><span class=o>=</span><span class=nb>int</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mi>0</span><span class=p>,</span>
-                        <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Rotate camera around the cube, for i such that 0 &lt;= abs(i) &lt; 4,</span><span class=se>\</span>
-<span class=s1>                          corresponding to 0, 90, 180, 270 degrees.&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'cases'</span><span class=p>,</span> <span class=n>nargs</span><span class=o>=</span><span class=s1>'*'</span><span class=p>,</span> <span class=nb>type</span><span class=o>=</span><span class=nb>int</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=p>[],</span>
+                        <span class=n>help</span><span class=o>=</span><span class=s1>'A list of integers i such that 0 &lt;= abs(i) &lt; 14,  corresponding to the cases desired.'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-r'</span><span class=p>,</span> <span class=s1>'--rotation'</span><span class=p>,</span> <span class=nb>type</span><span class=o>=</span><span class=nb>int</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mi>0</span><span class=p>,</span>
+                        <span class=n>help</span><span class=o>=</span><span class=s1>'Rotate camera around the cube, for i such that 0 &lt;= abs(i) &lt; 4,</span><span class=se>\</span>
+<span class=s1>                          corresponding to 0, 90, 180, 270 degrees.'</span><span class=p>)</span>
     <span class=c1># Use a mutually exclusive group.</span>
     <span class=n>label_parser</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>add_mutually_exclusive_group</span><span class=p>(</span><span class=n>required</span><span class=o>=</span><span class=kc>False</span><span class=p>)</span>
-    <span class=n>label_parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-l&#39;</span><span class=p>,</span> <span class=s1>&#39;--label&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_true&#39;</span><span class=p>,</span> <span class=n>dest</span><span class=o>=</span><span class=s1>&#39;label&#39;</span><span class=p>,</span>
-                              <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Display a label, true by default.&#39;</span><span class=p>)</span>
-    <span class=n>label_parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-n&#39;</span><span class=p>,</span> <span class=s1>&#39;--no_label&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_false&#39;</span><span class=p>,</span> <span class=n>dest</span><span class=o>=</span><span class=s1>&#39;label&#39;</span><span class=p>,</span>
-                              <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Supress diaplaying a label.&#39;</span><span class=p>)</span>
+    <span class=n>label_parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-l'</span><span class=p>,</span> <span class=s1>'--label'</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>'store_true'</span><span class=p>,</span> <span class=n>dest</span><span class=o>=</span><span class=s1>'label'</span><span class=p>,</span>
+                              <span class=n>help</span><span class=o>=</span><span class=s1>'Display a label, true by default.'</span><span class=p>)</span>
+    <span class=n>label_parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-n'</span><span class=p>,</span> <span class=s1>'--no_label'</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>'store_false'</span><span class=p>,</span> <span class=n>dest</span><span class=o>=</span><span class=s1>'label'</span><span class=p>,</span>
+                              <span class=n>help</span><span class=o>=</span><span class=s1>'Supress diaplaying a label.'</span><span class=p>)</span>
     <span class=n>parser</span><span class=o>.</span><span class=n>set_defaults</span><span class=p>(</span><span class=n>label</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
     <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
     <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>cases</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>rotation</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>label</span>
@@ -159,10 +159,10 @@ function registerListener(event, func) {
         <span class=n>rotation</span> <span class=o>=</span> <span class=mi>0</span>
 
     <span class=k>if</span> <span class=nb>len</span><span class=p>(</span><span class=n>mcCases</span><span class=p>)</span> <span class=o>&gt;</span> <span class=mi>1</span><span class=p>:</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Cases&#39;</span><span class=p>,</span> <span class=s1>&#39;, &#39;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=nb>map</span><span class=p>(</span><span class=nb>str</span><span class=p>,</span> <span class=n>mcCases</span><span class=p>)))</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'Cases'</span><span class=p>,</span> <span class=s1>', '</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=nb>map</span><span class=p>(</span><span class=nb>str</span><span class=p>,</span> <span class=n>mcCases</span><span class=p>)))</span>
     <span class=k>else</span><span class=p>:</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Cases&#39;</span><span class=p>,</span> <span class=s1>&#39;,&#39;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=nb>map</span><span class=p>(</span><span class=nb>str</span><span class=p>,</span> <span class=n>mcCases</span><span class=p>)))</span>
-    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Rotated&#39;</span><span class=p>,</span> <span class=n>rotation</span> <span class=o>*</span> <span class=mi>90</span><span class=p>,</span> <span class=s1>&#39;degrees.&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'Cases'</span><span class=p>,</span> <span class=s1>','</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=nb>map</span><span class=p>(</span><span class=nb>str</span><span class=p>,</span> <span class=n>mcCases</span><span class=p>)))</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s1>'Rotated'</span><span class=p>,</span> <span class=n>rotation</span> <span class=o>*</span> <span class=mi>90</span><span class=p>,</span> <span class=s1>'degrees.'</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>renWin</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>()</span>
 </span>    <span class=n>renWin</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>640</span><span class=p>,</span> <span class=mi>480</span><span class=p>)</span>
@@ -179,7 +179,7 @@ function registerListener(event, func) {
 <span class=hll>        <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>()</span>
 </span>        <span class=n>renderers</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>renderer</span><span class=p>)</span>
         <span class=c1># Set the background color.</span>
-        <span class=n>renderers</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>color</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;slate_grey&#39;</span><span class=p>))</span>
+        <span class=n>renderers</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>color</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'slate_grey'</span><span class=p>))</span>
         <span class=n>renWin</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>)</span>
 
     <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=nb>len</span><span class=p>(</span><span class=n>mcCases</span><span class=p>)):</span>
@@ -246,7 +246,7 @@ function registerListener(event, func) {
 <span class=hll>        <span class=n>triangleEdgeActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>        <span class=n>triangleEdgeActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>triangleEdgeMapper</span><span class=p>)</span>
         <span class=n>triangleEdgeActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetDiffuseColor</span><span class=p>(</span>
-            <span class=n>color</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;lamp_black&#39;</span><span class=p>))</span>
+            <span class=n>color</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'lamp_black'</span><span class=p>))</span>
         <span class=n>triangleEdgeActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetSpecular</span><span class=p>(</span><span class=mf>.4</span><span class=p>)</span>
         <span class=n>triangleEdgeActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetSpecularPower</span><span class=p>(</span><span class=mi>10</span><span class=p>)</span>
 
@@ -263,7 +263,7 @@ function registerListener(event, func) {
 <span class=hll>        <span class=n>Triangles</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>        <span class=n>Triangles</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>aMapper</span><span class=p>)</span>
         <span class=n>Triangles</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetDiffuseColor</span><span class=p>(</span>
-            <span class=n>color</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;banana&#39;</span><span class=p>))</span>
+            <span class=n>color</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'banana'</span><span class=p>))</span>
         <span class=n>Triangles</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetOpacity</span><span class=p>(</span><span class=mf>.6</span><span class=p>)</span>
 
         <span class=c1># Draw a cube the same size and at the same position as the one</span>
@@ -288,7 +288,7 @@ function registerListener(event, func) {
 <span class=hll>        <span class=n>CubeEdges</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>        <span class=n>CubeEdges</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>TubeMapper</span><span class=p>)</span>
         <span class=n>CubeEdges</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetDiffuseColor</span><span class=p>(</span>
-            <span class=n>color</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;khaki&#39;</span><span class=p>))</span>
+            <span class=n>color</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'khaki'</span><span class=p>))</span>
         <span class=n>CubeEdges</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetSpecular</span><span class=p>(</span><span class=mf>.4</span><span class=p>)</span>
         <span class=n>CubeEdges</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetSpecularPower</span><span class=p>(</span><span class=mi>10</span><span class=p>)</span>
 
@@ -314,11 +314,11 @@ function registerListener(event, func) {
 <span class=hll>        <span class=n>CubeVertices</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>        <span class=n>CubeVertices</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>SphereMapper</span><span class=p>)</span>
         <span class=n>CubeVertices</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetDiffuseColor</span><span class=p>(</span>
-            <span class=n>color</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;tomato&#39;</span><span class=p>))</span>
+            <span class=n>color</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'tomato'</span><span class=p>))</span>
 
         <span class=c1># Define the text for the label</span>
 <span class=hll>        <span class=n>caseLabel</span> <span class=o>=</span> <span class=n>vtkVectorText</span><span class=p>()</span>
-</span>        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>&#39;Case 1&#39;</span><span class=p>)</span>
+</span>        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>'Case 1'</span><span class=p>)</span>
 
         <span class=k>if</span> <span class=n>label</span><span class=p>:</span>
             <span class=c1># Set up a transform to move the label to a new position.</span>
@@ -410,10 +410,10 @@ function registerListener(event, func) {
     <span class=k>if</span> <span class=nb>len</span><span class=p>(</span><span class=n>mcCases</span><span class=p>)</span> <span class=o>&lt;</span> <span class=mi>4</span><span class=p>:</span>
         <span class=n>xGridDimensions</span> <span class=o>=</span> <span class=nb>len</span><span class=p>(</span><span class=n>mcCases</span><span class=p>)</span>
     <span class=n>yGridDimensions</span> <span class=o>=</span> <span class=p>(</span><span class=nb>len</span><span class=p>(</span><span class=n>mcCases</span><span class=p>)</span> <span class=o>-</span> <span class=mi>1</span><span class=p>)</span> <span class=o>//</span> <span class=mi>4</span> <span class=o>+</span> <span class=mi>1</span>
-    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Grid dimensions, (x, y): (</span><span class=si>{:d}</span><span class=s1>, </span><span class=si>{:d}</span><span class=s1>)&#39;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>xGridDimensions</span><span class=p>,</span> <span class=n>yGridDimensions</span><span class=p>))</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s1>'Grid dimensions, (x, y): (</span><span class=si>{:d}</span><span class=s1>, </span><span class=si>{:d}</span><span class=s1>)'</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>xGridDimensions</span><span class=p>,</span> <span class=n>yGridDimensions</span><span class=p>))</span>
     <span class=n>renWin</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span>
         <span class=n>rendererSize</span> <span class=o>*</span> <span class=n>xGridDimensions</span><span class=p>,</span> <span class=n>rendererSize</span> <span class=o>*</span> <span class=n>yGridDimensions</span><span class=p>)</span>
-    <span class=n>renWin</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;MarchingCases&#39;</span><span class=p>)</span>
+    <span class=n>renWin</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>'MarchingCases'</span><span class=p>)</span>
     <span class=k>for</span> <span class=n>row</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>yGridDimensions</span><span class=p>):</span>
         <span class=k>for</span> <span class=n>col</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>xGridDimensions</span><span class=p>):</span>
             <span class=n>index</span> <span class=o>=</span> <span class=n>row</span> <span class=o>*</span> <span class=n>xGridDimensions</span> <span class=o>+</span> <span class=n>col</span>
@@ -442,9 +442,9 @@ function registerListener(event, func) {
     <span class=n>scalars</span><span class=o>.</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>6</span><span class=p>,</span> <span class=n>OUT</span><span class=p>)</span>
     <span class=n>scalars</span><span class=o>.</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>7</span><span class=p>,</span> <span class=n>OUT</span><span class=p>)</span>
     <span class=k>if</span> <span class=n>IN</span> <span class=o>==</span> <span class=mi>1</span><span class=p>:</span>
-        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>&#39;Case 0 - 00000000&#39;</span><span class=p>)</span>
+        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>'Case 0 - 00000000'</span><span class=p>)</span>
     <span class=k>else</span><span class=p>:</span>
-        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>&#39;Case 0c - 11111111&#39;</span><span class=p>)</span>
+        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>'Case 0c - 11111111'</span><span class=p>)</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>case1</span><span class=p>(</span><span class=n>scalars</span><span class=p>,</span> <span class=n>caseLabel</span><span class=p>,</span> <span class=n>IN</span><span class=p>,</span> <span class=n>OUT</span><span class=p>):</span>
@@ -457,9 +457,9 @@ function registerListener(event, func) {
     <span class=n>scalars</span><span class=o>.</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>6</span><span class=p>,</span> <span class=n>OUT</span><span class=p>)</span>
     <span class=n>scalars</span><span class=o>.</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>7</span><span class=p>,</span> <span class=n>OUT</span><span class=p>)</span>
     <span class=k>if</span> <span class=n>IN</span> <span class=o>==</span> <span class=mi>1</span><span class=p>:</span>
-        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>&#39;Case 1 - 00000001&#39;</span><span class=p>)</span>
+        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>'Case 1 - 00000001'</span><span class=p>)</span>
     <span class=k>else</span><span class=p>:</span>
-        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>&#39;Case 1c - 11111110&#39;</span><span class=p>)</span>
+        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>'Case 1c - 11111110'</span><span class=p>)</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>case2</span><span class=p>(</span><span class=n>scalars</span><span class=p>,</span> <span class=n>caseLabel</span><span class=p>,</span> <span class=n>IN</span><span class=p>,</span> <span class=n>OUT</span><span class=p>):</span>
@@ -472,9 +472,9 @@ function registerListener(event, func) {
     <span class=n>scalars</span><span class=o>.</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>6</span><span class=p>,</span> <span class=n>OUT</span><span class=p>)</span>
     <span class=n>scalars</span><span class=o>.</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>7</span><span class=p>,</span> <span class=n>OUT</span><span class=p>)</span>
     <span class=k>if</span> <span class=n>IN</span> <span class=o>==</span> <span class=mi>1</span><span class=p>:</span>
-        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>&#39;Case 2 - 00000011&#39;</span><span class=p>)</span>
+        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>'Case 2 - 00000011'</span><span class=p>)</span>
     <span class=k>else</span><span class=p>:</span>
-        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>&#39;Case 2c - 11111100&#39;</span><span class=p>)</span>
+        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>'Case 2c - 11111100'</span><span class=p>)</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>case3</span><span class=p>(</span><span class=n>scalars</span><span class=p>,</span> <span class=n>caseLabel</span><span class=p>,</span> <span class=n>IN</span><span class=p>,</span> <span class=n>OUT</span><span class=p>):</span>
@@ -487,9 +487,9 @@ function registerListener(event, func) {
     <span class=n>scalars</span><span class=o>.</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>6</span><span class=p>,</span> <span class=n>OUT</span><span class=p>)</span>
     <span class=n>scalars</span><span class=o>.</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>7</span><span class=p>,</span> <span class=n>OUT</span><span class=p>)</span>
     <span class=k>if</span> <span class=n>IN</span> <span class=o>==</span> <span class=mi>1</span><span class=p>:</span>
-        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>&#39;Case 3 - 00000101&#39;</span><span class=p>)</span>
+        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>'Case 3 - 00000101'</span><span class=p>)</span>
     <span class=k>else</span><span class=p>:</span>
-        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>&#39;Case 3c - 11111010&#39;</span><span class=p>)</span>
+        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>'Case 3c - 11111010'</span><span class=p>)</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>case4</span><span class=p>(</span><span class=n>scalars</span><span class=p>,</span> <span class=n>caseLabel</span><span class=p>,</span> <span class=n>IN</span><span class=p>,</span> <span class=n>OUT</span><span class=p>):</span>
@@ -502,9 +502,9 @@ function registerListener(event, func) {
     <span class=n>scalars</span><span class=o>.</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>6</span><span class=p>,</span> <span class=n>IN</span><span class=p>)</span>
     <span class=n>scalars</span><span class=o>.</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>7</span><span class=p>,</span> <span class=n>OUT</span><span class=p>)</span>
     <span class=k>if</span> <span class=n>IN</span> <span class=o>==</span> <span class=mi>1</span><span class=p>:</span>
-        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>&#39;Case 4 - 01000001&#39;</span><span class=p>)</span>
+        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>'Case 4 - 01000001'</span><span class=p>)</span>
     <span class=k>else</span><span class=p>:</span>
-        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>&#39;Case 4c - 10111110&#39;</span><span class=p>)</span>
+        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>'Case 4c - 10111110'</span><span class=p>)</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>case5</span><span class=p>(</span><span class=n>scalars</span><span class=p>,</span> <span class=n>caseLabel</span><span class=p>,</span> <span class=n>IN</span><span class=p>,</span> <span class=n>OUT</span><span class=p>):</span>
@@ -517,9 +517,9 @@ function registerListener(event, func) {
     <span class=n>scalars</span><span class=o>.</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>6</span><span class=p>,</span> <span class=n>OUT</span><span class=p>)</span>
     <span class=n>scalars</span><span class=o>.</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>7</span><span class=p>,</span> <span class=n>OUT</span><span class=p>)</span>
     <span class=k>if</span> <span class=n>IN</span> <span class=o>==</span> <span class=mi>1</span><span class=p>:</span>
-        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>&#39;Case 5 - 00110010&#39;</span><span class=p>)</span>
+        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>'Case 5 - 00110010'</span><span class=p>)</span>
     <span class=k>else</span><span class=p>:</span>
-        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>&#39;Case 5c - 11001101&#39;</span><span class=p>)</span>
+        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>'Case 5c - 11001101'</span><span class=p>)</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>case6</span><span class=p>(</span><span class=n>scalars</span><span class=p>,</span> <span class=n>caseLabel</span><span class=p>,</span> <span class=n>IN</span><span class=p>,</span> <span class=n>OUT</span><span class=p>):</span>
@@ -532,9 +532,9 @@ function registerListener(event, func) {
     <span class=n>scalars</span><span class=o>.</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>6</span><span class=p>,</span> <span class=n>OUT</span><span class=p>)</span>
     <span class=n>scalars</span><span class=o>.</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>7</span><span class=p>,</span> <span class=n>OUT</span><span class=p>)</span>
     <span class=k>if</span> <span class=n>IN</span> <span class=o>==</span> <span class=mi>1</span><span class=p>:</span>
-        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>&#39;Case 6 - 00011010&#39;</span><span class=p>)</span>
+        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>'Case 6 - 00011010'</span><span class=p>)</span>
     <span class=k>else</span><span class=p>:</span>
-        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>&#39;Case 6c - 11100101&#39;</span><span class=p>)</span>
+        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>'Case 6c - 11100101'</span><span class=p>)</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>case7</span><span class=p>(</span><span class=n>scalars</span><span class=p>,</span> <span class=n>caseLabel</span><span class=p>,</span> <span class=n>IN</span><span class=p>,</span> <span class=n>OUT</span><span class=p>):</span>
@@ -547,9 +547,9 @@ function registerListener(event, func) {
     <span class=n>scalars</span><span class=o>.</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>6</span><span class=p>,</span> <span class=n>IN</span><span class=p>)</span>
     <span class=n>scalars</span><span class=o>.</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>7</span><span class=p>,</span> <span class=n>OUT</span><span class=p>)</span>
     <span class=k>if</span> <span class=n>IN</span> <span class=o>==</span> <span class=mi>1</span><span class=p>:</span>
-        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>&#39;Case 7 - 01000011&#39;</span><span class=p>)</span>
+        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>'Case 7 - 01000011'</span><span class=p>)</span>
     <span class=k>else</span><span class=p>:</span>
-        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>&#39;Case 7c - 10111100&#39;</span><span class=p>)</span>
+        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>'Case 7c - 10111100'</span><span class=p>)</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>case8</span><span class=p>(</span><span class=n>scalars</span><span class=p>,</span> <span class=n>caseLabel</span><span class=p>,</span> <span class=n>IN</span><span class=p>,</span> <span class=n>OUT</span><span class=p>):</span>
@@ -562,9 +562,9 @@ function registerListener(event, func) {
     <span class=n>scalars</span><span class=o>.</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>6</span><span class=p>,</span> <span class=n>OUT</span><span class=p>)</span>
     <span class=n>scalars</span><span class=o>.</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>7</span><span class=p>,</span> <span class=n>OUT</span><span class=p>)</span>
     <span class=k>if</span> <span class=n>IN</span> <span class=o>==</span> <span class=mi>1</span><span class=p>:</span>
-        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>&#39;Case 8 - 00110011&#39;</span><span class=p>)</span>
+        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>'Case 8 - 00110011'</span><span class=p>)</span>
     <span class=k>else</span><span class=p>:</span>
-        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>&#39;Case 8c - 11001100&#39;</span><span class=p>)</span>
+        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>'Case 8c - 11001100'</span><span class=p>)</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>case9</span><span class=p>(</span><span class=n>scalars</span><span class=p>,</span> <span class=n>caseLabel</span><span class=p>,</span> <span class=n>IN</span><span class=p>,</span> <span class=n>OUT</span><span class=p>):</span>
@@ -577,9 +577,9 @@ function registerListener(event, func) {
     <span class=n>scalars</span><span class=o>.</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>6</span><span class=p>,</span> <span class=n>IN</span><span class=p>)</span>
     <span class=n>scalars</span><span class=o>.</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>7</span><span class=p>,</span> <span class=n>OUT</span><span class=p>)</span>
     <span class=k>if</span> <span class=n>IN</span> <span class=o>==</span> <span class=mi>1</span><span class=p>:</span>
-        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>&#39;Case 9 - 01001110&#39;</span><span class=p>)</span>
+        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>'Case 9 - 01001110'</span><span class=p>)</span>
     <span class=k>else</span><span class=p>:</span>
-        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>&#39;Case 9c - 10110001&#39;</span><span class=p>)</span>
+        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>'Case 9c - 10110001'</span><span class=p>)</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>case10</span><span class=p>(</span><span class=n>scalars</span><span class=p>,</span> <span class=n>caseLabel</span><span class=p>,</span> <span class=n>IN</span><span class=p>,</span> <span class=n>OUT</span><span class=p>):</span>
@@ -592,9 +592,9 @@ function registerListener(event, func) {
     <span class=n>scalars</span><span class=o>.</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>6</span><span class=p>,</span> <span class=n>IN</span><span class=p>)</span>
     <span class=n>scalars</span><span class=o>.</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>7</span><span class=p>,</span> <span class=n>OUT</span><span class=p>)</span>
     <span class=k>if</span> <span class=n>IN</span> <span class=o>==</span> <span class=mi>1</span><span class=p>:</span>
-        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>&#39;Case 10 - 01101001&#39;</span><span class=p>)</span>
+        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>'Case 10 - 01101001'</span><span class=p>)</span>
     <span class=k>else</span><span class=p>:</span>
-        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>&#39;Case 10c - 10010110&#39;</span><span class=p>)</span>
+        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>'Case 10c - 10010110'</span><span class=p>)</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>case11</span><span class=p>(</span><span class=n>scalars</span><span class=p>,</span> <span class=n>caseLabel</span><span class=p>,</span> <span class=n>IN</span><span class=p>,</span> <span class=n>OUT</span><span class=p>):</span>
@@ -607,9 +607,9 @@ function registerListener(event, func) {
     <span class=n>scalars</span><span class=o>.</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>6</span><span class=p>,</span> <span class=n>IN</span><span class=p>)</span>
     <span class=n>scalars</span><span class=o>.</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>7</span><span class=p>,</span> <span class=n>OUT</span><span class=p>)</span>
     <span class=k>if</span> <span class=n>IN</span> <span class=o>==</span> <span class=mi>1</span><span class=p>:</span>
-        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>&#39;Case 11 - 01110001&#39;</span><span class=p>)</span>
+        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>'Case 11 - 01110001'</span><span class=p>)</span>
     <span class=k>else</span><span class=p>:</span>
-        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>&#39;Case 11c - 10001110&#39;</span><span class=p>)</span>
+        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>'Case 11c - 10001110'</span><span class=p>)</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>case12</span><span class=p>(</span><span class=n>scalars</span><span class=p>,</span> <span class=n>caseLabel</span><span class=p>,</span> <span class=n>IN</span><span class=p>,</span> <span class=n>OUT</span><span class=p>):</span>
@@ -622,9 +622,9 @@ function registerListener(event, func) {
     <span class=n>scalars</span><span class=o>.</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>6</span><span class=p>,</span> <span class=n>OUT</span><span class=p>)</span>
     <span class=n>scalars</span><span class=o>.</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>7</span><span class=p>,</span> <span class=n>OUT</span><span class=p>)</span>
     <span class=k>if</span> <span class=n>IN</span> <span class=o>==</span> <span class=mi>1</span><span class=p>:</span>
-        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>&#39;Case 12 - 00111010&#39;</span><span class=p>)</span>
+        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>'Case 12 - 00111010'</span><span class=p>)</span>
     <span class=k>else</span><span class=p>:</span>
-        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>&#39;Case 12c - 11000101&#39;</span><span class=p>)</span>
+        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>'Case 12c - 11000101'</span><span class=p>)</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>case13</span><span class=p>(</span><span class=n>scalars</span><span class=p>,</span> <span class=n>caseLabel</span><span class=p>,</span> <span class=n>IN</span><span class=p>,</span> <span class=n>OUT</span><span class=p>):</span>
@@ -637,9 +637,9 @@ function registerListener(event, func) {
     <span class=n>scalars</span><span class=o>.</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>6</span><span class=p>,</span> <span class=n>IN</span><span class=p>)</span>
     <span class=n>scalars</span><span class=o>.</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>7</span><span class=p>,</span> <span class=n>OUT</span><span class=p>)</span>
     <span class=k>if</span> <span class=n>IN</span> <span class=o>==</span> <span class=mi>1</span><span class=p>:</span>
-        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>&#39;Case 13 - 01011010&#39;</span><span class=p>)</span>
+        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>'Case 13 - 01011010'</span><span class=p>)</span>
     <span class=k>else</span><span class=p>:</span>
-        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>&#39;Case 13c - 10100101&#39;</span><span class=p>)</span>
+        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>'Case 13c - 10100101'</span><span class=p>)</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>case14</span><span class=p>(</span><span class=n>scalars</span><span class=p>,</span> <span class=n>caseLabel</span><span class=p>,</span> <span class=n>IN</span><span class=p>,</span> <span class=n>OUT</span><span class=p>):</span>
@@ -652,13 +652,13 @@ function registerListener(event, func) {
     <span class=n>scalars</span><span class=o>.</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>6</span><span class=p>,</span> <span class=n>IN</span><span class=p>)</span>
     <span class=n>scalars</span><span class=o>.</span><span class=n>InsertValue</span><span class=p>(</span><span class=mi>7</span><span class=p>,</span> <span class=n>IN</span><span class=p>)</span>
     <span class=k>if</span> <span class=n>IN</span> <span class=o>==</span> <span class=mi>1</span><span class=p>:</span>
-        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>&#39;Case 14 - 11101101&#39;</span><span class=p>)</span>
+        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>'Case 14 - 11101101'</span><span class=p>)</span>
     <span class=k>else</span><span class=p>:</span>
-        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>&#39;Case 14c - 00010010&#39;</span><span class=p>)</span>
+        <span class=n>caseLabel</span><span class=o>.</span><span class=n>SetText</span><span class=p>(</span><span class=s1>'Case 14c - 00010010'</span><span class=p>)</span>
 
 
 <span class=n>cases</span> <span class=o>=</span> <span class=p>[</span><span class=n>case0</span><span class=p>,</span> <span class=n>case1</span><span class=p>,</span> <span class=n>case2</span><span class=p>,</span> <span class=n>case3</span><span class=p>,</span> <span class=n>case4</span><span class=p>,</span> <span class=n>case5</span><span class=p>,</span> <span class=n>case6</span><span class=p>,</span> <span class=n>case7</span><span class=p>,</span> <span class=n>case8</span><span class=p>,</span> <span class=n>case9</span><span class=p>,</span> <span class=n>case10</span><span class=p>,</span> <span class=n>case11</span><span class=p>,</span> <span class=n>case12</span><span class=p>,</span> <span class=n>case13</span><span class=p>,</span> <span class=n>case14</span><span class=p>]</span>
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

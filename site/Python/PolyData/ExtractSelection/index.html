@@ -88,7 +88,7 @@ function registerListener(event, func) {
     <span class=n>point_source</span><span class=o>.</span><span class=n>SetNumberOfPoints</span><span class=p>(</span><span class=mi>50</span><span class=p>)</span>
     <span class=n>point_source</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
 
-    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;There are&#39;</span><span class=p>,</span> <span class=n>point_source</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetNumberOfPoints</span><span class=p>(),</span> <span class=s1>&#39;input points.&#39;</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s1>'There are'</span><span class=p>,</span> <span class=n>point_source</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetNumberOfPoints</span><span class=p>(),</span> <span class=s1>'input points.'</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>ids</span> <span class=o>=</span> <span class=n>vtkIdTypeArray</span><span class=p>()</span>
 </span>    <span class=n>ids</span><span class=o>.</span><span class=n>SetNumberOfComponents</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
@@ -114,8 +114,8 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>selected</span> <span class=o>=</span> <span class=n>vtkUnstructuredGrid</span><span class=p>()</span>
 </span>    <span class=n>selected</span><span class=o>.</span><span class=n>ShallowCopy</span><span class=p>(</span><span class=n>extract_selection</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>())</span>
 
-    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;There are&#39;</span><span class=p>,</span> <span class=n>selected</span><span class=o>.</span><span class=n>GetNumberOfPoints</span><span class=p>(),</span> <span class=s1>&#39;points and&#39;</span><span class=p>,</span> <span class=n>selected</span><span class=o>.</span><span class=n>GetNumberOfCells</span><span class=p>(),</span>
-          <span class=s1>&#39;cells in the selection.&#39;</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s1>'There are'</span><span class=p>,</span> <span class=n>selected</span><span class=o>.</span><span class=n>GetNumberOfPoints</span><span class=p>(),</span> <span class=s1>'points and'</span><span class=p>,</span> <span class=n>selected</span><span class=o>.</span><span class=n>GetNumberOfCells</span><span class=p>(),</span>
+          <span class=s1>'cells in the selection.'</span><span class=p>)</span>
 
     <span class=c1># Get points that are NOT in the selection.</span>
     <span class=n>selection_node</span><span class=o>.</span><span class=n>GetProperties</span><span class=p>()</span><span class=o>.</span><span class=n>Set</span><span class=p>(</span><span class=n>vtkSelectionNode</span><span class=p>()</span><span class=o>.</span><span class=n>INVERSE</span><span class=p>(),</span> <span class=mi>1</span><span class=p>)</span>  <span class=c1># invert the selection.</span>
@@ -124,14 +124,14 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>not_selected</span> <span class=o>=</span> <span class=n>vtkUnstructuredGrid</span><span class=p>()</span>
 </span>    <span class=n>not_selected</span><span class=o>.</span><span class=n>ShallowCopy</span><span class=p>(</span><span class=n>extract_selection</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>())</span>
 
-    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;There are&#39;</span><span class=p>,</span> <span class=n>not_selected</span><span class=o>.</span><span class=n>GetNumberOfPoints</span><span class=p>(),</span> <span class=s1>&#39;points and&#39;</span><span class=p>,</span> <span class=n>not_selected</span><span class=o>.</span><span class=n>GetNumberOfCells</span><span class=p>(),</span>
-          <span class=s1>&#39;cells NOT in the selection.&#39;</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s1>'There are'</span><span class=p>,</span> <span class=n>not_selected</span><span class=o>.</span><span class=n>GetNumberOfPoints</span><span class=p>(),</span> <span class=s1>'points and'</span><span class=p>,</span> <span class=n>not_selected</span><span class=o>.</span><span class=n>GetNumberOfCells</span><span class=p>(),</span>
+          <span class=s1>'cells NOT in the selection.'</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>input_mapper</span> <span class=o>=</span> <span class=n>vtkDataSetMapper</span><span class=p>()</span>
 </span>    <span class=n>input_mapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>point_source</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
 <span class=hll>    <span class=n>input_actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>input_actor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>input_mapper</span><span class=p>)</span>
-    <span class=n>input_actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;MidnightBlue&quot;</span><span class=p>))</span>
+    <span class=n>input_actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>"MidnightBlue"</span><span class=p>))</span>
     <span class=n>input_actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetPointSize</span><span class=p>(</span><span class=mi>5</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>selected_mapper</span> <span class=o>=</span> <span class=n>vtkDataSetMapper</span><span class=p>()</span>
@@ -139,7 +139,7 @@ function registerListener(event, func) {
 
 <span class=hll>    <span class=n>selected_actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>selected_actor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>selected_mapper</span><span class=p>)</span>
-    <span class=n>selected_actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;MidnightBlue&quot;</span><span class=p>))</span>
+    <span class=n>selected_actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>"MidnightBlue"</span><span class=p>))</span>
     <span class=n>selected_actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetPointSize</span><span class=p>(</span><span class=mi>5</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>not_selected_mapper</span> <span class=o>=</span> <span class=n>vtkDataSetMapper</span><span class=p>()</span>
@@ -147,13 +147,13 @@ function registerListener(event, func) {
 
 <span class=hll>    <span class=n>not_selected_actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>not_selected_actor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>not_selected_mapper</span><span class=p>)</span>
-    <span class=n>not_selected_actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;MidnightBlue&quot;</span><span class=p>))</span>
+    <span class=n>not_selected_actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>"MidnightBlue"</span><span class=p>))</span>
     <span class=n>not_selected_actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetPointSize</span><span class=p>(</span><span class=mi>5</span><span class=p>)</span>
 
     <span class=c1># There will be one render window.</span>
 <span class=hll>    <span class=n>render_window</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>()</span>
 </span>    <span class=n>render_window</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>900</span><span class=p>,</span> <span class=mi>300</span><span class=p>)</span>
-    <span class=n>render_window</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s2>&quot;ExtractSelectedIds&quot;</span><span class=p>)</span>
+    <span class=n>render_window</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s2>"ExtractSelectedIds"</span><span class=p>)</span>
 
     <span class=c1># And one interactor.</span>
 <span class=hll>    <span class=n>interactor</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
@@ -172,19 +172,19 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>left_renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>()</span>
 </span>    <span class=n>render_window</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>left_renderer</span><span class=p>)</span>
     <span class=n>left_renderer</span><span class=o>.</span><span class=n>SetViewport</span><span class=p>(</span><span class=n>left_viewport</span><span class=p>)</span>
-    <span class=n>left_renderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;BurlyWood&quot;</span><span class=p>))</span>
+    <span class=n>left_renderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>"BurlyWood"</span><span class=p>))</span>
     <span class=n>left_renderer</span><span class=o>.</span><span class=n>SetActiveCamera</span><span class=p>(</span><span class=n>camera</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>center_renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>()</span>
 </span>    <span class=n>render_window</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>center_renderer</span><span class=p>)</span>
     <span class=n>center_renderer</span><span class=o>.</span><span class=n>SetViewport</span><span class=p>(</span><span class=n>center_viewport</span><span class=p>)</span>
-    <span class=n>center_renderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;orchid_dark&quot;</span><span class=p>))</span>
+    <span class=n>center_renderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>"orchid_dark"</span><span class=p>))</span>
     <span class=n>center_renderer</span><span class=o>.</span><span class=n>SetActiveCamera</span><span class=p>(</span><span class=n>camera</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>right_renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>()</span>
 </span>    <span class=n>render_window</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>right_renderer</span><span class=p>)</span>
     <span class=n>right_renderer</span><span class=o>.</span><span class=n>SetViewport</span><span class=p>(</span><span class=n>right_viewport</span><span class=p>)</span>
-    <span class=n>right_renderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;CornflowerBlue&quot;</span><span class=p>))</span>
+    <span class=n>right_renderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>"CornflowerBlue"</span><span class=p>))</span>
     <span class=n>right_renderer</span><span class=o>.</span><span class=n>SetActiveCamera</span><span class=p>(</span><span class=n>camera</span><span class=p>)</span>
 
     <span class=n>left_renderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>input_actor</span><span class=p>)</span>
@@ -197,7 +197,7 @@ function registerListener(event, func) {
     <span class=n>interactor</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>sys</span>
 
     <span class=n>main</span><span class=p>(</span><span class=n>sys</span><span class=o>.</span><span class=n>argv</span><span class=p>)</span>

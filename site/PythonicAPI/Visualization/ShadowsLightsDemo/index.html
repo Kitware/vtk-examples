@@ -59,7 +59,7 @@ function registerListener(event, func) {
 
 <span class=kn>from</span><span class=w> </span><span class=nn>dataclasses</span><span class=w> </span><span class=kn>import</span> <span class=n>dataclass</span>
 
-<span class=sd>&quot;&quot;&quot;</span>
+<span class=sd>"""</span>
 <span class=sd>The scene consists of:</span>
 <span class=sd>1) four actors: a rectangle, a box, a cone and a sphere.</span>
 <span class=sd>   The box, the cone and the sphere are above the rectangle.</span>
@@ -67,7 +67,7 @@ function registerListener(event, func) {
 <span class=sd>   direction of the sphere.</span>
 <span class=sd>   Both lights are above the box, the cone and  the sphere.</span>
 <span class=sd>3) A headlight has been added to fill in some of the dark shadows.</span>
-<span class=sd>&quot;&quot;&quot;</span>
+<span class=sd>"""</span>
 
 <span class=c1># noinspection PyUnresolvedReferences</span>
 <span class=kn>import</span><span class=w> </span><span class=nn>vtkmodules.vtkInteractionStyle</span>
@@ -102,9 +102,9 @@ function registerListener(event, func) {
 <span class=k>def</span><span class=w> </span><span class=nf>main</span><span class=p>():</span>
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
-<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkOpenGLRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Silver&#39;</span><span class=p>),</span> <span class=n>background2</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Black&#39;</span><span class=p>),</span>
+<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkOpenGLRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Silver'</span><span class=p>),</span> <span class=n>background2</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Black'</span><span class=p>),</span>
 </span>                                 <span class=n>gradient_background</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>automatic_light_creation</span><span class=o>=</span><span class=kc>False</span><span class=p>)</span>
-<span class=hll>    <span class=n>ren_win</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>size</span><span class=o>=</span><span class=p>(</span><span class=mi>640</span><span class=p>,</span> <span class=mi>480</span><span class=p>),</span> <span class=n>window_name</span><span class=o>=</span><span class=s1>&#39;ShadowsLightsDemo&#39;</span><span class=p>,</span> <span class=n>multi_samples</span><span class=o>=</span><span class=mi>0</span><span class=p>,</span> <span class=n>alpha_bit_planes</span><span class=o>=</span><span class=mi>1</span><span class=p>)</span>
+<span class=hll>    <span class=n>ren_win</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>size</span><span class=o>=</span><span class=p>(</span><span class=mi>640</span><span class=p>,</span> <span class=mi>480</span><span class=p>),</span> <span class=n>window_name</span><span class=o>=</span><span class=s1>'ShadowsLightsDemo'</span><span class=p>,</span> <span class=n>multi_samples</span><span class=o>=</span><span class=mi>0</span><span class=p>,</span> <span class=n>alpha_bit_planes</span><span class=o>=</span><span class=mi>1</span><span class=p>)</span>
 </span>    <span class=n>ren_win</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>)</span>
 <span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>iren</span><span class=o>.</span><span class=n>render_window</span> <span class=o>=</span> <span class=n>ren_win</span>
@@ -127,10 +127,10 @@ function registerListener(event, func) {
     <span class=c1># Tell the renderer to use our render pass pipeline.</span>
     <span class=n>renderer</span><span class=o>.</span><span class=n>SetPass</span><span class=p>(</span><span class=n>camera_p</span><span class=p>)</span>
 
-    <span class=n>box_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Tomato&#39;</span><span class=p>)</span>
-    <span class=n>rectangle_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Beige&#39;</span><span class=p>)</span>
-    <span class=n>cone_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Peacock&#39;</span><span class=p>)</span>
-    <span class=n>sphere_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Banana&#39;</span><span class=p>)</span>
+    <span class=n>box_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Tomato'</span><span class=p>)</span>
+    <span class=n>rectangle_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Beige'</span><span class=p>)</span>
+    <span class=n>cone_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Peacock'</span><span class=p>)</span>
+    <span class=n>sphere_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Banana'</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>rectangle_source</span> <span class=o>=</span> <span class=n>vtkPlaneSource</span><span class=p>(</span><span class=n>origin</span><span class=o>=</span><span class=p>(</span><span class=o>-</span><span class=mf>5.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>5.0</span><span class=p>),</span> <span class=n>point1</span><span class=o>=</span><span class=p>(</span><span class=mf>5.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>5.0</span><span class=p>),</span> <span class=n>point2</span><span class=o>=</span><span class=p>(</span><span class=o>-</span><span class=mf>5.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=o>-</span><span class=mf>5.0</span><span class=p>),</span>
 </span>                                      <span class=n>resolution</span><span class=o>=</span><span class=p>(</span><span class=mi>100</span><span class=p>,</span> <span class=mi>100</span><span class=p>))</span>
@@ -175,12 +175,12 @@ function registerListener(event, func) {
     <span class=c1># Spotlights.</span>
 
     <span class=c1># Lighting the box.</span>
-<span class=hll>    <span class=n>l1</span> <span class=o>=</span> <span class=n>vtkLight</span><span class=p>(</span><span class=n>position</span><span class=o>=</span><span class=p>(</span><span class=o>-</span><span class=mf>4.0</span><span class=p>,</span> <span class=mf>4.0</span><span class=p>,</span> <span class=o>-</span><span class=mf>1.0</span><span class=p>),</span> <span class=n>focal_point</span><span class=o>=</span><span class=n>box_actor</span><span class=o>.</span><span class=n>position</span><span class=p>,</span> <span class=n>color</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;White&#39;</span><span class=p>),</span>
+<span class=hll>    <span class=n>l1</span> <span class=o>=</span> <span class=n>vtkLight</span><span class=p>(</span><span class=n>position</span><span class=o>=</span><span class=p>(</span><span class=o>-</span><span class=mf>4.0</span><span class=p>,</span> <span class=mf>4.0</span><span class=p>,</span> <span class=o>-</span><span class=mf>1.0</span><span class=p>),</span> <span class=n>focal_point</span><span class=o>=</span><span class=n>box_actor</span><span class=o>.</span><span class=n>position</span><span class=p>,</span> <span class=n>color</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'White'</span><span class=p>),</span>
 </span>                  <span class=n>positional</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>switch</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
     <span class=n>renderer</span><span class=o>.</span><span class=n>AddLight</span><span class=p>(</span><span class=n>l1</span><span class=p>)</span>
 
     <span class=c1># Lighting the sphere.</span>
-<span class=hll>    <span class=n>l2</span> <span class=o>=</span> <span class=n>vtkLight</span><span class=p>(</span><span class=n>position</span><span class=o>=</span><span class=p>(</span><span class=mf>4.0</span><span class=p>,</span> <span class=mf>5.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>),</span> <span class=n>focal_point</span><span class=o>=</span><span class=n>sphere_actor</span><span class=o>.</span><span class=n>position</span><span class=p>,</span> <span class=n>color</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Magenta&#39;</span><span class=p>),</span>
+<span class=hll>    <span class=n>l2</span> <span class=o>=</span> <span class=n>vtkLight</span><span class=p>(</span><span class=n>position</span><span class=o>=</span><span class=p>(</span><span class=mf>4.0</span><span class=p>,</span> <span class=mf>5.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>),</span> <span class=n>focal_point</span><span class=o>=</span><span class=n>sphere_actor</span><span class=o>.</span><span class=n>position</span><span class=p>,</span> <span class=n>color</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Magenta'</span><span class=p>),</span>
 </span>                  <span class=n>positional</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>switch</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
     <span class=n>renderer</span><span class=o>.</span><span class=n>AddLight</span><span class=p>(</span><span class=n>l2</span><span class=p>)</span>
 
@@ -199,11 +199,11 @@ function registerListener(event, func) {
 
     <span class=c1># Add in a headlight.</span>
 <span class=hll>    <span class=n>light</span> <span class=o>=</span> <span class=n>vtkLight</span><span class=p>(</span><span class=n>light_type</span><span class=o>=</span><span class=n>Light</span><span class=o>.</span><span class=n>LightType</span><span class=o>.</span><span class=n>VTK_LIGHT_TYPE_HEADLIGHT</span><span class=p>,</span> <span class=n>position</span><span class=o>=</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>8.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>),</span>
-</span>                     <span class=n>focal_point</span><span class=o>=</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>),</span> <span class=n>diffuse_color</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;LightGrey&#39;</span><span class=p>))</span>
+</span>                     <span class=n>focal_point</span><span class=o>=</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>),</span> <span class=n>diffuse_color</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'LightGrey'</span><span class=p>))</span>
     <span class=n>renderer</span><span class=o>.</span><span class=n>AddLight</span><span class=p>(</span><span class=n>light</span><span class=p>)</span>
 
     <span class=n>ren_win</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
-    <span class=n>ren_win</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;ShadowsLightsDemo&#39;</span><span class=p>)</span>
+    <span class=n>ren_win</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>'ShadowsLightsDemo'</span><span class=p>)</span>
 
     <span class=n>renderer</span><span class=o>.</span><span class=n>ResetCamera</span><span class=p>()</span>
 
@@ -225,6 +225,6 @@ function registerListener(event, func) {
         <span class=n>VTK_LIGHT_TYPE_SCENE_LIGHT</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>3</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

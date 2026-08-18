@@ -78,8 +78,8 @@ function registerListener(event, func) {
 <span class=p>{</span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>argc</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=mi>3</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Usage: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span>
-<span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; sparsePoints.txt InterpolatingOnSTL_final.stl&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Usage: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span>
+<span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" sparsePoints.txt InterpolatingOnSTL_final.stl"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>EXIT_FAILURE</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>pointsFile</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>];</span>
@@ -89,18 +89,18 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkDelimitedTextReader</span><span class=o>&gt;</span><span class=w> </span><span class=n>pointsReader</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>pointsReader</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>pointsFile</span><span class=p>.</span><span class=n>c_str</span><span class=p>());</span>
 <span class=w>  </span><span class=n>pointsReader</span><span class=o>-&gt;</span><span class=n>DetectNumericColumnsOn</span><span class=p>();</span>
-<span class=w>  </span><span class=n>pointsReader</span><span class=o>-&gt;</span><span class=n>SetFieldDelimiterCharacters</span><span class=p>(</span><span class=s>&quot;</span><span class=se>\t</span><span class=s>&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>pointsReader</span><span class=o>-&gt;</span><span class=n>SetFieldDelimiterCharacters</span><span class=p>(</span><span class=s>"</span><span class=se>\t</span><span class=s>"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>pointsReader</span><span class=o>-&gt;</span><span class=n>SetHaveHeaders</span><span class=p>(</span><span class=nb>true</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTableToPolyData</span><span class=o>&gt;</span><span class=w> </span><span class=n>tablePoints</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>tablePoints</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>pointsReader</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
-<span class=w>  </span><span class=n>tablePoints</span><span class=o>-&gt;</span><span class=n>SetXColumn</span><span class=p>(</span><span class=s>&quot;x&quot;</span><span class=p>);</span>
-<span class=w>  </span><span class=n>tablePoints</span><span class=o>-&gt;</span><span class=n>SetYColumn</span><span class=p>(</span><span class=s>&quot;y&quot;</span><span class=p>);</span>
-<span class=w>  </span><span class=n>tablePoints</span><span class=o>-&gt;</span><span class=n>SetZColumn</span><span class=p>(</span><span class=s>&quot;z&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>tablePoints</span><span class=o>-&gt;</span><span class=n>SetXColumn</span><span class=p>(</span><span class=s>"x"</span><span class=p>);</span>
+<span class=w>  </span><span class=n>tablePoints</span><span class=o>-&gt;</span><span class=n>SetYColumn</span><span class=p>(</span><span class=s>"y"</span><span class=p>);</span>
+<span class=w>  </span><span class=n>tablePoints</span><span class=o>-&gt;</span><span class=n>SetZColumn</span><span class=p>(</span><span class=s>"z"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>tablePoints</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkPolyData</span><span class=o>*</span><span class=w> </span><span class=n>points</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>tablePoints</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>();</span>
-</span><span class=w>  </span><span class=n>points</span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetActiveScalars</span><span class=p>(</span><span class=s>&quot;val&quot;</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>points</span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetActiveScalars</span><span class=p>(</span><span class=s>"val"</span><span class=p>);</span>
 <span class=w>  </span><span class=kt>double</span><span class=o>*</span><span class=w> </span><span class=n>range</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>points</span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetScalars</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetRange</span><span class=p>();</span>
 
 <span class=w>  </span><span class=c1>// Read a probe surface</span>
@@ -138,27 +138,27 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>pointsMapper</span><span class=o>-&gt;</span><span class=n>EmissiveOff</span><span class=p>();</span>
 <span class=w>  </span><span class=c1>// clang-format off</span>
 <span class=w>  </span><span class=n>pointsMapper</span><span class=o>-&gt;</span><span class=n>SetSplatShaderCode</span><span class=p>(</span>
-<span class=w>      </span><span class=s>&quot;//VTK::Color::Impl</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;float dist = dot(offsetVCVSOutput.xy,offsetVCVSOutput.xy);</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;if (dist &gt; 1.0) {</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;  discard;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;} else {</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;  float scale = (1.0 - dist);</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;  ambientColor *= scale;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;  diffuseColor *= scale;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;};</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>);</span>
+<span class=w>      </span><span class=s>"//VTK::Color::Impl</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>      </span><span class=s>"float dist = dot(offsetVCVSOutput.xy,offsetVCVSOutput.xy);</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>      </span><span class=s>"if (dist &gt; 1.0) {</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>      </span><span class=s>"  discard;</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>      </span><span class=s>"} else {</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>      </span><span class=s>"  float scale = (1.0 - dist);</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>      </span><span class=s>"  ambientColor *= scale;</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>      </span><span class=s>"  diffuseColor *= scale;</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>      </span><span class=s>"};</span><span class=se>\n</span><span class=s>"</span><span class=p>);</span>
 <span class=w>  </span><span class=c1>// clang-format on</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>pointsActor</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>pointsActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>pointsMapper</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderer</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;SlateGray&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+</span><span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"SlateGray"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderWindow</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>640</span><span class=p>,</span><span class=w> </span><span class=mi>480</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;PointInterpolator&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"PointInterpolator"</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span><span class=w> </span><span class=n>iren</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>iren</span><span class=o>-&gt;</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renderWindow</span><span class=p>);</span>
@@ -196,11 +196,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;PointInterpolator: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"PointInterpolator: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>PointInterpolator</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>PointInterpolator.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>PointInterpolator</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

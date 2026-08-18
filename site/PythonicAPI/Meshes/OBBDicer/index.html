@@ -94,19 +94,19 @@ function registerListener(event, func) {
     <span class=k>def</span><span class=w> </span><span class=nf>check_positive</span><span class=p>(</span><span class=n>value</span><span class=p>):</span>
         <span class=n>ival</span> <span class=o>=</span> <span class=nb>int</span><span class=p>(</span><span class=n>value</span><span class=p>)</span>
         <span class=k>if</span> <span class=n>ival</span> <span class=o>&lt;=</span> <span class=mi>0</span><span class=p>:</span>
-            <span class=k>raise</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentTypeError</span><span class=p>(</span><span class=s1>&#39;Value must be positive.&#39;</span><span class=p>)</span>
+            <span class=k>raise</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentTypeError</span><span class=p>(</span><span class=s1>'Value must be positive.'</span><span class=p>)</span>
         <span class=k>return</span> <span class=n>ival</span>
 
     <span class=kn>import</span><span class=w> </span><span class=nn>argparse</span>
-    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;OBBDicer.&#39;</span>
-    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;</span>
-<span class=s1>    &#39;&#39;&#39;</span>
+    <span class=n>description</span> <span class=o>=</span> <span class=s1>'OBBDicer.'</span>
+    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>'''</span>
+<span class=s1>    '''</span>
 
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
                                      <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawTextHelpFormatter</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;filename&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Enter a polydata file e.g Armadillo.ply.&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-n&#39;</span><span class=p>,</span> <span class=s1>&#39;--number_of_pieces&#39;</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mi>4</span><span class=p>,</span> <span class=nb>type</span><span class=o>=</span><span class=n>check_positive</span><span class=p>,</span>
-                        <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The number of pieces, default = 4.&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'filename'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'Enter a polydata file e.g Armadillo.ply.'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-n'</span><span class=p>,</span> <span class=s1>'--number_of_pieces'</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mi>4</span><span class=p>,</span> <span class=nb>type</span><span class=o>=</span><span class=n>check_positive</span><span class=p>,</span>
+                        <span class=n>help</span><span class=o>=</span><span class=s1>'The number of pieces, default = 4.'</span><span class=p>)</span>
     <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
     <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>filename</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>number_of_pieces</span>
 
@@ -120,7 +120,7 @@ function registerListener(event, func) {
             <span class=k>if</span> <span class=ow>not</span> <span class=n>poly_data</span><span class=p>:</span>
                 <span class=k>return</span>
         <span class=k>else</span><span class=p>:</span>
-            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;</span><span class=si>{</span><span class=n>file_name</span><span class=si>}</span><span class=s1> not found.&#39;</span><span class=p>)</span>
+            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'</span><span class=si>{</span><span class=n>file_name</span><span class=si>}</span><span class=s1> not found.'</span><span class=p>)</span>
             <span class=k>return</span>
 
     <span class=c1># Create pipeline</span>
@@ -136,16 +136,16 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>lut</span> <span class=o>=</span> <span class=n>vtkLookupTable</span><span class=p>()</span>
 </span>    <span class=n>lut</span><span class=o>.</span><span class=n>number_of_table_values</span> <span class=o>=</span> <span class=nb>max</span><span class=p>(</span><span class=n>number_of_regions</span><span class=p>,</span> <span class=mi>10</span><span class=p>)</span>
     <span class=n>lut</span><span class=o>.</span><span class=n>Build</span><span class=p>()</span>
-    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>&#39;Gold&#39;</span><span class=p>))</span>
-    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>&#39;Banana&#39;</span><span class=p>))</span>
-    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>&#39;Tomato&#39;</span><span class=p>))</span>
-    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>3</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>&#39;Wheat&#39;</span><span class=p>))</span>
-    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>4</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>&#39;Lavender&#39;</span><span class=p>))</span>
-    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>5</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>&#39;Flesh&#39;</span><span class=p>))</span>
-    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>6</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>&#39;Raspberry&#39;</span><span class=p>))</span>
-    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>7</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>&#39;Salmon&#39;</span><span class=p>))</span>
-    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>8</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>&#39;Mint&#39;</span><span class=p>))</span>
-    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>9</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>&#39;Peacock&#39;</span><span class=p>))</span>
+    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>'Gold'</span><span class=p>))</span>
+    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>'Banana'</span><span class=p>))</span>
+    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>'Tomato'</span><span class=p>))</span>
+    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>3</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>'Wheat'</span><span class=p>))</span>
+    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>4</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>'Lavender'</span><span class=p>))</span>
+    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>5</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>'Flesh'</span><span class=p>))</span>
+    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>6</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>'Raspberry'</span><span class=p>))</span>
+    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>7</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>'Salmon'</span><span class=p>))</span>
+    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>8</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>'Mint'</span><span class=p>))</span>
+    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>9</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>'Peacock'</span><span class=p>))</span>
 
     <span class=k>if</span> <span class=n>number_of_regions</span> <span class=o>&gt;</span> <span class=mi>9</span><span class=p>:</span>
 <span class=hll>        <span class=n>rng</span> <span class=o>=</span> <span class=n>vtkMinimalStandardRandomSequence</span><span class=p>(</span><span class=n>seed</span><span class=o>=</span><span class=mi>8775070</span><span class=p>)</span>
@@ -162,7 +162,7 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>input_mapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>(</span><span class=n>scalar_range</span><span class=o>=</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>dicer</span><span class=o>.</span><span class=n>number_of_actual_pieces</span><span class=p>),</span> <span class=n>lookup_table</span><span class=o>=</span><span class=n>lut</span><span class=p>)</span>
 </span>    <span class=n>dicer</span> <span class=o>&gt;&gt;</span> <span class=n>input_mapper</span>
 
-    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;Asked for:  </span><span class=si>{</span><span class=n>dicer</span><span class=o>.</span><span class=n>number_of_pieces</span><span class=si>}</span><span class=s1>  pieces, got: </span><span class=si>{</span><span class=n>dicer</span><span class=o>.</span><span class=n>number_of_actual_pieces</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'Asked for:  </span><span class=si>{</span><span class=n>dicer</span><span class=o>.</span><span class=n>number_of_pieces</span><span class=si>}</span><span class=s1>  pieces, got: </span><span class=si>{</span><span class=n>dicer</span><span class=o>.</span><span class=n>number_of_actual_pieces</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>input_actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>(</span><span class=n>mapper</span><span class=o>=</span><span class=n>input_mapper</span><span class=p>)</span>
 </span>    <span class=n>input_actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>SetInterpolationToFlat</span><span class=p>()</span>
@@ -173,11 +173,11 @@ function registerListener(event, func) {
 </span>    <span class=n>outline</span> <span class=o>&gt;&gt;</span> <span class=n>outline_mapper</span>
 
 <span class=hll>    <span class=n>outline_actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>(</span><span class=n>mapper</span><span class=o>=</span><span class=n>outline_mapper</span><span class=p>)</span>
-</span>    <span class=n>outline_actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Black&#39;</span><span class=p>)</span>
+</span>    <span class=n>outline_actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Black'</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>use_hidden_line_removal</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;SlateGray&#39;</span><span class=p>))</span>
+<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>use_hidden_line_removal</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'SlateGray'</span><span class=p>))</span>
 </span>
-<span class=hll>    <span class=n>render_window</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>window_name</span><span class=o>=</span><span class=s1>&#39;OBBDicer&#39;</span><span class=p>)</span>
+<span class=hll>    <span class=n>render_window</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>window_name</span><span class=o>=</span><span class=s1>'OBBDicer'</span><span class=p>)</span>
 </span>    <span class=n>render_window</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>interactor</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
@@ -199,30 +199,30 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>read_poly_data</span><span class=p>(</span><span class=n>file_name</span><span class=p>):</span>
     <span class=k>if</span> <span class=ow>not</span> <span class=n>file_name</span><span class=p>:</span>
-        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;No file name.&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'No file name.'</span><span class=p>)</span>
         <span class=k>return</span> <span class=kc>None</span>
 
-    <span class=n>valid_suffixes</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;.g&#39;</span><span class=p>,</span> <span class=s1>&#39;.obj&#39;</span><span class=p>,</span> <span class=s1>&#39;.stl&#39;</span><span class=p>,</span> <span class=s1>&#39;.ply&#39;</span><span class=p>,</span> <span class=s1>&#39;.vtk&#39;</span><span class=p>,</span> <span class=s1>&#39;.vtp&#39;</span><span class=p>]</span>
+    <span class=n>valid_suffixes</span> <span class=o>=</span> <span class=p>[</span><span class=s1>'.g'</span><span class=p>,</span> <span class=s1>'.obj'</span><span class=p>,</span> <span class=s1>'.stl'</span><span class=p>,</span> <span class=s1>'.ply'</span><span class=p>,</span> <span class=s1>'.vtk'</span><span class=p>,</span> <span class=s1>'.vtp'</span><span class=p>]</span>
     <span class=n>path</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
     <span class=n>ext</span> <span class=o>=</span> <span class=kc>None</span>
     <span class=k>if</span> <span class=n>path</span><span class=o>.</span><span class=n>suffix</span><span class=p>:</span>
         <span class=n>ext</span> <span class=o>=</span> <span class=n>path</span><span class=o>.</span><span class=n>suffix</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span>
     <span class=k>if</span> <span class=n>path</span><span class=o>.</span><span class=n>suffix</span> <span class=ow>not</span> <span class=ow>in</span> <span class=n>valid_suffixes</span><span class=p>:</span>
-        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;No reader for this file suffix: </span><span class=si>{</span><span class=n>ext</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'No reader for this file suffix: </span><span class=si>{</span><span class=n>ext</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
         <span class=k>return</span> <span class=kc>None</span>
 
     <span class=n>reader</span> <span class=o>=</span> <span class=kc>None</span>
-    <span class=k>if</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>&#39;.ply&#39;</span><span class=p>:</span>
+    <span class=k>if</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>'.ply'</span><span class=p>:</span>
 <span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkPLYReader</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=n>file_name</span><span class=p>)</span>
-</span>    <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>&#39;.vtp&#39;</span><span class=p>:</span>
+</span>    <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>'.vtp'</span><span class=p>:</span>
 <span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkXMLPolyDataReader</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=n>file_name</span><span class=p>)</span>
-</span>    <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>&#39;.obj&#39;</span><span class=p>:</span>
+</span>    <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>'.obj'</span><span class=p>:</span>
 <span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkOBJReader</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=n>file_name</span><span class=p>)</span>
-</span>    <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>&#39;.stl&#39;</span><span class=p>:</span>
+</span>    <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>'.stl'</span><span class=p>:</span>
 <span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkSTLReader</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=n>file_name</span><span class=p>)</span>
-</span>    <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>&#39;.vtk&#39;</span><span class=p>:</span>
+</span>    <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>'.vtk'</span><span class=p>:</span>
 <span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkPolyDataReader</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=n>file_name</span><span class=p>)</span>
-</span>    <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>&#39;.g&#39;</span><span class=p>:</span>
+</span>    <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>'.g'</span><span class=p>:</span>
 <span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkBYUReader</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=n>file_name</span><span class=p>)</span>
 </span>
     <span class=k>if</span> <span class=n>reader</span><span class=p>:</span>
@@ -231,6 +231,6 @@ function registerListener(event, func) {
         <span class=k>return</span> <span class=kc>None</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

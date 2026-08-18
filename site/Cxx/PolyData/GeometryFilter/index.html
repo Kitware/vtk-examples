@@ -71,12 +71,12 @@ function registerListener(event, func) {
 <span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkUnstructuredGrid</span><span class=o>&gt;</span><span class=w> </span><span class=n>MakeUnstructuredGrid</span><span class=p>(</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>T</span><span class=o>&gt;</span><span class=p>);</span>
 </span><span class=p>}</span>
 
-<span class=kt>int</span><span class=w> </span><span class=n>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>argv</span><span class=p>[])</span>
+<span class=kt>int</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>argv</span><span class=p>[])</span>
 <span class=p>{</span>
 <span class=hll><span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>geometryFilter</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkGeometryFilter</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
 </span><span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>argc</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=mi>2</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=c1>// std::cerr &lt;&lt; &quot;Usage: &quot; &lt;&lt; argv[0] &lt;&lt; &quot; Filename(.vtk) e.g. uGridEx.vtk &quot;</span>
+<span class=w>    </span><span class=c1>// std::cerr &lt;&lt; "Usage: " &lt;&lt; argv[0] &lt;&lt; " Filename(.vtk) e.g. uGridEx.vtk "</span>
 <span class=w>    </span><span class=c1>//          &lt;&lt; std::endl;</span>
 <span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=n>unstructuredGrid</span><span class=w> </span><span class=o>=</span>
 <span class=hll><span class=w>        </span><span class=n>MakeUnstructuredGrid</span><span class=p>(</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkVertex</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>());</span>
@@ -87,7 +87,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=c1>// Create the reader for the data.</span>
 <span class=w>    </span><span class=c1>// This is the data that will be rendered.</span>
 <span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>filename</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>];</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Loading &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>filename</span><span class=p>.</span><span class=n>c_str</span><span class=p>()</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Loading "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>filename</span><span class=p>.</span><span class=n>c_str</span><span class=p>()</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkUnstructuredGridReader</span><span class=o>&gt;</span><span class=w> </span><span class=n>reader</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>filename</span><span class=p>.</span><span class=n>c_str</span><span class=p>());</span>
 <span class=w>    </span><span class=n>geometryFilter</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
@@ -97,7 +97,7 @@ function registerListener(event, func) {
 
 <span class=hll><span class=w>  </span><span class=n>vtkPolyData</span><span class=o>*</span><span class=w> </span><span class=n>polydata</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>geometryFilter</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>();</span>
 </span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Output has &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>polydata</span><span class=o>-&gt;</span><span class=n>GetNumberOfPoints</span><span class=p>()</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; points.&quot;</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Output has "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>polydata</span><span class=o>-&gt;</span><span class=n>GetNumberOfPoints</span><span class=p>()</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" points."</span>
 <span class=w>            </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 
 <span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>EXIT_SUCCESS</span><span class=p>;</span>
@@ -134,11 +134,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;GeometryFilter: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"GeometryFilter: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>GeometryFilter</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>GeometryFilter.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>GeometryFilter</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

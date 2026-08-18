@@ -155,7 +155,7 @@ function registerListener(event, func) {
 </span><span class=hll><span class=w>  </span><span class=n>output</span><span class=o>-&gt;</span><span class=n>ShallowCopy</span><span class=p>(</span><span class=k>dynamic_cast</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>*&gt;</span><span class=p>(</span><span class=n>elevationFilter</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()));</span>
 </span>
 <span class=hll><span class=w>  </span><span class=n>vtkFloatArray</span><span class=o>*</span><span class=w> </span><span class=n>elevation</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>dynamic_cast</span><span class=o>&lt;</span><span class=n>vtkFloatArray</span><span class=o>*&gt;</span><span class=p>(</span>
-</span><span class=w>      </span><span class=n>output</span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetArray</span><span class=p>(</span><span class=s>&quot;Elevation&quot;</span><span class=p>));</span>
+</span><span class=w>      </span><span class=n>output</span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetArray</span><span class=p>(</span><span class=s>"Elevation"</span><span class=p>));</span>
 
 <span class=w>  </span><span class=c1>// Create the color map</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkLookupTable</span><span class=o>&gt;</span><span class=w> </span><span class=n>colorLookupTable</span><span class=p>;</span>
@@ -165,23 +165,23 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=c1>// Generate the colors for each point based on the color map</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkUnsignedCharArray</span><span class=o>&gt;</span><span class=w> </span><span class=n>colors</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>SetNumberOfComponents</span><span class=p>(</span><span class=mi>3</span><span class=p>);</span>
-<span class=w>  </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>&quot;Colors&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>"Colors"</span><span class=p>);</span>
 
 <span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=n>vtkIdType</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>output</span><span class=o>-&gt;</span><span class=n>GetNumberOfPoints</span><span class=p>();</span><span class=w> </span><span class=n>i</span><span class=o>++</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=kt>double</span><span class=w> </span><span class=n>val</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>elevation</span><span class=o>-&gt;</span><span class=n>GetValue</span><span class=p>(</span><span class=n>i</span><span class=p>);</span>
-<span class=w>    </span><span class=c1>// std::cout &lt;&lt; &quot;val: &quot; &lt;&lt; val &lt;&lt; std::endl;</span>
+<span class=w>    </span><span class=c1>// std::cout &lt;&lt; "val: " &lt;&lt; val &lt;&lt; std::endl;</span>
 
 <span class=w>    </span><span class=kt>double</span><span class=w> </span><span class=n>dcolor</span><span class=p>[</span><span class=mi>3</span><span class=p>];</span>
 <span class=w>    </span><span class=n>colorLookupTable</span><span class=o>-&gt;</span><span class=n>GetColor</span><span class=p>(</span><span class=n>val</span><span class=p>,</span><span class=w> </span><span class=n>dcolor</span><span class=p>);</span>
-<span class=w>    </span><span class=c1>// std::cout &lt;&lt; &quot;dcolor: &quot; &lt;&lt; dcolor[0] &lt;&lt; &quot; &quot; &lt;&lt; dcolor[1] &lt;&lt; &quot; &quot; &lt;&lt;</span>
+<span class=w>    </span><span class=c1>// std::cout &lt;&lt; "dcolor: " &lt;&lt; dcolor[0] &lt;&lt; " " &lt;&lt; dcolor[1] &lt;&lt; " " &lt;&lt;</span>
 <span class=w>    </span><span class=c1>// dcolor[2] &lt;&lt; std::endl;</span>
 <span class=w>    </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>char</span><span class=w> </span><span class=n>color</span><span class=p>[</span><span class=mi>3</span><span class=p>];</span>
 <span class=w>    </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=kt>unsigned</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>j</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>j</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=mi>3</span><span class=p>;</span><span class=w> </span><span class=n>j</span><span class=o>++</span><span class=p>)</span>
 <span class=w>    </span><span class=p>{</span>
 <span class=w>      </span><span class=n>color</span><span class=p>[</span><span class=n>j</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>255</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=n>dcolor</span><span class=p>[</span><span class=n>j</span><span class=p>]</span><span class=w> </span><span class=o>/</span><span class=w> </span><span class=mf>1.0</span><span class=p>;</span>
 <span class=w>    </span><span class=p>}</span>
-<span class=w>    </span><span class=c1>// std::cout &lt;&lt; &quot;color: &quot; &lt;&lt; (int)color[0] &lt;&lt; &quot; &quot; &lt;&lt; (int)color[1] &lt;&lt; &quot; &quot; &lt;&lt;</span>
+<span class=w>    </span><span class=c1>// std::cout &lt;&lt; "color: " &lt;&lt; (int)color[0] &lt;&lt; " " &lt;&lt; (int)color[1] &lt;&lt; " " &lt;&lt;</span>
 <span class=w>    </span><span class=c1>// (int)color[2] &lt;&lt; std::endl;</span>
 
 <span class=w>    </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>InsertNextTupleValue</span><span class=p>(</span><span class=n>color</span><span class=p>);</span>
@@ -199,13 +199,13 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderer</span><span class=p>;</span>
 </span><span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderWindow</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;ElevationFilter&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"ElevationFilter"</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderWindowInteractor</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>renderWindowInteractor</span><span class=o>-&gt;</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renderWindow</span><span class=p>);</span>
 
 <span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>namedColors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;ForestGreen&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>namedColors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"ForestGreen"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=w>  </span><span class=c1>// z-axis points upwards and y-axis is lower right edge.</span>
 <span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>camera</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>GetActiveCamera</span><span class=p>();</span>
@@ -240,11 +240,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;ElevationFilter: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"ElevationFilter: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>ElevationFilter</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>ElevationFilter.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>ElevationFilter</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

@@ -96,10 +96,10 @@ function registerListener(event, func) {
     <span class=n>filingCabinetColor</span> <span class=o>=</span> <span class=p>[</span><span class=mf>0.8</span><span class=p>,</span> <span class=mf>0.8</span><span class=p>,</span> <span class=mf>0.6</span><span class=p>]</span>
     <span class=n>bookShelfColor</span> <span class=o>=</span> <span class=p>[</span><span class=mf>0.8</span><span class=p>,</span> <span class=mf>0.8</span><span class=p>,</span> <span class=mf>0.6</span><span class=p>]</span>
     <span class=n>windowColor</span> <span class=o>=</span> <span class=p>[</span><span class=mf>0.3</span><span class=p>,</span> <span class=mf>0.3</span><span class=p>,</span> <span class=mf>0.5</span><span class=p>]</span>
-    <span class=n>colors</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=s1>&#39;TableTop&#39;</span><span class=p>,</span> <span class=o>*</span><span class=n>tableTopColor</span><span class=p>)</span>
-    <span class=n>colors</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=s1>&#39;FilingCabinet&#39;</span><span class=p>,</span> <span class=o>*</span><span class=n>filingCabinetColor</span><span class=p>)</span>
-    <span class=n>colors</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=s1>&#39;BookShelf&#39;</span><span class=p>,</span> <span class=o>*</span><span class=n>bookShelfColor</span><span class=p>)</span>
-    <span class=n>colors</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=s1>&#39;WindowColor&#39;</span><span class=p>,</span> <span class=o>*</span><span class=n>windowColor</span><span class=p>)</span>
+    <span class=n>colors</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=s1>'TableTop'</span><span class=p>,</span> <span class=o>*</span><span class=n>tableTopColor</span><span class=p>)</span>
+    <span class=n>colors</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=s1>'FilingCabinet'</span><span class=p>,</span> <span class=o>*</span><span class=n>filingCabinetColor</span><span class=p>)</span>
+    <span class=n>colors</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=s1>'BookShelf'</span><span class=p>,</span> <span class=o>*</span><span class=n>bookShelfColor</span><span class=p>)</span>
+    <span class=n>colors</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=s1>'WindowColor'</span><span class=p>,</span> <span class=o>*</span><span class=n>windowColor</span><span class=p>)</span>
 
     <span class=c1># We read a data file that represents a CFD analysis of airflow in an office</span>
     <span class=c1># (with ventilation and a burning cigarette).</span>
@@ -117,7 +117,7 @@ function registerListener(event, func) {
     <span class=n>mapTable1</span><span class=o>.</span><span class=n>ScalarVisibilityOff</span><span class=p>()</span>
 <span class=hll>    <span class=n>table1Actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>table1Actor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapTable1</span><span class=p>)</span>
-    <span class=n>table1Actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;TableTop&#39;</span><span class=p>))</span>
+    <span class=n>table1Actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'TableTop'</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>table2</span> <span class=o>=</span> <span class=n>vtkStructuredGridGeometryFilter</span><span class=p>()</span>
 </span>    <span class=n>table2</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetStructuredGridOutput</span><span class=p>())</span>
@@ -127,7 +127,7 @@ function registerListener(event, func) {
     <span class=n>mapTable2</span><span class=o>.</span><span class=n>ScalarVisibilityOff</span><span class=p>()</span>
 <span class=hll>    <span class=n>table2Actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>table2Actor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapTable2</span><span class=p>)</span>
-    <span class=n>table2Actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;TableTop&#39;</span><span class=p>))</span>
+    <span class=n>table2Actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'TableTop'</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>FilingCabinet1</span> <span class=o>=</span> <span class=n>vtkStructuredGridGeometryFilter</span><span class=p>()</span>
 </span>    <span class=n>FilingCabinet1</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetStructuredGridOutput</span><span class=p>())</span>
@@ -137,7 +137,7 @@ function registerListener(event, func) {
     <span class=n>mapFilingCabinet1</span><span class=o>.</span><span class=n>ScalarVisibilityOff</span><span class=p>()</span>
 <span class=hll>    <span class=n>FilingCabinet1Actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>FilingCabinet1Actor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapFilingCabinet1</span><span class=p>)</span>
-    <span class=n>FilingCabinet1Actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;FilingCabinet&#39;</span><span class=p>))</span>
+    <span class=n>FilingCabinet1Actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'FilingCabinet'</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>FilingCabinet2</span> <span class=o>=</span> <span class=n>vtkStructuredGridGeometryFilter</span><span class=p>()</span>
 </span>    <span class=n>FilingCabinet2</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetStructuredGridOutput</span><span class=p>())</span>
@@ -147,7 +147,7 @@ function registerListener(event, func) {
     <span class=n>mapFilingCabinet2</span><span class=o>.</span><span class=n>ScalarVisibilityOff</span><span class=p>()</span>
 <span class=hll>    <span class=n>FilingCabinet2Actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>FilingCabinet2Actor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapFilingCabinet2</span><span class=p>)</span>
-    <span class=n>FilingCabinet2Actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;FilingCabinet&#39;</span><span class=p>))</span>
+    <span class=n>FilingCabinet2Actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'FilingCabinet'</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>bookshelf1Top</span> <span class=o>=</span> <span class=n>vtkStructuredGridGeometryFilter</span><span class=p>()</span>
 </span>    <span class=n>bookshelf1Top</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetStructuredGridOutput</span><span class=p>())</span>
@@ -157,7 +157,7 @@ function registerListener(event, func) {
     <span class=n>mapBookshelf1Top</span><span class=o>.</span><span class=n>ScalarVisibilityOff</span><span class=p>()</span>
 <span class=hll>    <span class=n>bookshelf1TopActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>bookshelf1TopActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapBookshelf1Top</span><span class=p>)</span>
-    <span class=n>bookshelf1TopActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;BookShelf&#39;</span><span class=p>))</span>
+    <span class=n>bookshelf1TopActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'BookShelf'</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>bookshelf1Bottom</span> <span class=o>=</span> <span class=n>vtkStructuredGridGeometryFilter</span><span class=p>()</span>
 </span>    <span class=n>bookshelf1Bottom</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetStructuredGridOutput</span><span class=p>())</span>
@@ -167,7 +167,7 @@ function registerListener(event, func) {
     <span class=n>mapBookshelf1Bottom</span><span class=o>.</span><span class=n>ScalarVisibilityOff</span><span class=p>()</span>
 <span class=hll>    <span class=n>bookshelf1BottomActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>bookshelf1BottomActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapBookshelf1Bottom</span><span class=p>)</span>
-    <span class=n>bookshelf1BottomActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;BookShelf&#39;</span><span class=p>))</span>
+    <span class=n>bookshelf1BottomActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'BookShelf'</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>bookshelf1Front</span> <span class=o>=</span> <span class=n>vtkStructuredGridGeometryFilter</span><span class=p>()</span>
 </span>    <span class=n>bookshelf1Front</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetStructuredGridOutput</span><span class=p>())</span>
@@ -177,7 +177,7 @@ function registerListener(event, func) {
     <span class=n>mapBookshelf1Front</span><span class=o>.</span><span class=n>ScalarVisibilityOff</span><span class=p>()</span>
 <span class=hll>    <span class=n>bookshelf1FrontActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>bookshelf1FrontActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapBookshelf1Front</span><span class=p>)</span>
-    <span class=n>bookshelf1FrontActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;BookShelf&#39;</span><span class=p>))</span>
+    <span class=n>bookshelf1FrontActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'BookShelf'</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>bookshelf1Back</span> <span class=o>=</span> <span class=n>vtkStructuredGridGeometryFilter</span><span class=p>()</span>
 </span>    <span class=n>bookshelf1Back</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetStructuredGridOutput</span><span class=p>())</span>
@@ -187,7 +187,7 @@ function registerListener(event, func) {
     <span class=n>mapBookshelf1Back</span><span class=o>.</span><span class=n>ScalarVisibilityOff</span><span class=p>()</span>
 <span class=hll>    <span class=n>bookshelf1BackActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>bookshelf1BackActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapBookshelf1Back</span><span class=p>)</span>
-    <span class=n>bookshelf1BackActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;BookShelf&#39;</span><span class=p>))</span>
+    <span class=n>bookshelf1BackActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'BookShelf'</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>bookshelf1LHS</span> <span class=o>=</span> <span class=n>vtkStructuredGridGeometryFilter</span><span class=p>()</span>
 </span>    <span class=n>bookshelf1LHS</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetStructuredGridOutput</span><span class=p>())</span>
@@ -197,7 +197,7 @@ function registerListener(event, func) {
     <span class=n>mapBookshelf1LHS</span><span class=o>.</span><span class=n>ScalarVisibilityOff</span><span class=p>()</span>
 <span class=hll>    <span class=n>bookshelf1LHSActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>bookshelf1LHSActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapBookshelf1LHS</span><span class=p>)</span>
-    <span class=n>bookshelf1LHSActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;BookShelf&#39;</span><span class=p>))</span>
+    <span class=n>bookshelf1LHSActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'BookShelf'</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>bookshelf1RHS</span> <span class=o>=</span> <span class=n>vtkStructuredGridGeometryFilter</span><span class=p>()</span>
 </span>    <span class=n>bookshelf1RHS</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetStructuredGridOutput</span><span class=p>())</span>
@@ -207,7 +207,7 @@ function registerListener(event, func) {
     <span class=n>mapBookshelf1RHS</span><span class=o>.</span><span class=n>ScalarVisibilityOff</span><span class=p>()</span>
 <span class=hll>    <span class=n>bookshelf1RHSActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>bookshelf1RHSActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapBookshelf1RHS</span><span class=p>)</span>
-    <span class=n>bookshelf1RHSActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;BookShelf&#39;</span><span class=p>))</span>
+    <span class=n>bookshelf1RHSActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'BookShelf'</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>bookshelf2Top</span> <span class=o>=</span> <span class=n>vtkStructuredGridGeometryFilter</span><span class=p>()</span>
 </span>    <span class=n>bookshelf2Top</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetStructuredGridOutput</span><span class=p>())</span>
@@ -217,7 +217,7 @@ function registerListener(event, func) {
     <span class=n>mapBookshelf2Top</span><span class=o>.</span><span class=n>ScalarVisibilityOff</span><span class=p>()</span>
 <span class=hll>    <span class=n>bookshelf2TopActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>bookshelf2TopActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapBookshelf2Top</span><span class=p>)</span>
-    <span class=n>bookshelf2TopActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;BookShelf&#39;</span><span class=p>))</span>
+    <span class=n>bookshelf2TopActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'BookShelf'</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>bookshelf2Bottom</span> <span class=o>=</span> <span class=n>vtkStructuredGridGeometryFilter</span><span class=p>()</span>
 </span>    <span class=n>bookshelf2Bottom</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetStructuredGridOutput</span><span class=p>())</span>
@@ -227,7 +227,7 @@ function registerListener(event, func) {
     <span class=n>mapBookshelf2Bottom</span><span class=o>.</span><span class=n>ScalarVisibilityOff</span><span class=p>()</span>
 <span class=hll>    <span class=n>bookshelf2BottomActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>bookshelf2BottomActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapBookshelf2Bottom</span><span class=p>)</span>
-    <span class=n>bookshelf2BottomActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;BookShelf&#39;</span><span class=p>))</span>
+    <span class=n>bookshelf2BottomActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'BookShelf'</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>bookshelf2Front</span> <span class=o>=</span> <span class=n>vtkStructuredGridGeometryFilter</span><span class=p>()</span>
 </span>    <span class=n>bookshelf2Front</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetStructuredGridOutput</span><span class=p>())</span>
@@ -237,7 +237,7 @@ function registerListener(event, func) {
     <span class=n>mapBookshelf2Front</span><span class=o>.</span><span class=n>ScalarVisibilityOff</span><span class=p>()</span>
 <span class=hll>    <span class=n>bookshelf2FrontActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>bookshelf2FrontActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapBookshelf2Front</span><span class=p>)</span>
-    <span class=n>bookshelf2FrontActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;BookShelf&#39;</span><span class=p>))</span>
+    <span class=n>bookshelf2FrontActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'BookShelf'</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>bookshelf2Back</span> <span class=o>=</span> <span class=n>vtkStructuredGridGeometryFilter</span><span class=p>()</span>
 </span>    <span class=n>bookshelf2Back</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetStructuredGridOutput</span><span class=p>())</span>
@@ -247,7 +247,7 @@ function registerListener(event, func) {
     <span class=n>mapBookshelf2Back</span><span class=o>.</span><span class=n>ScalarVisibilityOff</span><span class=p>()</span>
 <span class=hll>    <span class=n>bookshelf2BackActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>bookshelf2BackActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapBookshelf2Back</span><span class=p>)</span>
-    <span class=n>bookshelf2BackActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;BookShelf&#39;</span><span class=p>))</span>
+    <span class=n>bookshelf2BackActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'BookShelf'</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>bookshelf2LHS</span> <span class=o>=</span> <span class=n>vtkStructuredGridGeometryFilter</span><span class=p>()</span>
 </span>    <span class=n>bookshelf2LHS</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetStructuredGridOutput</span><span class=p>())</span>
@@ -257,7 +257,7 @@ function registerListener(event, func) {
     <span class=n>mapBookshelf2LHS</span><span class=o>.</span><span class=n>ScalarVisibilityOff</span><span class=p>()</span>
 <span class=hll>    <span class=n>bookshelf2LHSActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>bookshelf2LHSActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapBookshelf2LHS</span><span class=p>)</span>
-    <span class=n>bookshelf2LHSActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;BookShelf&#39;</span><span class=p>))</span>
+    <span class=n>bookshelf2LHSActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'BookShelf'</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>bookshelf2RHS</span> <span class=o>=</span> <span class=n>vtkStructuredGridGeometryFilter</span><span class=p>()</span>
 </span>    <span class=n>bookshelf2RHS</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetStructuredGridOutput</span><span class=p>())</span>
@@ -267,7 +267,7 @@ function registerListener(event, func) {
     <span class=n>mapBookshelf2RHS</span><span class=o>.</span><span class=n>ScalarVisibilityOff</span><span class=p>()</span>
 <span class=hll>    <span class=n>bookshelf2RHSActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>bookshelf2RHSActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapBookshelf2RHS</span><span class=p>)</span>
-    <span class=n>bookshelf2RHSActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;BookShelf&#39;</span><span class=p>))</span>
+    <span class=n>bookshelf2RHSActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'BookShelf'</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>window</span> <span class=o>=</span> <span class=n>vtkStructuredGridGeometryFilter</span><span class=p>()</span>
 </span>    <span class=n>window</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetStructuredGridOutput</span><span class=p>())</span>
@@ -277,7 +277,7 @@ function registerListener(event, func) {
     <span class=n>mapWindow</span><span class=o>.</span><span class=n>ScalarVisibilityOff</span><span class=p>()</span>
 <span class=hll>    <span class=n>windowActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>windowActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapWindow</span><span class=p>)</span>
-    <span class=n>windowActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;WindowColor&#39;</span><span class=p>))</span>
+    <span class=n>windowActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'WindowColor'</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>outlet</span> <span class=o>=</span> <span class=n>vtkStructuredGridGeometryFilter</span><span class=p>()</span>
 </span>    <span class=n>outlet</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetStructuredGridOutput</span><span class=p>())</span>
@@ -287,7 +287,7 @@ function registerListener(event, func) {
     <span class=n>mapOutlet</span><span class=o>.</span><span class=n>ScalarVisibilityOff</span><span class=p>()</span>
 <span class=hll>    <span class=n>outletActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>outletActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapOutlet</span><span class=p>)</span>
-    <span class=n>outletActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;lamp_black&#39;</span><span class=p>))</span>
+    <span class=n>outletActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'lamp_black'</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>inlet</span> <span class=o>=</span> <span class=n>vtkStructuredGridGeometryFilter</span><span class=p>()</span>
 </span>    <span class=n>inlet</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetStructuredGridOutput</span><span class=p>())</span>
@@ -297,7 +297,7 @@ function registerListener(event, func) {
     <span class=n>mapInlet</span><span class=o>.</span><span class=n>ScalarVisibilityOff</span><span class=p>()</span>
 <span class=hll>    <span class=n>inletActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>inletActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapInlet</span><span class=p>)</span>
-    <span class=n>inletActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;lamp_black&#39;</span><span class=p>))</span>
+    <span class=n>inletActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'lamp_black'</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>outline</span> <span class=o>=</span> <span class=n>vtkStructuredGridOutlineFilter</span><span class=p>()</span>
 </span>    <span class=n>outline</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetStructuredGridOutput</span><span class=p>())</span>
@@ -305,7 +305,7 @@ function registerListener(event, func) {
 </span>    <span class=n>mapOutline</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>outline</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
 <span class=hll>    <span class=n>outlineActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>outlineActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapOutline</span><span class=p>)</span>
-    <span class=n>outlineActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Black&#39;</span><span class=p>))</span>
+    <span class=n>outlineActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Black'</span><span class=p>))</span>
 
     <span class=c1># Create the source for the streamtubes.</span>
 <span class=hll>    <span class=n>seeds</span> <span class=o>=</span> <span class=n>vtkPointSource</span><span class=p>()</span>
@@ -331,7 +331,7 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>ren</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>()</span>
 </span><span class=hll>    <span class=n>renWin</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>()</span>
 </span>    <span class=n>renWin</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>ren</span><span class=p>)</span>
-    <span class=n>renWin</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;Office&#39;</span><span class=p>)</span>
+    <span class=n>renWin</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>'Office'</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>iren</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renWin</span><span class=p>)</span>
@@ -359,7 +359,7 @@ function registerListener(event, func) {
     <span class=n>ren</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>outlineActor</span><span class=p>)</span>
     <span class=n>ren</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>streamersActor</span><span class=p>)</span>
 
-    <span class=n>ren</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;SlateGray&#39;</span><span class=p>))</span>
+    <span class=n>ren</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'SlateGray'</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>aCamera</span> <span class=o>=</span> <span class=n>vtkCamera</span><span class=p>()</span>
 </span>    <span class=n>aCamera</span><span class=o>.</span><span class=n>SetClippingRange</span><span class=p>(</span><span class=mf>0.726079</span><span class=p>,</span> <span class=mf>36.3039</span><span class=p>)</span>
@@ -379,19 +379,19 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_program_parameters</span><span class=p>():</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>argparse</span>
-<span class=hll>    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;Demonstrate the use of vtkPointSource to generate streamlines.&#39;</span>
-</span>    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;</span>
+<span class=hll>    <span class=n>description</span> <span class=o>=</span> <span class=s1>'Demonstrate the use of vtkPointSource to generate streamlines.'</span>
+</span>    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>'''</span>
 <span class=s1>    center: An optional parameter choosing the center for the seeds.</span>
 <span class=s1>        0 - Corresponds to Fig 9-47(a) in the VTK textbook.</span>
 <span class=s1>        1 - A slight shift to the left.</span>
 <span class=s1>        2 - A slight shift to the upper left (from the original code).</span>
 <span class=s1>        3 - The default, a slight shift to the upper left.</span>
 <span class=s1>            Roughly corresponds to Fig 9-47(b) in the VTK textbook.</span>
-<span class=s1>   &#39;&#39;&#39;</span>
+<span class=s1>   '''</span>
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
                                      <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawDescriptionHelpFormatter</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;fileName&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;office.binary.vtk&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;center&#39;</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mi>3</span><span class=p>,</span> <span class=nb>type</span><span class=o>=</span><span class=nb>int</span><span class=p>,</span> <span class=n>nargs</span><span class=o>=</span><span class=s1>&#39;?&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;seed center.&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'fileName'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'office.binary.vtk'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'center'</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mi>3</span><span class=p>,</span> <span class=nb>type</span><span class=o>=</span><span class=nb>int</span><span class=p>,</span> <span class=n>nargs</span><span class=o>=</span><span class=s1>'?'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'seed center.'</span><span class=p>)</span>
     <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
     <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>fileName</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>center</span>
 
@@ -401,6 +401,6 @@ function registerListener(event, func) {
     <span class=n>office</span><span class=p>(</span><span class=n>fileName</span><span class=p>,</span> <span class=n>center</span><span class=p>)</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

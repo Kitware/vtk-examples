@@ -95,7 +95,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>vtkNativeLibrary</span><span class=p>.</span><span class=na>LoadAllNativeLibraries</span><span class=p>())</span><span class=w> </span><span class=p>{</span>
 <span class=w>      </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=n>vtkNativeLibrary</span><span class=w> </span><span class=n>lib</span><span class=w> </span><span class=p>:</span><span class=w> </span><span class=n>vtkNativeLibrary</span><span class=p>.</span><span class=na>values</span><span class=p>())</span><span class=w> </span><span class=p>{</span>
 <span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>lib</span><span class=p>.</span><span class=na>IsLoaded</span><span class=p>())</span><span class=w> </span><span class=p>{</span>
-<span class=w>          </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&quot; not loaded&quot;</span><span class=p>);</span>
+<span class=w>          </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>" not loaded"</span><span class=p>);</span>
 <span class=w>        </span><span class=p>}</span>
 <span class=w>      </span><span class=p>}</span>
 <span class=w>    </span><span class=p>}</span>
@@ -152,7 +152,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=n>pd</span><span class=p>.</span><span class=na>Modified</span><span class=p>();</span>
 <span class=w>    </span><span class=c1>// Uncomment the following to get a log of time in milliseconds </span>
 <span class=w>    </span><span class=c1>// for each rendered frame. </span>
-<span class=w>    </span><span class=c1>//  System.out.println(&quot;Render:&quot; + System.currentTimeMillis());</span>
+<span class=w>    </span><span class=c1>//  System.out.println("Render:" + System.currentTimeMillis());</span>
 <span class=w>  </span><span class=p>}</span>
 
 <span class=w>  </span><span class=cm>/*</span>
@@ -164,13 +164,13 @@ function registerListener(event, func) {
 </span>
 <span class=w>    </span><span class=kt>double</span><span class=w> </span><span class=n>bkg</span><span class=o>[]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=kt>double</span><span class=o>[]</span><span class=p>{</span><span class=mf>0.1</span><span class=p>,</span><span class=w> </span><span class=mf>0.2</span><span class=p>,</span><span class=w> </span><span class=mf>0.4</span><span class=p>,</span><span class=w> </span><span class=mf>1.0</span><span class=p>};</span>
 <span class=w>    </span><span class=kt>double</span><span class=w> </span><span class=n>actorColor</span><span class=o>[]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=kt>double</span><span class=o>[</span><span class=mi>4</span><span class=o>]</span><span class=p>;</span>
-<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>&quot;White&quot;</span><span class=p>,</span><span class=w> </span><span class=n>actorColor</span><span class=p>);</span>
+<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>"White"</span><span class=p>,</span><span class=w> </span><span class=n>actorColor</span><span class=p>);</span>
 
 <span class=w>    </span><span class=c1>// This example illustrates animation via the startrender callback/</span>
 <span class=w>    </span><span class=c1>//</span>
 <span class=hll><span class=w>    </span><span class=n>Transform</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkTransform</span><span class=p>();</span>
 </span><span class=hll><span class=w>    </span><span class=c1>// Next we create an instance of vtkConeSource and set some of its</span>
-</span><span class=hll><span class=w>    </span><span class=c1>// properties. The instance of vtkConeSource &quot;cone&quot; is part of a</span>
+</span><span class=hll><span class=w>    </span><span class=c1>// properties. The instance of vtkConeSource "cone" is part of a</span>
 </span><span class=w>    </span><span class=c1>// visualization pipeline (it is a source process object); it produces</span>
 <span class=hll><span class=w>    </span><span class=c1>// data (output type is vtkPolyData) which other filters may process.</span>
 </span><span class=hll><span class=w>    </span><span class=n>vtkConeSource</span><span class=w> </span><span class=n>cone</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkConeSource</span><span class=p>();</span>
@@ -192,11 +192,11 @@ function registerListener(event, func) {
 
 <span class=w>    </span><span class=c1>// Create an actor to represent the cone. The actor orchestrates</span>
 <span class=w>    </span><span class=c1>// rendering of</span>
-<span class=w>    </span><span class=c1>// the mapper&#39;s graphics primitives. An actor also refers to properties</span>
+<span class=w>    </span><span class=c1>// the mapper's graphics primitives. An actor also refers to properties</span>
 <span class=w>    </span><span class=c1>// via a</span>
 <span class=hll><span class=w>    </span><span class=c1>// vtkProperty instance, and includes an internal transformation matrix.</span>
 </span><span class=w>    </span><span class=c1>// We</span>
-<span class=w>    </span><span class=c1>// set this actor&#39;s mapper to be coneMapper which we created above.</span>
+<span class=w>    </span><span class=c1>// set this actor's mapper to be coneMapper which we created above.</span>
 <span class=hll><span class=w>    </span><span class=n>vtkActor</span><span class=w> </span><span class=n>coneActor</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkActor</span><span class=p>();</span>
 </span><span class=w>    </span><span class=n>coneActor</span><span class=p>.</span><span class=na>SetMapper</span><span class=p>(</span><span class=n>coneMapper</span><span class=p>);</span>
 <span class=w>    </span><span class=n>coneActor</span><span class=p>.</span><span class=na>GetProperty</span><span class=p>().</span><span class=na>SetColor</span><span class=p>(</span><span class=n>actorColor</span><span class=p>);</span>
@@ -239,7 +239,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=c1>// Now for every window render we call our callback function to update</span>
 <span class=w>    </span><span class=c1>// the model</span>
 <span class=w>    </span><span class=c1>// resulting in another render.</span>
-<span class=w>    </span><span class=n>ren1</span><span class=p>.</span><span class=na>AddObserver</span><span class=p>(</span><span class=s>&quot;StartEvent&quot;</span><span class=p>,</span><span class=w> </span><span class=k>this</span><span class=p>,</span><span class=w> </span><span class=s>&quot;StartRender&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>ren1</span><span class=p>.</span><span class=na>AddObserver</span><span class=p>(</span><span class=s>"StartEvent"</span><span class=p>,</span><span class=w> </span><span class=k>this</span><span class=p>,</span><span class=w> </span><span class=s>"StartRender"</span><span class=p>);</span>
 <span class=w>    </span><span class=n>iren</span><span class=p>.</span><span class=na>CreateRepeatingTimer</span><span class=p>(</span><span class=mi>50</span><span class=p>);</span>
 <span class=w>    </span><span class=n>iren</span><span class=p>.</span><span class=na>Start</span><span class=p>();</span>
 <span class=w>  </span><span class=p>}</span>

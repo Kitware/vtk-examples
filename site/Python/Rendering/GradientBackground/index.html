@@ -107,13 +107,13 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_program_parameters</span><span class=p>(</span><span class=n>argv</span><span class=p>):</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>argparse</span>
-    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;Demonstrates the background shading options.&#39;</span>
-    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;</span>
-<span class=s1>    &#39;&#39;&#39;</span>
+    <span class=n>description</span> <span class=o>=</span> <span class=s1>'Demonstrates the background shading options.'</span>
+    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>'''</span>
+<span class=s1>    '''</span>
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
                                      <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawDescriptionHelpFormatter</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-f&#39;</span><span class=p>,</span> <span class=s1>&#39;--file_name&#39;</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span>
-                        <span class=n>help</span><span class=o>=</span><span class=s1>&#39;An optional file name, e.g. star-wars-vader-tie-fighter.obj.&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-f'</span><span class=p>,</span> <span class=s1>'--file_name'</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span>
+                        <span class=n>help</span><span class=o>=</span><span class=s1>'An optional file name, e.g. star-wars-vader-tie-fighter.obj.'</span><span class=p>)</span>
     <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
     <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>file_name</span>
 
@@ -122,7 +122,7 @@ function registerListener(event, func) {
     <span class=k>if</span> <span class=n>fn</span><span class=p>:</span>
         <span class=n>fp</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>fn</span><span class=p>)</span>
         <span class=k>if</span> <span class=ow>not</span> <span class=n>fp</span><span class=o>.</span><span class=n>is_file</span><span class=p>():</span>
-            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;The path: </span><span class=si>{</span><span class=n>fp</span><span class=si>}</span><span class=s1> does not exist.&#39;</span><span class=p>)</span>
+            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'The path: </span><span class=si>{</span><span class=n>fp</span><span class=si>}</span><span class=s1> does not exist.'</span><span class=p>)</span>
             <span class=k>return</span>
     <span class=k>else</span><span class=p>:</span>
         <span class=n>fp</span> <span class=o>=</span> <span class=kc>None</span>
@@ -130,7 +130,7 @@ function registerListener(event, func) {
     <span class=n>pd</span> <span class=o>=</span> <span class=n>read_polydata_</span><span class=p>(</span><span class=n>fp</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>ren_win</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>()</span>
-</span>    <span class=n>ren_win</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;GradientBackground&#39;</span><span class=p>)</span>
+</span>    <span class=n>ren_win</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>'GradientBackground'</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>renderers</span> <span class=o>=</span> <span class=p>[]</span>
@@ -150,7 +150,7 @@ function registerListener(event, func) {
 
 <span class=hll>    <span class=n>actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>actor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>)</span>
-    <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Honeydew&#39;</span><span class=p>))</span>
+    <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Honeydew'</span><span class=p>))</span>
     <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetSpecular</span><span class=p>(</span><span class=mf>0.3</span><span class=p>)</span>
     <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetSpecularPower</span><span class=p>(</span><span class=mf>60.0</span><span class=p>)</span>
 
@@ -165,25 +165,25 @@ function registerListener(event, func) {
 
     <span class=c1># Here we select and name the colors.</span>
     <span class=c1># Feel free to change colors.</span>
-    <span class=n>bottom_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Gold&#39;</span><span class=p>)</span>
-    <span class=n>top_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;OrangeRed&#39;</span><span class=p>)</span>
-    <span class=n>left_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Gold&#39;</span><span class=p>)</span>
-    <span class=n>right_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;OrangeRed&#39;</span><span class=p>)</span>
-    <span class=n>center_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Gold&#39;</span><span class=p>)</span>
-    <span class=n>side_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;OrangeRed&#39;</span><span class=p>)</span>
-    <span class=n>corner_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;OrangeRed&#39;</span><span class=p>)</span>
+    <span class=n>bottom_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Gold'</span><span class=p>)</span>
+    <span class=n>top_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'OrangeRed'</span><span class=p>)</span>
+    <span class=n>left_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Gold'</span><span class=p>)</span>
+    <span class=n>right_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'OrangeRed'</span><span class=p>)</span>
+    <span class=n>center_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Gold'</span><span class=p>)</span>
+    <span class=n>side_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'OrangeRed'</span><span class=p>)</span>
+    <span class=n>corner_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'OrangeRed'</span><span class=p>)</span>
 
-    <span class=n>viewport_title</span> <span class=o>=</span> <span class=p>[</span><span class=s2>&quot;Vertical&quot;</span><span class=p>,</span>
-                      <span class=s2>&quot;Horizontal&quot;</span><span class=p>,</span>
-                      <span class=s2>&quot;Radial Farthest Side&quot;</span><span class=p>,</span>
-                      <span class=s2>&quot;Radial Farthest Corner&quot;</span><span class=p>,</span>
+    <span class=n>viewport_title</span> <span class=o>=</span> <span class=p>[</span><span class=s2>"Vertical"</span><span class=p>,</span>
+                      <span class=s2>"Horizontal"</span><span class=p>,</span>
+                      <span class=s2>"Radial Farthest Side"</span><span class=p>,</span>
+                      <span class=s2>"Radial Farthest Corner"</span><span class=p>,</span>
                       <span class=p>]</span>
 
     <span class=c1># Create one text property for all.</span>
 <span class=hll>    <span class=n>text_property</span> <span class=o>=</span> <span class=n>vtkTextProperty</span><span class=p>()</span>
 </span>    <span class=n>text_property</span><span class=o>.</span><span class=n>SetJustificationToCentered</span><span class=p>()</span>
     <span class=n>text_property</span><span class=o>.</span><span class=n>SetFontSize</span><span class=p>(</span><span class=n>ren_height</span> <span class=o>//</span> <span class=mi>12</span><span class=p>)</span>
-    <span class=n>text_property</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;MidnightBlue&#39;</span><span class=p>))</span>
+    <span class=n>text_property</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'MidnightBlue'</span><span class=p>))</span>
 
     <span class=n>text_mappers</span> <span class=o>=</span> <span class=p>[]</span>
     <span class=n>text_actors</span> <span class=o>=</span> <span class=p>[]</span>
@@ -193,7 +193,7 @@ function registerListener(event, func) {
     <span class=n>lbr</span> <span class=o>=</span> <span class=p>[</span><span class=kc>False</span><span class=p>,</span> <span class=kc>True</span><span class=p>,</span> <span class=kc>True</span><span class=p>,</span> <span class=kc>True</span><span class=p>]</span>
     <span class=n>tlb</span> <span class=o>=</span> <span class=p>[</span><span class=kc>True</span><span class=p>,</span> <span class=kc>True</span><span class=p>,</span> <span class=kc>True</span><span class=p>,</span> <span class=kc>False</span><span class=p>]</span>
     <span class=n>tlbr</span> <span class=o>=</span> <span class=p>[</span><span class=kc>True</span><span class=p>,</span> <span class=kc>True</span><span class=p>,</span> <span class=kc>True</span><span class=p>,</span> <span class=kc>True</span><span class=p>]</span>
-    <span class=n>border_color</span> <span class=o>=</span> <span class=s1>&#39;DarkGreen&#39;</span>
+    <span class=n>border_color</span> <span class=o>=</span> <span class=s1>'DarkGreen'</span>
     <span class=n>border_width</span> <span class=o>=</span> <span class=mf>4.0</span>
 
     <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>4</span><span class=p>):</span>
@@ -249,7 +249,7 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>read_polydata_</span><span class=p>(</span><span class=n>path</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=hll><span class=sd>    Read from a file containing vtkPolyData.</span>
 </span>
 <span class=sd>    If the path is empty a cone is returned.</span>
@@ -257,7 +257,7 @@ function registerListener(event, func) {
 
 <span class=sd>    :param path: The path to the file.</span>
 <span class=hll><span class=sd>    :return: The vtkPolyData.</span>
-</span><span class=sd>    &quot;&quot;&quot;</span>
+</span><span class=sd>    """</span>
 
 <span class=hll>    <span class=n>poly_data</span> <span class=o>=</span> <span class=n>vtkPolyData</span><span class=p>()</span>
 </span>
@@ -271,42 +271,42 @@ function registerListener(event, func) {
         <span class=n>poly_data</span><span class=o>.</span><span class=n>DeepCopy</span><span class=p>(</span><span class=n>source</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>())</span>
         <span class=k>return</span> <span class=n>poly_data</span>
 
-    <span class=n>valid_suffixes</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;.g&#39;</span><span class=p>,</span> <span class=s1>&#39;.obj&#39;</span><span class=p>,</span> <span class=s1>&#39;.stl&#39;</span><span class=p>,</span> <span class=s1>&#39;.ply&#39;</span><span class=p>,</span> <span class=s1>&#39;.vtk&#39;</span><span class=p>,</span> <span class=s1>&#39;.vtp&#39;</span><span class=p>]</span>
+    <span class=n>valid_suffixes</span> <span class=o>=</span> <span class=p>[</span><span class=s1>'.g'</span><span class=p>,</span> <span class=s1>'.obj'</span><span class=p>,</span> <span class=s1>'.stl'</span><span class=p>,</span> <span class=s1>'.ply'</span><span class=p>,</span> <span class=s1>'.vtk'</span><span class=p>,</span> <span class=s1>'.vtp'</span><span class=p>]</span>
     <span class=n>ext</span> <span class=o>=</span> <span class=n>path</span><span class=o>.</span><span class=n>suffix</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span>
     <span class=k>if</span> <span class=n>path</span><span class=o>.</span><span class=n>suffix</span> <span class=ow>not</span> <span class=ow>in</span> <span class=n>valid_suffixes</span><span class=p>:</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Warning:&#39;</span><span class=p>,</span> <span class=n>path</span><span class=p>,</span> <span class=s1>&#39;unknown extension, using a sphere instead.&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'Warning:'</span><span class=p>,</span> <span class=n>path</span><span class=p>,</span> <span class=s1>'unknown extension, using a sphere instead.'</span><span class=p>)</span>
 <span class=hll>        <span class=n>source</span> <span class=o>=</span> <span class=n>vtkSphereSource</span><span class=p>()</span>
 </span>        <span class=n>source</span><span class=o>.</span><span class=n>SetPhiResolution</span><span class=p>(</span><span class=mi>50</span><span class=p>)</span>
         <span class=n>source</span><span class=o>.</span><span class=n>SetThetaResolution</span><span class=p>(</span><span class=mi>50</span><span class=p>)</span>
         <span class=n>source</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
         <span class=n>poly_data</span><span class=o>.</span><span class=n>DeepCopy</span><span class=p>(</span><span class=n>source</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>())</span>
     <span class=k>else</span><span class=p>:</span>
-        <span class=k>if</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>&#39;.ply&#39;</span><span class=p>:</span>
+        <span class=k>if</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>'.ply'</span><span class=p>:</span>
 <span class=hll>            <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkPLYReader</span><span class=p>()</span>
 </span>            <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
             <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
             <span class=n>poly_data</span><span class=o>.</span><span class=n>DeepCopy</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>())</span>
-        <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>&#39;.vtp&#39;</span><span class=p>:</span>
+        <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>'.vtp'</span><span class=p>:</span>
 <span class=hll>            <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkXMLPolyDataReader</span><span class=p>()</span>
 </span>            <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
             <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
             <span class=n>poly_data</span><span class=o>.</span><span class=n>DeepCopy</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>())</span>
-        <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>&#39;.obj&#39;</span><span class=p>:</span>
+        <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>'.obj'</span><span class=p>:</span>
 <span class=hll>            <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkOBJReader</span><span class=p>()</span>
 </span>            <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
             <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
             <span class=n>poly_data</span><span class=o>.</span><span class=n>DeepCopy</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>())</span>
-        <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>&#39;.stl&#39;</span><span class=p>:</span>
+        <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>'.stl'</span><span class=p>:</span>
 <span class=hll>            <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkSTLReader</span><span class=p>()</span>
 </span>            <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
             <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
             <span class=n>poly_data</span><span class=o>.</span><span class=n>DeepCopy</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>())</span>
-        <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>&#39;.vtk&#39;</span><span class=p>:</span>
+        <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>'.vtk'</span><span class=p>:</span>
 <span class=hll>            <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkPolyDataReader</span><span class=p>()</span>
 </span>            <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
             <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
             <span class=n>poly_data</span><span class=o>.</span><span class=n>DeepCopy</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>())</span>
-        <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>&#39;.g&#39;</span><span class=p>:</span>
+        <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>'.g'</span><span class=p>:</span>
 <span class=hll>            <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkBYUReader</span><span class=p>()</span>
 </span>            <span class=n>reader</span><span class=o>.</span><span class=n>SetGeometryFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
             <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
@@ -316,7 +316,7 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>viewport_border</span><span class=p>(</span><span class=n>renderer</span><span class=p>,</span> <span class=n>sides</span><span class=p>,</span> <span class=n>border_color</span><span class=p>,</span> <span class=n>border_width</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Set a border around a viewport.</span>
 
 <span class=sd>    :param renderer: The renderer corresponding to the viewport.</span>
@@ -324,7 +324,7 @@ function registerListener(event, func) {
 <span class=sd>    :param border_color: The color of the border.</span>
 <span class=sd>    :param border_width: The width of the border.</span>
 <span class=sd>    :return:</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
     <span class=c1># Points start at upper right and proceed anti-clockwise.</span>
@@ -392,7 +392,7 @@ function registerListener(event, func) {
     <span class=n>renderer</span><span class=o>.</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>actor</span><span class=p>)</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>sys</span>
 
     <span class=n>file_name</span> <span class=o>=</span> <span class=n>get_program_parameters</span><span class=p>(</span><span class=n>sys</span><span class=o>.</span><span class=n>argv</span><span class=p>)</span>

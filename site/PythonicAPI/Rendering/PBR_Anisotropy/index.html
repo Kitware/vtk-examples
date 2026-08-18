@@ -89,15 +89,15 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_program_parameters</span><span class=p>():</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>argparse</span>
-    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;Render spheres with different anisotropy values.&#39;</span>
-    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;</span>
-<span class=s1>    &#39;&#39;&#39;</span>
+    <span class=n>description</span> <span class=o>=</span> <span class=s1>'Render spheres with different anisotropy values.'</span>
+    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>'''</span>
+<span class=s1>    '''</span>
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
                                      <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawDescriptionHelpFormatter</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;file_name&#39;</span><span class=p>,</span>
-                        <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The path to the JSON file e.g. PBR_Parameters.json.&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-e&#39;</span><span class=p>,</span> <span class=s1>&#39;--use_equirectangular&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_true&#39;</span><span class=p>,</span>
-                        <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Use the equirectangular entry in the json file.&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'file_name'</span><span class=p>,</span>
+                        <span class=n>help</span><span class=o>=</span><span class=s1>'The path to the JSON file e.g. PBR_Parameters.json.'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-e'</span><span class=p>,</span> <span class=s1>'--use_equirectangular'</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>'store_true'</span><span class=p>,</span>
+                        <span class=n>help</span><span class=o>=</span><span class=s1>'Use the equirectangular entry in the json file.'</span><span class=p>)</span>
     <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
     <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>file_name</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>use_equirectangular</span>
 
@@ -107,21 +107,21 @@ function registerListener(event, func) {
     <span class=n>use_cubemap</span> <span class=o>=</span> <span class=ow>not</span> <span class=n>use_cubemap</span>
     <span class=n>fn_path</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>fn</span><span class=p>)</span>
     <span class=k>if</span> <span class=ow>not</span> <span class=n>fn_path</span><span class=o>.</span><span class=n>suffix</span><span class=p>:</span>
-        <span class=n>fn_path</span> <span class=o>=</span> <span class=n>fn_path</span><span class=o>.</span><span class=n>with_suffix</span><span class=p>(</span><span class=s2>&quot;.json&quot;</span><span class=p>)</span>
+        <span class=n>fn_path</span> <span class=o>=</span> <span class=n>fn_path</span><span class=o>.</span><span class=n>with_suffix</span><span class=p>(</span><span class=s2>".json"</span><span class=p>)</span>
     <span class=k>if</span> <span class=ow>not</span> <span class=n>fn_path</span><span class=o>.</span><span class=n>is_file</span><span class=p>():</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Unable to find: &#39;</span><span class=p>,</span> <span class=n>fn_path</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'Unable to find: '</span><span class=p>,</span> <span class=n>fn_path</span><span class=p>)</span>
     <span class=n>paths_ok</span><span class=p>,</span> <span class=n>parameters</span> <span class=o>=</span> <span class=n>get_parameters</span><span class=p>(</span><span class=n>fn_path</span><span class=p>)</span>
     <span class=k>if</span> <span class=ow>not</span> <span class=n>paths_ok</span><span class=p>:</span>
         <span class=k>return</span>
     <span class=n>res</span> <span class=o>=</span> <span class=n>display_parameters</span><span class=p>(</span><span class=n>parameters</span><span class=p>)</span>
-    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;</span><span class=se>\n</span><span class=s1>&#39;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>res</span><span class=p>))</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s1>'</span><span class=se>\n</span><span class=s1>'</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>res</span><span class=p>))</span>
     <span class=nb>print</span><span class=p>()</span>
 
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
-</span>    <span class=n>colors</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=s1>&#39;Brass&#39;</span><span class=p>,</span> <span class=mi>184</span><span class=p>,</span> <span class=mi>115</span><span class=p>,</span> <span class=mi>51</span><span class=p>,</span> <span class=mi>255</span><span class=p>)</span>
+</span>    <span class=n>colors</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=s1>'Brass'</span><span class=p>,</span> <span class=mi>184</span><span class=p>,</span> <span class=mi>115</span><span class=p>,</span> <span class=mi>51</span><span class=p>,</span> <span class=mi>255</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>ren</span> <span class=o>=</span> <span class=n>vtkOpenGLRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Black&#39;</span><span class=p>))</span>
-</span><span class=hll>    <span class=n>ren_win</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>size</span><span class=o>=</span><span class=p>(</span><span class=mi>600</span><span class=p>,</span> <span class=mi>600</span><span class=p>),</span> <span class=n>window_name</span><span class=o>=</span><span class=s1>&#39;PBR_Anisotropy&#39;</span><span class=p>)</span>
+<span class=hll>    <span class=n>ren</span> <span class=o>=</span> <span class=n>vtkOpenGLRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Black'</span><span class=p>))</span>
+</span><span class=hll>    <span class=n>ren_win</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>size</span><span class=o>=</span><span class=p>(</span><span class=mi>600</span><span class=p>,</span> <span class=mi>600</span><span class=p>),</span> <span class=n>window_name</span><span class=o>=</span><span class=s1>'PBR_Anisotropy'</span><span class=p>)</span>
 </span>    <span class=n>ren_win</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>ren</span><span class=p>)</span>
 <span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>iren</span><span class=o>.</span><span class=n>render_window</span> <span class=o>=</span> <span class=n>ren_win</span>
@@ -138,28 +138,28 @@ function registerListener(event, func) {
     <span class=n>has_skybox</span> <span class=o>=</span> <span class=kc>False</span>
     <span class=n>gamma_correct</span> <span class=o>=</span> <span class=kc>False</span>
 
-    <span class=k>if</span> <span class=n>use_cubemap</span> <span class=ow>and</span> <span class=s1>&#39;cubemap&#39;</span> <span class=ow>in</span> <span class=n>parameters</span><span class=o>.</span><span class=n>keys</span><span class=p>():</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Using the cubemap files to generate the environment texture.&#39;</span><span class=p>)</span>
-        <span class=n>env_texture</span> <span class=o>=</span> <span class=n>read_cubemap</span><span class=p>(</span><span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;cubemap&#39;</span><span class=p>])</span>
-        <span class=k>if</span> <span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;skybox&#39;</span><span class=p>]:</span>
+    <span class=k>if</span> <span class=n>use_cubemap</span> <span class=ow>and</span> <span class=s1>'cubemap'</span> <span class=ow>in</span> <span class=n>parameters</span><span class=o>.</span><span class=n>keys</span><span class=p>():</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'Using the cubemap files to generate the environment texture.'</span><span class=p>)</span>
+        <span class=n>env_texture</span> <span class=o>=</span> <span class=n>read_cubemap</span><span class=p>(</span><span class=n>parameters</span><span class=p>[</span><span class=s1>'cubemap'</span><span class=p>])</span>
+        <span class=k>if</span> <span class=n>parameters</span><span class=p>[</span><span class=s1>'skybox'</span><span class=p>]:</span>
             <span class=n>skybox</span><span class=o>.</span><span class=n>texture</span> <span class=o>=</span> <span class=n>env_texture</span>
             <span class=n>has_skybox</span> <span class=o>=</span> <span class=kc>True</span>
-    <span class=k>elif</span> <span class=s1>&#39;equirectangular&#39;</span> <span class=ow>in</span> <span class=n>parameters</span><span class=o>.</span><span class=n>keys</span><span class=p>():</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Using the equirectangular file to generate the environment texture.&#39;</span><span class=p>)</span>
-        <span class=n>env_texture</span> <span class=o>=</span> <span class=n>read_equirectangular_file</span><span class=p>(</span><span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;equirectangular&#39;</span><span class=p>])</span>
-        <span class=k>if</span> <span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;equirectangular&#39;</span><span class=p>]</span><span class=o>.</span><span class=n>suffix</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span> <span class=ow>in</span> <span class=s1>&#39;.hdr .pic&#39;</span><span class=p>:</span>
+    <span class=k>elif</span> <span class=s1>'equirectangular'</span> <span class=ow>in</span> <span class=n>parameters</span><span class=o>.</span><span class=n>keys</span><span class=p>():</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'Using the equirectangular file to generate the environment texture.'</span><span class=p>)</span>
+        <span class=n>env_texture</span> <span class=o>=</span> <span class=n>read_equirectangular_file</span><span class=p>(</span><span class=n>parameters</span><span class=p>[</span><span class=s1>'equirectangular'</span><span class=p>])</span>
+        <span class=k>if</span> <span class=n>parameters</span><span class=p>[</span><span class=s1>'equirectangular'</span><span class=p>]</span><span class=o>.</span><span class=n>suffix</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span> <span class=ow>in</span> <span class=s1>'.hdr .pic'</span><span class=p>:</span>
             <span class=n>gamma_correct</span> <span class=o>=</span> <span class=kc>True</span>
             <span class=n>is_hdr</span> <span class=o>=</span> <span class=kc>True</span>
-        <span class=k>if</span> <span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;skybox&#39;</span><span class=p>]:</span>
+        <span class=k>if</span> <span class=n>parameters</span><span class=p>[</span><span class=s1>'skybox'</span><span class=p>]:</span>
             <span class=c1># Generate a skybox.</span>
             <span class=n>skybox</span><span class=o>.</span><span class=n>floor_right</span> <span class=o>=</span> <span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
 <span class=hll>            <span class=n>skybox</span><span class=o>.</span><span class=n>projection</span> <span class=o>=</span> <span class=n>vtkSkybox</span><span class=o>.</span><span class=n>Sphere</span>
 </span>            <span class=n>skybox</span><span class=o>.</span><span class=n>texture</span> <span class=o>=</span> <span class=n>env_texture</span>
             <span class=n>has_skybox</span> <span class=o>=</span> <span class=kc>True</span>
     <span class=k>else</span><span class=p>:</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;An environment texture is required,</span><span class=se>\n</span><span class=s1>&#39;</span>
-              <span class=s1>&#39;please add the necessary equirectangular&#39;</span>
-              <span class=s1>&#39; or cubemap file paths to the json file.&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'An environment texture is required,</span><span class=se>\n</span><span class=s1>'</span>
+              <span class=s1>'please add the necessary equirectangular'</span>
+              <span class=s1>' or cubemap file paths to the json file.'</span><span class=p>)</span>
         <span class=k>return</span>
 
     <span class=c1># Turn off the default lighting and use image based lighting.</span>
@@ -189,7 +189,7 @@ function registerListener(event, func) {
 </span>        <span class=n>actor_sphere</span><span class=o>.</span><span class=n>RotateX</span><span class=p>(</span><span class=mi>20</span><span class=p>)</span>
         <span class=n>actor_sphere</span><span class=o>.</span><span class=n>RotateY</span><span class=p>(</span><span class=mi>20</span><span class=p>)</span>
         <span class=n>actor_sphere</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>interpolation</span> <span class=o>=</span> <span class=n>Property</span><span class=o>.</span><span class=n>Interpolation</span><span class=o>.</span><span class=n>VTK_PBR</span>
-        <span class=n>actor_sphere</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;White&#39;</span><span class=p>)</span>
+        <span class=n>actor_sphere</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'White'</span><span class=p>)</span>
         <span class=n>actor_sphere</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>metallic</span> <span class=o>=</span> <span class=mf>1.0</span>
         <span class=n>actor_sphere</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>roughness</span> <span class=o>=</span> <span class=n>i</span> <span class=o>/</span> <span class=mf>5.0</span>
         <span class=n>ren</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor_sphere</span><span class=p>)</span>
@@ -201,7 +201,7 @@ function registerListener(event, func) {
         <span class=n>actor_sphere</span><span class=o>.</span><span class=n>RotateY</span><span class=p>(</span><span class=mi>20</span><span class=p>)</span>
         <span class=n>actor_sphere</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>)</span>
         <span class=n>actor_sphere</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>interpolation</span> <span class=o>=</span> <span class=n>Property</span><span class=o>.</span><span class=n>Interpolation</span><span class=o>.</span><span class=n>VTK_PBR</span>
-        <span class=n>actor_sphere</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;White&#39;</span><span class=p>)</span>
+        <span class=n>actor_sphere</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'White'</span><span class=p>)</span>
         <span class=n>actor_sphere</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>metallic</span> <span class=o>=</span> <span class=mf>1.0</span>
         <span class=n>actor_sphere</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>roughness</span> <span class=o>=</span> <span class=mf>0.1</span>
         <span class=n>actor_sphere</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>anisotropy</span> <span class=o>=</span> <span class=n>i</span> <span class=o>/</span> <span class=mf>5.0</span>
@@ -214,7 +214,7 @@ function registerListener(event, func) {
         <span class=n>actor_sphere</span><span class=o>.</span><span class=n>RotateY</span><span class=p>(</span><span class=mi>20</span><span class=p>)</span>
         <span class=n>actor_sphere</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>)</span>
         <span class=n>actor_sphere</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>interpolation</span> <span class=o>=</span> <span class=n>Property</span><span class=o>.</span><span class=n>Interpolation</span><span class=o>.</span><span class=n>VTK_PBR</span>
-        <span class=n>actor_sphere</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;White&#39;</span><span class=p>)</span>
+        <span class=n>actor_sphere</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'White'</span><span class=p>)</span>
         <span class=n>actor_sphere</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>metallic</span> <span class=o>=</span> <span class=mf>1.0</span>
         <span class=n>actor_sphere</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>roughness</span> <span class=o>=</span> <span class=mf>0.1</span>
         <span class=n>actor_sphere</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>anisotropy</span> <span class=o>=</span> <span class=mf>1.0</span>
@@ -233,85 +233,85 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_parameters</span><span class=p>(</span><span class=n>fn_path</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Read the parameters from a JSON file and check that the file paths exist.</span>
 
 <span class=sd>    :param fn_path: The path to the JSON file.</span>
 <span class=sd>    :return: True if the paths correspond to files and the parameters.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=k>with</span> <span class=nb>open</span><span class=p>(</span><span class=n>fn_path</span><span class=p>)</span> <span class=k>as</span> <span class=n>data_file</span><span class=p>:</span>
         <span class=n>json_data</span> <span class=o>=</span> <span class=n>json</span><span class=o>.</span><span class=n>load</span><span class=p>(</span><span class=n>data_file</span><span class=p>)</span>
     <span class=n>parameters</span> <span class=o>=</span> <span class=nb>dict</span><span class=p>()</span>
 
     <span class=c1># Extract the values.</span>
-    <span class=n>keys_no_paths</span> <span class=o>=</span> <span class=p>{</span><span class=s1>&#39;title&#39;</span><span class=p>,</span> <span class=s1>&#39;object&#39;</span><span class=p>,</span> <span class=s1>&#39;objcolor&#39;</span><span class=p>,</span> <span class=s1>&#39;bkgcolor&#39;</span><span class=p>,</span> <span class=s1>&#39;skybox&#39;</span><span class=p>}</span>
-    <span class=n>keys_with_paths</span> <span class=o>=</span> <span class=p>{</span><span class=s1>&#39;cubemap&#39;</span><span class=p>,</span> <span class=s1>&#39;equirectangular&#39;</span><span class=p>,</span> <span class=s1>&#39;albedo&#39;</span><span class=p>,</span> <span class=s1>&#39;normal&#39;</span><span class=p>,</span> <span class=s1>&#39;material&#39;</span><span class=p>,</span> <span class=s1>&#39;coat&#39;</span><span class=p>,</span> <span class=s1>&#39;anisotropy&#39;</span><span class=p>,</span> <span class=s1>&#39;emissive&#39;</span><span class=p>}</span>
+    <span class=n>keys_no_paths</span> <span class=o>=</span> <span class=p>{</span><span class=s1>'title'</span><span class=p>,</span> <span class=s1>'object'</span><span class=p>,</span> <span class=s1>'objcolor'</span><span class=p>,</span> <span class=s1>'bkgcolor'</span><span class=p>,</span> <span class=s1>'skybox'</span><span class=p>}</span>
+    <span class=n>keys_with_paths</span> <span class=o>=</span> <span class=p>{</span><span class=s1>'cubemap'</span><span class=p>,</span> <span class=s1>'equirectangular'</span><span class=p>,</span> <span class=s1>'albedo'</span><span class=p>,</span> <span class=s1>'normal'</span><span class=p>,</span> <span class=s1>'material'</span><span class=p>,</span> <span class=s1>'coat'</span><span class=p>,</span> <span class=s1>'anisotropy'</span><span class=p>,</span> <span class=s1>'emissive'</span><span class=p>}</span>
     <span class=n>paths_ok</span> <span class=o>=</span> <span class=kc>True</span>
     <span class=k>for</span> <span class=n>k</span><span class=p>,</span> <span class=n>v</span> <span class=ow>in</span> <span class=n>json_data</span><span class=o>.</span><span class=n>items</span><span class=p>():</span>
         <span class=k>if</span> <span class=n>k</span> <span class=ow>in</span> <span class=n>keys_no_paths</span><span class=p>:</span>
             <span class=n>parameters</span><span class=p>[</span><span class=n>k</span><span class=p>]</span> <span class=o>=</span> <span class=n>v</span>
             <span class=k>continue</span>
         <span class=k>if</span> <span class=n>k</span> <span class=ow>in</span> <span class=n>keys_with_paths</span><span class=p>:</span>
-            <span class=k>if</span> <span class=n>k</span> <span class=o>==</span> <span class=s1>&#39;cubemap&#39;</span><span class=p>:</span>
-                <span class=k>if</span> <span class=p>(</span><span class=s1>&#39;root&#39;</span> <span class=ow>in</span> <span class=n>v</span><span class=p>)</span> <span class=ow>and</span> <span class=p>(</span><span class=s1>&#39;files&#39;</span> <span class=ow>in</span> <span class=n>v</span><span class=p>):</span>
-                    <span class=n>root</span> <span class=o>=</span> <span class=n>fn_path</span><span class=o>.</span><span class=n>parent</span> <span class=o>/</span> <span class=n>Path</span><span class=p>(</span><span class=n>v</span><span class=p>[</span><span class=s1>&#39;root&#39;</span><span class=p>])</span>
+            <span class=k>if</span> <span class=n>k</span> <span class=o>==</span> <span class=s1>'cubemap'</span><span class=p>:</span>
+                <span class=k>if</span> <span class=p>(</span><span class=s1>'root'</span> <span class=ow>in</span> <span class=n>v</span><span class=p>)</span> <span class=ow>and</span> <span class=p>(</span><span class=s1>'files'</span> <span class=ow>in</span> <span class=n>v</span><span class=p>):</span>
+                    <span class=n>root</span> <span class=o>=</span> <span class=n>fn_path</span><span class=o>.</span><span class=n>parent</span> <span class=o>/</span> <span class=n>Path</span><span class=p>(</span><span class=n>v</span><span class=p>[</span><span class=s1>'root'</span><span class=p>])</span>
                     <span class=k>if</span> <span class=ow>not</span> <span class=n>root</span><span class=o>.</span><span class=n>exists</span><span class=p>():</span>
-                        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;Bad cubemap path: </span><span class=si>{</span><span class=n>root</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+                        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'Bad cubemap path: </span><span class=si>{</span><span class=n>root</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
                         <span class=n>paths_ok</span> <span class=o>=</span> <span class=kc>False</span>
-                    <span class=k>elif</span> <span class=nb>len</span><span class=p>(</span><span class=n>v</span><span class=p>[</span><span class=s1>&#39;files&#39;</span><span class=p>])</span> <span class=o>!=</span> <span class=mi>6</span><span class=p>:</span>
-                        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;Expect six cubemap file names.&#39;</span><span class=p>)</span>
+                    <span class=k>elif</span> <span class=nb>len</span><span class=p>(</span><span class=n>v</span><span class=p>[</span><span class=s1>'files'</span><span class=p>])</span> <span class=o>!=</span> <span class=mi>6</span><span class=p>:</span>
+                        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'Expect six cubemap file names.'</span><span class=p>)</span>
                         <span class=n>paths_ok</span> <span class=o>=</span> <span class=kc>False</span>
                     <span class=k>else</span><span class=p>:</span>
-                        <span class=n>cm</span> <span class=o>=</span> <span class=nb>list</span><span class=p>(</span><span class=nb>map</span><span class=p>(</span><span class=k>lambda</span> <span class=n>p</span><span class=p>:</span> <span class=n>root</span> <span class=o>/</span> <span class=n>p</span><span class=p>,</span> <span class=n>v</span><span class=p>[</span><span class=s1>&#39;files&#39;</span><span class=p>]))</span>
+                        <span class=n>cm</span> <span class=o>=</span> <span class=nb>list</span><span class=p>(</span><span class=nb>map</span><span class=p>(</span><span class=k>lambda</span> <span class=n>p</span><span class=p>:</span> <span class=n>root</span> <span class=o>/</span> <span class=n>p</span><span class=p>,</span> <span class=n>v</span><span class=p>[</span><span class=s1>'files'</span><span class=p>]))</span>
                         <span class=k>for</span> <span class=n>fn</span> <span class=ow>in</span> <span class=n>cm</span><span class=p>:</span>
                             <span class=k>if</span> <span class=ow>not</span> <span class=n>fn</span><span class=o>.</span><span class=n>is_file</span><span class=p>():</span>
                                 <span class=n>paths_ok</span> <span class=o>=</span> <span class=kc>False</span>
-                                <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;Not a file </span><span class=si>{</span><span class=n>fn</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+                                <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'Not a file </span><span class=si>{</span><span class=n>fn</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
                         <span class=k>if</span> <span class=n>paths_ok</span><span class=p>:</span>
-                            <span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;cubemap&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=n>cm</span>
+                            <span class=n>parameters</span><span class=p>[</span><span class=s1>'cubemap'</span><span class=p>]</span> <span class=o>=</span> <span class=n>cm</span>
                 <span class=k>else</span><span class=p>:</span>
                     <span class=n>paths_ok</span> <span class=o>=</span> <span class=kc>False</span>
-                    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Missing the key &quot;root&quot; and/or the key &quot;fíles&quot; for the cubemap.&#39;</span><span class=p>)</span>
+                    <span class=nb>print</span><span class=p>(</span><span class=s1>'Missing the key "root" and/or the key "fíles" for the cubemap.'</span><span class=p>)</span>
             <span class=k>else</span><span class=p>:</span>
                 <span class=n>fn</span> <span class=o>=</span> <span class=n>fn_path</span><span class=o>.</span><span class=n>parent</span> <span class=o>/</span> <span class=n>Path</span><span class=p>(</span><span class=n>v</span><span class=p>)</span>
                 <span class=k>if</span> <span class=ow>not</span> <span class=n>fn</span><span class=o>.</span><span class=n>exists</span><span class=p>():</span>
-                    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;Bad </span><span class=si>{</span><span class=n>k</span><span class=si>}</span><span class=s1> path: </span><span class=si>{</span><span class=n>fn</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+                    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'Bad </span><span class=si>{</span><span class=n>k</span><span class=si>}</span><span class=s1> path: </span><span class=si>{</span><span class=n>fn</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
                     <span class=n>paths_ok</span> <span class=o>=</span> <span class=kc>False</span>
                 <span class=k>else</span><span class=p>:</span>
                     <span class=n>parameters</span><span class=p>[</span><span class=n>k</span><span class=p>]</span> <span class=o>=</span> <span class=n>fn</span>
 
     <span class=c1># Set Boy as the default surface.</span>
-    <span class=k>if</span> <span class=p>(</span><span class=s1>&#39;object&#39;</span> <span class=ow>in</span> <span class=n>parameters</span><span class=o>.</span><span class=n>keys</span><span class=p>()</span> <span class=ow>and</span> <span class=ow>not</span> <span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;object&#39;</span><span class=p>])</span> <span class=ow>or</span> <span class=s1>&#39;object&#39;</span> <span class=ow>not</span> <span class=ow>in</span> <span class=n>parameters</span><span class=o>.</span><span class=n>keys</span><span class=p>():</span>
-        <span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;object&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=s1>&#39;Boy&#39;</span>
+    <span class=k>if</span> <span class=p>(</span><span class=s1>'object'</span> <span class=ow>in</span> <span class=n>parameters</span><span class=o>.</span><span class=n>keys</span><span class=p>()</span> <span class=ow>and</span> <span class=ow>not</span> <span class=n>parameters</span><span class=p>[</span><span class=s1>'object'</span><span class=p>])</span> <span class=ow>or</span> <span class=s1>'object'</span> <span class=ow>not</span> <span class=ow>in</span> <span class=n>parameters</span><span class=o>.</span><span class=n>keys</span><span class=p>():</span>
+        <span class=n>parameters</span><span class=p>[</span><span class=s1>'object'</span><span class=p>]</span> <span class=o>=</span> <span class=s1>'Boy'</span>
 
     <span class=k>return</span> <span class=n>paths_ok</span><span class=p>,</span> <span class=n>parameters</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>display_parameters</span><span class=p>(</span><span class=n>parameters</span><span class=p>):</span>
     <span class=n>res</span> <span class=o>=</span> <span class=nb>list</span><span class=p>()</span>
-    <span class=n>parameter_keys</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;title&#39;</span><span class=p>,</span> <span class=s1>&#39;object&#39;</span><span class=p>,</span> <span class=s1>&#39;objcolor&#39;</span><span class=p>,</span> <span class=s1>&#39;bkgcolor&#39;</span><span class=p>,</span> <span class=s1>&#39;skybox&#39;</span><span class=p>,</span> <span class=s1>&#39;cubemap&#39;</span><span class=p>,</span> <span class=s1>&#39;equirectangular&#39;</span><span class=p>,</span> <span class=s1>&#39;albedo&#39;</span><span class=p>,</span>
-                      <span class=s1>&#39;normal&#39;</span><span class=p>,</span> <span class=s1>&#39;material&#39;</span><span class=p>,</span> <span class=s1>&#39;coat&#39;</span><span class=p>,</span> <span class=s1>&#39;anisotropy&#39;</span><span class=p>,</span> <span class=s1>&#39;emissive&#39;</span><span class=p>]</span>
+    <span class=n>parameter_keys</span> <span class=o>=</span> <span class=p>[</span><span class=s1>'title'</span><span class=p>,</span> <span class=s1>'object'</span><span class=p>,</span> <span class=s1>'objcolor'</span><span class=p>,</span> <span class=s1>'bkgcolor'</span><span class=p>,</span> <span class=s1>'skybox'</span><span class=p>,</span> <span class=s1>'cubemap'</span><span class=p>,</span> <span class=s1>'equirectangular'</span><span class=p>,</span> <span class=s1>'albedo'</span><span class=p>,</span>
+                      <span class=s1>'normal'</span><span class=p>,</span> <span class=s1>'material'</span><span class=p>,</span> <span class=s1>'coat'</span><span class=p>,</span> <span class=s1>'anisotropy'</span><span class=p>,</span> <span class=s1>'emissive'</span><span class=p>]</span>
     <span class=k>for</span> <span class=n>k</span> <span class=ow>in</span> <span class=n>parameter_keys</span><span class=p>:</span>
-        <span class=k>if</span> <span class=n>k</span> <span class=o>!=</span> <span class=s1>&#39;cubemap&#39;</span><span class=p>:</span>
+        <span class=k>if</span> <span class=n>k</span> <span class=o>!=</span> <span class=s1>'cubemap'</span><span class=p>:</span>
             <span class=k>if</span> <span class=n>k</span> <span class=ow>in</span> <span class=n>parameters</span><span class=p>:</span>
-                <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;</span><span class=si>{</span><span class=n>k</span><span class=si>:</span><span class=s1>15</span><span class=si>}</span><span class=s1>: </span><span class=si>{</span><span class=n>parameters</span><span class=p>[</span><span class=n>k</span><span class=p>]</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+                <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=sa>f</span><span class=s1>'</span><span class=si>{</span><span class=n>k</span><span class=si>:</span><span class=s1>15</span><span class=si>}</span><span class=s1>: </span><span class=si>{</span><span class=n>parameters</span><span class=p>[</span><span class=n>k</span><span class=p>]</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
         <span class=k>else</span><span class=p>:</span>
             <span class=k>if</span> <span class=n>k</span> <span class=ow>in</span> <span class=n>parameters</span><span class=p>:</span>
                 <span class=k>for</span> <span class=n>idx</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=nb>len</span><span class=p>(</span><span class=n>parameters</span><span class=p>[</span><span class=n>k</span><span class=p>])):</span>
                     <span class=k>if</span> <span class=n>idx</span> <span class=o>==</span> <span class=mi>0</span><span class=p>:</span>
-                        <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;</span><span class=si>{</span><span class=n>k</span><span class=si>:</span><span class=s1>15</span><span class=si>}</span><span class=s1>: </span><span class=si>{</span><span class=n>parameters</span><span class=p>[</span><span class=n>k</span><span class=p>][</span><span class=n>idx</span><span class=p>]</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+                        <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=sa>f</span><span class=s1>'</span><span class=si>{</span><span class=n>k</span><span class=si>:</span><span class=s1>15</span><span class=si>}</span><span class=s1>: </span><span class=si>{</span><span class=n>parameters</span><span class=p>[</span><span class=n>k</span><span class=p>][</span><span class=n>idx</span><span class=p>]</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
                     <span class=k>else</span><span class=p>:</span>
-                        <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;</span><span class=si>{</span><span class=s2>&quot; &quot;</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=mi>17</span><span class=si>}{</span><span class=n>parameters</span><span class=p>[</span><span class=n>k</span><span class=p>][</span><span class=n>idx</span><span class=p>]</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+                        <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=sa>f</span><span class=s1>'</span><span class=si>{</span><span class=s2>" "</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=mi>17</span><span class=si>}{</span><span class=n>parameters</span><span class=p>[</span><span class=n>k</span><span class=p>][</span><span class=n>idx</span><span class=p>]</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
     <span class=k>return</span> <span class=n>res</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>read_cubemap</span><span class=p>(</span><span class=n>cubemap</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Read six images forming a cubemap.</span>
 
 <span class=sd>    :param cubemap: The paths to the six cubemap files.</span>
 <span class=sd>    :return: The cubemap texture.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 <span class=hll>    <span class=n>cube_map</span> <span class=o>=</span> <span class=n>vtkTexture</span><span class=p>(</span><span class=n>mipmap</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>interpolate</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>cube_map</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
 </span>
     <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span>
@@ -331,16 +331,16 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>read_equirectangular_file</span><span class=p>(</span><span class=n>fn_path</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Read an equirectangular environment file and convert to a texture.</span>
 
 <span class=sd>    :param fn_path: The equirectangular file path.</span>
 <span class=sd>    :return: The texture.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 <span class=hll>    <span class=n>texture</span> <span class=o>=</span> <span class=n>vtkTexture</span><span class=p>(</span><span class=n>mipmap</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>interpolate</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
 </span>
     <span class=n>suffix</span> <span class=o>=</span> <span class=n>fn_path</span><span class=o>.</span><span class=n>suffix</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span>
-    <span class=k>if</span> <span class=n>suffix</span> <span class=ow>in</span> <span class=p>[</span><span class=s1>&#39;.jpeg&#39;</span><span class=p>,</span> <span class=s1>&#39;.jpg&#39;</span><span class=p>,</span> <span class=s1>&#39;.png&#39;</span><span class=p>]:</span>
+    <span class=k>if</span> <span class=n>suffix</span> <span class=ow>in</span> <span class=p>[</span><span class=s1>'.jpeg'</span><span class=p>,</span> <span class=s1>'.jpg'</span><span class=p>,</span> <span class=s1>'.png'</span><span class=p>]:</span>
 <span class=hll>        <span class=n>img_reader</span> <span class=o>=</span> <span class=n>vtkImageReader2Factory</span><span class=p>()</span><span class=o>.</span><span class=n>CreateImageReader2</span><span class=p>(</span><span class=nb>str</span><span class=p>(</span><span class=n>fn_path</span><span class=p>))</span>
 </span>        <span class=n>img_reader</span><span class=o>.</span><span class=n>file_name</span> <span class=o>=</span> <span class=nb>str</span><span class=p>(</span><span class=n>fn_path</span><span class=p>)</span>
         <span class=n>select_ports</span><span class=p>(</span><span class=n>img_reader</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span> <span class=o>&gt;&gt;</span> <span class=n>texture</span>
@@ -350,10 +350,10 @@ function registerListener(event, func) {
 </span>        <span class=n>extensions</span> <span class=o>=</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetFileExtensions</span><span class=p>()</span>
         <span class=c1># Check the image can be read.</span>
         <span class=k>if</span> <span class=ow>not</span> <span class=n>reader</span><span class=o>.</span><span class=n>CanReadFile</span><span class=p>(</span><span class=nb>str</span><span class=p>(</span><span class=n>fn_path</span><span class=p>)):</span>
-            <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;CanReadFile failed for &#39;</span><span class=p>,</span> <span class=n>fn_path</span><span class=p>)</span>
+            <span class=nb>print</span><span class=p>(</span><span class=s1>'CanReadFile failed for '</span><span class=p>,</span> <span class=n>fn_path</span><span class=p>)</span>
             <span class=k>return</span> <span class=kc>None</span>
         <span class=k>if</span> <span class=n>suffix</span> <span class=ow>not</span> <span class=ow>in</span> <span class=n>extensions</span><span class=p>:</span>
-            <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Unable to read this file extension: &#39;</span><span class=p>,</span> <span class=n>suffix</span><span class=p>)</span>
+            <span class=nb>print</span><span class=p>(</span><span class=s1>'Unable to read this file extension: '</span><span class=p>,</span> <span class=n>suffix</span><span class=p>)</span>
             <span class=k>return</span> <span class=kc>None</span>
         <span class=n>reader</span><span class=o>.</span><span class=n>file_name</span> <span class=o>=</span> <span class=nb>str</span><span class=p>(</span><span class=n>fn_path</span><span class=p>)</span>
 
@@ -394,6 +394,6 @@ function registerListener(event, func) {
         <span class=n>VTK_COLOR_MODE_DIRECT_SCALARS</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>2</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

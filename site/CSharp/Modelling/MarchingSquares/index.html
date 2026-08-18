@@ -75,14 +75,14 @@ function registerListener(event, func) {
 <span class=w>            </span><span class=n>MarchingSquares</span><span class=p>();</span>
 <span class=w>         </span><span class=p>}</span>
 <span class=w>         </span><span class=k>catch</span><span class=p>(</span><span class=n>Exception</span><span class=w> </span><span class=n>ex</span><span class=p>)</span><span class=w> </span><span class=p>{</span>
-<span class=w>            </span><span class=n>MessageBox</span><span class=p>.</span><span class=n>Show</span><span class=p>(</span><span class=n>ex</span><span class=p>.</span><span class=n>Message</span><span class=p>,</span><span class=w> </span><span class=s>&quot;Exception&quot;</span><span class=p>,</span><span class=w> </span><span class=n>MessageBoxButtons</span><span class=p>.</span><span class=n>OK</span><span class=p>);</span>
+<span class=w>            </span><span class=n>MessageBox</span><span class=p>.</span><span class=n>Show</span><span class=p>(</span><span class=n>ex</span><span class=p>.</span><span class=n>Message</span><span class=p>,</span><span class=w> </span><span class=s>"Exception"</span><span class=p>,</span><span class=w> </span><span class=n>MessageBoxButtons</span><span class=p>.</span><span class=n>OK</span><span class=p>);</span>
 <span class=w>         </span><span class=p>}</span>
 <span class=w>      </span><span class=p>}</span>
 
 
 <span class=w>      </span><span class=k>private</span><span class=w> </span><span class=k>void</span><span class=w> </span><span class=nf>MarchingSquares</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w> </span>
 <span class=w>         </span><span class=c1>// Path to vtk data must be set as an environment variable</span>
-<span class=w>         </span><span class=c1>// VTK_DATA_ROOT = &quot;C:\VTK\vtkdata-5.8.0&quot;</span>
+<span class=w>         </span><span class=c1>// VTK_DATA_ROOT = "C:\VTK\vtkdata-5.8.0"</span>
 <span class=w>         </span><span class=n>vtkTesting</span><span class=w> </span><span class=n>test</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>vtkTesting</span><span class=p>.</span><span class=n>New</span><span class=p>();</span>
 <span class=w>         </span><span class=kt>string</span><span class=w> </span><span class=n>root</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>test</span><span class=p>.</span><span class=n>GetDataRoot</span><span class=p>();</span>
 
@@ -91,7 +91,7 @@ function registerListener(event, func) {
 
 <span class=w>         </span><span class=n>v16</span><span class=p>.</span><span class=n>GetOutput</span><span class=p>().</span><span class=n>SetOrigin</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span><span class=w> </span><span class=mf>0.0</span><span class=p>,</span><span class=w> </span><span class=mf>0.0</span><span class=p>);</span>
 <span class=w>         </span><span class=n>v16</span><span class=p>.</span><span class=n>SetDataByteOrderToLittleEndian</span><span class=p>();</span>
-<span class=w>         </span><span class=n>v16</span><span class=p>.</span><span class=n>SetFilePrefix</span><span class=p>(</span><span class=n>System</span><span class=p>.</span><span class=n>IO</span><span class=p>.</span><span class=n>Path</span><span class=p>.</span><span class=n>Combine</span><span class=p>(</span><span class=n>root</span><span class=p>,</span><span class=w> </span><span class=s>@&quot;Data\headsq\quarter&quot;</span><span class=p>));</span>
+<span class=w>         </span><span class=n>v16</span><span class=p>.</span><span class=n>SetFilePrefix</span><span class=p>(</span><span class=n>System</span><span class=p>.</span><span class=n>IO</span><span class=p>.</span><span class=n>Path</span><span class=p>.</span><span class=n>Combine</span><span class=p>(</span><span class=n>root</span><span class=p>,</span><span class=w> </span><span class=s>@"Data\headsq\quarter"</span><span class=p>));</span>
 <span class=w>         </span><span class=n>v16</span><span class=p>.</span><span class=n>SetImageRange</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=mi>93</span><span class=p>);</span>
 <span class=w>         </span><span class=n>v16</span><span class=p>.</span><span class=n>SetDataSpacing</span><span class=p>(</span><span class=mf>3.2</span><span class=p>,</span><span class=w> </span><span class=mf>3.2</span><span class=p>,</span><span class=w> </span><span class=mf>1.5</span><span class=p>);</span>
 <span class=w>         </span><span class=n>v16</span><span class=p>.</span><span class=n>Update</span><span class=p>();</span>

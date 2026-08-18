@@ -77,7 +77,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>vtkNativeLibrary</span><span class=p>.</span><span class=na>LoadAllNativeLibraries</span><span class=p>())</span><span class=w> </span><span class=p>{</span>
 <span class=w>      </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=n>vtkNativeLibrary</span><span class=w> </span><span class=n>lib</span><span class=w> </span><span class=p>:</span><span class=w> </span><span class=n>vtkNativeLibrary</span><span class=p>.</span><span class=na>values</span><span class=p>())</span><span class=w> </span><span class=p>{</span>
 <span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>lib</span><span class=p>.</span><span class=na>IsLoaded</span><span class=p>())</span><span class=w> </span><span class=p>{</span>
-<span class=w>          </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&quot; not loaded&quot;</span><span class=p>);</span>
+<span class=w>          </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>" not loaded"</span><span class=p>);</span>
 <span class=w>        </span><span class=p>}</span>
 <span class=w>      </span><span class=p>}</span>
 <span class=w>    </span><span class=p>}</span>
@@ -93,7 +93,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=c1>//For Renderer Background Color</span>
 <span class=w>    </span><span class=kt>double</span><span class=w> </span><span class=n>BgColor</span><span class=o>[]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=kt>double</span><span class=o>[</span><span class=mi>4</span><span class=o>]</span><span class=p>;</span>
 <span class=w>    </span><span class=c1>//Change Color Name to Use your own Color for Renderer Background</span>
-<span class=w>    </span><span class=n>Color</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>&quot;Black&quot;</span><span class=p>,</span><span class=n>BgColor</span><span class=p>);</span>
+<span class=w>    </span><span class=n>Color</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>"Black"</span><span class=p>,</span><span class=n>BgColor</span><span class=p>);</span>
 
 
 <span class=w>    </span><span class=c1>//Create a Sphere</span>

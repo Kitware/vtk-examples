@@ -123,7 +123,7 @@ function registerListener(event, func) {
 </span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>argc</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=mi>2</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Usgae: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; file.vtp e.g. Torso.vtp&quot;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Usgae: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" file.vtp e.g. Torso.vtp"</span>
 <span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>EXIT_FAILURE</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
@@ -158,9 +158,9 @@ function registerListener(event, func) {
 <span class=w>       </span><span class=n>it</span><span class=o>-&gt;</span><span class=n>GoToNextCell</span><span class=p>(),</span><span class=w> </span><span class=o>++</span><span class=n>numCells</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Num original: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>numOriginalCells</span>
-<span class=w>            </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;, Num new: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>numNewCells</span>
-<span class=w>            </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;, Num added: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>numNewCells</span><span class=w> </span><span class=o>-</span><span class=w> </span><span class=n>numOriginalCells</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Num original: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>numOriginalCells</span>
+<span class=w>            </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>", Num new: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>numNewCells</span>
+<span class=w>            </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>", Num added: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>numNewCells</span><span class=w> </span><span class=o>-</span><span class=w> </span><span class=n>numOriginalCells</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span><span class=w> </span><span class=n>holePolyData</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>holePolyData</span><span class=o>-&gt;</span><span class=n>Allocate</span><span class=p>(</span><span class=n>normals</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>(),</span><span class=w> </span><span class=n>numNewCells</span><span class=w> </span><span class=o>-</span><span class=w> </span><span class=n>numOriginalCells</span><span class=p>);</span>
 <span class=w>  </span><span class=n>holePolyData</span><span class=o>-&gt;</span><span class=n>SetPoints</span><span class=p>(</span><span class=n>normals</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetPoints</span><span class=p>());</span>
@@ -183,8 +183,8 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>connectivity</span><span class=o>-&gt;</span><span class=n>SetExtractionModeToAllRegions</span><span class=p>();</span>
 <span class=w>  </span><span class=n>connectivity</span><span class=o>-&gt;</span><span class=n>ColorRegionsOn</span><span class=p>();</span>
 <span class=w>  </span><span class=n>connectivity</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Found &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>connectivity</span><span class=o>-&gt;</span><span class=n>GetNumberOfExtractedRegions</span><span class=p>()</span>
-<span class=w>            </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; holes&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Found "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>connectivity</span><span class=o>-&gt;</span><span class=n>GetNumberOfExtractedRegions</span><span class=p>()</span>
+<span class=w>            </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" holes"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 
 <span class=w>  </span><span class=c1>// Visualize</span>
 
@@ -194,25 +194,25 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>filledMapper</span><span class=o>-&gt;</span><span class=n>SetScalarModeToUseCellData</span><span class=p>();</span>
 <span class=w>  </span><span class=n>filledMapper</span><span class=o>-&gt;</span><span class=n>SetScalarRange</span><span class=p>(</span><span class=n>connectivity</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span>
 <span class=w>                                   </span><span class=o>-&gt;</span><span class=n>GetCellData</span><span class=p>()</span>
-<span class=w>                                   </span><span class=o>-&gt;</span><span class=n>GetArray</span><span class=p>(</span><span class=s>&quot;RegionId&quot;</span><span class=p>)</span>
+<span class=w>                                   </span><span class=o>-&gt;</span><span class=n>GetArray</span><span class=p>(</span><span class=s>"RegionId"</span><span class=p>)</span>
 <span class=w>                                   </span><span class=o>-&gt;</span><span class=n>GetRange</span><span class=p>());</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>filledActor</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>filledActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>filledMapper</span><span class=p>);</span>
 <span class=w>  </span><span class=n>filledActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetDiffuseColor</span><span class=p>(</span>
-<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Peacock&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Peacock"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=w>  </span><span class=c1>// Create a mapper and actor for the original polydata.</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span><span class=w> </span><span class=n>originalMapper</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>originalMapper</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkProperty</span><span class=o>&gt;</span><span class=w> </span><span class=n>backfaceProp</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>backfaceProp</span><span class=o>-&gt;</span><span class=n>SetDiffuseColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Banana&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+</span><span class=w>  </span><span class=n>backfaceProp</span><span class=o>-&gt;</span><span class=n>SetDiffuseColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Banana"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>originalActor</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>originalActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>originalMapper</span><span class=p>);</span>
 <span class=w>  </span><span class=n>originalActor</span><span class=o>-&gt;</span><span class=n>SetBackfaceProperty</span><span class=p>(</span><span class=n>backfaceProp</span><span class=p>);</span>
 <span class=w>  </span><span class=n>originalActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetDiffuseColor</span><span class=p>(</span>
-<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Flesh&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Flesh"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=n>originalActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetRepresentationToWireframe</span><span class=p>();</span>
 
 <span class=w>  </span><span class=c1>// Create a renderer, render window, and interactor.</span>
@@ -221,7 +221,7 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderWindow</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>512</span><span class=p>,</span><span class=w> </span><span class=mi>512</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;IdentifyHoles&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"IdentifyHoles"</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderWindowInteractor</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>renderWindowInteractor</span><span class=o>-&gt;</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renderWindow</span><span class=p>);</span>
@@ -229,7 +229,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=c1>// Add the actors to the scene.</span>
 <span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>originalActor</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>filledActor</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Burlywood&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Burlywood"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>GetActiveCamera</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetPosition</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>-1</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>GetActiveCamera</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetFocalPoint</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>);</span>
@@ -265,11 +265,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;IdentifyHoles: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"IdentifyHoles: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>IdentifyHoles</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>IdentifyHoles.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>IdentifyHoles</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

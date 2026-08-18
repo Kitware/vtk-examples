@@ -158,7 +158,7 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>contourLineActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>contourLineActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>contourLineMapper</span><span class=p>)</span>
     <span class=n>contourLineActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span>
-        <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;DimGray&#39;</span><span class=p>))</span>
+        <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'DimGray'</span><span class=p>))</span>
 
     <span class=c1># Set up the Orientation Marker Widget.</span>
     <span class=n>prop_assembly</span> <span class=o>=</span> <span class=n>MakeAnnotatedCubeActor</span><span class=p>(</span><span class=n>colors</span><span class=p>)</span>
@@ -169,7 +169,7 @@ function registerListener(event, func) {
     <span class=n>om1</span><span class=o>.</span><span class=n>On</span><span class=p>()</span>
     <span class=n>om1</span><span class=o>.</span><span class=n>InteractiveOn</span><span class=p>()</span>
 
-    <span class=n>xyzLabels</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;X&#39;</span><span class=p>,</span> <span class=s1>&#39;Y&#39;</span><span class=p>,</span> <span class=s1>&#39;Z&#39;</span><span class=p>]</span>
+    <span class=n>xyzLabels</span> <span class=o>=</span> <span class=p>[</span><span class=s1>'X'</span><span class=p>,</span> <span class=s1>'Y'</span><span class=p>,</span> <span class=s1>'Z'</span><span class=p>]</span>
     <span class=n>scale</span> <span class=o>=</span> <span class=p>[</span><span class=mf>1.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>]</span>
     <span class=n>axes</span> <span class=o>=</span> <span class=n>MakeAxesActor</span><span class=p>(</span><span class=n>scale</span><span class=p>,</span> <span class=n>xyzLabels</span><span class=p>)</span>
 
@@ -183,8 +183,8 @@ function registerListener(event, func) {
 
     <span class=n>ren</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>coneActor</span><span class=p>)</span>
     <span class=n>ren</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>contourLineActor</span><span class=p>)</span>
-    <span class=n>ren</span><span class=o>.</span><span class=n>SetBackground2</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;RoyalBlue&#39;</span><span class=p>))</span>
-    <span class=n>ren</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;MistyRose&#39;</span><span class=p>))</span>
+    <span class=n>ren</span><span class=o>.</span><span class=n>SetBackground2</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'RoyalBlue'</span><span class=p>))</span>
+    <span class=n>ren</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'MistyRose'</span><span class=p>))</span>
     <span class=n>ren</span><span class=o>.</span><span class=n>GradientBackgroundOn</span><span class=p>()</span>
     <span class=n>ren</span><span class=o>.</span><span class=n>GetActiveCamera</span><span class=p>()</span><span class=o>.</span><span class=n>Azimuth</span><span class=p>(</span><span class=mi>45</span><span class=p>)</span>
     <span class=n>ren</span><span class=o>.</span><span class=n>GetActiveCamera</span><span class=p>()</span><span class=o>.</span><span class=n>Pitch</span><span class=p>(</span><span class=o>-</span><span class=mf>22.5</span><span class=p>)</span>
@@ -192,7 +192,7 @@ function registerListener(event, func) {
 
     <span class=n>renWin</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>600</span><span class=p>,</span> <span class=mi>600</span><span class=p>)</span>
     <span class=n>renWin</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
-    <span class=n>renWin</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;ColoredAnnotatedCube&#39;</span><span class=p>)</span>
+    <span class=n>renWin</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>'ColoredAnnotatedCube'</span><span class=p>)</span>
     <span class=n>renWin</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
     <span class=n>iRen</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
@@ -203,30 +203,30 @@ function registerListener(event, func) {
 </span>    <span class=n>annotated_cube</span><span class=o>.</span><span class=n>SetFaceTextScale</span><span class=p>(</span><span class=mf>0.366667</span><span class=p>)</span>
 
     <span class=c1># Anatomic labeling</span>
-    <span class=n>annotated_cube</span><span class=o>.</span><span class=n>SetXPlusFaceText</span><span class=p>(</span><span class=s1>&#39;X+&#39;</span><span class=p>)</span>
-    <span class=n>annotated_cube</span><span class=o>.</span><span class=n>SetXMinusFaceText</span><span class=p>(</span><span class=s1>&#39;X-&#39;</span><span class=p>)</span>
-    <span class=n>annotated_cube</span><span class=o>.</span><span class=n>SetYPlusFaceText</span><span class=p>(</span><span class=s1>&#39;Y+&#39;</span><span class=p>)</span>
-    <span class=n>annotated_cube</span><span class=o>.</span><span class=n>SetYMinusFaceText</span><span class=p>(</span><span class=s1>&#39;Y-&#39;</span><span class=p>)</span>
-    <span class=n>annotated_cube</span><span class=o>.</span><span class=n>SetZPlusFaceText</span><span class=p>(</span><span class=s1>&#39;Z+&#39;</span><span class=p>)</span>
-    <span class=n>annotated_cube</span><span class=o>.</span><span class=n>SetZMinusFaceText</span><span class=p>(</span><span class=s1>&#39;Z-&#39;</span><span class=p>)</span>
+    <span class=n>annotated_cube</span><span class=o>.</span><span class=n>SetXPlusFaceText</span><span class=p>(</span><span class=s1>'X+'</span><span class=p>)</span>
+    <span class=n>annotated_cube</span><span class=o>.</span><span class=n>SetXMinusFaceText</span><span class=p>(</span><span class=s1>'X-'</span><span class=p>)</span>
+    <span class=n>annotated_cube</span><span class=o>.</span><span class=n>SetYPlusFaceText</span><span class=p>(</span><span class=s1>'Y+'</span><span class=p>)</span>
+    <span class=n>annotated_cube</span><span class=o>.</span><span class=n>SetYMinusFaceText</span><span class=p>(</span><span class=s1>'Y-'</span><span class=p>)</span>
+    <span class=n>annotated_cube</span><span class=o>.</span><span class=n>SetZPlusFaceText</span><span class=p>(</span><span class=s1>'Z+'</span><span class=p>)</span>
+    <span class=n>annotated_cube</span><span class=o>.</span><span class=n>SetZMinusFaceText</span><span class=p>(</span><span class=s1>'Z-'</span><span class=p>)</span>
 
     <span class=c1># Change the vector text colors</span>
     <span class=n>annotated_cube</span><span class=o>.</span><span class=n>GetTextEdgesProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span>
-        <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Black&#39;</span><span class=p>))</span>
+        <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Black'</span><span class=p>))</span>
     <span class=n>annotated_cube</span><span class=o>.</span><span class=n>GetTextEdgesProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetLineWidth</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
 
     <span class=n>annotated_cube</span><span class=o>.</span><span class=n>GetXPlusFaceProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span>
-        <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Turquoise&#39;</span><span class=p>))</span>
+        <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Turquoise'</span><span class=p>))</span>
     <span class=n>annotated_cube</span><span class=o>.</span><span class=n>GetXMinusFaceProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span>
-        <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Turquoise&#39;</span><span class=p>))</span>
+        <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Turquoise'</span><span class=p>))</span>
     <span class=n>annotated_cube</span><span class=o>.</span><span class=n>GetYPlusFaceProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span>
-        <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Mint&#39;</span><span class=p>))</span>
+        <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Mint'</span><span class=p>))</span>
     <span class=n>annotated_cube</span><span class=o>.</span><span class=n>GetYMinusFaceProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span>
-        <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Mint&#39;</span><span class=p>))</span>
+        <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Mint'</span><span class=p>))</span>
     <span class=n>annotated_cube</span><span class=o>.</span><span class=n>GetZPlusFaceProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span>
-        <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Tomato&#39;</span><span class=p>))</span>
+        <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Tomato'</span><span class=p>))</span>
     <span class=n>annotated_cube</span><span class=o>.</span><span class=n>GetZMinusFaceProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span>
-        <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Tomato&#39;</span><span class=p>))</span>
+        <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Tomato'</span><span class=p>))</span>
     <span class=n>annotated_cube</span><span class=o>.</span><span class=n>SetXFaceTextRotation</span><span class=p>(</span><span class=mi>90</span><span class=p>)</span>
     <span class=n>annotated_cube</span><span class=o>.</span><span class=n>SetYFaceTextRotation</span><span class=p>(</span><span class=mi>180</span><span class=p>)</span>
     <span class=n>annotated_cube</span><span class=o>.</span><span class=n>SetZFaceTextRotation</span><span class=p>(</span><span class=o>-</span><span class=mi>90</span><span class=p>)</span>
@@ -239,12 +239,12 @@ function registerListener(event, func) {
 
 <span class=hll>    <span class=n>face_colors</span> <span class=o>=</span> <span class=n>vtkUnsignedCharArray</span><span class=p>()</span>
 </span>    <span class=n>face_colors</span><span class=o>.</span><span class=n>SetNumberOfComponents</span><span class=p>(</span><span class=mi>3</span><span class=p>)</span>
-    <span class=n>face_x_plus</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s1>&#39;Red&#39;</span><span class=p>)</span>
-    <span class=n>face_x_minus</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s1>&#39;Green&#39;</span><span class=p>)</span>
-    <span class=n>face_y_plus</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s1>&#39;Blue&#39;</span><span class=p>)</span>
-    <span class=n>face_y_minus</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s1>&#39;Yellow&#39;</span><span class=p>)</span>
-    <span class=n>face_z_plus</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s1>&#39;Cyan&#39;</span><span class=p>)</span>
-    <span class=n>face_z_minus</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s1>&#39;Magenta&#39;</span><span class=p>)</span>
+    <span class=n>face_x_plus</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s1>'Red'</span><span class=p>)</span>
+    <span class=n>face_x_minus</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s1>'Green'</span><span class=p>)</span>
+    <span class=n>face_y_plus</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s1>'Blue'</span><span class=p>)</span>
+    <span class=n>face_y_minus</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s1>'Yellow'</span><span class=p>)</span>
+    <span class=n>face_z_plus</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s1>'Cyan'</span><span class=p>)</span>
+    <span class=n>face_z_minus</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s1>'Magenta'</span><span class=p>)</span>
     <span class=n>face_colors</span><span class=o>.</span><span class=n>InsertNextTypedTuple</span><span class=p>(</span><span class=n>face_x_minus</span><span class=p>)</span>
     <span class=n>face_colors</span><span class=o>.</span><span class=n>InsertNextTypedTuple</span><span class=p>(</span><span class=n>face_x_plus</span><span class=p>)</span>
     <span class=n>face_colors</span><span class=o>.</span><span class=n>InsertNextTypedTuple</span><span class=p>(</span><span class=n>face_y_minus</span><span class=p>)</span>
@@ -289,6 +289,6 @@ function registerListener(event, func) {
     <span class=k>return</span> <span class=n>axes</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

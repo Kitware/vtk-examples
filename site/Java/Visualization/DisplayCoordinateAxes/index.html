@@ -78,7 +78,7 @@ function registerListener(event, func) {
 <span class=w>      </span><span class=p>{</span>
 <span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>lib</span><span class=p>.</span><span class=na>IsLoaded</span><span class=p>())</span><span class=w> </span>
 <span class=w>        </span><span class=p>{</span>
-<span class=w>          </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&quot; not loaded&quot;</span><span class=p>);</span>
+<span class=w>          </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>" not loaded"</span><span class=p>);</span>
 <span class=w>        </span><span class=p>}</span>
 <span class=w>      </span><span class=p>}</span>
 <span class=w>    </span><span class=p>}</span>
@@ -94,7 +94,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=c1>//Renderer Background Color</span>
 <span class=w>    </span><span class=kt>double</span><span class=w> </span><span class=n>Bgcolor</span><span class=o>[]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=kt>double</span><span class=o>[</span><span class=mi>4</span><span class=o>]</span><span class=p>;</span>
 
-<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>&quot;SlateGray&quot;</span><span class=p>,</span><span class=w> </span><span class=n>Bgcolor</span><span class=p>);</span>
+<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>"SlateGray"</span><span class=p>,</span><span class=w> </span><span class=n>Bgcolor</span><span class=p>);</span>
 
 <span class=w>    </span><span class=c1>//Sphere1</span>
 <span class=hll><span class=w>    </span><span class=n>vtkSphereSource</span><span class=w> </span><span class=n>sphereSource</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkSphereSource</span><span class=p>();</span>
@@ -112,7 +112,7 @@ function registerListener(event, func) {
 <span class=hll><span class=w>    </span><span class=n>vtkRenderer</span><span class=w> </span><span class=n>ren</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkRenderer</span><span class=p>();</span>
 </span><span class=hll><span class=w>    </span><span class=n>vtkRenderWindow</span><span class=w> </span><span class=n>renWin</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkRenderWindow</span><span class=p>();</span>
 </span><span class=w>    </span><span class=n>renWin</span><span class=p>.</span><span class=na>AddRenderer</span><span class=p>(</span><span class=n>ren</span><span class=p>);</span>
-<span class=w>    </span><span class=n>renWin</span><span class=p>.</span><span class=na>SetWindowName</span><span class=p>(</span><span class=s>&quot;Display Coordinate Axes&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>renWin</span><span class=p>.</span><span class=na>SetWindowName</span><span class=p>(</span><span class=s>"Display Coordinate Axes"</span><span class=p>);</span>
 <span class=hll><span class=w>    </span><span class=n>vtkRenderWindowInteractor</span><span class=w> </span><span class=n>iren</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkRenderWindowInteractor</span><span class=p>();</span>
 </span><span class=w>    </span><span class=n>iren</span><span class=p>.</span><span class=na>SetRenderWindow</span><span class=p>(</span><span class=n>renWin</span><span class=p>);</span>
 
@@ -124,7 +124,7 @@ function registerListener(event, func) {
 </span>
 <span class=hll><span class=w>    </span><span class=n>vtkOrientationMarkerWidget</span><span class=w> </span><span class=n>widget</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkOrientationMarkerWidget</span><span class=p>();</span>
 </span><span class=w>    </span><span class=kt>double</span><span class=w> </span><span class=n>rgba</span><span class=o>[]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=kt>double</span><span class=o>[]</span><span class=w> </span><span class=p>{</span><span class=mf>0.0</span><span class=p>,</span><span class=w> </span><span class=mf>0.0</span><span class=p>,</span><span class=w> </span><span class=mf>0.0</span><span class=p>,</span><span class=w> </span><span class=mf>0.0</span><span class=p>};</span>
-<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>&quot;Carrot&quot;</span><span class=p>,</span><span class=n>rgba</span><span class=p>);</span>
+<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>"Carrot"</span><span class=p>,</span><span class=n>rgba</span><span class=p>);</span>
 <span class=w>    </span><span class=n>widget</span><span class=p>.</span><span class=na>SetOutlineColor</span><span class=p>(</span><span class=n>rgba</span><span class=o>[</span><span class=mi>0</span><span class=o>]</span><span class=p>,</span><span class=w> </span><span class=n>rgba</span><span class=o>[</span><span class=mi>1</span><span class=o>]</span><span class=p>,</span><span class=w> </span><span class=n>rgba</span><span class=o>[</span><span class=mi>2</span><span class=o>]</span><span class=p>);</span>
 <span class=w>    </span><span class=n>widget</span><span class=p>.</span><span class=na>SetOrientationMarker</span><span class=p>(</span><span class=n>axes</span><span class=p>);</span>
 <span class=w>    </span><span class=n>widget</span><span class=p>.</span><span class=na>SetInteractor</span><span class=p>(</span><span class=n>iren</span><span class=p>);</span>

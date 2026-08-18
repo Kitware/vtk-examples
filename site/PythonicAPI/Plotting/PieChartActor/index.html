@@ -79,13 +79,13 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>main</span><span class=p>():</span>
     <span class=n>movies</span> <span class=o>=</span> <span class=p>{</span>
-        <span class=s1>&#39;Comedy&#39;</span><span class=p>:</span> <span class=mi>27</span><span class=p>,</span>
-        <span class=s1>&#39;Action&#39;</span><span class=p>:</span> <span class=mi>18</span><span class=p>,</span>
-        <span class=s1>&#39;Romance&#39;</span><span class=p>:</span> <span class=mi>14</span><span class=p>,</span>
-        <span class=s1>&#39;Drama&#39;</span><span class=p>:</span> <span class=mi>14</span><span class=p>,</span>
-        <span class=s1>&#39;Horror&#39;</span><span class=p>:</span> <span class=mi>11</span><span class=p>,</span>
-        <span class=s1>&#39;Foreign&#39;</span><span class=p>:</span> <span class=mi>8</span><span class=p>,</span>
-        <span class=s1>&#39;Scifi&#39;</span><span class=p>:</span> <span class=mi>8</span>
+        <span class=s1>'Comedy'</span><span class=p>:</span> <span class=mi>27</span><span class=p>,</span>
+        <span class=s1>'Action'</span><span class=p>:</span> <span class=mi>18</span><span class=p>,</span>
+        <span class=s1>'Romance'</span><span class=p>:</span> <span class=mi>14</span><span class=p>,</span>
+        <span class=s1>'Drama'</span><span class=p>:</span> <span class=mi>14</span><span class=p>,</span>
+        <span class=s1>'Horror'</span><span class=p>:</span> <span class=mi>11</span><span class=p>,</span>
+        <span class=s1>'Foreign'</span><span class=p>:</span> <span class=mi>8</span><span class=p>,</span>
+        <span class=s1>'Scifi'</span><span class=p>:</span> <span class=mi>8</span>
     <span class=p>}</span>
     <span class=n>keys</span> <span class=o>=</span> <span class=nb>list</span><span class=p>(</span><span class=nb>sorted</span><span class=p>(</span><span class=n>movies</span><span class=o>.</span><span class=n>keys</span><span class=p>()))</span>
 
@@ -102,10 +102,10 @@ function registerListener(event, func) {
 
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
-<span class=hll>    <span class=n>actor</span> <span class=o>=</span> <span class=n>vtkPieChartActor</span><span class=p>(</span><span class=n>input_data</span><span class=o>=</span><span class=n>dobj</span><span class=p>,</span> <span class=n>title</span><span class=o>=</span><span class=s1>&#39;Movie Watching&#39;</span><span class=p>)</span>
+<span class=hll>    <span class=n>actor</span> <span class=o>=</span> <span class=n>vtkPieChartActor</span><span class=p>(</span><span class=n>input_data</span><span class=o>=</span><span class=n>dobj</span><span class=p>,</span> <span class=n>title</span><span class=o>=</span><span class=s1>'Movie Watching'</span><span class=p>)</span>
 </span>    <span class=n>actor</span><span class=o>.</span><span class=n>GetPositionCoordinate</span><span class=p>()</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=mf>0.05</span><span class=p>,</span> <span class=mf>0.1</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>)</span>
     <span class=n>actor</span><span class=o>.</span><span class=n>GetPosition2Coordinate</span><span class=p>()</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=mf>0.95</span><span class=p>,</span> <span class=mf>0.85</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>)</span>
-    <span class=n>actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Black&#39;</span><span class=p>)</span>
+    <span class=n>actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Black'</span><span class=p>)</span>
     <span class=n>actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>line_width</span> <span class=o>=</span> <span class=mi>2</span>
     <span class=n>actor</span><span class=o>.</span><span class=n>legend_actor</span><span class=o>.</span><span class=n>number_of_entries</span> <span class=o>=</span> <span class=n>num_tuples</span>
 
@@ -120,14 +120,14 @@ function registerListener(event, func) {
 
     <span class=n>actor</span><span class=o>.</span><span class=n>legend_visibility</span> <span class=o>=</span> <span class=kc>True</span>
     <span class=c1># Set text colors (same as actor for backward compat with test).</span>
-    <span class=n>actor</span><span class=o>.</span><span class=n>title_text_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Banana&#39;</span><span class=p>)</span>
+    <span class=n>actor</span><span class=o>.</span><span class=n>title_text_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Banana'</span><span class=p>)</span>
     <span class=n>actor</span><span class=o>.</span><span class=n>title_text_property</span><span class=o>.</span><span class=n>font_size</span> <span class=o>=</span> <span class=mi>40</span>
-    <span class=n>actor</span><span class=o>.</span><span class=n>label_text_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Bisque&#39;</span><span class=p>)</span>
+    <span class=n>actor</span><span class=o>.</span><span class=n>label_text_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Bisque'</span><span class=p>)</span>
     <span class=n>actor</span><span class=o>.</span><span class=n>label_text_property</span><span class=o>.</span><span class=n>font_size</span> <span class=o>=</span> <span class=mi>24</span>
 
     <span class=c1># Create the RenderWindow, Renderer and both Actors.</span>
-<span class=hll>    <span class=n>ren</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;SlateGray&#39;</span><span class=p>))</span>
-</span><span class=hll>    <span class=n>ren_win</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>size</span><span class=o>=</span><span class=p>(</span><span class=mi>1024</span><span class=p>,</span> <span class=mi>512</span><span class=p>),</span> <span class=n>window_name</span><span class=o>=</span><span class=s1>&#39;PieChartActor&#39;</span><span class=p>)</span>
+<span class=hll>    <span class=n>ren</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'SlateGray'</span><span class=p>))</span>
+</span><span class=hll>    <span class=n>ren_win</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>size</span><span class=o>=</span><span class=p>(</span><span class=mi>1024</span><span class=p>,</span> <span class=mi>512</span><span class=p>),</span> <span class=n>window_name</span><span class=o>=</span><span class=s1>'PieChartActor'</span><span class=p>)</span>
 </span>    <span class=n>ren_win</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>ren</span><span class=p>)</span>
 <span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>iren</span><span class=o>.</span><span class=n>render_window</span> <span class=o>=</span> <span class=n>ren_win</span>
@@ -140,6 +140,6 @@ function registerListener(event, func) {
     <span class=n>iren</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

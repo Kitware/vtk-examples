@@ -87,9 +87,9 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>as_polyline</span><span class=p>(</span><span class=n>points</span><span class=p>,</span> <span class=n>level</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&#39;&#39;&#39;</span>
+<span class=w>    </span><span class=sd>'''</span>
 <span class=hll><span class=sd>    Koch Snowflake as a vtkPolyLine</span>
-</span><span class=sd>    &#39;&#39;&#39;</span>
+</span><span class=sd>    '''</span>
     <span class=c1># Use the points from the previous iteration to create the points of the next</span>
     <span class=c1># level. There is an assumption on my part that the curve is traversed in a</span>
     <span class=c1># counterclockwise fashion. If the initial triangle above is written to</span>
@@ -99,7 +99,7 @@ function registerListener(event, func) {
 </span>        <span class=c1># The first point of the previous vtkPoints is the first point of the next vtkPoints.</span>
         <span class=n>temp</span><span class=o>.</span><span class=n>InsertNextPoint</span><span class=p>(</span><span class=o>*</span><span class=n>points</span><span class=o>.</span><span class=n>GetPoint</span><span class=p>(</span><span class=mi>0</span><span class=p>))</span>
 
-        <span class=c1># Iterate over &#39;edges&#39; in the vtkPoints</span>
+        <span class=c1># Iterate over 'edges' in the vtkPoints</span>
         <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>points</span><span class=o>.</span><span class=n>GetNumberOfPoints</span><span class=p>()):</span>
             <span class=n>x0</span><span class=p>,</span> <span class=n>y0</span><span class=p>,</span> <span class=n>z0</span> <span class=o>=</span> <span class=n>points</span><span class=o>.</span><span class=n>GetPoint</span><span class=p>(</span><span class=n>i</span> <span class=o>-</span> <span class=mi>1</span><span class=p>)</span>
             <span class=n>x1</span><span class=p>,</span> <span class=n>y1</span><span class=p>,</span> <span class=n>z1</span> <span class=o>=</span> <span class=n>points</span><span class=o>.</span><span class=n>GetPoint</span><span class=p>(</span><span class=n>i</span><span class=p>)</span>
@@ -132,9 +132,9 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>as_triangles</span><span class=p>(</span><span class=n>indices</span><span class=p>,</span> <span class=n>cellarray</span><span class=p>,</span> <span class=n>level</span><span class=p>,</span> <span class=n>data</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&#39;&#39;&#39;</span>
+<span class=w>    </span><span class=sd>'''</span>
 <span class=sd>    Koch Snowflake as a collection of vtkTriangles</span>
-<span class=sd>    &#39;&#39;&#39;</span>
+<span class=sd>    '''</span>
     <span class=k>if</span> <span class=nb>len</span><span class=p>(</span><span class=n>indices</span><span class=p>)</span> <span class=o>&gt;=</span> <span class=mi>3</span><span class=p>:</span>
         <span class=n>stride</span> <span class=o>=</span> <span class=nb>len</span><span class=p>(</span><span class=n>indices</span><span class=p>)</span> <span class=o>//</span> <span class=mi>4</span>
         <span class=n>indices</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>indices</span><span class=p>[</span><span class=o>-</span><span class=mi>1</span><span class=p>]</span> <span class=o>+</span> <span class=mi>1</span><span class=p>)</span>
@@ -165,12 +165,12 @@ function registerListener(event, func) {
 
     <span class=n>outline_pd</span> <span class=o>=</span> <span class=n>as_polyline</span><span class=p>(</span><span class=n>points</span><span class=p>,</span> <span class=n>LEVEL</span><span class=p>)</span>
     <span class=c1># You have already gone through the trouble of putting the points in the</span>
-    <span class=c1># right places - so &#39;all&#39; you need to do now is to create polygons from the</span>
+    <span class=c1># right places - so 'all' you need to do now is to create polygons from the</span>
     <span class=c1># points that are in the vtkPoints.</span>
 
     <span class=c1># The points that are passed in, have an overlap of the beginning and the</span>
     <span class=c1># end. For this next trick, I will need a list of the indices in the</span>
-    <span class=c1># vtkPoints. They&#39;re consecutive, so thats pretty straightforward.</span>
+    <span class=c1># vtkPoints. They're consecutive, so thats pretty straightforward.</span>
 
     <span class=n>indices</span> <span class=o>=</span> <span class=p>[</span><span class=n>i</span> <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=n>outline_pd</span><span class=o>.</span><span class=n>GetPoints</span><span class=p>()</span><span class=o>.</span><span class=n>GetNumberOfPoints</span><span class=p>()</span> <span class=o>+</span> <span class=mi>1</span><span class=p>)]</span>
 <span class=hll>    <span class=n>triangles</span> <span class=o>=</span> <span class=n>vtkCellArray</span><span class=p>()</span>
@@ -182,7 +182,7 @@ function registerListener(event, func) {
     <span class=c1># the iteration of the Koch snowflake.</span>
 <span class=hll>    <span class=n>data</span> <span class=o>=</span> <span class=n>vtkIntArray</span><span class=p>()</span>
 </span>    <span class=n>data</span><span class=o>.</span><span class=n>SetNumberOfComponents</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
-    <span class=n>data</span><span class=o>.</span><span class=n>SetName</span><span class=p>(</span><span class=s1>&#39;Iteration Level&#39;</span><span class=p>)</span>
+    <span class=n>data</span><span class=o>.</span><span class=n>SetName</span><span class=p>(</span><span class=s1>'Iteration Level'</span><span class=p>)</span>
 
     <span class=c1># This is the starting triangle.</span>
 <span class=hll>    <span class=n>t</span> <span class=o>=</span> <span class=n>vtkTriangle</span><span class=p>()</span>
@@ -237,10 +237,10 @@ function registerListener(event, func) {
 </span>    <span class=n>renw</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>outline_ren</span><span class=p>)</span>
     <span class=n>renw</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>triangle_ren</span><span class=p>)</span>
     <span class=n>renw</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>800</span><span class=p>,</span> <span class=mi>400</span><span class=p>)</span>
-    <span class=n>renw</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;KochSnowflake&#39;</span><span class=p>)</span>
+    <span class=n>renw</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>'KochSnowflake'</span><span class=p>)</span>
 
-    <span class=n>outline_ren</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;CornFlowerBLue&#39;</span><span class=p>))</span>
-    <span class=n>triangle_ren</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;MistyRose&#39;</span><span class=p>))</span>
+    <span class=n>outline_ren</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'CornFlowerBLue'</span><span class=p>))</span>
+    <span class=n>triangle_ren</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'MistyRose'</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>iren</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renw</span><span class=p>)</span>
@@ -250,6 +250,6 @@ function registerListener(event, func) {
     <span class=n>iren</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

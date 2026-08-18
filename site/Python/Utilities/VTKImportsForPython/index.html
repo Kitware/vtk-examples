@@ -72,19 +72,19 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_program_parameters</span><span class=p>(</span><span class=n>argv</span><span class=p>):</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>argparse</span>
-    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;Generate import statements for the VTK classes in your Python code.&#39;</span>
-    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;</span>
+    <span class=n>description</span> <span class=o>=</span> <span class=s1>'Generate import statements for the VTK classes in your Python code.'</span>
+    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>'''</span>
 <span class=s1>The output will contain program name(s) followed by the import statements.</span>
 <span class=s1>You can specify a folder for the Python sources or paths to several sources.</span>
 
 <span class=s1>Note: If there are spaces in the paths, enclose the path in quotes.</span>
-<span class=s1>    &#39;&#39;&#39;</span>
+<span class=s1>    '''</span>
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
                                      <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawTextHelpFormatter</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-j&#39;</span><span class=p>,</span> <span class=s1>&#39;--json&#39;</span><span class=p>,</span>
-                        <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The path to the VTK JSON file (modules.json).&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;sources&#39;</span><span class=p>,</span> <span class=n>nargs</span><span class=o>=</span><span class=s1>&#39;+&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The path to a folder of Python files or to a Python file.&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-f&#39;</span><span class=p>,</span> <span class=s1>&#39;--file&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The file name to write the output too.&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-j'</span><span class=p>,</span> <span class=s1>'--json'</span><span class=p>,</span>
+                        <span class=n>help</span><span class=o>=</span><span class=s1>'The path to the VTK JSON file (modules.json).'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'sources'</span><span class=p>,</span> <span class=n>nargs</span><span class=o>=</span><span class=s1>'+'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'The path to a folder of Python files or to a Python file.'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-f'</span><span class=p>,</span> <span class=s1>'--file'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'The file name to write the output too.'</span><span class=p>)</span>
     <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
     <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>json</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>sources</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>file</span>
 
@@ -92,59 +92,59 @@ function registerListener(event, func) {
 <span class=k>class</span><span class=w> </span><span class=nc>Patterns</span><span class=p>:</span>
     <span class=n>vtk_patterns</span> <span class=o>=</span> <span class=p>[</span>
         <span class=c1># Class pattern.</span>
-        <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>&#39;(vtk[a-zA-Z0-9]+)\(&#39;</span><span class=p>),</span>
+        <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>'(vtk[a-zA-Z0-9]+)\('</span><span class=p>),</span>
         <span class=c1># Constants pattern.</span>
-        <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>&#39;(VTK_[A-Z_]+)&#39;</span><span class=p>),</span>
+        <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>'(VTK_[A-Z_]+)'</span><span class=p>),</span>
         <span class=c1># Special patterns ...</span>
-        <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>&#39;(mutable)\(&#39;</span><span class=p>),</span>
+        <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>'(mutable)\('</span><span class=p>),</span>
         <span class=c1># Handle vtkClass.yyy</span>
-        <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>&#39;(vtk[a-zA-Z0-9]+)\.&#39;</span><span class=p>),</span>
+        <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>'(vtk[a-zA-Z0-9]+)\.'</span><span class=p>),</span>
         <span class=c1># Handle class xx(vtkClass):</span>
-        <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>&#39;\( ?(vtk[a-zA-Z0-9]+) ?\)&#39;</span><span class=p>),</span>
+        <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>'\( ?(vtk[a-zA-Z0-9]+) ?\)'</span><span class=p>),</span>
     <span class=p>]</span>
     <span class=n>skip_patterns</span> <span class=o>=</span> <span class=p>[</span>
         <span class=c1># Empty lines</span>
-        <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>&#39;^ *$&#39;</span><span class=p>),</span>
+        <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>'^ *$'</span><span class=p>),</span>
         <span class=c1># import ...</span>
-        <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>&#39;^ *import&#39;</span><span class=p>),</span>
+        <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>'^ *import'</span><span class=p>),</span>
         <span class=c1># from ... import ...</span>
-        <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>&#39;^ *from[ \S]+import&#39;</span><span class=p>),</span>
+        <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>'^ *from[ \S]+import'</span><span class=p>),</span>
         <span class=c1># Any vtk class on its own</span>
-        <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>&#39;^ *vtk[a-zA-Z0-9]+,*$&#39;</span><span class=p>),</span>
+        <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>'^ *vtk[a-zA-Z0-9]+,*$'</span><span class=p>),</span>
         <span class=c1># Single closing bracket</span>
-        <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>&#39;^ *\)+$&#39;</span><span class=p>),</span>
+        <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>'^ *\)+$'</span><span class=p>),</span>
     <span class=p>]</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_available_modules</span><span class=p>(</span><span class=n>jpath</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    From the parsed JSON data file make a list of the VTK modules.</span>
 
 <span class=sd>    :param jpath: The JSON file path.</span>
 <span class=sd>    :return: VTK Classes and modules.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=k>with</span> <span class=nb>open</span><span class=p>(</span><span class=n>jpath</span><span class=p>)</span> <span class=k>as</span> <span class=n>data_file</span><span class=p>:</span>
         <span class=n>json_data</span> <span class=o>=</span> <span class=n>json</span><span class=o>.</span><span class=n>load</span><span class=p>(</span><span class=n>data_file</span><span class=p>)</span>
 
     <span class=n>res</span> <span class=o>=</span> <span class=nb>list</span><span class=p>()</span>
-    <span class=k>for</span> <span class=n>k</span> <span class=ow>in</span> <span class=n>json_data</span><span class=p>[</span><span class=s1>&#39;modules&#39;</span><span class=p>]</span><span class=o>.</span><span class=n>keys</span><span class=p>():</span>
-        <span class=n>m</span> <span class=o>=</span> <span class=n>k</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=s1>&#39;::&#39;</span><span class=p>)</span>
+    <span class=k>for</span> <span class=n>k</span> <span class=ow>in</span> <span class=n>json_data</span><span class=p>[</span><span class=s1>'modules'</span><span class=p>]</span><span class=o>.</span><span class=n>keys</span><span class=p>():</span>
+        <span class=n>m</span> <span class=o>=</span> <span class=n>k</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=s1>'::'</span><span class=p>)</span>
         <span class=k>if</span> <span class=nb>len</span><span class=p>(</span><span class=n>m</span><span class=p>)</span> <span class=o>&gt;</span> <span class=mi>1</span><span class=p>:</span>
-            <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;vtk</span><span class=si>{</span><span class=n>m</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+            <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=sa>f</span><span class=s1>'vtk</span><span class=si>{</span><span class=n>m</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
     <span class=k>return</span> <span class=nb>sorted</span><span class=p>(</span><span class=n>res</span><span class=p>)</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_classes_constants</span><span class=p>(</span><span class=n>paths</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Extract the vtk class names and constants from the path.</span>
 
 <span class=sd>    :param paths: The path(s) to the Python file(s).</span>
 <span class=sd>    :return: The file name, the VTK classes and any VTK constants.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 
     <span class=n>res</span> <span class=o>=</span> <span class=n>collections</span><span class=o>.</span><span class=n>defaultdict</span><span class=p>(</span><span class=nb>set</span><span class=p>)</span>
     <span class=k>for</span> <span class=n>path</span> <span class=ow>in</span> <span class=n>paths</span><span class=p>:</span>
-        <span class=n>content</span> <span class=o>=</span> <span class=n>path</span><span class=o>.</span><span class=n>read_text</span><span class=p>()</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=s1>&#39;</span><span class=se>\n</span><span class=s1>&#39;</span><span class=p>)</span>
+        <span class=n>content</span> <span class=o>=</span> <span class=n>path</span><span class=o>.</span><span class=n>read_text</span><span class=p>()</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=s1>'</span><span class=se>\n</span><span class=s1>'</span><span class=p>)</span>
         <span class=k>for</span> <span class=n>line</span> <span class=ow>in</span> <span class=n>content</span><span class=p>:</span>
             <span class=k>for</span> <span class=n>pattern</span> <span class=ow>in</span> <span class=n>Patterns</span><span class=o>.</span><span class=n>skip_patterns</span><span class=p>:</span>
                 <span class=n>m</span> <span class=o>=</span> <span class=n>pattern</span><span class=o>.</span><span class=n>search</span><span class=p>(</span><span class=n>line</span><span class=p>)</span>
@@ -162,39 +162,39 @@ function registerListener(event, func) {
     <span class=n>name_keys</span> <span class=o>=</span> <span class=nb>sorted</span><span class=p>(</span><span class=n>imports</span><span class=o>.</span><span class=n>keys</span><span class=p>())</span>
     <span class=n>res</span> <span class=o>=</span> <span class=nb>list</span><span class=p>()</span>
     <span class=k>for</span> <span class=n>name</span> <span class=ow>in</span> <span class=n>name_keys</span><span class=p>:</span>
-        <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;</span><span class=se>\n</span><span class=si>{</span><span class=n>name</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+        <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=sa>f</span><span class=s1>'</span><span class=se>\n</span><span class=si>{</span><span class=n>name</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
         <span class=n>module_keys</span> <span class=o>=</span> <span class=nb>sorted</span><span class=p>(</span><span class=n>imports</span><span class=p>[</span><span class=n>name</span><span class=p>]</span><span class=o>.</span><span class=n>keys</span><span class=p>())</span>
         <span class=k>for</span> <span class=n>module</span> <span class=ow>in</span> <span class=n>module_keys</span><span class=p>:</span>
             <span class=n>classes</span> <span class=o>=</span> <span class=nb>sorted</span><span class=p>(</span><span class=nb>list</span><span class=p>(</span><span class=n>imports</span><span class=p>[</span><span class=n>name</span><span class=p>][</span><span class=n>module</span><span class=p>]))</span>
             <span class=k>if</span> <span class=nb>len</span><span class=p>(</span><span class=n>classes</span><span class=p>)</span> <span class=o>==</span> <span class=mi>1</span><span class=p>:</span>
-                <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;from vtkmodules.</span><span class=si>{</span><span class=n>module</span><span class=si>}</span><span class=s1> import </span><span class=si>{</span><span class=n>classes</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+                <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=sa>f</span><span class=s1>'from vtkmodules.</span><span class=si>{</span><span class=n>module</span><span class=si>}</span><span class=s1> import </span><span class=si>{</span><span class=n>classes</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
             <span class=k>else</span><span class=p>:</span>
                 <span class=n>c_list</span> <span class=o>=</span> <span class=nb>list</span><span class=p>()</span>
                 <span class=k>for</span> <span class=n>c</span> <span class=ow>in</span> <span class=n>classes</span><span class=p>:</span>
-                    <span class=n>c_list</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;    </span><span class=si>{</span><span class=n>c</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
-                <span class=n>s</span> <span class=o>=</span> <span class=s1>&#39;(</span><span class=se>\n</span><span class=s1>&#39;</span>
-                <span class=n>s</span> <span class=o>+=</span> <span class=s1>&#39;,</span><span class=se>\n</span><span class=s1>&#39;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>c_list</span><span class=p>)</span>
-                <span class=n>s</span> <span class=o>+=</span> <span class=s1>&#39;</span><span class=se>\n</span><span class=s1>    )&#39;</span>
-                <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;from vtkmodules.</span><span class=si>{</span><span class=n>module</span><span class=si>}</span><span class=s1> import </span><span class=si>{</span><span class=n>s</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
-        <span class=n>additional_modules</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;vtkInteractionStyle&#39;</span><span class=p>,</span> <span class=s1>&#39;vtkRenderingFreeType&#39;</span><span class=p>,</span>
-                              <span class=s1>&#39;vtkRenderingContextOpenGL2&#39;</span><span class=p>,</span> <span class=s1>&#39;vtkRenderingOpenGL2&#39;</span><span class=p>,</span> <span class=s1>&#39;vtkRenderingVolumeOpenGL2&#39;</span><span class=p>,</span>
-                              <span class=s1>&#39;vtkRenderingUI&#39;</span><span class=p>]</span>
+                    <span class=n>c_list</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=sa>f</span><span class=s1>'    </span><span class=si>{</span><span class=n>c</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
+                <span class=n>s</span> <span class=o>=</span> <span class=s1>'(</span><span class=se>\n</span><span class=s1>'</span>
+                <span class=n>s</span> <span class=o>+=</span> <span class=s1>',</span><span class=se>\n</span><span class=s1>'</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>c_list</span><span class=p>)</span>
+                <span class=n>s</span> <span class=o>+=</span> <span class=s1>'</span><span class=se>\n</span><span class=s1>    )'</span>
+                <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=sa>f</span><span class=s1>'from vtkmodules.</span><span class=si>{</span><span class=n>module</span><span class=si>}</span><span class=s1> import </span><span class=si>{</span><span class=n>s</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
+        <span class=n>additional_modules</span> <span class=o>=</span> <span class=p>[</span><span class=s1>'vtkInteractionStyle'</span><span class=p>,</span> <span class=s1>'vtkRenderingFreeType'</span><span class=p>,</span>
+                              <span class=s1>'vtkRenderingContextOpenGL2'</span><span class=p>,</span> <span class=s1>'vtkRenderingOpenGL2'</span><span class=p>,</span> <span class=s1>'vtkRenderingVolumeOpenGL2'</span><span class=p>,</span>
+                              <span class=s1>'vtkRenderingUI'</span><span class=p>]</span>
         <span class=n>comments</span> <span class=o>=</span> <span class=p>[</span>
-            <span class=s1>&#39;&#39;</span><span class=p>,</span>
-            <span class=s1>&#39;# You may need to uncomment one or more of the following imports.&#39;</span><span class=p>,</span>
-            <span class=s1>&#39;# If vtkRenderWindow is used and you want to use OpenGL,&#39;</span><span class=p>,</span>
-            <span class=s1>&#39;#   you also need the vtkRenderingOpenGL2 module.&#39;</span><span class=p>,</span>
-            <span class=s1>&#39;# If vtkRenderWindowInteractor is used, uncomment vtkInteractionStyle&#39;</span><span class=p>,</span>
-            <span class=s1>&#39;# If text rendering is used, uncomment vtkRenderingFreeType.&#39;</span><span class=p>,</span>
-            <span class=s1>&#39;#&#39;</span><span class=p>,</span>
-            <span class=s1>&#39;# If using PyCharm, preface each one you select with this line:&#39;</span><span class=p>,</span>
-            <span class=s1>&#39;# noinspection PyUnresolvedReferences&#39;</span><span class=p>,</span>
-            <span class=s1>&#39;#&#39;</span><span class=p>,</span>
+            <span class=s1>''</span><span class=p>,</span>
+            <span class=s1>'# You may need to uncomment one or more of the following imports.'</span><span class=p>,</span>
+            <span class=s1>'# If vtkRenderWindow is used and you want to use OpenGL,'</span><span class=p>,</span>
+            <span class=s1>'#   you also need the vtkRenderingOpenGL2 module.'</span><span class=p>,</span>
+            <span class=s1>'# If vtkRenderWindowInteractor is used, uncomment vtkInteractionStyle'</span><span class=p>,</span>
+            <span class=s1>'# If text rendering is used, uncomment vtkRenderingFreeType.'</span><span class=p>,</span>
+            <span class=s1>'#'</span><span class=p>,</span>
+            <span class=s1>'# If using PyCharm, preface each one you select with this line:'</span><span class=p>,</span>
+            <span class=s1>'# noinspection PyUnresolvedReferences'</span><span class=p>,</span>
+            <span class=s1>'#'</span><span class=p>,</span>
         <span class=p>]</span>
         <span class=n>res</span> <span class=o>+=</span> <span class=n>comments</span>
         <span class=k>for</span> <span class=n>module</span> <span class=ow>in</span> <span class=nb>sorted</span><span class=p>(</span><span class=n>additional_modules</span><span class=p>):</span>
-            <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;# import vtkmodules.</span><span class=si>{</span><span class=n>module</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
-        <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;&#39;</span><span class=p>)</span>
+            <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=sa>f</span><span class=s1>'# import vtkmodules.</span><span class=si>{</span><span class=n>module</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
+        <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>''</span><span class=p>)</span>
     <span class=k>return</span> <span class=n>res</span>
 
 
@@ -202,49 +202,49 @@ function registerListener(event, func) {
     <span class=n>use_json</span> <span class=o>=</span> <span class=ow>not</span> <span class=n>vtk_version_ok</span><span class=p>(</span><span class=mi>9</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>20210918</span><span class=p>)</span>
     <span class=k>if</span> <span class=n>use_json</span><span class=p>:</span>
         <span class=k>if</span> <span class=ow>not</span> <span class=n>json_path</span><span class=p>:</span>
-            <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;modules.json (from your VTK build directory) is needed.&#39;</span><span class=p>)</span>
+            <span class=nb>print</span><span class=p>(</span><span class=s1>'modules.json (from your VTK build directory) is needed.'</span><span class=p>)</span>
             <span class=k>return</span>
         <span class=n>jpath</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>json_path</span><span class=p>)</span>
         <span class=k>if</span> <span class=n>jpath</span><span class=o>.</span><span class=n>is_dir</span><span class=p>():</span>
-            <span class=n>jpath</span> <span class=o>=</span> <span class=n>jpath</span> <span class=o>/</span> <span class=s1>&#39;modules.json&#39;</span>
+            <span class=n>jpath</span> <span class=o>=</span> <span class=n>jpath</span> <span class=o>/</span> <span class=s1>'modules.json'</span>
         <span class=k>if</span> <span class=ow>not</span> <span class=n>jpath</span><span class=o>.</span><span class=n>is_file</span><span class=p>():</span>
-            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;Non existent JSON file: </span><span class=si>{</span><span class=n>jpath</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'Non existent JSON file: </span><span class=si>{</span><span class=n>jpath</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
     <span class=k>else</span><span class=p>:</span>
         <span class=n>jpath</span> <span class=o>=</span> <span class=kc>None</span>
 
     <span class=n>paths</span> <span class=o>=</span> <span class=nb>list</span><span class=p>()</span>
     <span class=k>for</span> <span class=n>fn</span> <span class=ow>in</span> <span class=n>src_paths</span><span class=p>:</span>
         <span class=n>path</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>fn</span><span class=p>)</span>
-        <span class=k>if</span> <span class=n>path</span><span class=o>.</span><span class=n>is_file</span><span class=p>()</span> <span class=ow>and</span> <span class=n>path</span><span class=o>.</span><span class=n>suffix</span> <span class=o>==</span> <span class=s1>&#39;.py&#39;</span><span class=p>:</span>
+        <span class=k>if</span> <span class=n>path</span><span class=o>.</span><span class=n>is_file</span><span class=p>()</span> <span class=ow>and</span> <span class=n>path</span><span class=o>.</span><span class=n>suffix</span> <span class=o>==</span> <span class=s1>'.py'</span><span class=p>:</span>
             <span class=n>paths</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>path</span><span class=p>)</span>
         <span class=k>elif</span> <span class=n>path</span><span class=o>.</span><span class=n>is_dir</span><span class=p>():</span>
-            <span class=n>path_list</span> <span class=o>=</span> <span class=nb>list</span><span class=p>(</span><span class=n>Path</span><span class=p>(</span><span class=n>fn</span><span class=p>)</span><span class=o>.</span><span class=n>rglob</span><span class=p>(</span><span class=s1>&#39;*.py&#39;</span><span class=p>))</span>
+            <span class=n>path_list</span> <span class=o>=</span> <span class=nb>list</span><span class=p>(</span><span class=n>Path</span><span class=p>(</span><span class=n>fn</span><span class=p>)</span><span class=o>.</span><span class=n>rglob</span><span class=p>(</span><span class=s1>'*.py'</span><span class=p>))</span>
             <span class=n>program_path</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=vm>__file__</span><span class=p>)</span>
             <span class=k>for</span> <span class=n>path</span> <span class=ow>in</span> <span class=n>path_list</span><span class=p>:</span>
                 <span class=k>if</span> <span class=n>path</span><span class=o>.</span><span class=n>resolve</span><span class=p>()</span> <span class=o>!=</span> <span class=n>program_path</span><span class=o>.</span><span class=n>resolve</span><span class=p>():</span>
                     <span class=n>paths</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>path</span><span class=p>)</span>
         <span class=k>else</span><span class=p>:</span>
-            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;Non existent path: </span><span class=si>{</span><span class=n>path</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'Non existent path: </span><span class=si>{</span><span class=n>path</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
 
     <span class=n>classes_constants</span> <span class=o>=</span> <span class=n>get_classes_constants</span><span class=p>(</span><span class=n>paths</span><span class=p>)</span>
     <span class=k>if</span> <span class=ow>not</span> <span class=n>classes_constants</span><span class=p>:</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;No classes or constants were present.&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'No classes or constants were present.'</span><span class=p>)</span>
         <span class=k>return</span>
 
     <span class=k>if</span> <span class=n>use_json</span><span class=p>:</span>
         <span class=n>vtk_modules</span> <span class=o>=</span> <span class=n>get_available_modules</span><span class=p>(</span><span class=n>jpath</span><span class=p>)</span>
     <span class=k>else</span><span class=p>:</span>
-        <span class=n>vtklib</span> <span class=o>=</span> <span class=n>importlib</span><span class=o>.</span><span class=n>__import__</span><span class=p>(</span><span class=s1>&#39;vtkmodules&#39;</span><span class=p>)</span>
+        <span class=n>vtklib</span> <span class=o>=</span> <span class=n>importlib</span><span class=o>.</span><span class=n>__import__</span><span class=p>(</span><span class=s1>'vtkmodules'</span><span class=p>)</span>
         <span class=n>vtk_modules</span> <span class=o>=</span> <span class=nb>sorted</span><span class=p>(</span><span class=n>vtklib</span><span class=o>.</span><span class=n>__all__</span><span class=p>)</span>
 
     <span class=n>name_to_module</span> <span class=o>=</span> <span class=nb>dict</span><span class=p>()</span>
     <span class=k>for</span> <span class=n>module</span> <span class=ow>in</span> <span class=n>vtk_modules</span><span class=p>:</span>
         <span class=k>try</span><span class=p>:</span>
-            <span class=n>module_dict</span> <span class=o>=</span> <span class=n>importlib</span><span class=o>.</span><span class=n>import_module</span><span class=p>(</span><span class=s1>&#39;vtkmodules.&#39;</span> <span class=o>+</span> <span class=n>module</span><span class=p>)</span><span class=o>.</span><span class=vm>__dict__</span>
+            <span class=n>module_dict</span> <span class=o>=</span> <span class=n>importlib</span><span class=o>.</span><span class=n>import_module</span><span class=p>(</span><span class=s1>'vtkmodules.'</span> <span class=o>+</span> <span class=n>module</span><span class=p>)</span><span class=o>.</span><span class=vm>__dict__</span>
             <span class=k>for</span> <span class=n>name</span> <span class=ow>in</span> <span class=n>module_dict</span><span class=p>:</span>
                 <span class=n>name_to_module</span><span class=p>[</span><span class=n>name</span><span class=p>]</span> <span class=o>=</span> <span class=n>module</span>
         <span class=k>except</span> <span class=ne>ModuleNotFoundError</span><span class=p>:</span>
-            <span class=c1># print(module, &#39; not found.&#39;)</span>
+            <span class=c1># print(module, ' not found.')</span>
             <span class=k>continue</span>
 
     <span class=n>imports</span> <span class=o>=</span> <span class=n>collections</span><span class=o>.</span><span class=n>defaultdict</span><span class=p>(</span><span class=k>lambda</span><span class=p>:</span> <span class=n>collections</span><span class=o>.</span><span class=n>defaultdict</span><span class=p>(</span><span class=nb>set</span><span class=p>))</span>
@@ -257,22 +257,22 @@ function registerListener(event, func) {
     <span class=n>res</span> <span class=o>=</span> <span class=n>format_imports</span><span class=p>(</span><span class=n>imports</span><span class=p>)</span>
     <span class=k>if</span> <span class=n>ofn</span><span class=p>:</span>
         <span class=n>path</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>ofn</span><span class=p>)</span>
-        <span class=k>if</span> <span class=n>path</span><span class=o>.</span><span class=n>suffix</span> <span class=o>==</span> <span class=s1>&#39;&#39;</span><span class=p>:</span>
-            <span class=n>path</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>ofn</span><span class=p>)</span><span class=o>.</span><span class=n>with_suffix</span><span class=p>(</span><span class=s1>&#39;.txt&#39;</span><span class=p>)</span>
-        <span class=n>path</span><span class=o>.</span><span class=n>write_text</span><span class=p>(</span><span class=s1>&#39;</span><span class=se>\n</span><span class=s1>&#39;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>res</span><span class=p>))</span>
+        <span class=k>if</span> <span class=n>path</span><span class=o>.</span><span class=n>suffix</span> <span class=o>==</span> <span class=s1>''</span><span class=p>:</span>
+            <span class=n>path</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>ofn</span><span class=p>)</span><span class=o>.</span><span class=n>with_suffix</span><span class=p>(</span><span class=s1>'.txt'</span><span class=p>)</span>
+        <span class=n>path</span><span class=o>.</span><span class=n>write_text</span><span class=p>(</span><span class=s1>'</span><span class=se>\n</span><span class=s1>'</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>res</span><span class=p>))</span>
     <span class=k>else</span><span class=p>:</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;</span><span class=se>\n</span><span class=s1>&#39;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>res</span><span class=p>))</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'</span><span class=se>\n</span><span class=s1>'</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>res</span><span class=p>))</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>vtk_version_ok</span><span class=p>(</span><span class=n>major</span><span class=p>,</span> <span class=n>minor</span><span class=p>,</span> <span class=n>build</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Check the VTK version.</span>
 
 <span class=sd>    :param major: Requested major version.</span>
 <span class=sd>    :param minor: Requested minor version.</span>
 <span class=sd>    :param build: Requested build version.</span>
 <span class=sd>    :return: True if the requested VTK version is &gt;= the actual VTK version.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=n>requested_version</span> <span class=o>=</span> <span class=p>(</span><span class=mi>100</span> <span class=o>*</span> <span class=nb>int</span><span class=p>(</span><span class=n>major</span><span class=p>)</span> <span class=o>+</span> <span class=nb>int</span><span class=p>(</span><span class=n>minor</span><span class=p>))</span> <span class=o>*</span> <span class=mi>100000000</span> <span class=o>+</span> <span class=nb>int</span><span class=p>(</span><span class=n>build</span><span class=p>)</span>
 <span class=hll>    <span class=n>ver</span> <span class=o>=</span> <span class=n>vtkVersion</span><span class=p>()</span>
 </span>    <span class=n>actual_version</span> <span class=o>=</span> <span class=p>(</span><span class=mi>100</span> <span class=o>*</span> <span class=n>ver</span><span class=o>.</span><span class=n>GetVTKMajorVersion</span><span class=p>()</span> <span class=o>+</span> <span class=n>ver</span><span class=o>.</span><span class=n>GetVTKMinorVersion</span><span class=p>())</span> \
@@ -283,7 +283,7 @@ function registerListener(event, func) {
         <span class=k>return</span> <span class=kc>False</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>sys</span>
 
     <span class=n>json_path</span><span class=p>,</span> <span class=n>src_paths</span><span class=p>,</span> <span class=n>ofn</span> <span class=o>=</span> <span class=n>get_program_parameters</span><span class=p>(</span><span class=n>sys</span><span class=o>.</span><span class=n>argv</span><span class=p>)</span>

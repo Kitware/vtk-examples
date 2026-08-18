@@ -82,8 +82,8 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_program_parameters</span><span class=p>():</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>argparse</span>
-    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;How to render an object in a scene with a glowing outline.&#39;</span>
-    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;</span>
+    <span class=n>description</span> <span class=o>=</span> <span class=s1>'How to render an object in a scene with a glowing outline.'</span>
+    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>'''</span>
 <span class=s1>Parts of a scene are highlighted by applying the render pass to a layered renderer</span>
 <span class=s1> on top of the main scene. For optimal results, actors that form the outline</span>
 <span class=s1> should be brightly colored with lighting disabled. The outline will have the</span>
@@ -91,7 +91,7 @@ function registerListener(event, func) {
 
 <span class=s1>When combined with layered renderers, this creates a very visible highlight without</span>
 <span class=s1> altering the highlighted object.</span>
-<span class=s1>    &#39;&#39;&#39;</span>
+<span class=s1>    '''</span>
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
                                      <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawDescriptionHelpFormatter</span><span class=p>)</span>
     <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
@@ -100,7 +100,7 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>main</span><span class=p>():</span>
     <span class=k>if</span> <span class=ow>not</span> <span class=n>vtk_version_ok</span><span class=p>(</span><span class=mi>9</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>20200909</span><span class=p>):</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;You need VTK version 9.0.20200909 or greater to run this program.&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'You need VTK version 9.0.20200909 or greater to run this program.'</span><span class=p>)</span>
         <span class=k>return</span>
     <span class=n>get_program_parameters</span><span class=p>()</span>
 
@@ -133,7 +133,7 @@ function registerListener(event, func) {
 
 <span class=hll>    <span class=n>coneActorMain</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>coneActorMain</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>coneMapperMain</span><span class=p>)</span>
-    <span class=n>coneActorMain</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetDiffuseColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;LimeGreen&quot;</span><span class=p>))</span>
+    <span class=n>coneActorMain</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetDiffuseColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>"LimeGreen"</span><span class=p>))</span>
 
     <span class=n>renderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>coneActorMain</span><span class=p>)</span>
 
@@ -152,7 +152,7 @@ function registerListener(event, func) {
 
 <span class=hll>    <span class=n>coneActorOutline</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>coneActorOutline</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>coneMapperOutline</span><span class=p>)</span>
-    <span class=n>coneActorOutline</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;Magenta&quot;</span><span class=p>))</span>
+    <span class=n>coneActorOutline</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>"Magenta"</span><span class=p>))</span>
     <span class=n>coneActorOutline</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>LightingOff</span><span class=p>()</span>
 
     <span class=n>rendererOutline</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>coneActorOutline</span><span class=p>)</span>
@@ -160,8 +160,8 @@ function registerListener(event, func) {
     <span class=n>renWin</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>600</span><span class=p>,</span> <span class=mi>600</span><span class=p>)</span>
 
     <span class=n>renderer</span><span class=o>.</span><span class=n>GradientBackgroundOn</span><span class=p>()</span>
-    <span class=n>renderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;DarkSlateGray&quot;</span><span class=p>))</span>
-    <span class=n>renderer</span><span class=o>.</span><span class=n>SetBackground2</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;DarkSlateBlue&quot;</span><span class=p>))</span>
+    <span class=n>renderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>"DarkSlateGray"</span><span class=p>))</span>
+    <span class=n>renderer</span><span class=o>.</span><span class=n>SetBackground2</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>"DarkSlateBlue"</span><span class=p>))</span>
 
     <span class=n>renderer</span><span class=o>.</span><span class=n>ResetCamera</span><span class=p>()</span>
     <span class=n>camera</span> <span class=o>=</span> <span class=n>renderer</span><span class=o>.</span><span class=n>GetActiveCamera</span><span class=p>()</span>
@@ -172,7 +172,7 @@ function registerListener(event, func) {
     <span class=c1># Now set the active camera for the outline</span>
     <span class=n>rendererOutline</span><span class=o>.</span><span class=n>SetActiveCamera</span><span class=p>(</span><span class=n>camera</span><span class=p>)</span>
 
-    <span class=n>renWin</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;OutlineGlowPass&#39;</span><span class=p>)</span>
+    <span class=n>renWin</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>'OutlineGlowPass'</span><span class=p>)</span>
 
     <span class=n>renWin</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
 
@@ -180,14 +180,14 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>vtk_version_ok</span><span class=p>(</span><span class=n>major</span><span class=p>,</span> <span class=n>minor</span><span class=p>,</span> <span class=n>build</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Check the VTK version.</span>
 
 <span class=sd>    :param major: Major version.</span>
 <span class=sd>    :param minor: Minor version.</span>
 <span class=sd>    :param build: Build version.</span>
 <span class=sd>    :return: True if the requested VTK version is greater or equal to the actual VTK version.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=n>needed_version</span> <span class=o>=</span> <span class=mi>10000000000</span> <span class=o>*</span> <span class=nb>int</span><span class=p>(</span><span class=n>major</span><span class=p>)</span> <span class=o>+</span> <span class=mi>100000000</span> <span class=o>*</span> <span class=nb>int</span><span class=p>(</span><span class=n>minor</span><span class=p>)</span> <span class=o>+</span> <span class=nb>int</span><span class=p>(</span><span class=n>build</span><span class=p>)</span>
     <span class=k>try</span><span class=p>:</span>
         <span class=n>vtk_version_number</span> <span class=o>=</span> <span class=n>VTK_VERSION_NUMBER</span>
@@ -201,6 +201,6 @@ function registerListener(event, func) {
         <span class=k>return</span> <span class=kc>False</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

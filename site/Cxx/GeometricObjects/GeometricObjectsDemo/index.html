@@ -127,7 +127,7 @@ function registerListener(event, func) {
 </span>
 <span class=w>  </span><span class=c1>// Set the background color.</span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>unsigned</span><span class=w> </span><span class=kt>char</span><span class=p>,</span><span class=w> </span><span class=mi>4</span><span class=o>&gt;</span><span class=w> </span><span class=n>bkg</span><span class=p>{{</span><span class=mi>51</span><span class=p>,</span><span class=w> </span><span class=mi>77</span><span class=p>,</span><span class=w> </span><span class=mi>102</span><span class=p>,</span><span class=w> </span><span class=mi>255</span><span class=p>}};</span>
-<span class=w>  </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=s>&quot;BkgColor&quot;</span><span class=p>,</span><span class=w> </span><span class=n>bkg</span><span class=p>.</span><span class=n>data</span><span class=p>());</span>
+<span class=w>  </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=s>"BkgColor"</span><span class=p>,</span><span class=w> </span><span class=n>bkg</span><span class=p>.</span><span class=n>data</span><span class=p>());</span>
 
 <span class=w>  </span><span class=c1>// Create container to hold the 3D object generators (sources)</span>
 <span class=hll><span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyDataAlgorithm</span><span class=o>&gt;&gt;</span><span class=w> </span><span class=n>geometricObjectSources</span><span class=p>;</span>
@@ -153,7 +153,7 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTextProperty</span><span class=o>&gt;</span><span class=w> </span><span class=n>textProperty</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>textProperty</span><span class=o>-&gt;</span><span class=n>SetFontSize</span><span class=p>(</span><span class=mi>16</span><span class=p>);</span>
 <span class=w>  </span><span class=n>textProperty</span><span class=o>-&gt;</span><span class=n>SetJustificationToCentered</span><span class=p>();</span>
-<span class=w>  </span><span class=n>textProperty</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;LightGoldenrodYellow&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>textProperty</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"LightGoldenrodYellow"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=w>  </span><span class=c1>// Create a mapper and actor for each object and the corresponding text label</span>
 <span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=kt>unsigned</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>geometricObjectSources</span><span class=p>.</span><span class=n>size</span><span class=p>();</span><span class=w> </span><span class=n>i</span><span class=o>++</span><span class=p>)</span>
@@ -166,7 +166,7 @@ function registerListener(event, func) {
 <span class=hll><span class=w>    </span><span class=n>actors</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>());</span>
 </span><span class=w>    </span><span class=n>actors</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mappers</span><span class=p>[</span><span class=n>i</span><span class=p>]);</span>
 <span class=w>    </span><span class=n>actors</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
-<span class=w>        </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;PeachPuff&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>        </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"PeachPuff"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=hll><span class=w>    </span><span class=n>textmappers</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkTextMapper</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>());</span>
 </span><span class=w>    </span><span class=n>textmappers</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>SetInput</span><span class=p>(</span>
@@ -187,7 +187,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=kt>int</span><span class=w> </span><span class=n>rendererSize</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>300</span><span class=p>;</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderWindow</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;GeometricObjectsDemo&quot;</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"GeometricObjectsDemo"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=n>rendererSize</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=n>gridCols</span><span class=p>,</span><span class=w> </span><span class=n>rendererSize</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=n>gridRows</span><span class=p>);</span>
 
 <span class=w>  </span><span class=c1>// Set up a grid of viewports for each renderer</span>
@@ -200,9 +200,9 @@ function registerListener(event, func) {
 <span class=w>      </span><span class=c1>// Create a renderer for this grid cell</span>
 <span class=hll><span class=w>      </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderer</span><span class=w> </span><span class=o>=</span>
 </span><span class=hll><span class=w>          </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
-</span><span class=w>      </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;BkgColor&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+</span><span class=w>      </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"BkgColor"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
-<span class=w>      </span><span class=c1>// Set the renderer&#39;s viewport dimensions (xmin, ymin, xmax, ymax) within</span>
+<span class=w>      </span><span class=c1>// Set the renderer's viewport dimensions (xmin, ymin, xmax, ymax) within</span>
 <span class=w>      </span><span class=c1>// the render window. Note that for the Y values, we need to subtract the</span>
 <span class=w>      </span><span class=c1>// row index from gridRows because the viewport Y axis points upwards, but</span>
 <span class=w>      </span><span class=c1>// we want to draw the grid from top to down</span>
@@ -249,11 +249,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;GeometricObjectsDemo: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"GeometricObjectsDemo: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>GeometricObjectsDemo</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>GeometricObjectsDemo.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>GeometricObjectsDemo</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

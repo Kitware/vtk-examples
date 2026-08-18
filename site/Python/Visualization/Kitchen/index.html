@@ -83,7 +83,7 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
     <span class=c1># Set the furniture colors.</span>
-    <span class=n>colors</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=s1>&#39;Furniture&#39;</span><span class=p>,</span> <span class=p>[</span><span class=mi>204</span><span class=p>,</span> <span class=mi>204</span><span class=p>,</span> <span class=mi>153</span><span class=p>,</span> <span class=mi>255</span><span class=p>])</span>
+    <span class=n>colors</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=s1>'Furniture'</span><span class=p>,</span> <span class=p>[</span><span class=mi>204</span><span class=p>,</span> <span class=mi>204</span><span class=p>,</span> <span class=mi>153</span><span class=p>,</span> <span class=mi>255</span><span class=p>])</span>
 
     <span class=n>scalarRange</span> <span class=o>=</span> <span class=p>[</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>]</span>
     <span class=n>maxTime</span> <span class=o>=</span> <span class=mi>0</span>
@@ -119,7 +119,7 @@ function registerListener(event, func) {
 </span>    <span class=n>outlineMapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>outlineF</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
 <span class=hll>    <span class=n>outline</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>outline</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>outlineMapper</span><span class=p>)</span>
-    <span class=n>outline</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;LampBlack&#39;</span><span class=p>))</span>
+    <span class=n>outline</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'LampBlack'</span><span class=p>))</span>
 
     <span class=c1>#</span>
     <span class=c1># Set up shaded surfaces (i.e., supporting geometry).</span>
@@ -132,7 +132,7 @@ function registerListener(event, func) {
     <span class=n>mapDoor</span><span class=o>.</span><span class=n>ScalarVisibilityOff</span><span class=p>()</span>
 <span class=hll>    <span class=n>door</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>door</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapDoor</span><span class=p>)</span>
-    <span class=n>door</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Burlywood&#39;</span><span class=p>))</span>
+    <span class=n>door</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Burlywood'</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>window1Geom</span> <span class=o>=</span> <span class=n>vtkStructuredGridGeometryFilter</span><span class=p>()</span>
 </span>    <span class=n>window1Geom</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
@@ -142,7 +142,7 @@ function registerListener(event, func) {
     <span class=n>mapWindow1</span><span class=o>.</span><span class=n>ScalarVisibilityOff</span><span class=p>()</span>
 <span class=hll>    <span class=n>window1</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>window1</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapWindow1</span><span class=p>)</span>
-    <span class=n>window1</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;SkyBlue&#39;</span><span class=p>))</span>
+    <span class=n>window1</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'SkyBlue'</span><span class=p>))</span>
     <span class=n>window1</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetOpacity</span><span class=p>(</span><span class=mf>.6</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>window2Geom</span> <span class=o>=</span> <span class=n>vtkStructuredGridGeometryFilter</span><span class=p>()</span>
@@ -153,7 +153,7 @@ function registerListener(event, func) {
     <span class=n>mapWindow2</span><span class=o>.</span><span class=n>ScalarVisibilityOff</span><span class=p>()</span>
 <span class=hll>    <span class=n>window2</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>window2</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapWindow2</span><span class=p>)</span>
-    <span class=n>window2</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;SkyBlue&#39;</span><span class=p>))</span>
+    <span class=n>window2</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'SkyBlue'</span><span class=p>))</span>
     <span class=n>window2</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetOpacity</span><span class=p>(</span><span class=mf>.6</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>klower1Geom</span> <span class=o>=</span> <span class=n>vtkStructuredGridGeometryFilter</span><span class=p>()</span>
@@ -164,7 +164,7 @@ function registerListener(event, func) {
     <span class=n>mapKlower1</span><span class=o>.</span><span class=n>ScalarVisibilityOff</span><span class=p>()</span>
 <span class=hll>    <span class=n>klower1</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>klower1</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapKlower1</span><span class=p>)</span>
-    <span class=n>klower1</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;EggShell&#39;</span><span class=p>))</span>
+    <span class=n>klower1</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'EggShell'</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>klower2Geom</span> <span class=o>=</span> <span class=n>vtkStructuredGridGeometryFilter</span><span class=p>()</span>
 </span>    <span class=n>klower2Geom</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
@@ -174,7 +174,7 @@ function registerListener(event, func) {
     <span class=n>mapKlower2</span><span class=o>.</span><span class=n>ScalarVisibilityOff</span><span class=p>()</span>
 <span class=hll>    <span class=n>klower2</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>klower2</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapKlower2</span><span class=p>)</span>
-    <span class=n>klower2</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;EggShell&#39;</span><span class=p>))</span>
+    <span class=n>klower2</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'EggShell'</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>klower3Geom</span> <span class=o>=</span> <span class=n>vtkStructuredGridGeometryFilter</span><span class=p>()</span>
 </span>    <span class=n>klower3Geom</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
@@ -184,7 +184,7 @@ function registerListener(event, func) {
     <span class=n>mapKlower3</span><span class=o>.</span><span class=n>ScalarVisibilityOff</span><span class=p>()</span>
 <span class=hll>    <span class=n>klower3</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>klower3</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapKlower3</span><span class=p>)</span>
-    <span class=n>klower3</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;EggShell&#39;</span><span class=p>))</span>
+    <span class=n>klower3</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'EggShell'</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>klower4Geom</span> <span class=o>=</span> <span class=n>vtkStructuredGridGeometryFilter</span><span class=p>()</span>
 </span>    <span class=n>klower4Geom</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
@@ -194,7 +194,7 @@ function registerListener(event, func) {
     <span class=n>mapKlower4</span><span class=o>.</span><span class=n>ScalarVisibilityOff</span><span class=p>()</span>
 <span class=hll>    <span class=n>klower4</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>klower4</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapKlower4</span><span class=p>)</span>
-    <span class=n>klower4</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;EggShell&#39;</span><span class=p>))</span>
+    <span class=n>klower4</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'EggShell'</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>klower5Geom</span> <span class=o>=</span> <span class=n>vtkStructuredGridGeometryFilter</span><span class=p>()</span>
 </span>    <span class=n>klower5Geom</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
@@ -204,7 +204,7 @@ function registerListener(event, func) {
     <span class=n>mapKlower5</span><span class=o>.</span><span class=n>ScalarVisibilityOff</span><span class=p>()</span>
 <span class=hll>    <span class=n>klower5</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>klower5</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapKlower5</span><span class=p>)</span>
-    <span class=n>klower5</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;EggShell&#39;</span><span class=p>))</span>
+    <span class=n>klower5</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'EggShell'</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>klower6Geom</span> <span class=o>=</span> <span class=n>vtkStructuredGridGeometryFilter</span><span class=p>()</span>
 </span>    <span class=n>klower6Geom</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
@@ -214,7 +214,7 @@ function registerListener(event, func) {
     <span class=n>mapKlower6</span><span class=o>.</span><span class=n>ScalarVisibilityOff</span><span class=p>()</span>
 <span class=hll>    <span class=n>klower6</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>klower6</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapKlower6</span><span class=p>)</span>
-    <span class=n>klower6</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;EggShell&#39;</span><span class=p>))</span>
+    <span class=n>klower6</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'EggShell'</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>klower7Geom</span> <span class=o>=</span> <span class=n>vtkStructuredGridGeometryFilter</span><span class=p>()</span>
 </span>    <span class=n>klower7Geom</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
@@ -224,7 +224,7 @@ function registerListener(event, func) {
     <span class=n>mapKlower7</span><span class=o>.</span><span class=n>ScalarVisibilityOff</span><span class=p>()</span>
 <span class=hll>    <span class=n>klower7</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>klower7</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapKlower7</span><span class=p>)</span>
-    <span class=n>klower7</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;EggShell&#39;</span><span class=p>))</span>
+    <span class=n>klower7</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'EggShell'</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>hood1Geom</span> <span class=o>=</span> <span class=n>vtkStructuredGridGeometryFilter</span><span class=p>()</span>
 </span>    <span class=n>hood1Geom</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
@@ -234,7 +234,7 @@ function registerListener(event, func) {
     <span class=n>mapHood1</span><span class=o>.</span><span class=n>ScalarVisibilityOff</span><span class=p>()</span>
 <span class=hll>    <span class=n>hood1</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>hood1</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapHood1</span><span class=p>)</span>
-    <span class=n>hood1</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Silver&#39;</span><span class=p>))</span>
+    <span class=n>hood1</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Silver'</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>hood2Geom</span> <span class=o>=</span> <span class=n>vtkStructuredGridGeometryFilter</span><span class=p>()</span>
 </span>    <span class=n>hood2Geom</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
@@ -244,7 +244,7 @@ function registerListener(event, func) {
     <span class=n>mapHood2</span><span class=o>.</span><span class=n>ScalarVisibilityOff</span><span class=p>()</span>
 <span class=hll>    <span class=n>hood2</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>hood2</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapHood2</span><span class=p>)</span>
-    <span class=n>hood2</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Furniture&#39;</span><span class=p>))</span>
+    <span class=n>hood2</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Furniture'</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>hood3Geom</span> <span class=o>=</span> <span class=n>vtkStructuredGridGeometryFilter</span><span class=p>()</span>
 </span>    <span class=n>hood3Geom</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
@@ -254,7 +254,7 @@ function registerListener(event, func) {
     <span class=n>mapHood3</span><span class=o>.</span><span class=n>ScalarVisibilityOff</span><span class=p>()</span>
 <span class=hll>    <span class=n>hood3</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>hood3</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapHood3</span><span class=p>)</span>
-    <span class=n>hood3</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Furniture&#39;</span><span class=p>))</span>
+    <span class=n>hood3</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Furniture'</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>hood4Geom</span> <span class=o>=</span> <span class=n>vtkStructuredGridGeometryFilter</span><span class=p>()</span>
 </span>    <span class=n>hood4Geom</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
@@ -264,7 +264,7 @@ function registerListener(event, func) {
     <span class=n>mapHood4</span><span class=o>.</span><span class=n>ScalarVisibilityOff</span><span class=p>()</span>
 <span class=hll>    <span class=n>hood4</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>hood4</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapHood4</span><span class=p>)</span>
-    <span class=n>hood4</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Furniture&#39;</span><span class=p>))</span>
+    <span class=n>hood4</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Furniture'</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>hood6Geom</span> <span class=o>=</span> <span class=n>vtkStructuredGridGeometryFilter</span><span class=p>()</span>
 </span>    <span class=n>hood6Geom</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
@@ -274,7 +274,7 @@ function registerListener(event, func) {
     <span class=n>mapHood6</span><span class=o>.</span><span class=n>ScalarVisibilityOff</span><span class=p>()</span>
 <span class=hll>    <span class=n>hood6</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>hood6</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapHood6</span><span class=p>)</span>
-    <span class=n>hood6</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Furniture&#39;</span><span class=p>))</span>
+    <span class=n>hood6</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Furniture'</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>cookingPlateGeom</span> <span class=o>=</span> <span class=n>vtkStructuredGridGeometryFilter</span><span class=p>()</span>
 </span>    <span class=n>cookingPlateGeom</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
@@ -284,7 +284,7 @@ function registerListener(event, func) {
     <span class=n>mapCookingPlate</span><span class=o>.</span><span class=n>ScalarVisibilityOff</span><span class=p>()</span>
 <span class=hll>    <span class=n>cookingPlate</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>cookingPlate</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapCookingPlate</span><span class=p>)</span>
-    <span class=n>cookingPlate</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Tomato&#39;</span><span class=p>))</span>
+    <span class=n>cookingPlate</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Tomato'</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>filterGeom</span> <span class=o>=</span> <span class=n>vtkStructuredGridGeometryFilter</span><span class=p>()</span>
 </span>    <span class=n>filterGeom</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
@@ -294,7 +294,7 @@ function registerListener(event, func) {
     <span class=n>mapFilter</span><span class=o>.</span><span class=n>ScalarVisibilityOff</span><span class=p>()</span>
 <span class=hll>    <span class=n>sgfilter</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>sgfilter</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapFilter</span><span class=p>)</span>
-    <span class=n>sgfilter</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Furniture&#39;</span><span class=p>))</span>
+    <span class=n>sgfilter</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Furniture'</span><span class=p>))</span>
     <span class=c1>#</span>
     <span class=c1># regular streamlines</span>
     <span class=c1>#</span>
@@ -323,7 +323,7 @@ function registerListener(event, func) {
 
 <span class=hll>    <span class=n>lines</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>lines</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>streamersMapper</span><span class=p>)</span>
-    <span class=n>lines</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Black&#39;</span><span class=p>))</span>
+    <span class=n>lines</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Black'</span><span class=p>))</span>
 
     <span class=n>aren</span><span class=o>.</span><span class=n>TwoSidedLightingOn</span><span class=p>()</span>
 
@@ -348,7 +348,7 @@ function registerListener(event, func) {
     <span class=n>aren</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>lines</span><span class=p>)</span>
     <span class=n>aren</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>rake</span><span class=p>)</span>
 
-    <span class=n>aren</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;SlateGray&#39;</span><span class=p>))</span>
+    <span class=n>aren</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'SlateGray'</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>aCamera</span> <span class=o>=</span> <span class=n>vtkCamera</span><span class=p>()</span>
 </span>    <span class=n>aren</span><span class=o>.</span><span class=n>SetActiveCamera</span><span class=p>(</span><span class=n>aCamera</span><span class=p>)</span>
@@ -364,7 +364,7 @@ function registerListener(event, func) {
 
     <span class=n>renWin</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>640</span><span class=p>,</span> <span class=mi>512</span><span class=p>)</span>
     <span class=n>renWin</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
-    <span class=n>renWin</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;Kitchen&#39;</span><span class=p>)</span>
+    <span class=n>renWin</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>'Kitchen'</span><span class=p>)</span>
 
     <span class=c1># interact with data</span>
     <span class=n>iren</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
@@ -372,18 +372,18 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_program_parameters</span><span class=p>():</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>argparse</span>
-    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;Flow velocity computed for a small kitchen (top and side view).&#39;</span>
-    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;</span>
+    <span class=n>description</span> <span class=o>=</span> <span class=s1>'Flow velocity computed for a small kitchen (top and side view).'</span>
+    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>'''</span>
 <span class=s1>    Forty streamlines start along the rake positioned under the window.</span>
 <span class=s1>    Some eventually travel over the hot stove and are convected upwards.</span>
-<span class=s1>    &#39;&#39;&#39;</span>
+<span class=s1>    '''</span>
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
                                      <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawDescriptionHelpFormatter</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;filename&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;kitchen.vtk&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'filename'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'kitchen.vtk'</span><span class=p>)</span>
     <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
     <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>filename</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

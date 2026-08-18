@@ -64,13 +64,13 @@ function registerListener(event, func) {
 <span class=c1># )</span>
 
 <span class=k>def</span><span class=w> </span><span class=nf>make_2d_slider_widget</span><span class=p>(</span><span class=n>properties</span><span class=p>,</span> <span class=n>interactor</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Make a 2D slider widget.</span>
 
 <span class=sd>    :param properties: The 2D slider properties.</span>
 <span class=sd>    :param interactor: The vtkInteractor.</span>
 <span class=sd>    :return: The slider widget.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 
     <span class=n>slider_rep</span> <span class=o>=</span> <span class=n>vtkSliderRepresentation2D</span><span class=p>(</span><span class=n>minimum_value</span><span class=o>=</span><span class=n>properties</span><span class=o>.</span><span class=n>Range</span><span class=o>.</span><span class=n>minimum_value</span><span class=p>,</span>
@@ -102,9 +102,9 @@ function registerListener(event, func) {
 
     <span class=n>title_font_family</span> <span class=o>=</span> <span class=n>properties</span><span class=o>.</span><span class=n>Text</span><span class=o>.</span><span class=n>title_font_family</span>
     <span class=k>match</span> <span class=n>title_font_family</span><span class=p>:</span>
-        <span class=k>case</span> <span class=s1>&#39;Courier&#39;</span><span class=p>:</span>
+        <span class=k>case</span> <span class=s1>'Courier'</span><span class=p>:</span>
             <span class=n>slider_rep</span><span class=o>.</span><span class=n>title_property</span><span class=o>.</span><span class=n>SetFontFamilyToCourier</span><span class=p>()</span>
-        <span class=k>case</span> <span class=s1>&#39;Times&#39;</span><span class=p>:</span>
+        <span class=k>case</span> <span class=s1>'Times'</span><span class=p>:</span>
             <span class=n>slider_rep</span><span class=o>.</span><span class=n>title_property</span><span class=o>.</span><span class=n>SetFontFamilyToTimes</span><span class=p>()</span>
         <span class=k>case</span><span class=w> </span><span class=k>_</span><span class=p>:</span>
             <span class=n>slider_rep</span><span class=o>.</span><span class=n>title_property</span><span class=o>.</span><span class=n>SetFontFamilyToArial</span><span class=p>()</span>
@@ -113,9 +113,9 @@ function registerListener(event, func) {
     <span class=n>slider_rep</span><span class=o>.</span><span class=n>title_property</span><span class=o>.</span><span class=n>shadow</span> <span class=o>=</span> <span class=n>properties</span><span class=o>.</span><span class=n>Text</span><span class=o>.</span><span class=n>title_shadow</span>
     <span class=n>label_font_family</span> <span class=o>=</span> <span class=n>properties</span><span class=o>.</span><span class=n>Text</span><span class=o>.</span><span class=n>label_font_family</span>
     <span class=k>match</span> <span class=n>label_font_family</span><span class=p>:</span>
-        <span class=k>case</span> <span class=s1>&#39;Courier&#39;</span><span class=p>:</span>
+        <span class=k>case</span> <span class=s1>'Courier'</span><span class=p>:</span>
             <span class=n>slider_rep</span><span class=o>.</span><span class=n>label_property</span><span class=o>.</span><span class=n>SetFontFamilyToCourier</span><span class=p>()</span>
-        <span class=k>case</span> <span class=s1>&#39;Times&#39;</span><span class=p>:</span>
+        <span class=k>case</span> <span class=s1>'Times'</span><span class=p>:</span>
             <span class=n>slider_rep</span><span class=o>.</span><span class=n>label_property</span><span class=o>.</span><span class=n>SetFontFamilyToTimes</span><span class=p>()</span>
         <span class=k>case</span><span class=w> </span><span class=k>_</span><span class=p>:</span>
             <span class=n>slider_rep</span><span class=o>.</span><span class=n>label_property</span><span class=o>.</span><span class=n>SetFontFamilyToArial</span><span class=p>()</span>
@@ -147,12 +147,12 @@ function registerListener(event, func) {
 <span class=k>class</span><span class=w> </span><span class=nc>Slider2DProperties</span><span class=p>:</span>
     <span class=nd>@dataclass</span>
     <span class=k>class</span><span class=w> </span><span class=nc>Colors</span><span class=p>:</span>
-        <span class=n>title_color</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s1>&#39;White&#39;</span>
-        <span class=n>label_color</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s1>&#39;White&#39;</span>
-        <span class=n>slider_color</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s1>&#39;White&#39;</span>
-        <span class=n>selected_color</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s1>&#39;HotPink&#39;</span>
-        <span class=n>bar_color</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s1>&#39;White&#39;</span>
-        <span class=n>bar_ends_color</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s1>&#39;White&#39;</span>
+        <span class=n>title_color</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s1>'White'</span>
+        <span class=n>label_color</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s1>'White'</span>
+        <span class=n>slider_color</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s1>'White'</span>
+        <span class=n>selected_color</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s1>'HotPink'</span>
+        <span class=n>bar_color</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s1>'White'</span>
+        <span class=n>bar_ends_color</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s1>'White'</span>
 
     <span class=nd>@dataclass</span>
     <span class=k>class</span><span class=w> </span><span class=nc>Dimensions</span><span class=p>:</span>
@@ -179,12 +179,12 @@ function registerListener(event, func) {
     <span class=nd>@dataclass</span>
     <span class=k>class</span><span class=w> </span><span class=nc>Text</span><span class=p>:</span>
         <span class=c1># Font families are: Ariel, Courier and Times</span>
-        <span class=n>title</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s1>&#39;&#39;</span>
-        <span class=n>title_font_family</span> <span class=o>=</span> <span class=s1>&#39;Arial&#39;</span>
+        <span class=n>title</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s1>''</span>
+        <span class=n>title_font_family</span> <span class=o>=</span> <span class=s1>'Arial'</span>
         <span class=n>title_bold</span><span class=p>:</span> <span class=nb>bool</span> <span class=o>=</span> <span class=kc>True</span>
         <span class=n>title_italic</span><span class=p>:</span> <span class=nb>bool</span> <span class=o>=</span> <span class=kc>False</span>
         <span class=n>title_shadow</span><span class=p>:</span> <span class=nb>bool</span> <span class=o>=</span> <span class=kc>True</span>
-        <span class=n>label_font_family</span> <span class=o>=</span> <span class=s1>&#39;Arial&#39;</span>
+        <span class=n>label_font_family</span> <span class=o>=</span> <span class=s1>'Arial'</span>
         <span class=n>label_bold</span><span class=p>:</span> <span class=nb>bool</span> <span class=o>=</span> <span class=kc>True</span>
         <span class=n>label_italic</span><span class=p>:</span> <span class=nb>bool</span> <span class=o>=</span> <span class=kc>False</span>
         <span class=n>label_shadow</span><span class=p>:</span> <span class=nb>bool</span> <span class=o>=</span> <span class=kc>True</span>
@@ -193,8 +193,8 @@ function registerListener(event, func) {
 <span class=k>class</span><span class=w> </span><span class=nc>SliderCallback</span><span class=p>:</span>
 
     <span class=k>def</span><span class=w> </span><span class=fm>__init__</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>source</span><span class=p>):</span>
-<span class=w>        </span><span class=sd>&quot;&quot;&quot;</span>
-<span class=sd>        &quot;&quot;&quot;</span>
+<span class=w>        </span><span class=sd>"""</span>
+<span class=sd>        """</span>
         <span class=bp>self</span><span class=o>.</span><span class=n>source</span> <span class=o>=</span> <span class=n>source</span>
 
     <span class=k>def</span><span class=w> </span><span class=fm>__call__</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>caller</span><span class=p>,</span> <span class=n>ev</span><span class=p>):</span>

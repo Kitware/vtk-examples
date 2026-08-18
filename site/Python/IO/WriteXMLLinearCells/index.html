@@ -90,56 +90,56 @@ function registerListener(event, func) {
     <span class=n>uGrids</span> <span class=o>=</span> <span class=nb>list</span><span class=p>()</span>
 
 <span class=hll>    <span class=n>uGrids</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>MakeUnstructuredGrid</span><span class=p>(</span><span class=n>vtkVertex</span><span class=p>()))</span>
-</span>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;Vertex.vtu&#39;</span><span class=p>)</span>
+</span>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>'Vertex.vtu'</span><span class=p>)</span>
 
     <span class=n>uGrids</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>MakePolyVertex</span><span class=p>())</span>
-    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;PolyVertex.vtu&#39;</span><span class=p>)</span>
+    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>'PolyVertex.vtu'</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>uGrids</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>MakeUnstructuredGrid</span><span class=p>(</span><span class=n>vtkLine</span><span class=p>()))</span>
-</span>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;Line.vtu&#39;</span><span class=p>)</span>
+</span>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>'Line.vtu'</span><span class=p>)</span>
 
     <span class=n>uGrids</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>MakePolyLine</span><span class=p>())</span>
-    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;PolyLine.vtu&#39;</span><span class=p>)</span>
+    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>'PolyLine.vtu'</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>uGrids</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>MakeUnstructuredGrid</span><span class=p>(</span><span class=n>vtkTriangle</span><span class=p>()))</span>
-</span>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;Triangle.vtu&#39;</span><span class=p>)</span>
+</span>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>'Triangle.vtu'</span><span class=p>)</span>
 
     <span class=n>uGrids</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>MakeTriangleStrip</span><span class=p>())</span>
-    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;TriangleStrip.vtu&#39;</span><span class=p>)</span>
+    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>'TriangleStrip.vtu'</span><span class=p>)</span>
 
     <span class=n>uGrids</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>MakePolygon</span><span class=p>())</span>
-    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;Polygon.vtu&#39;</span><span class=p>)</span>
+    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>'Polygon.vtu'</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>uGrids</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>MakeUnstructuredGrid</span><span class=p>(</span><span class=n>vtkPixel</span><span class=p>()))</span>
-</span>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;Pixel.vtu&#39;</span><span class=p>)</span>
+</span>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>'Pixel.vtu'</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>uGrids</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>MakeUnstructuredGrid</span><span class=p>(</span><span class=n>vtkQuad</span><span class=p>()))</span>
-</span>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;Quad.vtu&#39;</span><span class=p>)</span>
+</span>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>'Quad.vtu'</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>uGrids</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>MakeUnstructuredGrid</span><span class=p>(</span><span class=n>vtkTetra</span><span class=p>()))</span>
-</span>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;Tetra.vtu&#39;</span><span class=p>)</span>
+</span>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>'Tetra.vtu'</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>uGrids</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>MakeUnstructuredGrid</span><span class=p>(</span><span class=n>vtkVoxel</span><span class=p>()))</span>
-</span>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;Voxel.vtu&#39;</span><span class=p>)</span>
+</span>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>'Voxel.vtu'</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>uGrids</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>MakeUnstructuredGrid</span><span class=p>(</span><span class=n>vtkHexahedron</span><span class=p>()))</span>
-</span>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;Hexahedron.vtu&#39;</span><span class=p>)</span>
+</span>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>'Hexahedron.vtu'</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>uGrids</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>MakeUnstructuredGrid</span><span class=p>(</span><span class=n>vtkWedge</span><span class=p>()))</span>
-</span>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;Wedge.vtu&#39;</span><span class=p>)</span>
+</span>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>'Wedge.vtu'</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>uGrids</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>MakeUnstructuredGrid</span><span class=p>(</span><span class=n>vtkPyramid</span><span class=p>()))</span>
-</span>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;Pyramid.vtu&#39;</span><span class=p>)</span>
+</span>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>'Pyramid.vtu'</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>uGrids</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>MakeUnstructuredGrid</span><span class=p>(</span><span class=n>vtkPentagonalPrism</span><span class=p>()))</span>
-</span>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;PentagonalPrism.vtu&#39;</span><span class=p>)</span>
+</span>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>'PentagonalPrism.vtu'</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>uGrids</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>MakeUnstructuredGrid</span><span class=p>(</span><span class=n>vtkHexagonalPrism</span><span class=p>()))</span>
-</span>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;HexagonalPrism.vtu&#39;</span><span class=p>)</span>
+</span>    <span class=n>filenames</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>'HexagonalPrism.vtu'</span><span class=p>)</span>
 
     <span class=c1># Write each grid into  a file</span>
     <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=nb>len</span><span class=p>(</span><span class=n>uGrids</span><span class=p>)):</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Writing: &#39;</span><span class=p>,</span> <span class=n>filenames</span><span class=p>[</span><span class=n>i</span><span class=p>])</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'Writing: '</span><span class=p>,</span> <span class=n>filenames</span><span class=p>[</span><span class=n>i</span><span class=p>])</span>
 <span class=hll>        <span class=n>writer</span> <span class=o>=</span> <span class=n>vtkXMLDataSetWriter</span><span class=p>()</span>
 </span>        <span class=n>writer</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>filenames</span><span class=p>[</span><span class=n>i</span><span class=p>])</span>
         <span class=n>writer</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>uGrids</span><span class=p>[</span><span class=n>i</span><span class=p>])</span>
@@ -259,6 +259,6 @@ function registerListener(event, func) {
     <span class=k>return</span> <span class=n>ug</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

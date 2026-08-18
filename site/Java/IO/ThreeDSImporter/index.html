@@ -76,7 +76,7 @@ function registerListener(event, func) {
 <span class=w>      </span><span class=p>{</span>
 <span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>lib</span><span class=p>.</span><span class=na>IsLoaded</span><span class=p>())</span><span class=w> </span>
 <span class=w>        </span><span class=p>{</span>
-<span class=w>          </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&quot; not loaded&quot;</span><span class=p>);</span>
+<span class=w>          </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>" not loaded"</span><span class=p>);</span>
 <span class=w>        </span><span class=p>}</span>
 <span class=w>      </span><span class=p>}</span>
 <span class=w>    </span><span class=p>}</span>
@@ -90,7 +90,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=c1>//parse command line arguments</span>
 <span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>args</span><span class=p>.</span><span class=na>length</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=mi>1</span><span class=p>)</span><span class=w> </span>
 <span class=w>    </span><span class=p>{</span>
-<span class=w>      </span><span class=n>System</span><span class=p>.</span><span class=na>err</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&quot;Usage: java -classpath ... Filename(.3ds) e.g iflamingo.3ds&quot;</span><span class=p>);</span>
+<span class=w>      </span><span class=n>System</span><span class=p>.</span><span class=na>err</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>"Usage: java -classpath ... Filename(.3ds) e.g iflamingo.3ds"</span><span class=p>);</span>
 <span class=w>      </span><span class=k>return</span><span class=p>;</span>
 <span class=w>    </span><span class=p>}</span>
 <span class=w>    </span><span class=n>String</span><span class=w> </span><span class=n>inputFilename</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>args</span><span class=o>[</span><span class=mi>0</span><span class=o>]</span><span class=p>;</span>
@@ -102,8 +102,8 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=kt>double</span><span class=w> </span><span class=n>BgColor2</span><span class=o>[]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=kt>double</span><span class=o>[</span><span class=mi>4</span><span class=o>]</span><span class=p>;</span>
 
 <span class=w>    </span><span class=c1>//Change Color Name to Use your own Color for Renderer Background</span>
-<span class=w>    </span><span class=n>Color</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>&quot;Gold&quot;</span><span class=p>,</span><span class=n>BgColor</span><span class=p>);</span>
-<span class=w>    </span><span class=n>Color</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>&quot;Wheat&quot;</span><span class=p>,</span><span class=n>BgColor2</span><span class=p>);</span>
+<span class=w>    </span><span class=n>Color</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>"Gold"</span><span class=p>,</span><span class=n>BgColor</span><span class=p>);</span>
+<span class=w>    </span><span class=n>Color</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>"Wheat"</span><span class=p>,</span><span class=n>BgColor2</span><span class=p>);</span>
 
 <span class=w>    </span><span class=c1>// Create the renderer, render window and interactor.</span>
 <span class=hll><span class=w>    </span><span class=n>vtkRenderer</span><span class=w> </span><span class=n>ren</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkRenderer</span><span class=p>();</span>
@@ -126,7 +126,7 @@ function registerListener(event, func) {
 
 <span class=hll><span class=w>    </span><span class=n>vtkActorCollection</span><span class=w> </span><span class=n>actors</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkActorCollection</span><span class=p>();</span>
 </span><span class=w>    </span><span class=n>actors</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>ren</span><span class=p>.</span><span class=na>GetActors</span><span class=p>();</span>
-<span class=w>    </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&quot;There are&quot;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&quot; &quot;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>actors</span><span class=p>.</span><span class=na>GetNumberOfItems</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&quot; &quot;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&quot;actors&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>"There are"</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>" "</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>actors</span><span class=p>.</span><span class=na>GetNumberOfItems</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>" "</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>"actors"</span><span class=p>);</span>
 
 
 <span class=w>    </span><span class=n>renWin</span><span class=p>.</span><span class=na>SetSize</span><span class=p>(</span><span class=mi>300</span><span class=p>,</span><span class=mi>300</span><span class=p>);</span>

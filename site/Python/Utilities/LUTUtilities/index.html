@@ -73,97 +73,97 @@ function registerListener(event, func) {
 
 
 <span class=k>class</span><span class=w> </span><span class=nc>LUTUtilities</span><span class=p>(</span><span class=nb>object</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Utilities for displaying and comparing lookup tables.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 
     <span class=k>def</span><span class=w> </span><span class=fm>__init__</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
         <span class=k>pass</span>
 
     <span class=k>def</span><span class=w> </span><span class=nf>DisplayLUTAsString</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>lut</span><span class=p>):</span>
-<span class=w>        </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>        </span><span class=sd>"""</span>
 <span class=sd>        Display the contents of the lookup table.</span>
 <span class=sd>        :param: lut - the lookup table.</span>
 <span class=sd>        :return: a string containing the table data.</span>
-<span class=sd>        &quot;&quot;&quot;</span>
-        <span class=nb>str</span> <span class=o>=</span> <span class=s1>&#39;&#39;</span>
+<span class=sd>        """</span>
+        <span class=nb>str</span> <span class=o>=</span> <span class=s1>''</span>
         <span class=n>tv</span> <span class=o>=</span> <span class=n>lut</span><span class=o>.</span><span class=n>GetNumberOfTableValues</span><span class=p>()</span>
         <span class=n>dR</span> <span class=o>=</span> <span class=n>lut</span><span class=o>.</span><span class=n>GetTableRange</span><span class=p>()</span>
         <span class=k>if</span> <span class=n>lut</span><span class=o>.</span><span class=n>GetIndexedLookup</span><span class=p>():</span>
             <span class=n>av</span> <span class=o>=</span> <span class=n>lut</span><span class=o>.</span><span class=n>GetNumberOfAnnotatedValues</span><span class=p>()</span>
-            <span class=nb>str</span> <span class=o>=</span> <span class=s2>&quot;Categorical Lookup Table</span><span class=se>\n</span><span class=s2>&quot;</span> <span class=o>+</span> \
-                  <span class=s2>&quot;Number of annotated values: </span><span class=si>{:d}</span><span class=s2>&quot;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>av</span><span class=p>)</span> <span class=o>+</span> \
-                  <span class=s2>&quot; Number of table values: </span><span class=si>{:d}</span><span class=s2>&quot;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>tv</span><span class=p>)</span> <span class=o>+</span> \
-                  <span class=s2>&quot;</span><span class=se>\n</span><span class=s2>Table Range: </span><span class=si>{:8.6f}</span><span class=s2> to </span><span class=si>{:8.6f}</span><span class=se>\n</span><span class=s2>&quot;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>dR</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=n>dR</span><span class=p>[</span><span class=mi>1</span><span class=p>])</span>
+            <span class=nb>str</span> <span class=o>=</span> <span class=s2>"Categorical Lookup Table</span><span class=se>\n</span><span class=s2>"</span> <span class=o>+</span> \
+                  <span class=s2>"Number of annotated values: </span><span class=si>{:d}</span><span class=s2>"</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>av</span><span class=p>)</span> <span class=o>+</span> \
+                  <span class=s2>" Number of table values: </span><span class=si>{:d}</span><span class=s2>"</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>tv</span><span class=p>)</span> <span class=o>+</span> \
+                  <span class=s2>"</span><span class=se>\n</span><span class=s2>Table Range: </span><span class=si>{:8.6f}</span><span class=s2> to </span><span class=si>{:8.6f}</span><span class=se>\n</span><span class=s2>"</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>dR</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=n>dR</span><span class=p>[</span><span class=mi>1</span><span class=p>])</span>
             <span class=k>if</span> <span class=n>av</span> <span class=o>&gt;</span> <span class=mi>0</span><span class=p>:</span>
                 <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=n>av</span><span class=p>):</span>
                     <span class=n>rgba</span> <span class=o>=</span> <span class=p>[</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>]</span>
                     <span class=n>lut</span><span class=o>.</span><span class=n>GetAnnotationColor</span><span class=p>(</span><span class=n>lut</span><span class=o>.</span><span class=n>GetAnnotatedValue</span><span class=p>(</span><span class=n>i</span><span class=p>),</span> <span class=n>rgba</span><span class=p>)</span>
-                    <span class=nb>str</span> <span class=o>+=</span> <span class=s2>&quot;</span><span class=si>{:&gt;5}</span><span class=s2>: &quot;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>lut</span><span class=o>.</span><span class=n>GetAnnotation</span><span class=p>(</span><span class=n>i</span><span class=p>))</span>
+                    <span class=nb>str</span> <span class=o>+=</span> <span class=s2>"</span><span class=si>{:&gt;5}</span><span class=s2>: "</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>lut</span><span class=o>.</span><span class=n>GetAnnotation</span><span class=p>(</span><span class=n>i</span><span class=p>))</span>
                     <span class=nb>str</span> <span class=o>+=</span> <span class=bp>self</span><span class=o>.</span><span class=n>AssembleRGBAString</span><span class=p>(</span><span class=n>rgba</span><span class=p>)</span>
             <span class=k>else</span><span class=p>:</span>
                 <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=n>tv</span><span class=p>):</span>
                     <span class=n>rgba</span> <span class=o>=</span> <span class=p>[</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>]</span>
                     <span class=n>rgba</span> <span class=o>=</span> <span class=n>lut</span><span class=o>.</span><span class=n>GetTableValue</span><span class=p>(</span><span class=n>i</span><span class=p>)</span>
-                    <span class=nb>str</span> <span class=o>+=</span> <span class=s2>&quot;</span><span class=si>{:5d}</span><span class=s2>: &quot;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>i</span><span class=p>)</span>
+                    <span class=nb>str</span> <span class=o>+=</span> <span class=s2>"</span><span class=si>{:5d}</span><span class=s2>: "</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>i</span><span class=p>)</span>
                     <span class=nb>str</span> <span class=o>+=</span> <span class=bp>self</span><span class=o>.</span><span class=n>AssembleRGBAString</span><span class=p>(</span><span class=n>rgba</span><span class=p>)</span>
         <span class=k>else</span><span class=p>:</span>
-            <span class=nb>str</span> <span class=o>=</span> <span class=s2>&quot;Ordinal Lookup Table</span><span class=se>\n</span><span class=s2>&quot;</span> <span class=o>+</span> \
-                  <span class=s2>&quot; Number of table values: </span><span class=si>{:d}</span><span class=s2>&quot;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>tv</span><span class=p>)</span> <span class=o>+</span> \
-                  <span class=s2>&quot;</span><span class=se>\n</span><span class=s2>Table Range: </span><span class=si>{:8.6f}</span><span class=s2> to </span><span class=si>{:8.6f}</span><span class=se>\n</span><span class=s2>&quot;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>dR</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=n>dR</span><span class=p>[</span><span class=mi>1</span><span class=p>])</span>
+            <span class=nb>str</span> <span class=o>=</span> <span class=s2>"Ordinal Lookup Table</span><span class=se>\n</span><span class=s2>"</span> <span class=o>+</span> \
+                  <span class=s2>" Number of table values: </span><span class=si>{:d}</span><span class=s2>"</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>tv</span><span class=p>)</span> <span class=o>+</span> \
+                  <span class=s2>"</span><span class=se>\n</span><span class=s2>Table Range: </span><span class=si>{:8.6f}</span><span class=s2> to </span><span class=si>{:8.6f}</span><span class=se>\n</span><span class=s2>"</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>dR</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=n>dR</span><span class=p>[</span><span class=mi>1</span><span class=p>])</span>
             <span class=n>indices</span> <span class=o>=</span> <span class=p>[(</span><span class=n>dR</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>-</span> <span class=n>dR</span><span class=p>[</span><span class=mi>0</span><span class=p>])</span> <span class=o>*</span>
                        <span class=nb>float</span><span class=p>(</span><span class=n>x</span><span class=p>)</span> <span class=o>/</span> <span class=n>tv</span> <span class=o>+</span> <span class=n>dR</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=k>for</span> <span class=n>x</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>tv</span><span class=p>)]</span>
             <span class=k>for</span> <span class=n>i</span><span class=p>,</span> <span class=n>v</span> <span class=ow>in</span> <span class=nb>enumerate</span><span class=p>(</span><span class=n>indices</span><span class=p>):</span>
                 <span class=n>rgb</span> <span class=o>=</span> <span class=p>[</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>]</span>
                 <span class=n>lut</span><span class=o>.</span><span class=n>GetColor</span><span class=p>(</span><span class=n>v</span><span class=p>,</span> <span class=n>rgb</span><span class=p>)</span>
                 <span class=n>rgba</span> <span class=o>=</span> <span class=n>rgb</span> <span class=o>+</span> <span class=p>[</span><span class=n>lut</span><span class=o>.</span><span class=n>GetOpacity</span><span class=p>(</span><span class=n>v</span><span class=p>)]</span>
-                <span class=nb>str</span> <span class=o>+=</span> <span class=s2>&quot;</span><span class=si>{:5.2f}</span><span class=s2>: &quot;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>v</span><span class=p>)</span>
+                <span class=nb>str</span> <span class=o>+=</span> <span class=s2>"</span><span class=si>{:5.2f}</span><span class=s2>: "</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>v</span><span class=p>)</span>
                 <span class=nb>str</span> <span class=o>+=</span> <span class=bp>self</span><span class=o>.</span><span class=n>AssembleRGBAString</span><span class=p>(</span><span class=n>rgba</span><span class=p>)</span>
         <span class=k>return</span> <span class=nb>str</span>
 
     <span class=k>def</span><span class=w> </span><span class=nf>AssembleRGBAString</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>rgba</span><span class=p>):</span>
-<span class=w>        </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>        </span><span class=sd>"""</span>
 <span class=sd>        Display the contents of the rgba as a series of strings:</span>
 <span class=sd>        decimal [r g b a], integer [r g b a] where r,g ,b a are</span>
 <span class=sd>        in the range 0..255 and 0xrrggba .</span>
 <span class=sd>        :param: The rgba string.</span>
 <span class=sd>        :return: A string in the above format.</span>
-<span class=sd>        &quot;&quot;&quot;</span>
-        <span class=n>s</span> <span class=o>=</span> <span class=s1>&#39;[&#39;</span> <span class=o>+</span> <span class=s1>&#39;, &#39;</span><span class=o>.</span><span class=n>join</span><span class=p>([</span><span class=s1>&#39;</span><span class=si>{:0.6f}</span><span class=s1>&#39;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>x</span><span class=p>)</span> <span class=k>for</span> <span class=n>x</span> <span class=ow>in</span> <span class=n>rgba</span><span class=p>])</span> <span class=o>+</span> <span class=s1>&#39;]&#39;</span>
+<span class=sd>        """</span>
+        <span class=n>s</span> <span class=o>=</span> <span class=s1>'['</span> <span class=o>+</span> <span class=s1>', '</span><span class=o>.</span><span class=n>join</span><span class=p>([</span><span class=s1>'</span><span class=si>{:0.6f}</span><span class=s1>'</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>x</span><span class=p>)</span> <span class=k>for</span> <span class=n>x</span> <span class=ow>in</span> <span class=n>rgba</span><span class=p>])</span> <span class=o>+</span> <span class=s1>']'</span>
         <span class=n>ucrgb</span> <span class=o>=</span> <span class=p>[</span><span class=nb>int</span><span class=p>(</span><span class=n>x</span> <span class=o>*</span> <span class=mi>255</span><span class=p>)</span> <span class=k>for</span> <span class=n>x</span> <span class=ow>in</span> <span class=n>rgba</span><span class=p>]</span>
-        <span class=n>t</span> <span class=o>=</span> <span class=s1>&#39;[&#39;</span> <span class=o>+</span> <span class=s1>&#39;, &#39;</span><span class=o>.</span><span class=n>join</span><span class=p>([</span><span class=s1>&#39;</span><span class=si>{:3d}</span><span class=s1>&#39;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>x</span><span class=p>)</span> <span class=k>for</span> <span class=n>x</span> <span class=ow>in</span> <span class=n>ucrgb</span><span class=p>])</span> <span class=o>+</span> <span class=s1>&#39;]&#39;</span>
-        <span class=c1># u = &#39;0x&#39;+&#39;&#39;.join(map(lambda x: &#39;{:02X}&#39;.format(x),ucrgb[:3]))</span>
-        <span class=n>u</span> <span class=o>=</span> <span class=s1>&#39;0x&#39;</span> <span class=o>+</span> <span class=s1>&#39;&#39;</span><span class=o>.</span><span class=n>join</span><span class=p>([</span><span class=s1>&#39;</span><span class=si>{:02x}</span><span class=s1>&#39;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>x</span><span class=p>)</span> <span class=k>for</span> <span class=n>x</span> <span class=ow>in</span> <span class=n>ucrgb</span><span class=p>])</span>
-        <span class=n>res</span> <span class=o>=</span> <span class=s1>&#39;</span><span class=si>{:s}</span><span class=s1> </span><span class=si>{:s}</span><span class=s1> </span><span class=si>{:s}</span><span class=se>\n</span><span class=s1>&#39;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>s</span><span class=p>,</span> <span class=n>t</span><span class=p>,</span> <span class=n>u</span><span class=p>)</span>
+        <span class=n>t</span> <span class=o>=</span> <span class=s1>'['</span> <span class=o>+</span> <span class=s1>', '</span><span class=o>.</span><span class=n>join</span><span class=p>([</span><span class=s1>'</span><span class=si>{:3d}</span><span class=s1>'</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>x</span><span class=p>)</span> <span class=k>for</span> <span class=n>x</span> <span class=ow>in</span> <span class=n>ucrgb</span><span class=p>])</span> <span class=o>+</span> <span class=s1>']'</span>
+        <span class=c1># u = '0x'+''.join(map(lambda x: '{:02X}'.format(x),ucrgb[:3]))</span>
+        <span class=n>u</span> <span class=o>=</span> <span class=s1>'0x'</span> <span class=o>+</span> <span class=s1>''</span><span class=o>.</span><span class=n>join</span><span class=p>([</span><span class=s1>'</span><span class=si>{:02x}</span><span class=s1>'</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>x</span><span class=p>)</span> <span class=k>for</span> <span class=n>x</span> <span class=ow>in</span> <span class=n>ucrgb</span><span class=p>])</span>
+        <span class=n>res</span> <span class=o>=</span> <span class=s1>'</span><span class=si>{:s}</span><span class=s1> </span><span class=si>{:s}</span><span class=s1> </span><span class=si>{:s}</span><span class=se>\n</span><span class=s1>'</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>s</span><span class=p>,</span> <span class=n>t</span><span class=p>,</span> <span class=n>u</span><span class=p>)</span>
         <span class=k>return</span> <span class=n>res</span>
 
     <span class=k>def</span><span class=w> </span><span class=nf>CompareLUTs</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>lut1</span><span class=p>,</span> <span class=n>lut2</span><span class=p>):</span>
-<span class=w>        </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>        </span><span class=sd>"""</span>
 <span class=sd>        Compare two lookup tables.</span>
 <span class=sd>        :param: lut1 - the lookup table.</span>
 <span class=sd>        :param: lut2 - the lookup table.</span>
 <span class=sd>        :return: True if the tables are the same.</span>
-<span class=sd>        &quot;&quot;&quot;</span>
-        <span class=n>res</span> <span class=o>=</span> <span class=p>[</span><span class=kc>True</span><span class=p>,</span> <span class=s1>&#39;&#39;</span><span class=p>]</span>
+<span class=sd>        """</span>
+        <span class=n>res</span> <span class=o>=</span> <span class=p>[</span><span class=kc>True</span><span class=p>,</span> <span class=s1>''</span><span class=p>]</span>
         <span class=k>if</span> <span class=n>lut1</span><span class=o>.</span><span class=n>GetIndexedLookup</span><span class=p>()</span> <span class=o>!=</span> <span class=n>lut2</span><span class=o>.</span><span class=n>GetIndexedLookup</span><span class=p>():</span>
             <span class=n>res</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>=</span> <span class=kc>False</span>
-            <span class=n>res</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>=</span> <span class=s2>&quot;One table is ordinal and the other is categorical.&quot;</span>
+            <span class=n>res</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>=</span> <span class=s2>"One table is ordinal and the other is categorical."</span>
             <span class=k>return</span> <span class=n>res</span>
         <span class=k>if</span> <span class=n>lut1</span><span class=o>.</span><span class=n>GetIndexedLookup</span><span class=p>()</span> <span class=ow>and</span> \
                 <span class=n>lut1</span><span class=o>.</span><span class=n>GetNumberOfAnnotatedValues</span><span class=p>()</span> <span class=o>!=</span> \
                 <span class=n>lut2</span><span class=o>.</span><span class=n>GetNumberOfAnnotatedValues</span><span class=p>():</span>
             <span class=n>res</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>=</span> <span class=kc>False</span>
-            <span class=n>res</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>=</span> <span class=s2>&quot;The number of annotated values do not match.&quot;</span>
+            <span class=n>res</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>=</span> <span class=s2>"The number of annotated values do not match."</span>
             <span class=k>return</span> <span class=n>res</span>
         <span class=k>if</span> <span class=n>lut1</span><span class=o>.</span><span class=n>GetNumberOfTableValues</span><span class=p>()</span> <span class=o>!=</span> <span class=n>lut2</span><span class=o>.</span><span class=n>GetNumberOfTableValues</span><span class=p>():</span>
             <span class=n>res</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>=</span> <span class=kc>False</span>
-            <span class=n>res</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>=</span> <span class=s2>&quot;Table values do not match.&quot;</span>
+            <span class=n>res</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>=</span> <span class=s2>"Table values do not match."</span>
             <span class=k>return</span> <span class=n>res</span>
         <span class=n>dR1</span> <span class=o>=</span> <span class=n>lut1</span><span class=o>.</span><span class=n>GetTableRange</span><span class=p>()</span>
         <span class=n>dR2</span> <span class=o>=</span> <span class=n>lut2</span><span class=o>.</span><span class=n>GetTableRange</span><span class=p>()</span>
         <span class=k>if</span> <span class=n>dR1</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>!=</span> <span class=n>dR2</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=ow>and</span> <span class=n>dR1</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>!=</span> <span class=n>dR2</span><span class=p>[</span><span class=mi>1</span><span class=p>]:</span>
             <span class=n>res</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>=</span> <span class=kc>False</span>
-            <span class=n>res</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>=</span> <span class=s2>&quot;Table ranges do not match.&quot;</span>
+            <span class=n>res</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>=</span> <span class=s2>"Table ranges do not match."</span>
             <span class=k>return</span> <span class=n>res</span>
         <span class=k>if</span> <span class=n>lut1</span><span class=o>.</span><span class=n>GetIndexedLookup</span><span class=p>():</span>
             <span class=n>av</span> <span class=o>=</span> <span class=n>lut1</span><span class=o>.</span><span class=n>GetNumberOfAnnotatedValues</span><span class=p>()</span>
@@ -171,7 +171,7 @@ function registerListener(event, func) {
                 <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=n>av</span><span class=p>):</span>
                     <span class=k>if</span> <span class=n>lut1</span><span class=o>.</span><span class=n>GetAnnotation</span><span class=p>(</span><span class=n>i</span><span class=p>)</span> <span class=o>!=</span> <span class=n>lut1</span><span class=o>.</span><span class=n>GetAnnotation</span><span class=p>(</span><span class=n>i</span><span class=p>):</span>
                         <span class=n>res</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>=</span> <span class=kc>False</span>
-                        <span class=n>res</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>=</span> <span class=s2>&quot;Annotations do not match.&quot;</span>
+                        <span class=n>res</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>=</span> <span class=s2>"Annotations do not match."</span>
                         <span class=k>return</span> <span class=n>res</span>
                 <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=n>av</span><span class=p>):</span>
                     <span class=n>rgba1</span> <span class=o>=</span> <span class=p>[</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>]</span>
@@ -180,7 +180,7 @@ function registerListener(event, func) {
                     <span class=n>lut2</span><span class=o>.</span><span class=n>GetAnnotationColor</span><span class=p>(</span><span class=n>lut2</span><span class=o>.</span><span class=n>GetAnnotatedValue</span><span class=p>(</span><span class=n>i</span><span class=p>),</span> <span class=n>rgba2</span><span class=p>)</span>
                     <span class=k>if</span> <span class=ow>not</span> <span class=bp>self</span><span class=o>.</span><span class=n>CompareRGBA</span><span class=p>(</span><span class=n>rgba1</span><span class=p>,</span> <span class=n>rgba2</span><span class=p>):</span>
                         <span class=n>res</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>=</span> <span class=kc>False</span>
-                        <span class=n>res</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>=</span> <span class=s2>&quot;Colors do not match.&quot;</span>
+                        <span class=n>res</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>=</span> <span class=s2>"Colors do not match."</span>
                         <span class=k>return</span> <span class=n>res</span>
             <span class=k>else</span><span class=p>:</span>
                 <span class=n>tv</span> <span class=o>=</span> <span class=n>lut1</span><span class=o>.</span><span class=n>GetNumberOfTableValues</span><span class=p>()</span>
@@ -189,7 +189,7 @@ function registerListener(event, func) {
                     <span class=n>rgba2</span> <span class=o>=</span> <span class=n>lut2</span><span class=o>.</span><span class=n>GetTableValue</span><span class=p>(</span><span class=n>i</span><span class=p>)</span>
                     <span class=k>if</span> <span class=ow>not</span> <span class=bp>self</span><span class=o>.</span><span class=n>CompareRGBA</span><span class=p>(</span><span class=n>rgba1</span><span class=p>,</span> <span class=n>rgba2</span><span class=p>):</span>
                         <span class=n>res</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>=</span> <span class=kc>False</span>
-                        <span class=n>res</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>=</span> <span class=s2>&quot;Colors do not match.&quot;</span>
+                        <span class=n>res</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>=</span> <span class=s2>"Colors do not match."</span>
                         <span class=k>return</span> <span class=n>res</span>
         <span class=k>else</span><span class=p>:</span>
             <span class=n>tv</span> <span class=o>=</span> <span class=n>lut1</span><span class=o>.</span><span class=n>GetNumberOfTableValues</span><span class=p>()</span>
@@ -204,20 +204,20 @@ function registerListener(event, func) {
                 <span class=n>rgba2</span> <span class=o>=</span> <span class=n>rgb2</span> <span class=o>+</span> <span class=p>[</span><span class=n>lut2</span><span class=o>.</span><span class=n>GetOpacity</span><span class=p>(</span><span class=n>v</span><span class=p>)]</span>
                 <span class=k>if</span> <span class=ow>not</span> <span class=bp>self</span><span class=o>.</span><span class=n>CompareRGBA</span><span class=p>(</span><span class=n>rgba1</span><span class=p>,</span> <span class=n>rgba2</span><span class=p>):</span>
                     <span class=n>res</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>=</span> <span class=kc>False</span>
-                    <span class=n>res</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>=</span> <span class=s2>&quot;Colors do not match.&quot;</span>
+                    <span class=n>res</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>=</span> <span class=s2>"Colors do not match."</span>
                     <span class=k>return</span> <span class=n>res</span>
 
         <span class=k>return</span> <span class=n>res</span>
 
     <span class=k>def</span><span class=w> </span><span class=nf>CompareRGBA</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>rgba1</span><span class=p>,</span> <span class=n>rgba2</span><span class=p>):</span>
-<span class=w>        </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>        </span><span class=sd>"""</span>
 <span class=sd>        Compare two rgba lists.</span>
 <span class=sd>        rgba can be a hexadecimal string, or a</span>
 <span class=sd>        list of rgb or rgba colors.</span>
 <span class=sd>        :param: rgba1 - the color.</span>
 <span class=sd>        :param: rgba2 - the color.</span>
 <span class=sd>        :return: True if the colors are the same.</span>
-<span class=sd>        &quot;&quot;&quot;</span>
+<span class=sd>        """</span>
         <span class=k>if</span> <span class=nb>len</span><span class=p>(</span><span class=n>rgba1</span><span class=p>)</span> <span class=o>!=</span> <span class=nb>len</span><span class=p>(</span><span class=n>rgba2</span><span class=p>):</span>
             <span class=k>return</span> <span class=kc>False</span>
         <span class=k>if</span> <span class=nb>isinstance</span><span class=p>(</span><span class=n>rgba1</span><span class=p>,</span> <span class=nb>str</span><span class=p>):</span>
@@ -231,10 +231,10 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>GetAllColorSchemes</span><span class=p>():</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Get all the color scheme names.</span>
 <span class=sd>    :return: a map of the names keyed on their index.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=n>colorSchemes</span> <span class=o>=</span> <span class=nb>dict</span><span class=p>()</span>
 <span class=hll>    <span class=n>colorSeries</span> <span class=o>=</span> <span class=n>vtkColorSeries</span><span class=p>()</span>
 </span>    <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=n>colorSeries</span><span class=o>.</span><span class=n>GetNumberOfColorSchemes</span><span class=p>()):</span>
@@ -244,49 +244,49 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>AvailableColorSchemes</span><span class=p>(</span><span class=n>colorSchemes</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    The available color scheme indexes and names.</span>
 <span class=sd>    :param: colorSchemes - a map of the names keyed on their index.</span>
 <span class=sd>    :return:  a string if the indexes and names.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
-    <span class=nb>str</span> <span class=o>=</span> <span class=s1>&#39;&#39;</span>
+<span class=sd>    """</span>
+    <span class=nb>str</span> <span class=o>=</span> <span class=s1>''</span>
     <span class=k>for</span> <span class=n>k</span><span class=p>,</span> <span class=n>v</span> <span class=ow>in</span> <span class=n>colorSchemes</span><span class=o>.</span><span class=n>items</span><span class=p>():</span>
-        <span class=nb>str</span> <span class=o>+=</span> <span class=s1>&#39;</span><span class=si>{:3d}</span><span class=se>\t</span><span class=si>{:s}</span><span class=se>\n</span><span class=s1>&#39;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>k</span><span class=p>,</span> <span class=n>v</span><span class=p>)</span>
+        <span class=nb>str</span> <span class=o>+=</span> <span class=s1>'</span><span class=si>{:3d}</span><span class=se>\t</span><span class=si>{:s}</span><span class=se>\n</span><span class=s1>'</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>k</span><span class=p>,</span> <span class=n>v</span><span class=p>)</span>
     <span class=k>return</span> <span class=nb>str</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>DisplayAvailableColorSchemes</span><span class=p>():</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Display the available color schemes.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
-    <span class=n>line</span> <span class=o>=</span> <span class=s2>&quot;-----------------------------------------------------------------------------</span><span class=se>\n</span><span class=s2>&quot;</span>
+<span class=sd>    """</span>
+    <span class=n>line</span> <span class=o>=</span> <span class=s2>"-----------------------------------------------------------------------------</span><span class=se>\n</span><span class=s2>"</span>
     <span class=n>colorSchemes</span> <span class=o>=</span> <span class=n>GetAllColorSchemes</span><span class=p>()</span>
     <span class=nb>print</span><span class=p>(</span><span class=n>line</span> <span class=o>+</span> <span class=n>AvailableColorSchemes</span><span class=p>(</span><span class=n>colorSchemes</span><span class=p>)</span> <span class=o>+</span> <span class=n>line</span><span class=p>)</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>DisplayResults</span><span class=p>(</span><span class=n>reason</span><span class=p>,</span> <span class=n>lut1</span><span class=p>,</span> <span class=n>lut2</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Display the lookup tables and reason for failure.</span>
 <span class=sd>    :param: reason - the reason.</span>
 <span class=sd>    :param: lut1 - the first lookup table.</span>
 <span class=sd>    :param: lut2 - the second lookup table.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=n>lutUtilities</span> <span class=o>=</span> <span class=n>LUTUtilities</span><span class=p>()</span>
-    <span class=n>line</span> <span class=o>=</span> <span class=s2>&quot;-----------------------------------------------------------------------------</span><span class=se>\n</span><span class=s2>&quot;</span>
-    <span class=nb>print</span><span class=p>(</span><span class=n>line</span> <span class=o>+</span> <span class=n>reason</span> <span class=o>+</span> <span class=s2>&quot;</span><span class=se>\n</span><span class=s2>&quot;</span><span class=p>)</span>
+    <span class=n>line</span> <span class=o>=</span> <span class=s2>"-----------------------------------------------------------------------------</span><span class=se>\n</span><span class=s2>"</span>
+    <span class=nb>print</span><span class=p>(</span><span class=n>line</span> <span class=o>+</span> <span class=n>reason</span> <span class=o>+</span> <span class=s2>"</span><span class=se>\n</span><span class=s2>"</span><span class=p>)</span>
     <span class=nb>print</span><span class=p>(</span><span class=n>lutUtilities</span><span class=o>.</span><span class=n>DisplayLUTAsString</span><span class=p>(</span><span class=n>lut1</span><span class=p>))</span>
     <span class=nb>print</span><span class=p>(</span><span class=n>lutUtilities</span><span class=o>.</span><span class=n>DisplayLUTAsString</span><span class=p>(</span><span class=n>lut2</span><span class=p>))</span>
     <span class=nb>print</span><span class=p>(</span><span class=n>line</span><span class=p>)</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>TestTables</span><span class=p>(</span><span class=n>lut1</span><span class=p>,</span> <span class=n>lut2</span><span class=p>,</span> <span class=n>expected</span><span class=o>=</span><span class=kc>True</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Test pairs of lookup tables.</span>
 <span class=sd>    :param: lut1 - the first lookup table.</span>
 <span class=sd>    :param: lut2 - the second lookup table.</span>
 <span class=sd>    :param: expected - if False a fail is expected.</span>
 <span class=sd>    :return: True/False.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=n>lutUtilities</span> <span class=o>=</span> <span class=n>LUTUtilities</span><span class=p>()</span>
     <span class=n>comparison</span> <span class=o>=</span> <span class=n>lutUtilities</span><span class=o>.</span><span class=n>CompareLUTs</span><span class=p>(</span><span class=n>lut1</span><span class=p>,</span> <span class=n>lut2</span><span class=p>)</span>
     <span class=k>if</span> <span class=n>comparison</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>!=</span> <span class=n>expected</span><span class=p>:</span>
@@ -297,11 +297,11 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>TestLookupTables</span><span class=p>(</span><span class=n>lutMode</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Test various combinations of lookup tables.</span>
 <span class=sd>    :param: lutMode - if True the tables are ordinal, categorical otherwise.</span>
 <span class=sd>    :return: True if all tests passed.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 <span class=hll>    <span class=n>lut1</span> <span class=o>=</span> <span class=n>vtkLookupTable</span><span class=p>()</span>
 </span><span class=hll>    <span class=n>lut2</span> <span class=o>=</span> <span class=n>vtkLookupTable</span><span class=p>()</span>
 </span><span class=hll>    <span class=n>colorSeries</span> <span class=o>=</span> <span class=n>vtkColorSeries</span><span class=p>()</span>
@@ -319,7 +319,7 @@ function registerListener(event, func) {
         <span class=c1># For the annotation just use a letter of the alphabet.</span>
 <span class=hll>        <span class=n>values1</span> <span class=o>=</span> <span class=n>vtkVariantArray</span><span class=p>()</span>
 </span><span class=hll>        <span class=n>values2</span> <span class=o>=</span> <span class=n>vtkVariantArray</span><span class=p>()</span>
-</span>        <span class=nb>str</span> <span class=o>=</span> <span class=s2>&quot;abcdefghijklmnopqrstuvwxyz&quot;</span>
+</span>        <span class=nb>str</span> <span class=o>=</span> <span class=s2>"abcdefghijklmnopqrstuvwxyz"</span>
         <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=n>lut1</span><span class=o>.</span><span class=n>GetNumberOfTableValues</span><span class=p>()):</span>
 <span class=hll>            <span class=n>values1</span><span class=o>.</span><span class=n>InsertNextValue</span><span class=p>(</span><span class=n>vtkVariant</span><span class=p>(</span><span class=nb>str</span><span class=p>[</span><span class=n>i</span><span class=p>]))</span>
 </span>        <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=n>lut2</span><span class=o>.</span><span class=n>GetNumberOfTableValues</span><span class=p>()):</span>
@@ -365,7 +365,7 @@ function registerListener(event, func) {
 <span class=hll>        <span class=n>lut3</span> <span class=o>=</span> <span class=n>vtkLookupTable</span><span class=p>()</span>
 </span>        <span class=n>colorSeries</span><span class=o>.</span><span class=n>BuildLookupTable</span><span class=p>(</span><span class=n>lut3</span><span class=p>)</span>
 <span class=hll>        <span class=n>values</span> <span class=o>=</span> <span class=n>vtkVariantArray</span><span class=p>()</span>
-</span>        <span class=nb>str</span> <span class=o>=</span> <span class=s2>&quot;abcdefghijklmnopqrstuvwxyz&quot;</span>
+</span>        <span class=nb>str</span> <span class=o>=</span> <span class=s2>"abcdefghijklmnopqrstuvwxyz"</span>
         <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=n>lut3</span><span class=o>.</span><span class=n>GetNumberOfTableValues</span><span class=p>()):</span>
 <span class=hll>            <span class=n>values</span><span class=o>.</span><span class=n>InsertNextValue</span><span class=p>(</span><span class=n>vtkVariant</span><span class=p>(</span><span class=nb>str</span><span class=p>[</span><span class=n>i</span><span class=p>]))</span>
 </span>        <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=n>values</span><span class=o>.</span><span class=n>GetNumberOfTuples</span><span class=p>()):</span>
@@ -402,11 +402,11 @@ function registerListener(event, func) {
     <span class=k>return</span> <span class=n>res</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>res</span> <span class=o>=</span> <span class=n>main</span><span class=p>()</span>
     <span class=k>if</span> <span class=n>res</span><span class=p>:</span>
         <span class=n>sys</span><span class=o>.</span><span class=n>exit</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
     <span class=k>else</span><span class=p>:</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Ordinal or Categorical LookupTable tests failed.&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'Ordinal or Categorical LookupTable tests failed.'</span><span class=p>)</span>
         <span class=n>sys</span><span class=o>.</span><span class=n>exit</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

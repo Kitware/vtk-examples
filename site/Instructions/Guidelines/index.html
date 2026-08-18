@@ -64,14 +64,14 @@ function registerListener(event, func) {
 <span class=w>      </span><span class=n>p1</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Source</span><span class=o>-&gt;</span><span class=n>GetPoint</span><span class=p>(</span><span class=n>i</span><span class=p>);</span>
 <span class=w>      </span><span class=p>[...]</span>
 <span class=w>    </span><span class=p>}</span>
-</code></pre></div> <ul> <li>Where appropriate, explicitly use the <strong>std::</strong> namespace:</li> </ul> <div class=codehilite><pre><span></span><code><span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Print something&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
-</code></pre></div> <p>rather than</p> <div class=codehilite><pre><span></span><code><span class=w>    </span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Print something&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>endl</span><span class=p>;</span>
+</code></pre></div> <ul> <li>Where appropriate, explicitly use the <strong>std::</strong> namespace:</li> </ul> <div class=codehilite><pre><span></span><code><span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Print something"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+</code></pre></div> <p>rather than</p> <div class=codehilite><pre><span></span><code><span class=w>    </span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Print something"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>endl</span><span class=p>;</span>
 </code></pre></div> <ul> <li> <p>All includes from the toolkit should use <strong>&lt;...&gt;</strong> notation. This follows C++ programming conventions.</p> <p>For example: <code>#include &lt;vtkContourFilter.h&gt;</code> is preferred over <code>#include "vtkContourFilter.h"</code></p> </li> <li> <p>The main program must have the following signature:</p> </li> </ul> <div class=codehilite><pre><span></span><code><span class=w>    </span><span class=kt>int</span><span class=w> </span><span class=n>main</span><span class=w> </span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=w> </span><span class=o>*</span><span class=n>argv</span><span class=p>[])</span>
 </code></pre></div> <p>or, if argc and argv are not referenced in the code,</p> <div class=codehilite><pre><span></span><code><span class=w>    </span><span class=kt>int</span><span class=w> </span><span class=n>main</span><span class=w> </span><span class=p>(</span><span class=kt>int</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=w> </span><span class=o>*</span><span class=p>[])</span>
 </code></pre></div> <ul> <li>If arguments are required, a check similar to the following should be made at the start of the main program.</li> </ul> <div class=codehilite><pre><span></span><code><span class=w>  </span><span class=kt>float</span><span class=w> </span><span class=n>alpha</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mf>0.5</span><span class=p>;</span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>argc</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=mi>2</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Usage: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; filename.vtp [alpha] e.g. Bunny.vtp&quot;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Usage: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" filename.vtp [alpha] e.g. Bunny.vtp"</span>
 <span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>EXIT_FAILURE</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
@@ -94,20 +94,20 @@ function registerListener(event, func) {
 
 <span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span><span class=w> </span><span class=n>namedColors</span><span class=p>;</span>
 
-<span class=w>    </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>namedColors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Khaki&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>    </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>namedColors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Khaki"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 </code></pre></div> <p>is preferred over</p> <div class=codehilite><pre><span></span><code><span class=w>    </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=mf>0.9412</span><span class=p>,</span><span class=w> </span><span class=mf>0.9020</span><span class=p>,</span><span class=w> </span><span class=mf>0.5490</span><span class=p>);</span>
 </code></pre></div> <ul> <li>Use admonitions to warn/cite/info, etc. <a href=https://examples.vtk.org/site//Instructions/ForAdministrators/#admonition>Here is a summary of admonitions</a>.</li> </ul> <h3 id=python>Python<a class=headerlink href=#python title="Permanent link">&para;</a></h3> <p>In general, Python submissions should follow the VTK Programming style and the comments outlined for C++ above (with language appropriate modifications).</p> <p>Python code styling follows <a href=https://www.python.org/dev/peps/pep-0008/ >PEP 8 -- Style Guide for Python Code</a>. </p> <p>Python code is tested in a similar manner to C++ code, so it must follow this layout:</p> <div class=codehilite><pre><span></span><code><span class=ch>#!/usr/bin/env python</span>
 
 <span class=kn>import</span><span class=w> </span><span class=nn>vtkmodules.all</span><span class=w> </span><span class=k>as</span><span class=w> </span><span class=nn>vtk</span>
 
 <span class=k>def</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=n>argv</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Get parameters (if needed)</span>
 <span class=sd>    Instantiate your classes, call them and any defs.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>sys</span>
     <span class=n>main</span><span class=p>(</span><span class=n>sys</span><span class=o>.</span><span class=n>argv</span><span class=p>)</span>
 </code></pre></div> <p>Use <code>argparse</code> where needed:</p> <div class=codehilite><pre><span></span><code><span class=ch>#!/usr/bin/env python</span>
@@ -123,19 +123,19 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_program_parameters</span><span class=p>(</span><span class=n>argv</span><span class=p>):</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>argparse</span>
-    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;Some description.&#39;</span>
-    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;</span>
+    <span class=n>description</span> <span class=o>=</span> <span class=s1>'Some description.'</span>
+    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>'''</span>
 <span class=s1>    Extra information.</span>
-<span class=s1>    &#39;&#39;&#39;</span>
+<span class=s1>    '''</span>
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
                                      <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawDescriptionHelpFormatter</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;xyz_filename&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;combxyz.bin.&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;q_filename&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;combq.bin.&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'xyz_filename'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'combxyz.bin.'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'q_filename'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'combq.bin.'</span><span class=p>)</span>
     <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
     <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>xyz_filename</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>q_filename</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=c1># import sys</span>
     <span class=n>main</span><span class=p>(</span><span class=n>sys</span><span class=o>.</span><span class=n>argv</span><span class=p>)</span>
 </code></pre></div> <p>For the Input/Output of filenames and parameters. Use this snippet <a href=https://examples.vtk.org/site//Python/Snippets/GetProgramParameters/ >GetProgramParameters</a>.</p> <p>It you do not know what vtk modules and classes you need use:</p> <div class=codehilite><pre><span></span><code><span class=kn>import</span><span class=w> </span><span class=nn>vtkmodules.all</span><span class=w> </span><span class=k>as</span><span class=w> </span><span class=nn>vtk</span>

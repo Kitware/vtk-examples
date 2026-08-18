@@ -196,7 +196,7 @@ function registerListener(event, func) {
 </span><span class=hll>    <span class=n>render_window_interactor</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>render_window_interactor</span><span class=o>.</span><span class=n>render_window</span> <span class=o>=</span> <span class=n>render_window</span>
 
-    <span class=n>text</span> <span class=o>=</span> <span class=p>{</span><span class=mi>0</span><span class=p>:</span> <span class=s1>&#39;Initial Terrain&#39;</span><span class=p>,</span> <span class=mi>1</span><span class=p>:</span> <span class=s1>&#39;Loop Subdivision&#39;</span><span class=p>,</span> <span class=mi>2</span><span class=p>:</span> <span class=s1>&#39;Butterfly Subdivision&#39;</span><span class=p>}</span>
+    <span class=n>text</span> <span class=o>=</span> <span class=p>{</span><span class=mi>0</span><span class=p>:</span> <span class=s1>'Initial Terrain'</span><span class=p>,</span> <span class=mi>1</span><span class=p>:</span> <span class=s1>'Loop Subdivision'</span><span class=p>,</span> <span class=mi>2</span><span class=p>:</span> <span class=s1>'Butterfly Subdivision'</span><span class=p>}</span>
 
     <span class=c1># Define viewport ranges [x_min, y_min, x_max, y_max]</span>
     <span class=n>viewports</span> <span class=o>=</span> <span class=p>{</span><span class=mi>0</span><span class=p>:</span> <span class=p>[</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>1.0</span> <span class=o>/</span> <span class=mf>3.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>],</span>
@@ -207,7 +207,7 @@ function registerListener(event, func) {
     <span class=c1># Build the renderers and add them to the render window.</span>
     <span class=n>renderers</span> <span class=o>=</span> <span class=nb>list</span><span class=p>()</span>
     <span class=k>for</span> <span class=n>k</span> <span class=ow>in</span> <span class=n>text</span><span class=o>.</span><span class=n>keys</span><span class=p>():</span>
-<span class=hll>        <span class=n>renderers</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>nc</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Cornsilk&#39;</span><span class=p>),</span>
+<span class=hll>        <span class=n>renderers</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>nc</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Cornsilk'</span><span class=p>),</span>
 </span>                                     <span class=n>viewport</span><span class=o>=</span><span class=n>viewports</span><span class=p>[</span><span class=n>k</span><span class=p>]))</span>
 
         <span class=c1># Add the actors.</span>
@@ -233,8 +233,8 @@ function registerListener(event, func) {
     <span class=n>text_actors</span> <span class=o>=</span> <span class=nb>list</span><span class=p>()</span>
     <span class=n>text_representations</span> <span class=o>=</span> <span class=nb>list</span><span class=p>()</span>
     <span class=n>text_widgets</span> <span class=o>=</span> <span class=nb>list</span><span class=p>()</span>
-<span class=hll>    <span class=n>text_property</span> <span class=o>=</span> <span class=n>vtkTextProperty</span><span class=p>(</span><span class=n>color</span><span class=o>=</span><span class=n>nc</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;DarkSlateGray&#39;</span><span class=p>),</span> <span class=n>bold</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>italic</span><span class=o>=</span><span class=kc>False</span><span class=p>,</span> <span class=n>shadow</span><span class=o>=</span><span class=kc>False</span><span class=p>,</span>
-</span>                                    <span class=n>font_size</span><span class=o>=</span><span class=mi>12</span><span class=p>,</span> <span class=n>font_family_as_string</span><span class=o>=</span><span class=s1>&#39;Courier&#39;</span><span class=p>,</span>
+<span class=hll>    <span class=n>text_property</span> <span class=o>=</span> <span class=n>vtkTextProperty</span><span class=p>(</span><span class=n>color</span><span class=o>=</span><span class=n>nc</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'DarkSlateGray'</span><span class=p>),</span> <span class=n>bold</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>italic</span><span class=o>=</span><span class=kc>False</span><span class=p>,</span> <span class=n>shadow</span><span class=o>=</span><span class=kc>False</span><span class=p>,</span>
+</span>                                    <span class=n>font_size</span><span class=o>=</span><span class=mi>12</span><span class=p>,</span> <span class=n>font_family_as_string</span><span class=o>=</span><span class=s1>'Courier'</span><span class=p>,</span>
                                     <span class=n>justification</span><span class=o>=</span><span class=n>TextProperty</span><span class=o>.</span><span class=n>Justification</span><span class=o>.</span><span class=n>VTK_TEXT_CENTERED</span><span class=p>,</span>
                                     <span class=n>vertical_justification</span><span class=o>=</span><span class=n>TextProperty</span><span class=o>.</span><span class=n>VerticalJustification</span><span class=o>.</span><span class=n>VTK_TEXT_CENTERED</span><span class=p>)</span>
 
@@ -248,8 +248,8 @@ function registerListener(event, func) {
 </span>
         <span class=c1># Create the text representation. Used for positioning the text actor.</span>
 <span class=hll>        <span class=n>text_representations</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>vtkTextRepresentation</span><span class=p>(</span><span class=n>enforce_normalized_viewport_bounds</span><span class=o>=</span><span class=kc>True</span><span class=p>))</span>
-</span>        <span class=n>text_representations</span><span class=p>[</span><span class=n>k</span><span class=p>]</span><span class=o>.</span><span class=n>position_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>text_positions</span><span class=p>[</span><span class=n>v</span><span class=p>][</span><span class=s1>&#39;p&#39;</span><span class=p>]</span>
-        <span class=n>text_representations</span><span class=p>[</span><span class=n>k</span><span class=p>]</span><span class=o>.</span><span class=n>position2_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>text_positions</span><span class=p>[</span><span class=n>v</span><span class=p>][</span><span class=s1>&#39;p2&#39;</span><span class=p>]</span>
+</span>        <span class=n>text_representations</span><span class=p>[</span><span class=n>k</span><span class=p>]</span><span class=o>.</span><span class=n>position_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>text_positions</span><span class=p>[</span><span class=n>v</span><span class=p>][</span><span class=s1>'p'</span><span class=p>]</span>
+        <span class=n>text_representations</span><span class=p>[</span><span class=n>k</span><span class=p>]</span><span class=o>.</span><span class=n>position2_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>text_positions</span><span class=p>[</span><span class=n>v</span><span class=p>][</span><span class=s1>'p2'</span><span class=p>]</span>
 
         <span class=c1># Create the TextWidget</span>
         <span class=n>text_widgets</span><span class=o>.</span><span class=n>append</span><span class=p>(</span>
@@ -265,7 +265,7 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_text_positions</span><span class=p>(</span><span class=n>names</span><span class=p>,</span> <span class=n>justification</span><span class=o>=</span><span class=mi>0</span><span class=p>,</span> <span class=n>vertical_justification</span><span class=o>=</span><span class=mi>0</span><span class=p>,</span> <span class=n>width</span><span class=o>=</span><span class=mf>0.96</span><span class=p>,</span> <span class=n>height</span><span class=o>=</span><span class=mf>0.1</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Get viewport positioning information for a list of names.</span>
 
 <span class=sd>    :param names: The list of names.</span>
@@ -274,7 +274,7 @@ function registerListener(event, func) {
 <span class=sd>    :param width: Width of the bounding_box of the text in screen coordinates.</span>
 <span class=sd>    :param height: Height of the bounding_box of the text in screen coordinates.</span>
 <span class=sd>    :return: A list of positioning information.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=c1># The gap between the left or right edge of the screen and the text.</span>
     <span class=n>dx</span> <span class=o>=</span> <span class=mf>0.02</span>
     <span class=n>width</span> <span class=o>=</span> <span class=nb>abs</span><span class=p>(</span><span class=n>width</span><span class=p>)</span>
@@ -321,9 +321,9 @@ function registerListener(event, func) {
 
         <span class=c1># For debugging!</span>
         <span class=c1># print(</span>
-        <span class=c1>#     f&#39;{k:16s}: (x0, y0) = ({x0:3.2f}, {y0:3.2f}), (x1, y1) = ({x0 + delta_sz:3.2f}, {y0 + dy:3.2f})&#39;</span>
-        <span class=c1>#     f&#39;, width={delta_sz:3.2f}, height={dy:3.2f}&#39;)</span>
-        <span class=n>text_positions</span><span class=p>[</span><span class=n>k</span><span class=p>]</span> <span class=o>=</span> <span class=p>{</span><span class=s1>&#39;p&#39;</span><span class=p>:</span> <span class=p>[</span><span class=n>x0</span><span class=p>,</span> <span class=n>y0</span><span class=p>,</span> <span class=mi>0</span><span class=p>],</span> <span class=s1>&#39;p2&#39;</span><span class=p>:</span> <span class=p>[</span><span class=n>delta_sz</span><span class=p>,</span> <span class=n>dy</span><span class=p>,</span> <span class=mi>0</span><span class=p>]}</span>
+        <span class=c1>#     f'{k:16s}: (x0, y0) = ({x0:3.2f}, {y0:3.2f}), (x1, y1) = ({x0 + delta_sz:3.2f}, {y0 + dy:3.2f})'</span>
+        <span class=c1>#     f', width={delta_sz:3.2f}, height={dy:3.2f}')</span>
+        <span class=n>text_positions</span><span class=p>[</span><span class=n>k</span><span class=p>]</span> <span class=o>=</span> <span class=p>{</span><span class=s1>'p'</span><span class=p>:</span> <span class=p>[</span><span class=n>x0</span><span class=p>,</span> <span class=n>y0</span><span class=p>,</span> <span class=mi>0</span><span class=p>],</span> <span class=s1>'p2'</span><span class=p>:</span> <span class=p>[</span><span class=n>delta_sz</span><span class=p>,</span> <span class=n>dy</span><span class=p>,</span> <span class=mi>0</span><span class=p>]}</span>
 
     <span class=k>return</span> <span class=n>text_positions</span>
 
@@ -343,6 +343,6 @@ function registerListener(event, func) {
         <span class=n>VTK_TEXT_TOP</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>2</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

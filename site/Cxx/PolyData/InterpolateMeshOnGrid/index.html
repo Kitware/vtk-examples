@@ -123,12 +123,12 @@ function registerListener(event, func) {
 </span>
 <span class=w>  </span><span class=c1>// Create a random set of 100 points in the xy-plane in (0,10)x(0,10).</span>
 <span class=w>  </span><span class=c1>// If you had instead started with a set of (x,y,z) points, you must copy</span>
-<span class=w>  </span><span class=c1>// the zvalues into a FloatArray and set it as the data set&#39;s scalars,</span>
+<span class=w>  </span><span class=c1>// the zvalues into a FloatArray and set it as the data set's scalars,</span>
 <span class=w>  </span><span class=c1>// and then set the z-coordinates to zero</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPoints</span><span class=o>&gt;</span><span class=w> </span><span class=n>randomPoints</span><span class=p>;</span>
 </span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkFloatArray</span><span class=o>&gt;</span><span class=w> </span><span class=n>zvalues</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>zvalues</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>&quot;ZValues&quot;</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>zvalues</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>"ZValues"</span><span class=p>);</span>
 
 <span class=w>  </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>gridSize</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>10</span><span class=p>;</span>
 <span class=w>  </span><span class=kt>float</span><span class=w> </span><span class=n>maxHeight</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>1</span><span class=p>;</span>
@@ -180,7 +180,7 @@ function registerListener(event, func) {
 </span><span class=w>  </span><span class=n>probeFilter</span><span class=o>-&gt;</span><span class=n>SetSourceConnection</span><span class=p>(</span><span class=n>randomDelaunay</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 <span class=w>  </span><span class=n>probeFilter</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span>
 <span class=w>      </span><span class=n>gridPolyData</span><span class=p>);</span><span class=w> </span><span class=c1>//</span>
-<span class=w>                     </span><span class=c1>// Interpolate &#39;Source&#39; at these points.</span>
+<span class=w>                     </span><span class=c1>// Interpolate 'Source' at these points.</span>
 <span class=w>  </span><span class=n>probeFilter</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 
 <span class=w>  </span><span class=c1>// Map the output zvalues to the z-coordinates of the data so that</span>
@@ -198,7 +198,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>randomWarpScalar</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkXMLPolyDataWriter</span><span class=o>&gt;</span><span class=w> </span><span class=n>randomWriter</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>randomWriter</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=s>&quot;randomSurface.vtp&quot;</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>randomWriter</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=s>"randomSurface.vtp"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>randomWriter</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>randomWarpScalar</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 <span class=w>  </span><span class=n>randomWriter</span><span class=o>-&gt;</span><span class=n>Write</span><span class=p>();</span>
 
@@ -207,7 +207,7 @@ function registerListener(event, func) {
 </span><span class=w>  </span><span class=n>gridDelaunay</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>gridWarpScalar</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkXMLPolyDataWriter</span><span class=o>&gt;</span><span class=w> </span><span class=n>gridWriter</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>gridWriter</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=s>&quot;gridSurface.vtp&quot;</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>gridWriter</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=s>"gridSurface.vtp"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>gridWriter</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>gridDelaunay</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 <span class=w>  </span><span class=n>gridWriter</span><span class=o>-&gt;</span><span class=n>Write</span><span class=p>();</span>
 
@@ -218,7 +218,7 @@ function registerListener(event, func) {
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>randomActor</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>randomActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>randomMapper</span><span class=p>);</span>
-<span class=w>  </span><span class=n>randomActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Salmon&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>randomActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Salmon"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=n>randomActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetPointSize</span><span class=p>(</span><span class=mi>3</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkDataSetMapper</span><span class=o>&gt;</span><span class=w> </span><span class=n>gridMapper</span><span class=p>;</span>
@@ -227,13 +227,13 @@ function registerListener(event, func) {
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>gridActor</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>gridActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>gridMapper</span><span class=p>);</span>
-<span class=w>  </span><span class=n>gridActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;SteelBlue&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>gridActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"SteelBlue"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=n>gridActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetPointSize</span><span class=p>(</span><span class=mi>3</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderer</span><span class=p>;</span>
 </span><span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderWindow</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;InterpolateMeshOnGrid&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"InterpolateMeshOnGrid"</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderWindowInteractor</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>renderWindowInteractor</span><span class=o>-&gt;</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renderWindow</span><span class=p>);</span>
@@ -243,7 +243,7 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>randomActor</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>gridActor</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;SlateGray&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"SlateGray"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>camera</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>GetActiveCamera</span><span class=p>();</span>
 <span class=w>  </span><span class=n>camera</span><span class=o>-&gt;</span><span class=n>SetPosition</span><span class=p>(</span><span class=mf>5.87551</span><span class=p>,</span><span class=w> </span><span class=mf>-15.9539</span><span class=p>,</span><span class=w> </span><span class=mf>17.5858</span><span class=p>);</span>
@@ -277,11 +277,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;InterpolateMeshOnGrid: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"InterpolateMeshOnGrid: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>InterpolateMeshOnGrid</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>InterpolateMeshOnGrid.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>InterpolateMeshOnGrid</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

@@ -92,10 +92,10 @@ function registerListener(event, func) {
     <span class=n>rng</span><span class=o>.</span><span class=n>seed</span> <span class=o>=</span> <span class=mi>5127</span>
 
     <span class=c1># Create a renderer</span>
-<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;DarkSlateGray&#39;</span><span class=p>))</span>
+<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'DarkSlateGray'</span><span class=p>))</span>
 </span>
     <span class=c1># Create a render window</span>
-<span class=hll>    <span class=n>render_window</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>window_name</span><span class=o>=</span><span class=s1>&#39;BillboardTextActor3D&#39;</span><span class=p>)</span>
+<span class=hll>    <span class=n>render_window</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>window_name</span><span class=o>=</span><span class=s1>'BillboardTextActor3D'</span><span class=p>)</span>
 </span>    <span class=n>render_window</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>)</span>
 
     <span class=c1># Create an interactor</span>
@@ -116,7 +116,7 @@ function registerListener(event, func) {
 
 <span class=hll>            <span class=n>actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>(</span><span class=n>mapper</span><span class=o>=</span><span class=n>mapper</span><span class=p>)</span>
 </span>            <span class=n>actor</span><span class=o>.</span><span class=n>position</span> <span class=o>=</span> <span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
-            <span class=n>actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Peacock&#39;</span><span class=p>)</span>
+            <span class=n>actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Peacock'</span><span class=p>)</span>
 
             <span class=n>renderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor</span><span class=p>)</span>
 
@@ -127,14 +127,14 @@ function registerListener(event, func) {
         <span class=c1># Create an actor</span>
 <span class=hll>        <span class=n>actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>(</span><span class=n>mapper</span><span class=o>=</span><span class=n>mapper</span><span class=p>)</span>
 </span>        <span class=n>actor</span><span class=o>.</span><span class=n>position</span> <span class=o>=</span> <span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
-        <span class=n>actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;MistyRose&#39;</span><span class=p>)</span>
+        <span class=n>actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'MistyRose'</span><span class=p>)</span>
 
         <span class=c1># Set up the text and add it to the renderer</span>
 <span class=hll>        <span class=n>text_actor</span> <span class=o>=</span> <span class=n>vtkBillboardTextActor3D</span><span class=p>()</span>
-</span>        <span class=n>text_actor</span><span class=o>.</span><span class=n>input</span> <span class=o>=</span> <span class=s1>&#39;&#39;</span>
+</span>        <span class=n>text_actor</span><span class=o>.</span><span class=n>input</span> <span class=o>=</span> <span class=s1>''</span>
         <span class=n>text_actor</span><span class=o>.</span><span class=n>position</span> <span class=o>=</span> <span class=n>actor</span><span class=o>.</span><span class=n>position</span>
         <span class=n>text_actor</span><span class=o>.</span><span class=n>text_property</span><span class=o>.</span><span class=n>font_size</span> <span class=o>=</span> <span class=mi>12</span>
-        <span class=n>text_actor</span><span class=o>.</span><span class=n>text_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Gold&#39;</span><span class=p>)</span>
+        <span class=n>text_actor</span><span class=o>.</span><span class=n>text_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Gold'</span><span class=p>)</span>
         <span class=n>text_actor</span><span class=o>.</span><span class=n>text_property</span><span class=o>.</span><span class=n>justification</span> <span class=o>=</span> <span class=n>TextProperty</span><span class=o>.</span><span class=n>Justification</span><span class=o>.</span><span class=n>VTK_TEXT_CENTERED</span>
 
         <span class=n>position</span> <span class=o>=</span> <span class=n>random_position</span><span class=p>(</span><span class=n>min_r</span><span class=p>,</span> <span class=n>max_r</span><span class=p>,</span> <span class=n>rng</span><span class=p>)</span>
@@ -148,7 +148,7 @@ function registerListener(event, func) {
         <span class=n>observer</span> <span class=o>=</span> <span class=n>ActorCallback</span><span class=p>(</span><span class=n>text_actor</span><span class=p>,</span> <span class=n>dy</span><span class=p>)</span>
 <span class=hll>        <span class=n>actor</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=n>vtkCommand</span><span class=o>.</span><span class=n>NoEvent</span><span class=p>,</span> <span class=n>observer</span><span class=p>(</span><span class=n>actor</span><span class=p>))</span>
 </span>        <span class=c1># Otherwise do this:</span>
-        <span class=c1># label = f&#39;{position[0]:0.3g}, {position[1]:0.3g}, {position[2]:0.3g}&#39;</span>
+        <span class=c1># label = f'{position[0]:0.3g}, {position[1]:0.3g}, {position[2]:0.3g}'</span>
         <span class=c1># text_actor.position = text_actor_position</span>
         <span class=c1># text_actor.input = label</span>
 
@@ -168,7 +168,7 @@ function registerListener(event, func) {
         <span class=n>position</span> <span class=o>=</span> <span class=n>caller</span><span class=o>.</span><span class=n>position</span>
         <span class=n>text_actor_position</span> <span class=o>=</span> <span class=nb>list</span><span class=p>(</span><span class=n>copy</span><span class=o>.</span><span class=n>deepcopy</span><span class=p>(</span><span class=n>position</span><span class=p>))</span>
         <span class=n>text_actor_position</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>+=</span> <span class=bp>self</span><span class=o>.</span><span class=n>dy</span>
-        <span class=n>label</span> <span class=o>=</span> <span class=sa>f</span><span class=s1>&#39;</span><span class=si>{</span><span class=n>position</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=si>:</span><span class=s1>0.3g</span><span class=si>}</span><span class=s1>, </span><span class=si>{</span><span class=n>position</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=si>:</span><span class=s1>0.3g</span><span class=si>}</span><span class=s1>, </span><span class=si>{</span><span class=n>position</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span><span class=si>:</span><span class=s1>0.3g</span><span class=si>}</span><span class=s1>&#39;</span>
+        <span class=n>label</span> <span class=o>=</span> <span class=sa>f</span><span class=s1>'</span><span class=si>{</span><span class=n>position</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=si>:</span><span class=s1>0.3g</span><span class=si>}</span><span class=s1>, </span><span class=si>{</span><span class=n>position</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=si>:</span><span class=s1>0.3g</span><span class=si>}</span><span class=s1>, </span><span class=si>{</span><span class=n>position</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span><span class=si>:</span><span class=s1>0.3g</span><span class=si>}</span><span class=s1>'</span>
         <span class=bp>self</span><span class=o>.</span><span class=n>text_actor</span><span class=o>.</span><span class=n>position</span> <span class=o>=</span> <span class=n>text_actor_position</span>
         <span class=bp>self</span><span class=o>.</span><span class=n>text_actor</span><span class=o>.</span><span class=n>input</span> <span class=o>=</span> <span class=n>label</span>
 
@@ -196,6 +196,6 @@ function registerListener(event, func) {
         <span class=n>VTK_TEXT_TOP</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>2</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

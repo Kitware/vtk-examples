@@ -109,9 +109,9 @@ function registerListener(event, func) {
 <span class=p>{</span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>argc</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=mi>3</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Usage: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; treeFileName graphFileName&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;where: treeFileName is Infovis-XML-vtkclasses.xml and &quot;</span>
-<span class=w>            </span><span class=s>&quot;graphFileName is Infovis-XML-vtklibrary.xml&quot;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Usage: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" treeFileName graphFileName"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"where: treeFileName is Infovis-XML-vtkclasses.xml and "</span>
+<span class=w>            </span><span class=s>"graphFileName is Infovis-XML-vtklibrary.xml"</span>
 <span class=w>         </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>EXIT_FAILURE</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
@@ -122,15 +122,15 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=c1>// We need to put the graph and tree edges in different domains.</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkXMLTreeReader</span><span class=o>&gt;</span><span class=w> </span><span class=n>reader1</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>reader1</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>treeFileName</span><span class=p>.</span><span class=n>c_str</span><span class=p>());</span>
-<span class=w>  </span><span class=n>reader1</span><span class=o>-&gt;</span><span class=n>SetEdgePedigreeIdArrayName</span><span class=p>(</span><span class=s>&quot;tree edge&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>reader1</span><span class=o>-&gt;</span><span class=n>SetEdgePedigreeIdArrayName</span><span class=p>(</span><span class=s>"tree edge"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>reader1</span><span class=o>-&gt;</span><span class=n>GenerateVertexPedigreeIdsOff</span><span class=p>();</span>
-<span class=w>  </span><span class=n>reader1</span><span class=o>-&gt;</span><span class=n>SetVertexPedigreeIdArrayName</span><span class=p>(</span><span class=s>&quot;id&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>reader1</span><span class=o>-&gt;</span><span class=n>SetVertexPedigreeIdArrayName</span><span class=p>(</span><span class=s>"id"</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkXMLTreeReader</span><span class=o>&gt;</span><span class=w> </span><span class=n>reader2</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>reader2</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>graphFileName</span><span class=p>.</span><span class=n>c_str</span><span class=p>());</span>
-<span class=w>  </span><span class=n>reader2</span><span class=o>-&gt;</span><span class=n>SetEdgePedigreeIdArrayName</span><span class=p>(</span><span class=s>&quot;graph edge&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>reader2</span><span class=o>-&gt;</span><span class=n>SetEdgePedigreeIdArrayName</span><span class=p>(</span><span class=s>"graph edge"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>reader2</span><span class=o>-&gt;</span><span class=n>GenerateVertexPedigreeIdsOff</span><span class=p>();</span>
-<span class=w>  </span><span class=n>reader2</span><span class=o>-&gt;</span><span class=n>SetVertexPedigreeIdArrayName</span><span class=p>(</span><span class=s>&quot;id&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>reader2</span><span class=o>-&gt;</span><span class=n>SetVertexPedigreeIdArrayName</span><span class=p>(</span><span class=s>"id"</span><span class=p>);</span>
 
 <span class=w>  </span><span class=n>reader1</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 <span class=w>  </span><span class=n>reader2</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
@@ -140,13 +140,13 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>view</span><span class=o>-&gt;</span><span class=n>SetGraphFromInputConnection</span><span class=p>(</span><span class=n>reader1</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 <span class=w>  </span><span class=n>view</span><span class=o>-&gt;</span><span class=n>SetTreeFromInputConnection</span><span class=p>(</span><span class=n>reader2</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 
-<span class=w>  </span><span class=n>view</span><span class=o>-&gt;</span><span class=n>SetAreaColorArrayName</span><span class=p>(</span><span class=s>&quot;level&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>view</span><span class=o>-&gt;</span><span class=n>SetAreaColorArrayName</span><span class=p>(</span><span class=s>"level"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>view</span><span class=o>-&gt;</span><span class=n>SetEdgeColorToSplineFraction</span><span class=p>();</span>
 <span class=w>  </span><span class=n>view</span><span class=o>-&gt;</span><span class=n>SetColorEdges</span><span class=p>(</span><span class=nb>true</span><span class=p>);</span>
-<span class=w>  </span><span class=n>view</span><span class=o>-&gt;</span><span class=n>SetAreaLabelArrayName</span><span class=p>(</span><span class=s>&quot;id&quot;</span><span class=p>);</span>
-<span class=w>  </span><span class=n>view</span><span class=o>-&gt;</span><span class=n>SetAreaHoverArrayName</span><span class=p>(</span><span class=s>&quot;id&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>view</span><span class=o>-&gt;</span><span class=n>SetAreaLabelArrayName</span><span class=p>(</span><span class=s>"id"</span><span class=p>);</span>
+<span class=w>  </span><span class=n>view</span><span class=o>-&gt;</span><span class=n>SetAreaHoverArrayName</span><span class=p>(</span><span class=s>"id"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>view</span><span class=o>-&gt;</span><span class=n>SetAreaLabelVisibility</span><span class=p>(</span><span class=nb>true</span><span class=p>);</span>
-<span class=w>  </span><span class=n>view</span><span class=o>-&gt;</span><span class=n>SetAreaSizeArrayName</span><span class=p>(</span><span class=s>&quot;VertexDegree&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>view</span><span class=o>-&gt;</span><span class=n>SetAreaSizeArrayName</span><span class=p>(</span><span class=s>"VertexDegree"</span><span class=p>);</span>
 
 <span class=w>  </span><span class=c1>// Apply a theme to the views</span>
 <span class=w>  </span><span class=c1>// vtkViewTheme* const theme = vtkViewTheme::CreateMellowTheme();</span>
@@ -161,7 +161,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>view</span><span class=o>-&gt;</span><span class=n>ResetCamera</span><span class=p>();</span>
 
 <span class=w>  </span><span class=n>view</span><span class=o>-&gt;</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>600</span><span class=p>,</span><span class=w> </span><span class=mi>600</span><span class=p>);</span>
-<span class=w>  </span><span class=n>view</span><span class=o>-&gt;</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;TreeMapView&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>view</span><span class=o>-&gt;</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"TreeMapView"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>view</span><span class=o>-&gt;</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
 <span class=w>  </span><span class=n>view</span><span class=o>-&gt;</span><span class=n>GetInteractor</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>Initialize</span><span class=p>();</span>
 <span class=w>  </span><span class=n>view</span><span class=o>-&gt;</span><span class=n>GetInteractor</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>Start</span><span class=p>();</span>
@@ -186,11 +186,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;TreeMapView: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"TreeMapView: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>TreeMapView</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>TreeMapView.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>TreeMapView</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

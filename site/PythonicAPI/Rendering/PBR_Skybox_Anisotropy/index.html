@@ -139,25 +139,25 @@ Options:
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_program_parameters</span><span class=p>():</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>argparse</span>
-    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;Demonstrates physically based rendering, image based lighting, anisotropic texturing and a skybox.&#39;</span>
-    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;</span>
+    <span class=n>description</span> <span class=o>=</span> <span class=s1>'Demonstrates physically based rendering, image based lighting, anisotropic texturing and a skybox.'</span>
+    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>'''</span>
 <span class=s1>Physically based rendering sets color, metallicity and roughness of the object.</span>
 <span class=s1>Image based lighting uses a cubemap texture to specify the environment.</span>
 <span class=s1>Texturing is used to generate lighting effects.</span>
 <span class=s1>A Skybox is used to create the illusion of distant three-dimensional surroundings.</span>
-<span class=s1>    &#39;&#39;&#39;</span>
+<span class=s1>    '''</span>
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
                                      <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawDescriptionHelpFormatter</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;file_name&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The path to the JSON file e.g. PBR_Skybox_Anisotropy.json.&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-s&#39;</span><span class=p>,</span> <span class=s1>&#39;--surface&#39;</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=s1>&#39;&#39;</span><span class=p>,</span>
-                        <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The name of the surface. Overrides the surface entry in the json file.&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-c&#39;</span><span class=p>,</span> <span class=s1>&#39;--use_cubemap&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_true&#39;</span><span class=p>,</span>
-                        <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Build the cubemap from the six cubemap files.&#39;</span>
-                             <span class=s1>&#39; Overrides the equirectangular entry in the json file.&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-t&#39;</span><span class=p>,</span> <span class=s1>&#39;--use_tonemapping&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_true&#39;</span><span class=p>,</span>
-                        <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Use tone mapping.&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-omw&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_false&#39;</span><span class=p>,</span>
-                        <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Use an OrientationMarkerWidget instead of a CameraOrientationWidget.&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'file_name'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'The path to the JSON file e.g. PBR_Skybox_Anisotropy.json.'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-s'</span><span class=p>,</span> <span class=s1>'--surface'</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=s1>''</span><span class=p>,</span>
+                        <span class=n>help</span><span class=o>=</span><span class=s1>'The name of the surface. Overrides the surface entry in the json file.'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-c'</span><span class=p>,</span> <span class=s1>'--use_cubemap'</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>'store_true'</span><span class=p>,</span>
+                        <span class=n>help</span><span class=o>=</span><span class=s1>'Build the cubemap from the six cubemap files.'</span>
+                             <span class=s1>' Overrides the equirectangular entry in the json file.'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-t'</span><span class=p>,</span> <span class=s1>'--use_tonemapping'</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>'store_true'</span><span class=p>,</span>
+                        <span class=n>help</span><span class=o>=</span><span class=s1>'Use tone mapping.'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-omw'</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>'store_false'</span><span class=p>,</span>
+                        <span class=n>help</span><span class=o>=</span><span class=s1>'Use an OrientationMarkerWidget instead of a CameraOrientationWidget.'</span><span class=p>)</span>
     <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
     <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>file_name</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>surface</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>use_cubemap</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>use_tonemapping</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>omw</span>
 
@@ -166,39 +166,39 @@ Options:
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
     <span class=c1># Default background color.</span>
-    <span class=n>colors</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=p>(</span><span class=s1>&#39;BkgColor&#39;</span><span class=p>,</span> <span class=p>(</span><span class=mi>26</span><span class=p>,</span> <span class=mi>51</span><span class=p>,</span> <span class=mi>102</span><span class=p>,</span> <span class=mi>255</span><span class=p>))</span>
+    <span class=n>colors</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=p>(</span><span class=s1>'BkgColor'</span><span class=p>,</span> <span class=p>(</span><span class=mi>26</span><span class=p>,</span> <span class=mi>51</span><span class=p>,</span> <span class=mi>102</span><span class=p>,</span> <span class=mi>255</span><span class=p>))</span>
 
     <span class=n>fn</span><span class=p>,</span> <span class=n>surface_name</span><span class=p>,</span> <span class=n>use_cubemap</span><span class=p>,</span> <span class=n>use_tonemapping</span><span class=p>,</span> <span class=n>use_camera_omw</span> <span class=o>=</span> <span class=n>get_program_parameters</span><span class=p>()</span>
 
     <span class=n>fn_path</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>fn</span><span class=p>)</span>
     <span class=k>if</span> <span class=ow>not</span> <span class=n>fn_path</span><span class=o>.</span><span class=n>suffix</span><span class=p>:</span>
-        <span class=n>fn_path</span> <span class=o>=</span> <span class=n>fn_path</span><span class=o>.</span><span class=n>with_suffix</span><span class=p>(</span><span class=s1>&#39;.json&#39;</span><span class=p>)</span>
+        <span class=n>fn_path</span> <span class=o>=</span> <span class=n>fn_path</span><span class=o>.</span><span class=n>with_suffix</span><span class=p>(</span><span class=s1>'.json'</span><span class=p>)</span>
     <span class=k>if</span> <span class=ow>not</span> <span class=n>fn_path</span><span class=o>.</span><span class=n>is_file</span><span class=p>():</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Unable to find: &#39;</span><span class=p>,</span> <span class=n>fn_path</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'Unable to find: '</span><span class=p>,</span> <span class=n>fn_path</span><span class=p>)</span>
         <span class=k>return</span>
     <span class=n>paths_ok</span><span class=p>,</span> <span class=n>parameters</span> <span class=o>=</span> <span class=n>get_parameters</span><span class=p>(</span><span class=n>fn_path</span><span class=p>)</span>
     <span class=k>if</span> <span class=ow>not</span> <span class=n>paths_ok</span><span class=p>:</span>
         <span class=k>return</span>
 
     <span class=c1># Check for missing parameters.</span>
-    <span class=k>if</span> <span class=s1>&#39;bkgcolor&#39;</span> <span class=ow>not</span> <span class=ow>in</span> <span class=n>parameters</span><span class=o>.</span><span class=n>keys</span><span class=p>():</span>
-        <span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;bkgcolor&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=s1>&#39;BkgColor&#39;</span>
-    <span class=k>if</span> <span class=s1>&#39;objcolor&#39;</span> <span class=ow>not</span> <span class=ow>in</span> <span class=n>parameters</span><span class=o>.</span><span class=n>keys</span><span class=p>():</span>
-        <span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;objcolor&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=s1>&#39;White&#39;</span>
-    <span class=k>if</span> <span class=s1>&#39;skybox&#39;</span> <span class=ow>not</span> <span class=ow>in</span> <span class=n>parameters</span><span class=o>.</span><span class=n>keys</span><span class=p>():</span>
-        <span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;skybox&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=kc>False</span>
+    <span class=k>if</span> <span class=s1>'bkgcolor'</span> <span class=ow>not</span> <span class=ow>in</span> <span class=n>parameters</span><span class=o>.</span><span class=n>keys</span><span class=p>():</span>
+        <span class=n>parameters</span><span class=p>[</span><span class=s1>'bkgcolor'</span><span class=p>]</span> <span class=o>=</span> <span class=s1>'BkgColor'</span>
+    <span class=k>if</span> <span class=s1>'objcolor'</span> <span class=ow>not</span> <span class=ow>in</span> <span class=n>parameters</span><span class=o>.</span><span class=n>keys</span><span class=p>():</span>
+        <span class=n>parameters</span><span class=p>[</span><span class=s1>'objcolor'</span><span class=p>]</span> <span class=o>=</span> <span class=s1>'White'</span>
+    <span class=k>if</span> <span class=s1>'skybox'</span> <span class=ow>not</span> <span class=ow>in</span> <span class=n>parameters</span><span class=o>.</span><span class=n>keys</span><span class=p>():</span>
+        <span class=n>parameters</span><span class=p>[</span><span class=s1>'skybox'</span><span class=p>]</span> <span class=o>=</span> <span class=kc>False</span>
     <span class=k>if</span> <span class=n>surface_name</span><span class=p>:</span>
-        <span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;object&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=n>surface_name</span>
+        <span class=n>parameters</span><span class=p>[</span><span class=s1>'object'</span><span class=p>]</span> <span class=o>=</span> <span class=n>surface_name</span>
 
     <span class=n>res</span> <span class=o>=</span> <span class=n>display_parameters</span><span class=p>(</span><span class=n>parameters</span><span class=p>)</span>
-    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;</span><span class=se>\n</span><span class=s1>&#39;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>res</span><span class=p>))</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s1>'</span><span class=se>\n</span><span class=s1>'</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>res</span><span class=p>))</span>
     <span class=nb>print</span><span class=p>()</span>
 
-    <span class=k>if</span> <span class=ow>not</span> <span class=n>check_for_missing_textures</span><span class=p>(</span><span class=n>parameters</span><span class=p>,</span> <span class=p>[</span><span class=s1>&#39;albedo&#39;</span><span class=p>,</span> <span class=s1>&#39;normal&#39;</span><span class=p>,</span> <span class=s1>&#39;material&#39;</span><span class=p>,</span> <span class=s1>&#39;anisotropy&#39;</span><span class=p>]):</span>
+    <span class=k>if</span> <span class=ow>not</span> <span class=n>check_for_missing_textures</span><span class=p>(</span><span class=n>parameters</span><span class=p>,</span> <span class=p>[</span><span class=s1>'albedo'</span><span class=p>,</span> <span class=s1>'normal'</span><span class=p>,</span> <span class=s1>'material'</span><span class=p>,</span> <span class=s1>'anisotropy'</span><span class=p>]):</span>
         <span class=k>return</span>
 
-<span class=hll>    <span class=n>ren1</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Snow&#39;</span><span class=p>),</span> <span class=n>viewport</span><span class=o>=</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.2</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>))</span>
-</span><span class=hll>    <span class=n>ren2</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;bkgcolor&#39;</span><span class=p>]),</span> <span class=n>viewport</span><span class=o>=</span><span class=p>(</span><span class=mf>0.2</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>))</span>
+<span class=hll>    <span class=n>ren1</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Snow'</span><span class=p>),</span> <span class=n>viewport</span><span class=o>=</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.2</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>))</span>
+</span><span class=hll>    <span class=n>ren2</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>parameters</span><span class=p>[</span><span class=s1>'bkgcolor'</span><span class=p>]),</span> <span class=n>viewport</span><span class=o>=</span><span class=p>(</span><span class=mf>0.2</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>))</span>
 </span>
     <span class=n>name</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>sys</span><span class=o>.</span><span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>])</span><span class=o>.</span><span class=n>stem</span>
 <span class=hll>    <span class=n>render_window</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>size</span><span class=o>=</span><span class=p>(</span><span class=mi>1000</span><span class=p>,</span> <span class=mi>625</span><span class=p>),</span> <span class=n>window_name</span><span class=o>=</span><span class=n>name</span><span class=p>)</span>
@@ -239,28 +239,28 @@ Options:
     <span class=n>has_skybox</span> <span class=o>=</span> <span class=kc>False</span>
     <span class=n>gamma_correct</span> <span class=o>=</span> <span class=kc>False</span>
 
-    <span class=k>if</span> <span class=n>use_cubemap</span> <span class=ow>and</span> <span class=s1>&#39;cubemap&#39;</span> <span class=ow>in</span> <span class=n>parameters</span><span class=o>.</span><span class=n>keys</span><span class=p>():</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Using the cubemap files to generate the environment texture.&#39;</span><span class=p>)</span>
-        <span class=n>env_texture</span> <span class=o>=</span> <span class=n>read_cubemap</span><span class=p>(</span><span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;cubemap&#39;</span><span class=p>])</span>
-        <span class=k>if</span> <span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;skybox&#39;</span><span class=p>]:</span>
+    <span class=k>if</span> <span class=n>use_cubemap</span> <span class=ow>and</span> <span class=s1>'cubemap'</span> <span class=ow>in</span> <span class=n>parameters</span><span class=o>.</span><span class=n>keys</span><span class=p>():</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'Using the cubemap files to generate the environment texture.'</span><span class=p>)</span>
+        <span class=n>env_texture</span> <span class=o>=</span> <span class=n>read_cubemap</span><span class=p>(</span><span class=n>parameters</span><span class=p>[</span><span class=s1>'cubemap'</span><span class=p>])</span>
+        <span class=k>if</span> <span class=n>parameters</span><span class=p>[</span><span class=s1>'skybox'</span><span class=p>]:</span>
             <span class=n>skybox</span><span class=o>.</span><span class=n>SetTexture</span><span class=p>(</span><span class=n>env_texture</span><span class=p>)</span>
             <span class=n>has_skybox</span> <span class=o>=</span> <span class=kc>True</span>
-    <span class=k>elif</span> <span class=s1>&#39;equirectangular&#39;</span> <span class=ow>in</span> <span class=n>parameters</span><span class=o>.</span><span class=n>keys</span><span class=p>():</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Using the equirectangular file to generate the environment texture.&#39;</span><span class=p>)</span>
-        <span class=n>env_texture</span> <span class=o>=</span> <span class=n>read_equirectangular_file</span><span class=p>(</span><span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;equirectangular&#39;</span><span class=p>])</span>
-        <span class=k>if</span> <span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;equirectangular&#39;</span><span class=p>]</span><span class=o>.</span><span class=n>suffix</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span> <span class=ow>in</span> <span class=s1>&#39;.hdr .pic&#39;</span><span class=p>:</span>
+    <span class=k>elif</span> <span class=s1>'equirectangular'</span> <span class=ow>in</span> <span class=n>parameters</span><span class=o>.</span><span class=n>keys</span><span class=p>():</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'Using the equirectangular file to generate the environment texture.'</span><span class=p>)</span>
+        <span class=n>env_texture</span> <span class=o>=</span> <span class=n>read_equirectangular_file</span><span class=p>(</span><span class=n>parameters</span><span class=p>[</span><span class=s1>'equirectangular'</span><span class=p>])</span>
+        <span class=k>if</span> <span class=n>parameters</span><span class=p>[</span><span class=s1>'equirectangular'</span><span class=p>]</span><span class=o>.</span><span class=n>suffix</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span> <span class=ow>in</span> <span class=s1>'.hdr .pic'</span><span class=p>:</span>
             <span class=n>gamma_correct</span> <span class=o>=</span> <span class=kc>True</span>
             <span class=n>is_hdr</span> <span class=o>=</span> <span class=kc>True</span>
-        <span class=k>if</span> <span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;skybox&#39;</span><span class=p>]:</span>
+        <span class=k>if</span> <span class=n>parameters</span><span class=p>[</span><span class=s1>'skybox'</span><span class=p>]:</span>
             <span class=c1># Generate a skybox.</span>
             <span class=n>skybox</span><span class=o>.</span><span class=n>SetFloorRight</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
 <span class=hll>            <span class=n>skybox</span><span class=o>.</span><span class=n>SetProjection</span><span class=p>(</span><span class=n>vtkSkybox</span><span class=o>.</span><span class=n>Sphere</span><span class=p>)</span>
 </span>            <span class=n>skybox</span><span class=o>.</span><span class=n>SetTexture</span><span class=p>(</span><span class=n>env_texture</span><span class=p>)</span>
             <span class=n>has_skybox</span> <span class=o>=</span> <span class=kc>True</span>
     <span class=k>else</span><span class=p>:</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;An environment texture is required,</span><span class=se>\n</span><span class=s1>&#39;</span>
-              <span class=s1>&#39;please add the necessary equirectangular&#39;</span>
-              <span class=s1>&#39; or cubemap file paths to the json file.&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'An environment texture is required,</span><span class=se>\n</span><span class=s1>'</span>
+              <span class=s1>'please add the necessary equirectangular'</span>
+              <span class=s1>' or cubemap file paths to the json file.'</span><span class=p>)</span>
         <span class=k>return</span>
 
     <span class=c1># Turn off the default lighting and use image based lighting.</span>
@@ -274,45 +274,45 @@ Options:
         <span class=n>ren2</span><span class=o>.</span><span class=n>SetEnvironmentTexture</span><span class=p>(</span><span class=n>env_texture</span><span class=p>,</span> <span class=kc>True</span><span class=p>)</span>
 
     <span class=c1># Get the textures</span>
-    <span class=n>base_color</span> <span class=o>=</span> <span class=n>read_texture</span><span class=p>(</span><span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;albedo&#39;</span><span class=p>])</span>
+    <span class=n>base_color</span> <span class=o>=</span> <span class=n>read_texture</span><span class=p>(</span><span class=n>parameters</span><span class=p>[</span><span class=s1>'albedo'</span><span class=p>])</span>
     <span class=n>base_color</span><span class=o>.</span><span class=n>color_mode</span> <span class=o>=</span> <span class=n>Texture</span><span class=o>.</span><span class=n>ColorMode</span><span class=o>.</span><span class=n>VTK_COLOR_MODE_DIRECT_SCALARS</span>
     <span class=n>base_color</span><span class=o>.</span><span class=n>use_srgb_color_space</span> <span class=o>=</span> <span class=kc>True</span>
-    <span class=n>normal</span> <span class=o>=</span> <span class=n>read_texture</span><span class=p>(</span><span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;normal&#39;</span><span class=p>])</span>
+    <span class=n>normal</span> <span class=o>=</span> <span class=n>read_texture</span><span class=p>(</span><span class=n>parameters</span><span class=p>[</span><span class=s1>'normal'</span><span class=p>])</span>
     <span class=n>normal</span><span class=o>.</span><span class=n>color_mode</span> <span class=o>=</span> <span class=n>Texture</span><span class=o>.</span><span class=n>ColorMode</span><span class=o>.</span><span class=n>VTK_COLOR_MODE_DIRECT_SCALARS</span>
-    <span class=n>material</span> <span class=o>=</span> <span class=n>read_texture</span><span class=p>(</span><span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;material&#39;</span><span class=p>])</span>
+    <span class=n>material</span> <span class=o>=</span> <span class=n>read_texture</span><span class=p>(</span><span class=n>parameters</span><span class=p>[</span><span class=s1>'material'</span><span class=p>])</span>
     <span class=n>material</span><span class=o>.</span><span class=n>color_mode</span> <span class=o>=</span> <span class=n>Texture</span><span class=o>.</span><span class=n>ColorMode</span><span class=o>.</span><span class=n>VTK_COLOR_MODE_DIRECT_SCALARS</span>
-    <span class=n>anisotropy</span> <span class=o>=</span> <span class=n>read_texture</span><span class=p>(</span><span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;anisotropy&#39;</span><span class=p>])</span>
+    <span class=n>anisotropy</span> <span class=o>=</span> <span class=n>read_texture</span><span class=p>(</span><span class=n>parameters</span><span class=p>[</span><span class=s1>'anisotropy'</span><span class=p>])</span>
     <span class=n>anisotropy</span><span class=o>.</span><span class=n>color_mode</span> <span class=o>=</span> <span class=n>Texture</span><span class=o>.</span><span class=n>ColorMode</span><span class=o>.</span><span class=n>VTK_COLOR_MODE_DIRECT_SCALARS</span>
 
     <span class=c1># Get the surface.</span>
-    <span class=n>surface</span> <span class=o>=</span> <span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;object&#39;</span><span class=p>]</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span>
-    <span class=n>available_surfaces</span> <span class=o>=</span> <span class=p>{</span><span class=s1>&#39;boy&#39;</span><span class=p>,</span> <span class=s1>&#39;mobius&#39;</span><span class=p>,</span> <span class=s1>&#39;random hills&#39;</span><span class=p>,</span> <span class=s1>&#39;torus&#39;</span><span class=p>,</span> <span class=s1>&#39;sphere&#39;</span><span class=p>,</span> <span class=s1>&#39;clipped sphere&#39;</span><span class=p>,</span> <span class=s1>&#39;cube&#39;</span><span class=p>,</span> <span class=s1>&#39;clipped cube&#39;</span><span class=p>}</span>
+    <span class=n>surface</span> <span class=o>=</span> <span class=n>parameters</span><span class=p>[</span><span class=s1>'object'</span><span class=p>]</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span>
+    <span class=n>available_surfaces</span> <span class=o>=</span> <span class=p>{</span><span class=s1>'boy'</span><span class=p>,</span> <span class=s1>'mobius'</span><span class=p>,</span> <span class=s1>'random hills'</span><span class=p>,</span> <span class=s1>'torus'</span><span class=p>,</span> <span class=s1>'sphere'</span><span class=p>,</span> <span class=s1>'clipped sphere'</span><span class=p>,</span> <span class=s1>'cube'</span><span class=p>,</span> <span class=s1>'clipped cube'</span><span class=p>}</span>
     <span class=k>if</span> <span class=n>surface</span> <span class=ow>not</span> <span class=ow>in</span> <span class=n>available_surfaces</span><span class=p>:</span>
-        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;</span><span class=se>\n</span><span class=s1>The requested surface: </span><span class=si>{</span><span class=n>parameters</span><span class=p>[</span><span class=s2>&quot;object&quot;</span><span class=p>]</span><span class=si>}</span><span class=s1> is not available.&#39;</span><span class=p>)</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Available surfaces are:&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'</span><span class=se>\n</span><span class=s1>The requested surface: </span><span class=si>{</span><span class=n>parameters</span><span class=p>[</span><span class=s2>"object"</span><span class=p>]</span><span class=si>}</span><span class=s1> is not available.'</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'Available surfaces are:'</span><span class=p>)</span>
         <span class=n>asl</span> <span class=o>=</span> <span class=nb>sorted</span><span class=p>(</span><span class=nb>list</span><span class=p>(</span><span class=n>available_surfaces</span><span class=p>))</span>
         <span class=n>asl</span> <span class=o>=</span> <span class=p>[</span><span class=n>asl</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>title</span><span class=p>()</span> <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=nb>len</span><span class=p>(</span><span class=n>asl</span><span class=p>))]</span>
         <span class=n>asl</span> <span class=o>=</span> <span class=p>[</span><span class=n>asl</span><span class=p>[</span><span class=n>i</span><span class=p>:</span><span class=n>i</span> <span class=o>+</span> <span class=mi>5</span><span class=p>]</span> <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=nb>len</span><span class=p>(</span><span class=n>asl</span><span class=p>),</span> <span class=mi>5</span><span class=p>)]</span>
         <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=nb>len</span><span class=p>(</span><span class=n>asl</span><span class=p>)):</span>
-            <span class=n>s</span> <span class=o>=</span> <span class=s1>&#39;, &#39;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>asl</span><span class=p>[</span><span class=n>i</span><span class=p>])</span>
+            <span class=n>s</span> <span class=o>=</span> <span class=s1>', '</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>asl</span><span class=p>[</span><span class=n>i</span><span class=p>])</span>
             <span class=k>if</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=nb>len</span><span class=p>(</span><span class=n>asl</span><span class=p>)</span> <span class=o>-</span> <span class=mi>1</span><span class=p>:</span>
-                <span class=n>s</span> <span class=o>+=</span> <span class=s1>&#39;,&#39;</span>
-            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;   </span><span class=si>{</span><span class=n>s</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+                <span class=n>s</span> <span class=o>+=</span> <span class=s1>','</span>
+            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'   </span><span class=si>{</span><span class=n>s</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
         <span class=k>return</span>
 
-    <span class=k>if</span> <span class=n>surface</span> <span class=o>==</span> <span class=s1>&#39;mobius&#39;</span><span class=p>:</span>
+    <span class=k>if</span> <span class=n>surface</span> <span class=o>==</span> <span class=s1>'mobius'</span><span class=p>:</span>
         <span class=n>source</span> <span class=o>=</span> <span class=n>get_mobius</span><span class=p>()</span>
-    <span class=k>elif</span> <span class=n>surface</span> <span class=o>==</span> <span class=s1>&#39;random hills&#39;</span><span class=p>:</span>
+    <span class=k>elif</span> <span class=n>surface</span> <span class=o>==</span> <span class=s1>'random hills'</span><span class=p>:</span>
         <span class=n>source</span> <span class=o>=</span> <span class=n>get_random_hills</span><span class=p>()</span>
-    <span class=k>elif</span> <span class=n>surface</span> <span class=o>==</span> <span class=s1>&#39;torus&#39;</span><span class=p>:</span>
+    <span class=k>elif</span> <span class=n>surface</span> <span class=o>==</span> <span class=s1>'torus'</span><span class=p>:</span>
         <span class=n>source</span> <span class=o>=</span> <span class=n>get_torus</span><span class=p>()</span>
-    <span class=k>elif</span> <span class=n>surface</span> <span class=o>==</span> <span class=s1>&#39;sphere&#39;</span><span class=p>:</span>
+    <span class=k>elif</span> <span class=n>surface</span> <span class=o>==</span> <span class=s1>'sphere'</span><span class=p>:</span>
         <span class=n>source</span> <span class=o>=</span> <span class=n>get_sphere</span><span class=p>()</span>
-    <span class=k>elif</span> <span class=n>surface</span> <span class=o>==</span> <span class=s1>&#39;clipped sphere&#39;</span><span class=p>:</span>
+    <span class=k>elif</span> <span class=n>surface</span> <span class=o>==</span> <span class=s1>'clipped sphere'</span><span class=p>:</span>
         <span class=n>source</span> <span class=o>=</span> <span class=n>get_clipped_sphere</span><span class=p>()</span>
-    <span class=k>elif</span> <span class=n>surface</span> <span class=o>==</span> <span class=s1>&#39;cube&#39;</span><span class=p>:</span>
+    <span class=k>elif</span> <span class=n>surface</span> <span class=o>==</span> <span class=s1>'cube'</span><span class=p>:</span>
         <span class=n>source</span> <span class=o>=</span> <span class=n>get_cube</span><span class=p>()</span>
-    <span class=k>elif</span> <span class=n>surface</span> <span class=o>==</span> <span class=s1>&#39;clipped cube&#39;</span><span class=p>:</span>
+    <span class=k>elif</span> <span class=n>surface</span> <span class=o>==</span> <span class=s1>'clipped cube'</span><span class=p>:</span>
         <span class=n>source</span> <span class=o>=</span> <span class=n>get_clipped_cube</span><span class=p>()</span>
     <span class=k>else</span><span class=p>:</span>
         <span class=n>source</span> <span class=o>=</span> <span class=n>get_boy</span><span class=p>()</span>
@@ -321,7 +321,7 @@ Options:
 </span>    <span class=n>source</span> <span class=o>&gt;&gt;</span> <span class=n>mapper</span>
 
     <span class=n>exposure_coefficient</span> <span class=o>=</span> <span class=mf>1.0</span>
-    <span class=c1># Let&#39;s use a nonmetallic surface</span>
+    <span class=c1># Let's use a nonmetallic surface</span>
     <span class=n>diffuse_coefficient</span> <span class=o>=</span> <span class=mf>1.0</span>
     <span class=n>roughness_coefficient</span> <span class=o>=</span> <span class=mf>0.3</span>
     <span class=n>metallic_coefficient</span> <span class=o>=</span> <span class=mf>0.0</span>
@@ -336,7 +336,7 @@ Options:
     <span class=n>actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>SetInterpolationToPBR</span><span class=p>()</span>
     <span class=c1># Configure the basic properties.</span>
     <span class=c1># Set the model colour.</span>
-    <span class=n>actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;objcolor&#39;</span><span class=p>])</span>
+    <span class=n>actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>parameters</span><span class=p>[</span><span class=s1>'objcolor'</span><span class=p>])</span>
     <span class=n>actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>diffuse</span> <span class=o>=</span> <span class=n>diffuse_coefficient</span>
     <span class=n>actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>roughness</span> <span class=o>=</span> <span class=n>roughness_coefficient</span>
     <span class=n>actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>metallic</span> <span class=o>=</span> <span class=n>metallic_coefficient</span>
@@ -365,10 +365,10 @@ Options:
     <span class=c1># Setup a slider widget for each varying parameter.</span>
     <span class=n>slider_properties</span> <span class=o>=</span> <span class=n>SliderProperties</span><span class=p>()</span>
 
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>title_text</span> <span class=o>=</span> <span class=s1>&#39;Exposure&#39;</span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>range</span><span class=p>[</span><span class=s1>&#39;maximum_value&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=mf>5.0</span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>range</span><span class=p>[</span><span class=s1>&#39;value&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=n>exposure_coefficient</span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>position</span> <span class=o>=</span> <span class=p>{</span><span class=s1>&#39;point1&#39;</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.1</span><span class=p>,</span> <span class=n>y_val</span><span class=p>),</span> <span class=s1>&#39;point2&#39;</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.9</span><span class=p>,</span> <span class=n>y_val</span><span class=p>)}</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>title_text</span> <span class=o>=</span> <span class=s1>'Exposure'</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>range</span><span class=p>[</span><span class=s1>'maximum_value'</span><span class=p>]</span> <span class=o>=</span> <span class=mf>5.0</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>range</span><span class=p>[</span><span class=s1>'value'</span><span class=p>]</span> <span class=o>=</span> <span class=n>exposure_coefficient</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>position</span> <span class=o>=</span> <span class=p>{</span><span class=s1>'point1'</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.1</span><span class=p>,</span> <span class=n>y_val</span><span class=p>),</span> <span class=s1>'point2'</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.9</span><span class=p>,</span> <span class=n>y_val</span><span class=p>)}</span>
     <span class=n>sw_exposure</span> <span class=o>=</span> <span class=n>make_slider_widget</span><span class=p>(</span><span class=n>slider_properties</span><span class=p>,</span> <span class=n>interactor</span><span class=p>)</span>
     <span class=k>if</span> <span class=n>use_tonemapping</span><span class=p>:</span>
         <span class=n>sw_exposure</span><span class=o>.</span><span class=n>enable</span> <span class=o>=</span> <span class=kc>True</span>
@@ -377,55 +377,55 @@ Options:
     <span class=n>sw_exposure_cb</span> <span class=o>=</span> <span class=n>SliderCallbackExposure</span><span class=p>(</span><span class=n>tone_mapping_p</span><span class=p>)</span>
 <span class=hll>    <span class=n>sw_exposure</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=n>vtkCommand</span><span class=o>.</span><span class=n>InteractionEvent</span><span class=p>,</span> <span class=n>sw_exposure_cb</span><span class=p>)</span>
 </span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>title_text</span> <span class=o>=</span> <span class=s1>&#39;Metallicity&#39;</span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>range</span><span class=p>[</span><span class=s1>&#39;maximum_value&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=mf>1.0</span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>range</span><span class=p>[</span><span class=s1>&#39;value&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=n>metallic_coefficient</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>title_text</span> <span class=o>=</span> <span class=s1>'Metallicity'</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>range</span><span class=p>[</span><span class=s1>'maximum_value'</span><span class=p>]</span> <span class=o>=</span> <span class=mf>1.0</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>range</span><span class=p>[</span><span class=s1>'value'</span><span class=p>]</span> <span class=o>=</span> <span class=n>metallic_coefficient</span>
     <span class=n>y_val</span> <span class=o>+=</span> <span class=n>step_size</span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>position</span> <span class=o>=</span> <span class=p>{</span><span class=s1>&#39;point1&#39;</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.1</span><span class=p>,</span> <span class=n>y_val</span><span class=p>),</span> <span class=s1>&#39;point2&#39;</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.9</span><span class=p>,</span> <span class=n>y_val</span><span class=p>)}</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>position</span> <span class=o>=</span> <span class=p>{</span><span class=s1>'point1'</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.1</span><span class=p>,</span> <span class=n>y_val</span><span class=p>),</span> <span class=s1>'point2'</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.9</span><span class=p>,</span> <span class=n>y_val</span><span class=p>)}</span>
     <span class=n>sw_metallic</span> <span class=o>=</span> <span class=n>make_slider_widget</span><span class=p>(</span><span class=n>slider_properties</span><span class=p>,</span> <span class=n>interactor</span><span class=p>)</span>
     <span class=n>sw_metallic_cb</span> <span class=o>=</span> <span class=n>SliderCallbackMetallic</span><span class=p>(</span><span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>())</span>
 <span class=hll>    <span class=n>sw_metallic</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=n>vtkCommand</span><span class=o>.</span><span class=n>InteractionEvent</span><span class=p>,</span> <span class=n>sw_metallic_cb</span><span class=p>)</span>
 </span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>title_text</span> <span class=o>=</span> <span class=s1>&#39;Roughness&#39;</span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>range</span><span class=p>[</span><span class=s1>&#39;value&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=n>roughness_coefficient</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>title_text</span> <span class=o>=</span> <span class=s1>'Roughness'</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>range</span><span class=p>[</span><span class=s1>'value'</span><span class=p>]</span> <span class=o>=</span> <span class=n>roughness_coefficient</span>
     <span class=n>y_val</span> <span class=o>+=</span> <span class=n>step_size</span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>position</span> <span class=o>=</span> <span class=p>{</span><span class=s1>&#39;point1&#39;</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.1</span><span class=p>,</span> <span class=n>y_val</span><span class=p>),</span> <span class=s1>&#39;point2&#39;</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.9</span><span class=p>,</span> <span class=n>y_val</span><span class=p>)}</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>position</span> <span class=o>=</span> <span class=p>{</span><span class=s1>'point1'</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.1</span><span class=p>,</span> <span class=n>y_val</span><span class=p>),</span> <span class=s1>'point2'</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.9</span><span class=p>,</span> <span class=n>y_val</span><span class=p>)}</span>
     <span class=n>sw_roughness</span> <span class=o>=</span> <span class=n>make_slider_widget</span><span class=p>(</span><span class=n>slider_properties</span><span class=p>,</span> <span class=n>interactor</span><span class=p>)</span>
     <span class=n>sw_roughness_cb</span> <span class=o>=</span> <span class=n>SliderCallbackRoughness</span><span class=p>(</span><span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>())</span>
 <span class=hll>    <span class=n>sw_roughness</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=n>vtkCommand</span><span class=o>.</span><span class=n>InteractionEvent</span><span class=p>,</span> <span class=n>sw_roughness_cb</span><span class=p>)</span>
 </span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>title_text</span> <span class=o>=</span> <span class=s1>&#39;Occlusion&#39;</span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>range</span><span class=p>[</span><span class=s1>&#39;maximum_value&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=mf>1.0</span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>range</span><span class=p>[</span><span class=s1>&#39;value&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=n>occlusion_strength</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>title_text</span> <span class=o>=</span> <span class=s1>'Occlusion'</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>range</span><span class=p>[</span><span class=s1>'maximum_value'</span><span class=p>]</span> <span class=o>=</span> <span class=mf>1.0</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>range</span><span class=p>[</span><span class=s1>'value'</span><span class=p>]</span> <span class=o>=</span> <span class=n>occlusion_strength</span>
     <span class=n>y_val</span> <span class=o>+=</span> <span class=n>step_size</span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>position</span> <span class=o>=</span> <span class=p>{</span><span class=s1>&#39;point1&#39;</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.1</span><span class=p>,</span> <span class=n>y_val</span><span class=p>),</span> <span class=s1>&#39;point2&#39;</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.9</span><span class=p>,</span> <span class=n>y_val</span><span class=p>)}</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>position</span> <span class=o>=</span> <span class=p>{</span><span class=s1>'point1'</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.1</span><span class=p>,</span> <span class=n>y_val</span><span class=p>),</span> <span class=s1>'point2'</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.9</span><span class=p>,</span> <span class=n>y_val</span><span class=p>)}</span>
     <span class=n>sw_occlusion_strength</span> <span class=o>=</span> <span class=n>make_slider_widget</span><span class=p>(</span><span class=n>slider_properties</span><span class=p>,</span> <span class=n>interactor</span><span class=p>)</span>
     <span class=n>sw_occlusion_strength_cb</span> <span class=o>=</span> <span class=n>SliderCallbackOcclusionStrength</span><span class=p>(</span><span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>())</span>
 <span class=hll>    <span class=n>sw_occlusion_strength</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=n>vtkCommand</span><span class=o>.</span><span class=n>InteractionEvent</span><span class=p>,</span> <span class=n>sw_occlusion_strength_cb</span><span class=p>)</span>
 </span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>title_text</span> <span class=o>=</span> <span class=s1>&#39;Normal&#39;</span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>range</span><span class=p>[</span><span class=s1>&#39;maximum_value&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=mf>5.0</span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>range</span><span class=p>[</span><span class=s1>&#39;value&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=n>normal_scale</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>title_text</span> <span class=o>=</span> <span class=s1>'Normal'</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>range</span><span class=p>[</span><span class=s1>'maximum_value'</span><span class=p>]</span> <span class=o>=</span> <span class=mf>5.0</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>range</span><span class=p>[</span><span class=s1>'value'</span><span class=p>]</span> <span class=o>=</span> <span class=n>normal_scale</span>
     <span class=n>y_val</span> <span class=o>+=</span> <span class=n>step_size</span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>position</span> <span class=o>=</span> <span class=p>{</span><span class=s1>&#39;point1&#39;</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.1</span><span class=p>,</span> <span class=n>y_val</span><span class=p>),</span> <span class=s1>&#39;point2&#39;</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.9</span><span class=p>,</span> <span class=n>y_val</span><span class=p>)}</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>position</span> <span class=o>=</span> <span class=p>{</span><span class=s1>'point1'</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.1</span><span class=p>,</span> <span class=n>y_val</span><span class=p>),</span> <span class=s1>'point2'</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.9</span><span class=p>,</span> <span class=n>y_val</span><span class=p>)}</span>
     <span class=n>sw_normal</span> <span class=o>=</span> <span class=n>make_slider_widget</span><span class=p>(</span><span class=n>slider_properties</span><span class=p>,</span> <span class=n>interactor</span><span class=p>)</span>
     <span class=n>sw_normal_cb</span> <span class=o>=</span> <span class=n>SliderCallbackNormalScale</span><span class=p>(</span><span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>())</span>
 <span class=hll>    <span class=n>sw_normal</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=n>vtkCommand</span><span class=o>.</span><span class=n>InteractionEvent</span><span class=p>,</span> <span class=n>sw_normal_cb</span><span class=p>)</span>
 </span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>title_text</span> <span class=o>=</span> <span class=s1>&#39;Anisotropy&#39;</span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>range</span><span class=p>[</span><span class=s1>&#39;maximum_value&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=mf>1.0</span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>range</span><span class=p>[</span><span class=s1>&#39;value&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=n>anisotropy_coefficient</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>title_text</span> <span class=o>=</span> <span class=s1>'Anisotropy'</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>range</span><span class=p>[</span><span class=s1>'maximum_value'</span><span class=p>]</span> <span class=o>=</span> <span class=mf>1.0</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>range</span><span class=p>[</span><span class=s1>'value'</span><span class=p>]</span> <span class=o>=</span> <span class=n>anisotropy_coefficient</span>
     <span class=n>y_val</span> <span class=o>+=</span> <span class=n>step_size</span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>position</span> <span class=o>=</span> <span class=p>{</span><span class=s1>&#39;point1&#39;</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.1</span><span class=p>,</span> <span class=n>y_val</span><span class=p>),</span> <span class=s1>&#39;point2&#39;</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.9</span><span class=p>,</span> <span class=n>y_val</span><span class=p>)}</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>position</span> <span class=o>=</span> <span class=p>{</span><span class=s1>'point1'</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.1</span><span class=p>,</span> <span class=n>y_val</span><span class=p>),</span> <span class=s1>'point2'</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.9</span><span class=p>,</span> <span class=n>y_val</span><span class=p>)}</span>
     <span class=n>sw_anisotropy</span> <span class=o>=</span> <span class=n>make_slider_widget</span><span class=p>(</span><span class=n>slider_properties</span><span class=p>,</span> <span class=n>interactor</span><span class=p>)</span>
     <span class=n>sw_anisotropy_cb</span> <span class=o>=</span> <span class=n>SliderCallbackNormalScale</span><span class=p>(</span><span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>())</span>
 <span class=hll>    <span class=n>sw_anisotropy</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=n>vtkCommand</span><span class=o>.</span><span class=n>InteractionEvent</span><span class=p>,</span> <span class=n>sw_anisotropy_cb</span><span class=p>)</span>
 </span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>title_text</span> <span class=o>=</span> <span class=s1>&#39;Anisotropy Rotation&#39;</span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>range</span><span class=p>[</span><span class=s1>&#39;maximum_value&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=mf>1.0</span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>range</span><span class=p>[</span><span class=s1>&#39;value&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=n>anisotropy_rotation</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>title_text</span> <span class=o>=</span> <span class=s1>'Anisotropy Rotation'</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>range</span><span class=p>[</span><span class=s1>'maximum_value'</span><span class=p>]</span> <span class=o>=</span> <span class=mf>1.0</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>range</span><span class=p>[</span><span class=s1>'value'</span><span class=p>]</span> <span class=o>=</span> <span class=n>anisotropy_rotation</span>
     <span class=n>y_val</span> <span class=o>+=</span> <span class=n>step_size</span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>position</span> <span class=o>=</span> <span class=p>{</span><span class=s1>&#39;point1&#39;</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.1</span><span class=p>,</span> <span class=n>y_val</span><span class=p>),</span> <span class=s1>&#39;point2&#39;</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.9</span><span class=p>,</span> <span class=n>y_val</span><span class=p>)}</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>position</span> <span class=o>=</span> <span class=p>{</span><span class=s1>'point1'</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.1</span><span class=p>,</span> <span class=n>y_val</span><span class=p>),</span> <span class=s1>'point2'</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.9</span><span class=p>,</span> <span class=n>y_val</span><span class=p>)}</span>
     <span class=n>sw_anisotropy_rotation</span> <span class=o>=</span> <span class=n>make_slider_widget</span><span class=p>(</span><span class=n>slider_properties</span><span class=p>,</span> <span class=n>interactor</span><span class=p>)</span>
     <span class=n>sw_anisotropy_rotation_cb</span> <span class=o>=</span> <span class=n>SliderCallbackNormalScale</span><span class=p>(</span><span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>())</span>
 <span class=hll>    <span class=n>sw_anisotropy_rotation</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=n>vtkCommand</span><span class=o>.</span><span class=n>InteractionEvent</span><span class=p>,</span> <span class=n>sw_anisotropy_rotation_cb</span><span class=p>)</span>
@@ -438,7 +438,7 @@ Options:
         <span class=n>cam_orient_manipulator</span><span class=o>.</span><span class=n>On</span><span class=p>()</span>
     <span class=k>else</span><span class=p>:</span>
         <span class=n>rgb</span> <span class=o>=</span> <span class=p>[</span><span class=mf>0.0</span><span class=p>]</span> <span class=o>*</span> <span class=mi>4</span>
-        <span class=n>colors</span><span class=o>.</span><span class=n>GetColor</span><span class=p>(</span><span class=s2>&quot;Carrot&quot;</span><span class=p>,</span> <span class=n>rgb</span><span class=p>)</span>
+        <span class=n>colors</span><span class=o>.</span><span class=n>GetColor</span><span class=p>(</span><span class=s2>"Carrot"</span><span class=p>,</span> <span class=n>rgb</span><span class=p>)</span>
         <span class=n>rgb</span> <span class=o>=</span> <span class=nb>tuple</span><span class=p>(</span><span class=n>rgb</span><span class=p>[:</span><span class=mi>3</span><span class=p>])</span>
 <span class=hll>        <span class=n>widget</span> <span class=o>=</span> <span class=n>vtkOrientationMarkerWidget</span><span class=p>(</span><span class=n>orientation_marker</span><span class=o>=</span><span class=n>vtkAxesActor</span><span class=p>(),</span>
 </span>                                            <span class=n>interactor</span><span class=o>=</span><span class=n>interactor</span><span class=p>,</span> <span class=n>default_renderer</span><span class=o>=</span><span class=n>ren2</span><span class=p>,</span>
@@ -446,87 +446,87 @@ Options:
                                             <span class=n>enabled</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>interactive</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>zoom</span><span class=o>=</span><span class=mf>1.5</span><span class=p>)</span>
 
     <span class=n>print_callback</span> <span class=o>=</span> <span class=n>PrintCallback</span><span class=p>(</span><span class=n>interactor</span><span class=p>,</span> <span class=n>name</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=kc>False</span><span class=p>)</span>
-    <span class=c1># print_callback = PrintCallback(interactor, name + &#39;.jpg&#39;, 1, False)</span>
-    <span class=n>interactor</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=s1>&#39;KeyPressEvent&#39;</span><span class=p>,</span> <span class=n>print_callback</span><span class=p>)</span>
+    <span class=c1># print_callback = PrintCallback(interactor, name + '.jpg', 1, False)</span>
+    <span class=n>interactor</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=s1>'KeyPressEvent'</span><span class=p>,</span> <span class=n>print_callback</span><span class=p>)</span>
 
     <span class=n>interactor</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_parameters</span><span class=p>(</span><span class=n>fn_path</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Read the parameters from a JSON file and check that the file paths exist.</span>
 
 <span class=sd>    :param fn_path: The path to the JSON file.</span>
 <span class=sd>    :return: True if the paths correspond to files and the parameters.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=k>with</span> <span class=nb>open</span><span class=p>(</span><span class=n>fn_path</span><span class=p>)</span> <span class=k>as</span> <span class=n>data_file</span><span class=p>:</span>
         <span class=n>json_data</span> <span class=o>=</span> <span class=n>json</span><span class=o>.</span><span class=n>load</span><span class=p>(</span><span class=n>data_file</span><span class=p>)</span>
     <span class=n>parameters</span> <span class=o>=</span> <span class=nb>dict</span><span class=p>()</span>
 
     <span class=c1># Extract the values.</span>
-    <span class=n>keys_no_paths</span> <span class=o>=</span> <span class=p>{</span><span class=s1>&#39;title&#39;</span><span class=p>,</span> <span class=s1>&#39;object&#39;</span><span class=p>,</span> <span class=s1>&#39;objcolor&#39;</span><span class=p>,</span> <span class=s1>&#39;bkgcolor&#39;</span><span class=p>,</span> <span class=s1>&#39;skybox&#39;</span><span class=p>}</span>
-    <span class=n>keys_with_paths</span> <span class=o>=</span> <span class=p>{</span><span class=s1>&#39;cubemap&#39;</span><span class=p>,</span> <span class=s1>&#39;equirectangular&#39;</span><span class=p>,</span> <span class=s1>&#39;albedo&#39;</span><span class=p>,</span> <span class=s1>&#39;normal&#39;</span><span class=p>,</span> <span class=s1>&#39;material&#39;</span><span class=p>,</span> <span class=s1>&#39;coat&#39;</span><span class=p>,</span> <span class=s1>&#39;anisotropy&#39;</span><span class=p>,</span> <span class=s1>&#39;emissive&#39;</span><span class=p>}</span>
+    <span class=n>keys_no_paths</span> <span class=o>=</span> <span class=p>{</span><span class=s1>'title'</span><span class=p>,</span> <span class=s1>'object'</span><span class=p>,</span> <span class=s1>'objcolor'</span><span class=p>,</span> <span class=s1>'bkgcolor'</span><span class=p>,</span> <span class=s1>'skybox'</span><span class=p>}</span>
+    <span class=n>keys_with_paths</span> <span class=o>=</span> <span class=p>{</span><span class=s1>'cubemap'</span><span class=p>,</span> <span class=s1>'equirectangular'</span><span class=p>,</span> <span class=s1>'albedo'</span><span class=p>,</span> <span class=s1>'normal'</span><span class=p>,</span> <span class=s1>'material'</span><span class=p>,</span> <span class=s1>'coat'</span><span class=p>,</span> <span class=s1>'anisotropy'</span><span class=p>,</span> <span class=s1>'emissive'</span><span class=p>}</span>
     <span class=n>paths_ok</span> <span class=o>=</span> <span class=kc>True</span>
     <span class=k>for</span> <span class=n>k</span><span class=p>,</span> <span class=n>v</span> <span class=ow>in</span> <span class=n>json_data</span><span class=o>.</span><span class=n>items</span><span class=p>():</span>
         <span class=k>if</span> <span class=n>k</span> <span class=ow>in</span> <span class=n>keys_no_paths</span><span class=p>:</span>
             <span class=n>parameters</span><span class=p>[</span><span class=n>k</span><span class=p>]</span> <span class=o>=</span> <span class=n>v</span>
             <span class=k>continue</span>
         <span class=k>if</span> <span class=n>k</span> <span class=ow>in</span> <span class=n>keys_with_paths</span><span class=p>:</span>
-            <span class=k>if</span> <span class=n>k</span> <span class=o>==</span> <span class=s1>&#39;cubemap&#39;</span><span class=p>:</span>
-                <span class=k>if</span> <span class=p>(</span><span class=s1>&#39;root&#39;</span> <span class=ow>in</span> <span class=n>v</span><span class=p>)</span> <span class=ow>and</span> <span class=p>(</span><span class=s1>&#39;files&#39;</span> <span class=ow>in</span> <span class=n>v</span><span class=p>):</span>
-                    <span class=n>root</span> <span class=o>=</span> <span class=n>fn_path</span><span class=o>.</span><span class=n>parent</span> <span class=o>/</span> <span class=n>Path</span><span class=p>(</span><span class=n>v</span><span class=p>[</span><span class=s1>&#39;root&#39;</span><span class=p>])</span>
+            <span class=k>if</span> <span class=n>k</span> <span class=o>==</span> <span class=s1>'cubemap'</span><span class=p>:</span>
+                <span class=k>if</span> <span class=p>(</span><span class=s1>'root'</span> <span class=ow>in</span> <span class=n>v</span><span class=p>)</span> <span class=ow>and</span> <span class=p>(</span><span class=s1>'files'</span> <span class=ow>in</span> <span class=n>v</span><span class=p>):</span>
+                    <span class=n>root</span> <span class=o>=</span> <span class=n>fn_path</span><span class=o>.</span><span class=n>parent</span> <span class=o>/</span> <span class=n>Path</span><span class=p>(</span><span class=n>v</span><span class=p>[</span><span class=s1>'root'</span><span class=p>])</span>
                     <span class=k>if</span> <span class=ow>not</span> <span class=n>root</span><span class=o>.</span><span class=n>exists</span><span class=p>():</span>
-                        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;Bad cubemap path: </span><span class=si>{</span><span class=n>root</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+                        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'Bad cubemap path: </span><span class=si>{</span><span class=n>root</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
                         <span class=n>paths_ok</span> <span class=o>=</span> <span class=kc>False</span>
-                    <span class=k>elif</span> <span class=nb>len</span><span class=p>(</span><span class=n>v</span><span class=p>[</span><span class=s1>&#39;files&#39;</span><span class=p>])</span> <span class=o>!=</span> <span class=mi>6</span><span class=p>:</span>
-                        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;Expect six cubemap file names.&#39;</span><span class=p>)</span>
+                    <span class=k>elif</span> <span class=nb>len</span><span class=p>(</span><span class=n>v</span><span class=p>[</span><span class=s1>'files'</span><span class=p>])</span> <span class=o>!=</span> <span class=mi>6</span><span class=p>:</span>
+                        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'Expect six cubemap file names.'</span><span class=p>)</span>
                         <span class=n>paths_ok</span> <span class=o>=</span> <span class=kc>False</span>
                     <span class=k>else</span><span class=p>:</span>
-                        <span class=n>cm</span> <span class=o>=</span> <span class=nb>list</span><span class=p>(</span><span class=nb>map</span><span class=p>(</span><span class=k>lambda</span> <span class=n>p</span><span class=p>:</span> <span class=n>root</span> <span class=o>/</span> <span class=n>p</span><span class=p>,</span> <span class=n>v</span><span class=p>[</span><span class=s1>&#39;files&#39;</span><span class=p>]))</span>
+                        <span class=n>cm</span> <span class=o>=</span> <span class=nb>list</span><span class=p>(</span><span class=nb>map</span><span class=p>(</span><span class=k>lambda</span> <span class=n>p</span><span class=p>:</span> <span class=n>root</span> <span class=o>/</span> <span class=n>p</span><span class=p>,</span> <span class=n>v</span><span class=p>[</span><span class=s1>'files'</span><span class=p>]))</span>
                         <span class=k>for</span> <span class=n>fn</span> <span class=ow>in</span> <span class=n>cm</span><span class=p>:</span>
                             <span class=k>if</span> <span class=ow>not</span> <span class=n>fn</span><span class=o>.</span><span class=n>is_file</span><span class=p>():</span>
                                 <span class=n>paths_ok</span> <span class=o>=</span> <span class=kc>False</span>
-                                <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;Not a file </span><span class=si>{</span><span class=n>fn</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+                                <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'Not a file </span><span class=si>{</span><span class=n>fn</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
                         <span class=k>if</span> <span class=n>paths_ok</span><span class=p>:</span>
-                            <span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;cubemap&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=n>cm</span>
+                            <span class=n>parameters</span><span class=p>[</span><span class=s1>'cubemap'</span><span class=p>]</span> <span class=o>=</span> <span class=n>cm</span>
                 <span class=k>else</span><span class=p>:</span>
                     <span class=n>paths_ok</span> <span class=o>=</span> <span class=kc>False</span>
-                    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Missing the key &quot;root&quot; and/or the key &quot;fíles&quot; for the cubemap.&#39;</span><span class=p>)</span>
+                    <span class=nb>print</span><span class=p>(</span><span class=s1>'Missing the key "root" and/or the key "fíles" for the cubemap.'</span><span class=p>)</span>
             <span class=k>else</span><span class=p>:</span>
                 <span class=n>fn</span> <span class=o>=</span> <span class=n>fn_path</span><span class=o>.</span><span class=n>parent</span> <span class=o>/</span> <span class=n>Path</span><span class=p>(</span><span class=n>v</span><span class=p>)</span>
                 <span class=k>if</span> <span class=ow>not</span> <span class=n>fn</span><span class=o>.</span><span class=n>exists</span><span class=p>():</span>
-                    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;Bad </span><span class=si>{</span><span class=n>k</span><span class=si>}</span><span class=s1> path: </span><span class=si>{</span><span class=n>fn</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+                    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'Bad </span><span class=si>{</span><span class=n>k</span><span class=si>}</span><span class=s1> path: </span><span class=si>{</span><span class=n>fn</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
                     <span class=n>paths_ok</span> <span class=o>=</span> <span class=kc>False</span>
                 <span class=k>else</span><span class=p>:</span>
                     <span class=n>parameters</span><span class=p>[</span><span class=n>k</span><span class=p>]</span> <span class=o>=</span> <span class=n>fn</span>
 
     <span class=c1># Set Boy as the default surface.</span>
-    <span class=k>if</span> <span class=p>(</span><span class=s1>&#39;object&#39;</span> <span class=ow>in</span> <span class=n>parameters</span><span class=o>.</span><span class=n>keys</span><span class=p>()</span> <span class=ow>and</span> <span class=ow>not</span> <span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;object&#39;</span><span class=p>])</span> <span class=ow>or</span> <span class=s1>&#39;object&#39;</span> <span class=ow>not</span> <span class=ow>in</span> <span class=n>parameters</span><span class=o>.</span><span class=n>keys</span><span class=p>():</span>
-        <span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;object&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=s1>&#39;Boy&#39;</span>
+    <span class=k>if</span> <span class=p>(</span><span class=s1>'object'</span> <span class=ow>in</span> <span class=n>parameters</span><span class=o>.</span><span class=n>keys</span><span class=p>()</span> <span class=ow>and</span> <span class=ow>not</span> <span class=n>parameters</span><span class=p>[</span><span class=s1>'object'</span><span class=p>])</span> <span class=ow>or</span> <span class=s1>'object'</span> <span class=ow>not</span> <span class=ow>in</span> <span class=n>parameters</span><span class=o>.</span><span class=n>keys</span><span class=p>():</span>
+        <span class=n>parameters</span><span class=p>[</span><span class=s1>'object'</span><span class=p>]</span> <span class=o>=</span> <span class=s1>'Boy'</span>
 
     <span class=k>return</span> <span class=n>paths_ok</span><span class=p>,</span> <span class=n>parameters</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>display_parameters</span><span class=p>(</span><span class=n>parameters</span><span class=p>):</span>
     <span class=n>res</span> <span class=o>=</span> <span class=nb>list</span><span class=p>()</span>
-    <span class=n>parameter_keys</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;title&#39;</span><span class=p>,</span> <span class=s1>&#39;object&#39;</span><span class=p>,</span> <span class=s1>&#39;objcolor&#39;</span><span class=p>,</span> <span class=s1>&#39;bkgcolor&#39;</span><span class=p>,</span> <span class=s1>&#39;skybox&#39;</span><span class=p>,</span> <span class=s1>&#39;cubemap&#39;</span><span class=p>,</span> <span class=s1>&#39;equirectangular&#39;</span><span class=p>,</span> <span class=s1>&#39;albedo&#39;</span><span class=p>,</span>
-                      <span class=s1>&#39;normal&#39;</span><span class=p>,</span> <span class=s1>&#39;material&#39;</span><span class=p>,</span> <span class=s1>&#39;coat&#39;</span><span class=p>,</span> <span class=s1>&#39;anisotropy&#39;</span><span class=p>,</span> <span class=s1>&#39;emissive&#39;</span><span class=p>]</span>
+    <span class=n>parameter_keys</span> <span class=o>=</span> <span class=p>[</span><span class=s1>'title'</span><span class=p>,</span> <span class=s1>'object'</span><span class=p>,</span> <span class=s1>'objcolor'</span><span class=p>,</span> <span class=s1>'bkgcolor'</span><span class=p>,</span> <span class=s1>'skybox'</span><span class=p>,</span> <span class=s1>'cubemap'</span><span class=p>,</span> <span class=s1>'equirectangular'</span><span class=p>,</span> <span class=s1>'albedo'</span><span class=p>,</span>
+                      <span class=s1>'normal'</span><span class=p>,</span> <span class=s1>'material'</span><span class=p>,</span> <span class=s1>'coat'</span><span class=p>,</span> <span class=s1>'anisotropy'</span><span class=p>,</span> <span class=s1>'emissive'</span><span class=p>]</span>
     <span class=k>for</span> <span class=n>k</span> <span class=ow>in</span> <span class=n>parameter_keys</span><span class=p>:</span>
-        <span class=k>if</span> <span class=n>k</span> <span class=o>!=</span> <span class=s1>&#39;cubemap&#39;</span><span class=p>:</span>
+        <span class=k>if</span> <span class=n>k</span> <span class=o>!=</span> <span class=s1>'cubemap'</span><span class=p>:</span>
             <span class=k>if</span> <span class=n>k</span> <span class=ow>in</span> <span class=n>parameters</span><span class=p>:</span>
-                <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;</span><span class=si>{</span><span class=n>k</span><span class=si>:</span><span class=s1>15</span><span class=si>}</span><span class=s1>: </span><span class=si>{</span><span class=n>parameters</span><span class=p>[</span><span class=n>k</span><span class=p>]</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+                <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=sa>f</span><span class=s1>'</span><span class=si>{</span><span class=n>k</span><span class=si>:</span><span class=s1>15</span><span class=si>}</span><span class=s1>: </span><span class=si>{</span><span class=n>parameters</span><span class=p>[</span><span class=n>k</span><span class=p>]</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
         <span class=k>else</span><span class=p>:</span>
             <span class=k>if</span> <span class=n>k</span> <span class=ow>in</span> <span class=n>parameters</span><span class=p>:</span>
                 <span class=k>for</span> <span class=n>idx</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=nb>len</span><span class=p>(</span><span class=n>parameters</span><span class=p>[</span><span class=n>k</span><span class=p>])):</span>
                     <span class=k>if</span> <span class=n>idx</span> <span class=o>==</span> <span class=mi>0</span><span class=p>:</span>
-                        <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;</span><span class=si>{</span><span class=n>k</span><span class=si>:</span><span class=s1>15</span><span class=si>}</span><span class=s1>: </span><span class=si>{</span><span class=n>parameters</span><span class=p>[</span><span class=n>k</span><span class=p>][</span><span class=n>idx</span><span class=p>]</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+                        <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=sa>f</span><span class=s1>'</span><span class=si>{</span><span class=n>k</span><span class=si>:</span><span class=s1>15</span><span class=si>}</span><span class=s1>: </span><span class=si>{</span><span class=n>parameters</span><span class=p>[</span><span class=n>k</span><span class=p>][</span><span class=n>idx</span><span class=p>]</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
                     <span class=k>else</span><span class=p>:</span>
-                        <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;</span><span class=si>{</span><span class=s2>&quot; &quot;</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=mi>17</span><span class=si>}{</span><span class=n>parameters</span><span class=p>[</span><span class=n>k</span><span class=p>][</span><span class=n>idx</span><span class=p>]</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+                        <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=sa>f</span><span class=s1>'</span><span class=si>{</span><span class=s2>" "</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=mi>17</span><span class=si>}{</span><span class=n>parameters</span><span class=p>[</span><span class=n>k</span><span class=p>][</span><span class=n>idx</span><span class=p>]</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
     <span class=k>return</span> <span class=n>res</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>read_cubemap</span><span class=p>(</span><span class=n>cubemap</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Read six images forming a cubemap.</span>
 
 <span class=sd>    This assumes that the files corresponding to the images</span>
@@ -536,7 +536,7 @@ Options:
 
 <span class=sd>    :param cubemap: The paths to the six cubemap files.</span>
 <span class=sd>    :return: The cubemap texture.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 <span class=hll>    <span class=n>cube_map</span> <span class=o>=</span> <span class=n>vtkTexture</span><span class=p>(</span><span class=n>cube_map</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>mipmap</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>interpolate</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
 </span>
     <span class=n>flipped_images</span> <span class=o>=</span> <span class=nb>list</span><span class=p>()</span>
@@ -559,16 +559,16 @@ Options:
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>read_equirectangular_file</span><span class=p>(</span><span class=n>fn_path</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Read an equirectangular environment file and convert to a texture.</span>
 
 <span class=sd>    :param fn_path: The equirectangular file path.</span>
 <span class=sd>    :return: The texture.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 <span class=hll>    <span class=n>texture</span> <span class=o>=</span> <span class=n>vtkTexture</span><span class=p>(</span><span class=n>cube_map</span><span class=o>=</span><span class=kc>False</span><span class=p>,</span> <span class=n>mipmap</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>interpolate</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
 </span>
     <span class=n>suffix</span> <span class=o>=</span> <span class=n>fn_path</span><span class=o>.</span><span class=n>suffix</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span>
-    <span class=k>if</span> <span class=n>suffix</span> <span class=ow>in</span> <span class=p>[</span><span class=s1>&#39;.jpeg&#39;</span><span class=p>,</span> <span class=s1>&#39;.jpg&#39;</span><span class=p>,</span> <span class=s1>&#39;.png&#39;</span><span class=p>]:</span>
+    <span class=k>if</span> <span class=n>suffix</span> <span class=ow>in</span> <span class=p>[</span><span class=s1>'.jpeg'</span><span class=p>,</span> <span class=s1>'.jpg'</span><span class=p>,</span> <span class=s1>'.png'</span><span class=p>]:</span>
 <span class=hll>        <span class=n>reader_factory</span> <span class=o>=</span> <span class=n>vtkImageReader2Factory</span><span class=p>()</span>
 </span>        <span class=n>img_reader</span> <span class=o>=</span> <span class=n>reader_factory</span><span class=o>.</span><span class=n>CreateImageReader2</span><span class=p>(</span><span class=nb>str</span><span class=p>(</span><span class=n>fn_path</span><span class=p>))</span>
         <span class=n>img_reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=nb>str</span><span class=p>(</span><span class=n>fn_path</span><span class=p>))</span>
@@ -580,10 +580,10 @@ Options:
 </span>        <span class=n>extensions</span> <span class=o>=</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetFileExtensions</span><span class=p>()</span>
         <span class=c1># Check the image can be read.</span>
         <span class=k>if</span> <span class=ow>not</span> <span class=n>reader</span><span class=o>.</span><span class=n>CanReadFile</span><span class=p>(</span><span class=nb>str</span><span class=p>(</span><span class=n>fn_path</span><span class=p>)):</span>
-            <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;CanReadFile failed for &#39;</span><span class=p>,</span> <span class=n>fn_path</span><span class=p>)</span>
+            <span class=nb>print</span><span class=p>(</span><span class=s1>'CanReadFile failed for '</span><span class=p>,</span> <span class=n>fn_path</span><span class=p>)</span>
             <span class=k>return</span> <span class=kc>None</span>
         <span class=k>if</span> <span class=n>suffix</span> <span class=ow>not</span> <span class=ow>in</span> <span class=n>extensions</span><span class=p>:</span>
-            <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Unable to read this file extension: &#39;</span><span class=p>,</span> <span class=n>suffix</span><span class=p>)</span>
+            <span class=nb>print</span><span class=p>(</span><span class=s1>'Unable to read this file extension: '</span><span class=p>,</span> <span class=n>suffix</span><span class=p>)</span>
             <span class=k>return</span> <span class=kc>None</span>
         <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=nb>str</span><span class=p>(</span><span class=n>fn_path</span><span class=p>))</span>
 
@@ -594,16 +594,16 @@ Options:
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>read_texture</span><span class=p>(</span><span class=n>image_path</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Read an image and convert it to a texture</span>
 <span class=sd>    :param image_path: The image path.</span>
 <span class=sd>    :return: The texture.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 
     <span class=n>suffix</span> <span class=o>=</span> <span class=n>image_path</span><span class=o>.</span><span class=n>suffix</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span>
-    <span class=n>valid_extensions</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;.jpg&#39;</span><span class=p>,</span> <span class=s1>&#39;.png&#39;</span><span class=p>,</span> <span class=s1>&#39;.bmp&#39;</span><span class=p>,</span> <span class=s1>&#39;.tiff&#39;</span><span class=p>,</span> <span class=s1>&#39;.pnm&#39;</span><span class=p>,</span> <span class=s1>&#39;.pgm&#39;</span><span class=p>,</span> <span class=s1>&#39;.ppm&#39;</span><span class=p>]</span>
+    <span class=n>valid_extensions</span> <span class=o>=</span> <span class=p>[</span><span class=s1>'.jpg'</span><span class=p>,</span> <span class=s1>'.png'</span><span class=p>,</span> <span class=s1>'.bmp'</span><span class=p>,</span> <span class=s1>'.tiff'</span><span class=p>,</span> <span class=s1>'.pnm'</span><span class=p>,</span> <span class=s1>'.pgm'</span><span class=p>,</span> <span class=s1>'.ppm'</span><span class=p>]</span>
     <span class=k>if</span> <span class=n>suffix</span> <span class=ow>not</span> <span class=ow>in</span> <span class=n>valid_extensions</span><span class=p>:</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Unable to read the texture file (wrong extension):&#39;</span><span class=p>,</span> <span class=n>image_path</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'Unable to read the texture file (wrong extension):'</span><span class=p>,</span> <span class=n>image_path</span><span class=p>)</span>
         <span class=k>return</span> <span class=kc>None</span>
 
     <span class=c1># Read the images</span>
@@ -618,20 +618,20 @@ Options:
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>check_for_missing_textures</span><span class=p>(</span><span class=n>parameters</span><span class=p>,</span> <span class=n>wanted_textures</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Check that the needed textures exist.</span>
 
 <span class=sd>    :param parameters: The parameters.</span>
 <span class=sd>    :param wanted_textures: The wanted textures.</span>
 <span class=sd>    :return: True if all the wanted textures are present.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=n>have_textures</span> <span class=o>=</span> <span class=kc>True</span>
     <span class=k>for</span> <span class=n>texture_name</span> <span class=ow>in</span> <span class=n>wanted_textures</span><span class=p>:</span>
         <span class=k>if</span> <span class=n>texture_name</span> <span class=ow>not</span> <span class=ow>in</span> <span class=n>parameters</span><span class=p>:</span>
-            <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Missing texture:&#39;</span><span class=p>,</span> <span class=n>texture_name</span><span class=p>)</span>
+            <span class=nb>print</span><span class=p>(</span><span class=s1>'Missing texture:'</span><span class=p>,</span> <span class=n>texture_name</span><span class=p>)</span>
             <span class=n>have_textures</span> <span class=o>=</span> <span class=kc>False</span>
         <span class=k>elif</span> <span class=ow>not</span> <span class=n>parameters</span><span class=p>[</span><span class=n>texture_name</span><span class=p>]:</span>
-            <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;No texture path for:&#39;</span><span class=p>,</span> <span class=n>texture_name</span><span class=p>)</span>
+            <span class=nb>print</span><span class=p>(</span><span class=s1>'No texture path for:'</span><span class=p>,</span> <span class=n>texture_name</span><span class=p>)</span>
             <span class=n>have_textures</span> <span class=o>=</span> <span class=kc>False</span>
 
     <span class=k>return</span> <span class=n>have_textures</span>
@@ -783,19 +783,19 @@ Options:
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>uv_tcoords</span><span class=p>(</span><span class=n>u_resolution</span><span class=p>,</span> <span class=n>v_resolution</span><span class=p>,</span> <span class=n>pd</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Generate u, v texture coordinates on a parametric surface.</span>
 <span class=sd>    :param u_resolution: u resolution</span>
 <span class=sd>    :param v_resolution: v resolution</span>
 <span class=sd>    :param pd: The polydata representing the surface.</span>
 <span class=sd>    :return: The polydata with the texture coordinates added.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=n>u0</span> <span class=o>=</span> <span class=mf>1.0</span>
     <span class=n>v0</span> <span class=o>=</span> <span class=mf>0.0</span>
     <span class=n>du</span> <span class=o>=</span> <span class=mf>1.0</span> <span class=o>/</span> <span class=p>(</span><span class=n>u_resolution</span> <span class=o>-</span> <span class=mi>1</span><span class=p>)</span>
     <span class=n>dv</span> <span class=o>=</span> <span class=mf>1.0</span> <span class=o>/</span> <span class=p>(</span><span class=n>v_resolution</span> <span class=o>-</span> <span class=mi>1</span><span class=p>)</span>
     <span class=n>num_pts</span> <span class=o>=</span> <span class=n>pd</span><span class=o>.</span><span class=n>GetNumberOfPoints</span><span class=p>()</span>
-<span class=hll>    <span class=n>t_coords</span> <span class=o>=</span> <span class=n>vtkFloatArray</span><span class=p>(</span><span class=n>number_of_components</span><span class=o>=</span><span class=mi>2</span><span class=p>,</span> <span class=n>number_of_tuples</span><span class=o>=</span><span class=n>num_pts</span><span class=p>,</span> <span class=n>name</span><span class=o>=</span><span class=s1>&#39;Texture Coordinates&#39;</span><span class=p>)</span>
+<span class=hll>    <span class=n>t_coords</span> <span class=o>=</span> <span class=n>vtkFloatArray</span><span class=p>(</span><span class=n>number_of_components</span><span class=o>=</span><span class=mi>2</span><span class=p>,</span> <span class=n>number_of_tuples</span><span class=o>=</span><span class=n>num_pts</span><span class=p>,</span> <span class=n>name</span><span class=o>=</span><span class=s1>'Texture Coordinates'</span><span class=p>)</span>
 </span>    <span class=n>pt_id</span> <span class=o>=</span> <span class=mi>0</span>
     <span class=n>u</span> <span class=o>=</span> <span class=n>u0</span>
     <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>u_resolution</span><span class=p>):</span>
@@ -812,55 +812,55 @@ Options:
 
 <span class=k>class</span><span class=w> </span><span class=nc>SliderProperties</span><span class=p>:</span>
     <span class=n>dimensions</span> <span class=o>=</span> <span class=p>{</span>
-        <span class=s1>&#39;tube_width&#39;</span><span class=p>:</span> <span class=mf>0.008</span><span class=p>,</span>
-        <span class=s1>&#39;slider_length&#39;</span><span class=p>:</span> <span class=mf>0.075</span><span class=p>,</span> <span class=s1>&#39;slider_width&#39;</span><span class=p>:</span> <span class=mf>0.025</span><span class=p>,</span>
-        <span class=s1>&#39;end_cap_length&#39;</span><span class=p>:</span> <span class=mf>0.025</span><span class=p>,</span> <span class=s1>&#39;end_cap_width&#39;</span><span class=p>:</span> <span class=mf>0.025</span><span class=p>,</span>
-        <span class=s1>&#39;title_height&#39;</span><span class=p>:</span> <span class=mf>0.025</span><span class=p>,</span> <span class=s1>&#39;label_height&#39;</span><span class=p>:</span> <span class=mf>0.020</span><span class=p>,</span>
+        <span class=s1>'tube_width'</span><span class=p>:</span> <span class=mf>0.008</span><span class=p>,</span>
+        <span class=s1>'slider_length'</span><span class=p>:</span> <span class=mf>0.075</span><span class=p>,</span> <span class=s1>'slider_width'</span><span class=p>:</span> <span class=mf>0.025</span><span class=p>,</span>
+        <span class=s1>'end_cap_length'</span><span class=p>:</span> <span class=mf>0.025</span><span class=p>,</span> <span class=s1>'end_cap_width'</span><span class=p>:</span> <span class=mf>0.025</span><span class=p>,</span>
+        <span class=s1>'title_height'</span><span class=p>:</span> <span class=mf>0.025</span><span class=p>,</span> <span class=s1>'label_height'</span><span class=p>:</span> <span class=mf>0.020</span><span class=p>,</span>
     <span class=p>}</span>
     <span class=n>colors</span> <span class=o>=</span> <span class=p>{</span>
-        <span class=s1>&#39;title_color&#39;</span><span class=p>:</span> <span class=s1>&#39;Black&#39;</span><span class=p>,</span> <span class=s1>&#39;label_color&#39;</span><span class=p>:</span> <span class=s1>&#39;Black&#39;</span><span class=p>,</span> <span class=s1>&#39;slider_color&#39;</span><span class=p>:</span> <span class=s1>&#39;BurlyWood&#39;</span><span class=p>,</span>
-        <span class=s1>&#39;selected_color&#39;</span><span class=p>:</span> <span class=s1>&#39;Lime&#39;</span><span class=p>,</span> <span class=s1>&#39;bar_color&#39;</span><span class=p>:</span> <span class=s1>&#39;Black&#39;</span><span class=p>,</span> <span class=s1>&#39;bar_ends_color&#39;</span><span class=p>:</span> <span class=s1>&#39;Indigo&#39;</span><span class=p>,</span>
+        <span class=s1>'title_color'</span><span class=p>:</span> <span class=s1>'Black'</span><span class=p>,</span> <span class=s1>'label_color'</span><span class=p>:</span> <span class=s1>'Black'</span><span class=p>,</span> <span class=s1>'slider_color'</span><span class=p>:</span> <span class=s1>'BurlyWood'</span><span class=p>,</span>
+        <span class=s1>'selected_color'</span><span class=p>:</span> <span class=s1>'Lime'</span><span class=p>,</span> <span class=s1>'bar_color'</span><span class=p>:</span> <span class=s1>'Black'</span><span class=p>,</span> <span class=s1>'bar_ends_color'</span><span class=p>:</span> <span class=s1>'Indigo'</span><span class=p>,</span>
     <span class=p>}</span>
-    <span class=nb>range</span> <span class=o>=</span> <span class=p>{</span><span class=s1>&#39;minimum_value&#39;</span><span class=p>:</span> <span class=mf>0.0</span><span class=p>,</span> <span class=s1>&#39;maximum_value&#39;</span><span class=p>:</span> <span class=mf>1.0</span><span class=p>,</span> <span class=s1>&#39;value&#39;</span><span class=p>:</span> <span class=mf>1.0</span><span class=p>}</span>
-    <span class=n>title_text</span> <span class=o>=</span> <span class=s1>&#39;&#39;</span><span class=p>,</span>
-    <span class=n>position</span> <span class=o>=</span> <span class=p>{</span><span class=s1>&#39;point1&#39;</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.1</span><span class=p>,</span> <span class=mf>0.1</span><span class=p>),</span> <span class=s1>&#39;point2&#39;</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.9</span><span class=p>,</span> <span class=mf>0.1</span><span class=p>)}</span>
+    <span class=nb>range</span> <span class=o>=</span> <span class=p>{</span><span class=s1>'minimum_value'</span><span class=p>:</span> <span class=mf>0.0</span><span class=p>,</span> <span class=s1>'maximum_value'</span><span class=p>:</span> <span class=mf>1.0</span><span class=p>,</span> <span class=s1>'value'</span><span class=p>:</span> <span class=mf>1.0</span><span class=p>}</span>
+    <span class=n>title_text</span> <span class=o>=</span> <span class=s1>''</span><span class=p>,</span>
+    <span class=n>position</span> <span class=o>=</span> <span class=p>{</span><span class=s1>'point1'</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.1</span><span class=p>,</span> <span class=mf>0.1</span><span class=p>),</span> <span class=s1>'point2'</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.9</span><span class=p>,</span> <span class=mf>0.1</span><span class=p>)}</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>make_slider_widget</span><span class=p>(</span><span class=n>slider_properties</span><span class=p>,</span> <span class=n>interactor</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Make a slider widget.</span>
 <span class=sd>    :param slider_properties: range, title name, dimensions, colors, and position.</span>
 <span class=sd>    :param interactor: The vtkInteractor.</span>
 <span class=sd>    :return: The slider widget.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
-<span class=hll>    <span class=n>slider_rep</span> <span class=o>=</span> <span class=n>vtkSliderRepresentation2D</span><span class=p>(</span><span class=n>minimum_value</span><span class=o>=</span><span class=n>slider_properties</span><span class=o>.</span><span class=n>range</span><span class=p>[</span><span class=s1>&#39;minimum_value&#39;</span><span class=p>],</span>
-</span>                                           <span class=n>maximum_value</span><span class=o>=</span><span class=n>slider_properties</span><span class=o>.</span><span class=n>range</span><span class=p>[</span><span class=s1>&#39;maximum_value&#39;</span><span class=p>],</span>
-                                           <span class=n>value</span><span class=o>=</span><span class=n>slider_properties</span><span class=o>.</span><span class=n>range</span><span class=p>[</span><span class=s1>&#39;value&#39;</span><span class=p>],</span>
+<span class=hll>    <span class=n>slider_rep</span> <span class=o>=</span> <span class=n>vtkSliderRepresentation2D</span><span class=p>(</span><span class=n>minimum_value</span><span class=o>=</span><span class=n>slider_properties</span><span class=o>.</span><span class=n>range</span><span class=p>[</span><span class=s1>'minimum_value'</span><span class=p>],</span>
+</span>                                           <span class=n>maximum_value</span><span class=o>=</span><span class=n>slider_properties</span><span class=o>.</span><span class=n>range</span><span class=p>[</span><span class=s1>'maximum_value'</span><span class=p>],</span>
+                                           <span class=n>value</span><span class=o>=</span><span class=n>slider_properties</span><span class=o>.</span><span class=n>range</span><span class=p>[</span><span class=s1>'value'</span><span class=p>],</span>
                                            <span class=n>title_text</span><span class=o>=</span><span class=n>slider_properties</span><span class=o>.</span><span class=n>title_text</span><span class=p>,</span>
-                                           <span class=n>tube_width</span><span class=o>=</span><span class=n>slider_properties</span><span class=o>.</span><span class=n>dimensions</span><span class=p>[</span><span class=s1>&#39;tube_width&#39;</span><span class=p>],</span>
-                                           <span class=n>slider_length</span><span class=o>=</span><span class=n>slider_properties</span><span class=o>.</span><span class=n>dimensions</span><span class=p>[</span><span class=s1>&#39;slider_length&#39;</span><span class=p>],</span>
-                                           <span class=n>slider_width</span><span class=o>=</span><span class=n>slider_properties</span><span class=o>.</span><span class=n>dimensions</span><span class=p>[</span><span class=s1>&#39;slider_width&#39;</span><span class=p>],</span>
-                                           <span class=n>end_cap_length</span><span class=o>=</span><span class=n>slider_properties</span><span class=o>.</span><span class=n>dimensions</span><span class=p>[</span><span class=s1>&#39;end_cap_length&#39;</span><span class=p>],</span>
-                                           <span class=n>end_cap_width</span><span class=o>=</span><span class=n>slider_properties</span><span class=o>.</span><span class=n>dimensions</span><span class=p>[</span><span class=s1>&#39;end_cap_width&#39;</span><span class=p>],</span>
-                                           <span class=n>title_height</span><span class=o>=</span><span class=n>slider_properties</span><span class=o>.</span><span class=n>dimensions</span><span class=p>[</span><span class=s1>&#39;title_height&#39;</span><span class=p>],</span>
-                                           <span class=n>label_height</span><span class=o>=</span><span class=n>slider_properties</span><span class=o>.</span><span class=n>dimensions</span><span class=p>[</span><span class=s1>&#39;label_height&#39;</span><span class=p>],</span>
+                                           <span class=n>tube_width</span><span class=o>=</span><span class=n>slider_properties</span><span class=o>.</span><span class=n>dimensions</span><span class=p>[</span><span class=s1>'tube_width'</span><span class=p>],</span>
+                                           <span class=n>slider_length</span><span class=o>=</span><span class=n>slider_properties</span><span class=o>.</span><span class=n>dimensions</span><span class=p>[</span><span class=s1>'slider_length'</span><span class=p>],</span>
+                                           <span class=n>slider_width</span><span class=o>=</span><span class=n>slider_properties</span><span class=o>.</span><span class=n>dimensions</span><span class=p>[</span><span class=s1>'slider_width'</span><span class=p>],</span>
+                                           <span class=n>end_cap_length</span><span class=o>=</span><span class=n>slider_properties</span><span class=o>.</span><span class=n>dimensions</span><span class=p>[</span><span class=s1>'end_cap_length'</span><span class=p>],</span>
+                                           <span class=n>end_cap_width</span><span class=o>=</span><span class=n>slider_properties</span><span class=o>.</span><span class=n>dimensions</span><span class=p>[</span><span class=s1>'end_cap_width'</span><span class=p>],</span>
+                                           <span class=n>title_height</span><span class=o>=</span><span class=n>slider_properties</span><span class=o>.</span><span class=n>dimensions</span><span class=p>[</span><span class=s1>'title_height'</span><span class=p>],</span>
+                                           <span class=n>label_height</span><span class=o>=</span><span class=n>slider_properties</span><span class=o>.</span><span class=n>dimensions</span><span class=p>[</span><span class=s1>'label_height'</span><span class=p>],</span>
                                            <span class=p>)</span>
 
     <span class=c1># Set the color properties.</span>
-    <span class=n>slider_rep</span><span class=o>.</span><span class=n>title_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>slider_properties</span><span class=o>.</span><span class=n>colors</span><span class=p>[</span><span class=s1>&#39;title_color&#39;</span><span class=p>])</span>
-    <span class=n>slider_rep</span><span class=o>.</span><span class=n>label_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>slider_properties</span><span class=o>.</span><span class=n>colors</span><span class=p>[</span><span class=s1>&#39;label_color&#39;</span><span class=p>])</span>
-    <span class=n>slider_rep</span><span class=o>.</span><span class=n>tube_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>slider_properties</span><span class=o>.</span><span class=n>colors</span><span class=p>[</span><span class=s1>&#39;bar_color&#39;</span><span class=p>])</span>
-    <span class=n>slider_rep</span><span class=o>.</span><span class=n>cap_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>slider_properties</span><span class=o>.</span><span class=n>colors</span><span class=p>[</span><span class=s1>&#39;bar_ends_color&#39;</span><span class=p>])</span>
-    <span class=n>slider_rep</span><span class=o>.</span><span class=n>slider_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>slider_properties</span><span class=o>.</span><span class=n>colors</span><span class=p>[</span><span class=s1>&#39;slider_color&#39;</span><span class=p>])</span>
-    <span class=n>slider_rep</span><span class=o>.</span><span class=n>selected_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>slider_properties</span><span class=o>.</span><span class=n>colors</span><span class=p>[</span><span class=s1>&#39;selected_color&#39;</span><span class=p>])</span>
+    <span class=n>slider_rep</span><span class=o>.</span><span class=n>title_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>slider_properties</span><span class=o>.</span><span class=n>colors</span><span class=p>[</span><span class=s1>'title_color'</span><span class=p>])</span>
+    <span class=n>slider_rep</span><span class=o>.</span><span class=n>label_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>slider_properties</span><span class=o>.</span><span class=n>colors</span><span class=p>[</span><span class=s1>'label_color'</span><span class=p>])</span>
+    <span class=n>slider_rep</span><span class=o>.</span><span class=n>tube_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>slider_properties</span><span class=o>.</span><span class=n>colors</span><span class=p>[</span><span class=s1>'bar_color'</span><span class=p>])</span>
+    <span class=n>slider_rep</span><span class=o>.</span><span class=n>cap_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>slider_properties</span><span class=o>.</span><span class=n>colors</span><span class=p>[</span><span class=s1>'bar_ends_color'</span><span class=p>])</span>
+    <span class=n>slider_rep</span><span class=o>.</span><span class=n>slider_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>slider_properties</span><span class=o>.</span><span class=n>colors</span><span class=p>[</span><span class=s1>'slider_color'</span><span class=p>])</span>
+    <span class=n>slider_rep</span><span class=o>.</span><span class=n>selected_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>slider_properties</span><span class=o>.</span><span class=n>colors</span><span class=p>[</span><span class=s1>'selected_color'</span><span class=p>])</span>
 
     <span class=c1># Set the position.</span>
     <span class=n>slider_rep</span><span class=o>.</span><span class=n>point1_coordinate</span><span class=o>.</span><span class=n>coordinate_system</span> <span class=o>=</span> <span class=n>Coordinate</span><span class=o>.</span><span class=n>CoordinateSystem</span><span class=o>.</span><span class=n>VTK_NORMALIZED_VIEWPORT</span>
-    <span class=n>slider_rep</span><span class=o>.</span><span class=n>point1_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>slider_properties</span><span class=o>.</span><span class=n>position</span><span class=p>[</span><span class=s1>&#39;point1&#39;</span><span class=p>]</span>
+    <span class=n>slider_rep</span><span class=o>.</span><span class=n>point1_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>slider_properties</span><span class=o>.</span><span class=n>position</span><span class=p>[</span><span class=s1>'point1'</span><span class=p>]</span>
     <span class=n>slider_rep</span><span class=o>.</span><span class=n>point2_coordinate</span><span class=o>.</span><span class=n>coordinate_system</span> <span class=o>=</span> <span class=n>Coordinate</span><span class=o>.</span><span class=n>CoordinateSystem</span><span class=o>.</span><span class=n>VTK_NORMALIZED_VIEWPORT</span>
-    <span class=n>slider_rep</span><span class=o>.</span><span class=n>point2_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>slider_properties</span><span class=o>.</span><span class=n>position</span><span class=p>[</span><span class=s1>&#39;point2&#39;</span><span class=p>]</span>
+    <span class=n>slider_rep</span><span class=o>.</span><span class=n>point2_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>slider_properties</span><span class=o>.</span><span class=n>position</span><span class=p>[</span><span class=s1>'point2'</span><span class=p>]</span>
 
 <span class=hll>    <span class=n>widget</span> <span class=o>=</span> <span class=n>vtkSliderWidget</span><span class=p>(</span><span class=n>representation</span><span class=o>=</span><span class=n>slider_rep</span><span class=p>,</span> <span class=n>interactor</span><span class=o>=</span><span class=n>interactor</span><span class=p>,</span> <span class=n>enabled</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
 </span>    <span class=n>widget</span><span class=o>.</span><span class=n>SetAnimationModeToAnimate</span><span class=p>()</span>
@@ -940,7 +940,7 @@ Options:
 
 <span class=k>class</span><span class=w> </span><span class=nc>PrintCallback</span><span class=p>:</span>
     <span class=k>def</span><span class=w> </span><span class=fm>__init__</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>caller</span><span class=p>,</span> <span class=n>file_name</span><span class=p>,</span> <span class=n>image_quality</span><span class=o>=</span><span class=mi>1</span><span class=p>,</span> <span class=n>rgba</span><span class=o>=</span><span class=kc>True</span><span class=p>):</span>
-<span class=w>        </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>        </span><span class=sd>"""</span>
 <span class=sd>        Set the parameters for writing the</span>
 <span class=sd>         render window view to an image file.</span>
 
@@ -948,31 +948,31 @@ Options:
 <span class=sd>        :param file_name: The image file name.</span>
 <span class=sd>        :param image_quality: The image quality.</span>
 <span class=sd>        :param rgba: The buffer type, (if true, there is no background in the screenshot).</span>
-<span class=sd>        &quot;&quot;&quot;</span>
+<span class=sd>        """</span>
         <span class=bp>self</span><span class=o>.</span><span class=n>caller</span> <span class=o>=</span> <span class=n>caller</span>
         <span class=bp>self</span><span class=o>.</span><span class=n>image_quality</span> <span class=o>=</span> <span class=n>image_quality</span>
         <span class=bp>self</span><span class=o>.</span><span class=n>rgba</span> <span class=o>=</span> <span class=n>rgba</span>
         <span class=k>if</span> <span class=ow>not</span> <span class=n>file_name</span><span class=p>:</span>
             <span class=bp>self</span><span class=o>.</span><span class=n>path</span> <span class=o>=</span> <span class=kc>None</span>
-            <span class=nb>print</span><span class=p>(</span><span class=s2>&quot;A file name is required.&quot;</span><span class=p>)</span>
+            <span class=nb>print</span><span class=p>(</span><span class=s2>"A file name is required."</span><span class=p>)</span>
             <span class=k>return</span>
         <span class=n>pth</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span><span class=o>.</span><span class=n>absolute</span><span class=p>()</span>
-        <span class=n>valid_suffixes</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;.jpeg&#39;</span><span class=p>,</span> <span class=s1>&#39;.jpg&#39;</span><span class=p>,</span> <span class=s1>&#39;.png&#39;</span><span class=p>]</span>
+        <span class=n>valid_suffixes</span> <span class=o>=</span> <span class=p>[</span><span class=s1>'.jpeg'</span><span class=p>,</span> <span class=s1>'.jpg'</span><span class=p>,</span> <span class=s1>'.png'</span><span class=p>]</span>
         <span class=k>if</span> <span class=n>pth</span><span class=o>.</span><span class=n>suffix</span><span class=p>:</span>
             <span class=n>ext</span> <span class=o>=</span> <span class=n>pth</span><span class=o>.</span><span class=n>suffix</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span>
         <span class=k>else</span><span class=p>:</span>
-            <span class=n>ext</span> <span class=o>=</span> <span class=s1>&#39;.png&#39;</span>
+            <span class=n>ext</span> <span class=o>=</span> <span class=s1>'.png'</span>
         <span class=k>if</span> <span class=n>ext</span> <span class=ow>not</span> <span class=ow>in</span> <span class=n>valid_suffixes</span><span class=p>:</span>
-            <span class=n>ext</span> <span class=o>=</span> <span class=s1>&#39;.png&#39;</span>
+            <span class=n>ext</span> <span class=o>=</span> <span class=s1>'.png'</span>
         <span class=bp>self</span><span class=o>.</span><span class=n>suffix</span> <span class=o>=</span> <span class=n>ext</span>
         <span class=bp>self</span><span class=o>.</span><span class=n>path</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=nb>str</span><span class=p>(</span><span class=n>pth</span><span class=p>))</span><span class=o>.</span><span class=n>with_suffix</span><span class=p>(</span><span class=n>ext</span><span class=p>)</span>
 
     <span class=k>def</span><span class=w> </span><span class=fm>__call__</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>caller</span><span class=p>,</span> <span class=n>ev</span><span class=p>):</span>
         <span class=k>if</span> <span class=ow>not</span> <span class=bp>self</span><span class=o>.</span><span class=n>path</span><span class=p>:</span>
-            <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;A file name is required.&#39;</span><span class=p>)</span>
+            <span class=nb>print</span><span class=p>(</span><span class=s1>'A file name is required.'</span><span class=p>)</span>
             <span class=k>return</span>
         <span class=c1># Save the screenshot.</span>
-        <span class=k>if</span> <span class=n>caller</span><span class=o>.</span><span class=n>GetKeyCode</span><span class=p>()</span> <span class=o>==</span> <span class=s1>&#39;k&#39;</span><span class=p>:</span>
+        <span class=k>if</span> <span class=n>caller</span><span class=o>.</span><span class=n>GetKeyCode</span><span class=p>()</span> <span class=o>==</span> <span class=s1>'k'</span><span class=p>:</span>
 <span class=hll>            <span class=n>w2if</span> <span class=o>=</span> <span class=n>vtkWindowToImageFilter</span><span class=p>(</span><span class=nb>input</span><span class=o>=</span><span class=n>caller</span><span class=o>.</span><span class=n>GetRenderWindow</span><span class=p>(),</span>
 </span>                                          <span class=n>scale</span><span class=o>=</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>image_quality</span><span class=p>,</span> <span class=bp>self</span><span class=o>.</span><span class=n>image_quality</span><span class=p>),</span>
                                           <span class=n>read_front_buffer</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
@@ -980,13 +980,13 @@ Options:
                 <span class=n>w2if</span><span class=o>.</span><span class=n>SetInputBufferTypeToRGBA</span><span class=p>()</span>
             <span class=k>else</span><span class=p>:</span>
                 <span class=n>w2if</span><span class=o>.</span><span class=n>SetInputBufferTypeToRGB</span><span class=p>()</span>
-            <span class=k>if</span> <span class=bp>self</span><span class=o>.</span><span class=n>suffix</span> <span class=ow>in</span> <span class=p>[</span><span class=s1>&#39;.jpeg&#39;</span><span class=p>,</span> <span class=s1>&#39;.jpg&#39;</span><span class=p>]:</span>
+            <span class=k>if</span> <span class=bp>self</span><span class=o>.</span><span class=n>suffix</span> <span class=ow>in</span> <span class=p>[</span><span class=s1>'.jpeg'</span><span class=p>,</span> <span class=s1>'.jpg'</span><span class=p>]:</span>
 <span class=hll>                <span class=n>writer</span> <span class=o>=</span> <span class=n>vtkJPEGWriter</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=bp>self</span><span class=o>.</span><span class=n>path</span><span class=p>)</span>
 </span>            <span class=k>else</span><span class=p>:</span>
 <span class=hll>                <span class=n>writer</span> <span class=o>=</span> <span class=n>vtkPNGWriter</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=bp>self</span><span class=o>.</span><span class=n>path</span><span class=p>)</span>
 </span>            <span class=n>w2if</span> <span class=o>&gt;&gt;</span> <span class=n>writer</span>
             <span class=n>writer</span><span class=o>.</span><span class=n>Write</span><span class=p>()</span>
-            <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Screenshot saved to:&#39;</span><span class=p>,</span> <span class=bp>self</span><span class=o>.</span><span class=n>path</span><span class=p>)</span>
+            <span class=nb>print</span><span class=p>(</span><span class=s1>'Screenshot saved to:'</span><span class=p>,</span> <span class=bp>self</span><span class=o>.</span><span class=n>path</span><span class=p>)</span>
 
 
 <span class=nd>@dataclass</span><span class=p>(</span><span class=n>frozen</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
@@ -1018,6 +1018,6 @@ Options:
         <span class=n>VTK_USERDEFINED</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>7</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

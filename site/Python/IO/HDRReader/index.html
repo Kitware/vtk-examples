@@ -66,16 +66,16 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_program_parameters</span><span class=p>():</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>argparse</span>
-    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;Demonstrate the use of HDRReader&#39;</span>
-    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;</span>
+    <span class=n>description</span> <span class=o>=</span> <span class=s1>'Demonstrate the use of HDRReader'</span>
+    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>'''</span>
 <span class=s1>This example shows how to read in an HDR file.</span>
 <span class=s1>A callback is used to print out the color window (move the mouse horizontally over the image)</span>
 <span class=s1> and color level (move the mouse vertically over the image).</span>
 
-<span class=s1>   &#39;&#39;&#39;</span>
+<span class=s1>   '''</span>
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
                                      <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawDescriptionHelpFormatter</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;file_name&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Path to the hdr file e.g. Skyboxes/spiaggia_di_mondello_1k.hdr.&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'file_name'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'Path to the hdr file e.g. Skyboxes/spiaggia_di_mondello_1k.hdr.'</span><span class=p>)</span>
     <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
     <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>file_name</span>
 
@@ -87,7 +87,7 @@ function registerListener(event, func) {
 </span>
     <span class=c1># Check the image can be read</span>
     <span class=k>if</span> <span class=ow>not</span> <span class=n>reader</span><span class=o>.</span><span class=n>CanReadFile</span><span class=p>(</span><span class=n>file_name</span><span class=p>):</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;CanReadFile failed for &#39;</span><span class=p>,</span> <span class=n>file_name</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'CanReadFile failed for '</span><span class=p>,</span> <span class=n>file_name</span><span class=p>)</span>
         <span class=k>return</span>
 
     <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
@@ -107,10 +107,10 @@ function registerListener(event, func) {
 
 <span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>image_viewer</span><span class=o>.</span><span class=n>SetupInteractor</span><span class=p>(</span><span class=n>iren</span><span class=p>)</span>
-    <span class=n>image_viewer</span><span class=o>.</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;HDRReader&#39;</span><span class=p>)</span>
+    <span class=n>image_viewer</span><span class=o>.</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>'HDRReader'</span><span class=p>)</span>
     <span class=n>image_viewer</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
 
-    <span class=n>iren</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=s1>&#39;EndInteractionEvent&#39;</span><span class=p>,</span> <span class=n>ColorCallback</span><span class=p>(</span><span class=n>image_viewer</span><span class=p>))</span>
+    <span class=n>iren</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=s1>'EndInteractionEvent'</span><span class=p>,</span> <span class=n>ColorCallback</span><span class=p>(</span><span class=n>image_viewer</span><span class=p>))</span>
 
     <span class=n>iren</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
@@ -121,13 +121,13 @@ function registerListener(event, func) {
 
     <span class=k>def</span><span class=w> </span><span class=fm>__call__</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>caller</span><span class=p>,</span> <span class=n>ev</span><span class=p>):</span>
         <span class=c1># Just do this to demonstrate who called callback and the event that triggered it.</span>
-        <span class=c1># print(caller.GetClassName(), &#39;Event Id:&#39;, ev)</span>
+        <span class=c1># print(caller.GetClassName(), 'Event Id:', ev)</span>
 
-        <span class=n>res</span> <span class=o>=</span> <span class=s1>&#39;Color window: </span><span class=si>{}</span><span class=s1> level: </span><span class=si>{}</span><span class=s1>&#39;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>image_viewer</span><span class=o>.</span><span class=n>GetColorWindow</span><span class=p>(),</span>
+        <span class=n>res</span> <span class=o>=</span> <span class=s1>'Color window: </span><span class=si>{}</span><span class=s1> level: </span><span class=si>{}</span><span class=s1>'</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>image_viewer</span><span class=o>.</span><span class=n>GetColorWindow</span><span class=p>(),</span>
                                                   <span class=bp>self</span><span class=o>.</span><span class=n>image_viewer</span><span class=o>.</span><span class=n>GetColorLevel</span><span class=p>())</span>
         <span class=nb>print</span><span class=p>(</span><span class=n>res</span><span class=p>)</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

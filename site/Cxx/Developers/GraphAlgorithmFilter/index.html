@@ -68,7 +68,7 @@ function registerListener(event, func) {
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkMutableUndirectedGraph.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkNew.h&gt;</span>
 </span>
-<span class=cp>#include</span><span class=w> </span><span class=cpf>&quot;vtkTestGraphAlgorithmFilter.h&quot;</span>
+<span class=cp>#include</span><span class=w> </span><span class=cpf>"vtkTestGraphAlgorithmFilter.h"</span>
 
 <span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;iostream&gt;</span>
 
@@ -91,39 +91,68 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>vtkIdType</span><span class=w> </span><span class=n>v2</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>g</span><span class=o>-&gt;</span><span class=n>AddVertex</span><span class=p>();</span>
 
 <span class=w>  </span><span class=n>g</span><span class=o>-&gt;</span><span class=n>AddEdge</span><span class=p>(</span><span class=n>v1</span><span class=p>,</span><span class=w> </span><span class=n>v2</span><span class=p>);</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Input type: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>g</span><span class=o>-&gt;</span><span class=n>GetClassName</span><span class=p>()</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Input type: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>g</span><span class=o>-&gt;</span><span class=n>GetClassName</span><span class=p>()</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTestGraphAlgorithmFilter</span><span class=o>&gt;</span><span class=w> </span><span class=n>filter</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>filter</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>g</span><span class=p>);</span>
 <span class=w>  </span><span class=n>filter</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Output type: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>filter</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetClassName</span><span class=p>()</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Output type: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>filter</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetClassName</span><span class=p>()</span>
 <span class=w>            </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Output has &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>filter</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetNumberOfVertices</span><span class=p>()</span>
-<span class=w>            </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; vertices.&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Output has "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>filter</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetNumberOfVertices</span><span class=p>()</span>
+<span class=w>            </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" vertices."</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=p>}</span>
 
 <span class=kt>void</span><span class=w> </span><span class=nf>TestUndirected</span><span class=p>()</span>
 <span class=p>{</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;TestUndirected&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"TestUndirected"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkMutableUndirectedGraph</span><span class=o>&gt;</span><span class=w> </span><span class=n>g</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>vtkIdType</span><span class=w> </span><span class=n>v1</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>g</span><span class=o>-&gt;</span><span class=n>AddVertex</span><span class=p>();</span>
 <span class=w>  </span><span class=n>vtkIdType</span><span class=w> </span><span class=n>v2</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>g</span><span class=o>-&gt;</span><span class=n>AddVertex</span><span class=p>();</span>
 
 <span class=w>  </span><span class=n>g</span><span class=o>-&gt;</span><span class=n>AddEdge</span><span class=p>(</span><span class=n>v1</span><span class=p>,</span><span class=w> </span><span class=n>v2</span><span class=p>);</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Input type: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>g</span><span class=o>-&gt;</span><span class=n>GetClassName</span><span class=p>()</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Input type: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>g</span><span class=o>-&gt;</span><span class=n>GetClassName</span><span class=p>()</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTestGraphAlgorithmFilter</span><span class=o>&gt;</span><span class=w> </span><span class=n>filter</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>filter</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>g</span><span class=p>);</span>
 <span class=w>  </span><span class=n>filter</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Output type: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>filter</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetClassName</span><span class=p>()</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Output type: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>filter</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetClassName</span><span class=p>()</span>
 <span class=w>            </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Output has &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>filter</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetNumberOfVertices</span><span class=p>()</span>
-<span class=w>            </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; vertices.&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Output has "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>filter</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetNumberOfVertices</span><span class=p>()</span>
+<span class=w>            </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" vertices."</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=p>}</span>
-</code></pre></div> <p><strong>vtkTestGraphAlgorithmFilter.cxx</strong></p> <div class=codehilite><pre><span></span><code><span class=cp>#include</span><span class=w> </span><span class=cpf>&quot;vtkTestGraphAlgorithmFilter.h&quot;</span>
+</code></pre></div> <p><strong>vtkTestGraphAlgorithmFilter.h</strong></p> <div class=codehilite><pre><span></span><code><span class=cp>#ifndef __vtkTestGraphAlgorithmFilter_h</span>
+<span class=cp>#define __vtkTestGraphAlgorithmFilter_h</span>
+
+<span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkGraphAlgorithm.h&gt;</span>
+</span>
+<span class=hll><span class=k>class</span><span class=w> </span><span class=nc>vtkTestGraphAlgorithmFilter</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=k>public</span><span class=w> </span><span class=n>vtkGraphAlgorithm</span>
+</span><span class=p>{</span>
+<span class=k>public</span><span class=o>:</span>
+<span class=hll><span class=w>  </span><span class=n>vtkTypeMacro</span><span class=p>(</span><span class=n>vtkTestGraphAlgorithmFilter</span><span class=p>,</span><span class=w> </span><span class=n>vtkGraphAlgorithm</span><span class=p>);</span>
+</span><span class=w>  </span><span class=k>static</span><span class=w> </span><span class=n>vtkTestGraphAlgorithmFilter</span><span class=o>*</span><span class=w> </span><span class=nf>New</span><span class=p>();</span>
+
+<span class=k>protected</span><span class=o>:</span>
+<span class=w>  </span><span class=n>vtkTestGraphAlgorithmFilter</span><span class=p>()</span>
+<span class=w>  </span><span class=p>{</span>
+<span class=w>  </span><span class=p>}</span>
+<span class=w>  </span><span class=o>~</span><span class=n>vtkTestGraphAlgorithmFilter</span><span class=p>()</span>
+<span class=w>  </span><span class=p>{</span>
+<span class=w>  </span><span class=p>}</span>
+
+<span class=hll><span class=w>  </span><span class=kt>int</span><span class=w> </span><span class=n>RequestData</span><span class=p>(</span><span class=n>vtkInformation</span><span class=o>*</span><span class=p>,</span><span class=w> </span><span class=n>vtkInformationVector</span><span class=o>**</span><span class=p>,</span>
+</span><span class=hll><span class=w>                  </span><span class=n>vtkInformationVector</span><span class=o>*</span><span class=p>)</span><span class=w> </span><span class=k>override</span><span class=p>;</span>
+</span>
+<span class=k>private</span><span class=o>:</span>
+<span class=w>  </span><span class=n>vtkTestGraphAlgorithmFilter</span><span class=p>(</span>
+<span class=w>      </span><span class=k>const</span><span class=w> </span><span class=n>vtkTestGraphAlgorithmFilter</span><span class=o>&amp;</span><span class=p>);</span><span class=w>            </span><span class=c1>// Not implemented.</span>
+<span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=k>operator</span><span class=o>=</span><span class=p>(</span><span class=k>const</span><span class=w> </span><span class=n>vtkTestGraphAlgorithmFilter</span><span class=o>&amp;</span><span class=p>);</span><span class=w> </span><span class=c1>// Not implemented.</span>
+<span class=p>};</span>
+
+<span class=cp>#endif</span>
+</code></pre></div> <p><strong>vtkTestGraphAlgorithmFilter.cxx</strong></p> <div class=codehilite><pre><span></span><code><span class=cp>#include</span><span class=w> </span><span class=cpf>"vtkTestGraphAlgorithmFilter.h"</span>
 
 <span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkDataObject.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkInformation.h&gt;</span>
@@ -159,52 +188,23 @@ function registerListener(event, func) {
 </span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkMutableUndirectedGraph</span><span class=o>&gt;</span><span class=w> </span><span class=n>mug</span><span class=p>;</span>
 </span>
-<span class=hll><span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>input</span><span class=o>-&gt;</span><span class=n>IsA</span><span class=p>(</span><span class=s>&quot;vtkMutableUndirectedGraph&quot;</span><span class=p>))</span>
+<span class=hll><span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>input</span><span class=o>-&gt;</span><span class=n>IsA</span><span class=p>(</span><span class=s>"vtkMutableUndirectedGraph"</span><span class=p>))</span>
 </span><span class=w>  </span><span class=p>{</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkMutableUndirectedGraph</span><span class=o>&gt;</span><span class=w> </span><span class=n>ug</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>ug</span><span class=o>-&gt;</span><span class=n>AddVertex</span><span class=p>();</span>
 <span class=w>    </span><span class=n>output</span><span class=o>-&gt;</span><span class=n>ShallowCopy</span><span class=p>(</span><span class=n>ug</span><span class=p>);</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=hll><span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>input</span><span class=o>-&gt;</span><span class=n>IsA</span><span class=p>(</span><span class=s>&quot;vtkMutableDirectedGraph&quot;</span><span class=p>))</span>
+<span class=hll><span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>input</span><span class=o>-&gt;</span><span class=n>IsA</span><span class=p>(</span><span class=s>"vtkMutableDirectedGraph"</span><span class=p>))</span>
 </span><span class=w>  </span><span class=p>{</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkMutableDirectedGraph</span><span class=o>&gt;</span><span class=w> </span><span class=n>dg</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>dg</span><span class=o>-&gt;</span><span class=n>AddVertex</span><span class=p>();</span>
 <span class=w>    </span><span class=n>output</span><span class=o>-&gt;</span><span class=n>ShallowCopy</span><span class=p>(</span><span class=n>dg</span><span class=p>);</span>
 <span class=w>  </span><span class=p>}</span>
 
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Output is type: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>output</span><span class=o>-&gt;</span><span class=n>GetClassName</span><span class=p>()</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Output is type: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>output</span><span class=o>-&gt;</span><span class=n>GetClassName</span><span class=p>()</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 
 <span class=w>  </span><span class=k>return</span><span class=w> </span><span class=mi>1</span><span class=p>;</span>
 <span class=p>}</span>
-</code></pre></div> <p><strong>vtkTestGraphAlgorithmFilter.h</strong></p> <div class=codehilite><pre><span></span><code><span class=cp>#ifndef __vtkTestGraphAlgorithmFilter_h</span>
-<span class=cp>#define __vtkTestGraphAlgorithmFilter_h</span>
-
-<span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkGraphAlgorithm.h&gt;</span>
-</span>
-<span class=hll><span class=k>class</span><span class=w> </span><span class=nc>vtkTestGraphAlgorithmFilter</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=k>public</span><span class=w> </span><span class=n>vtkGraphAlgorithm</span>
-</span><span class=p>{</span>
-<span class=k>public</span><span class=o>:</span>
-<span class=hll><span class=w>  </span><span class=n>vtkTypeMacro</span><span class=p>(</span><span class=n>vtkTestGraphAlgorithmFilter</span><span class=p>,</span><span class=w> </span><span class=n>vtkGraphAlgorithm</span><span class=p>);</span>
-</span><span class=w>  </span><span class=k>static</span><span class=w> </span><span class=n>vtkTestGraphAlgorithmFilter</span><span class=o>*</span><span class=w> </span><span class=nf>New</span><span class=p>();</span>
-
-<span class=k>protected</span><span class=o>:</span>
-<span class=w>  </span><span class=n>vtkTestGraphAlgorithmFilter</span><span class=p>()</span>
-<span class=w>  </span><span class=p>{</span>
-<span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=o>~</span><span class=n>vtkTestGraphAlgorithmFilter</span><span class=p>()</span>
-<span class=w>  </span><span class=p>{</span>
-<span class=w>  </span><span class=p>}</span>
-
-<span class=hll><span class=w>  </span><span class=kt>int</span><span class=w> </span><span class=n>RequestData</span><span class=p>(</span><span class=n>vtkInformation</span><span class=o>*</span><span class=p>,</span><span class=w> </span><span class=n>vtkInformationVector</span><span class=o>**</span><span class=p>,</span>
-</span><span class=hll><span class=w>                  </span><span class=n>vtkInformationVector</span><span class=o>*</span><span class=p>)</span><span class=w> </span><span class=k>override</span><span class=p>;</span>
-</span>
-<span class=k>private</span><span class=o>:</span>
-<span class=w>  </span><span class=n>vtkTestGraphAlgorithmFilter</span><span class=p>(</span>
-<span class=w>      </span><span class=k>const</span><span class=w> </span><span class=n>vtkTestGraphAlgorithmFilter</span><span class=o>&amp;</span><span class=p>);</span><span class=w>            </span><span class=c1>// Not implemented.</span>
-<span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=k>operator</span><span class=o>=</span><span class=p>(</span><span class=k>const</span><span class=w> </span><span class=n>vtkTestGraphAlgorithmFilter</span><span class=o>&amp;</span><span class=p>);</span><span class=w> </span><span class=c1>// Not implemented.</span>
-<span class=p>};</span>
-
-<span class=cp>#endif</span>
 </code></pre></div> <h3 id=cmakeliststxt>CMakeLists.txt<a class=headerlink href=#cmakeliststxt title="Permanent link">&para;</a></h3> <div class=codehilite><pre><span></span><code><span class=nb>cmake_minimum_required</span><span class=p>(</span><span class=s>VERSION</span><span class=w> </span><span class=s>3.12</span><span class=w> </span><span class=s>FATAL_ERROR</span><span class=p>)</span>
 
 <span class=nb>project</span><span class=p>(</span><span class=s>GraphAlgorithmFilter</span><span class=p>)</span>
@@ -215,11 +215,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;GraphAlgorithmFilter: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"GraphAlgorithmFilter: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>GraphAlgorithmFilter</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>GraphAlgorithmFilter.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>GraphAlgorithmFilter</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

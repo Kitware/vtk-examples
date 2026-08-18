@@ -81,12 +81,12 @@ function registerListener(event, func) {
 <span class=cp>#define USE_IMPORTER_UPDATE</span>
 <span class=cp>#endif</span>
 
-<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;algorithm&gt;</span><span class=c1> // For transform()</span>
-<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;cctype&gt;</span><span class=c1>    // For to_lower</span>
-<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;iterator&gt;</span><span class=c1>  // For prev</span>
-<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;set&gt;</span><span class=c1>       // For valid extensions</span>
-<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;sstream&gt;</span><span class=c1>   // For stringstream</span>
-<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;string&gt;</span><span class=c1>    // For find_last_of()</span>
+<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;algorithm&gt;</span><span class=w> </span><span class=c1>// For transform()</span>
+<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;cctype&gt;</span><span class=w>    </span><span class=c1>// For to_lower</span>
+<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;iterator&gt;</span><span class=w>  </span><span class=c1>// For prev</span>
+<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;set&gt;</span><span class=w>       </span><span class=c1>// For valid extensions</span>
+<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;sstream&gt;</span><span class=w>   </span><span class=c1>// For stringstream</span>
+<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;string&gt;</span><span class=w>    </span><span class=c1>// For find_last_of()</span>
 
 <span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;iostream&gt;</span>
 
@@ -97,47 +97,47 @@ function registerListener(event, func) {
 </span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>argc</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=mi>3</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cerr</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Expects input file name(s) and an output filename e.g. &quot;</span>
-<span class=w>                 </span><span class=s>&quot;iflamingo.3ds iflamingo.obj&quot;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cerr</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Expects input file name(s) and an output filename e.g. "</span>
+<span class=w>                 </span><span class=s>"iflamingo.3ds iflamingo.obj"</span>
 <span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>EXIT_FAILURE</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>fileName</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>];</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>extension</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&quot;&quot;</span><span class=p>;</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>extension</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>""</span><span class=p>;</span>
 <span class=w>  </span><span class=kt>int</span><span class=w> </span><span class=n>outputFileArgOffset</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=c1>// depends on importer</span>
 
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>set</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>&gt;</span><span class=w> </span><span class=n>inputExtensions</span><span class=p>{{</span>
-<span class=w>      </span><span class=s>&quot;3ds&quot;</span><span class=p>,</span>
-<span class=w>      </span><span class=s>&quot;glb&quot;</span><span class=p>,</span>
-<span class=w>      </span><span class=s>&quot;gltf&quot;</span><span class=p>,</span>
-<span class=w>      </span><span class=s>&quot;obj&quot;</span><span class=p>,</span>
-<span class=w>      </span><span class=s>&quot;wrl&quot;</span><span class=p>,</span>
+<span class=w>      </span><span class=s>"3ds"</span><span class=p>,</span>
+<span class=w>      </span><span class=s>"glb"</span><span class=p>,</span>
+<span class=w>      </span><span class=s>"gltf"</span><span class=p>,</span>
+<span class=w>      </span><span class=s>"obj"</span><span class=p>,</span>
+<span class=w>      </span><span class=s>"wrl"</span><span class=p>,</span>
 <span class=w>  </span><span class=p>}};</span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>set</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>&gt;</span><span class=w> </span><span class=n>outputExtensions</span><span class=p>{{</span>
-<span class=w>      </span><span class=s>&quot;glb&quot;</span><span class=p>,</span>
-<span class=w>      </span><span class=s>&quot;gltf&quot;</span><span class=p>,</span>
-<span class=w>      </span><span class=s>&quot;obj&quot;</span><span class=p>,</span>
-<span class=w>      </span><span class=s>&quot;wrl&quot;</span><span class=p>,</span>
-<span class=w>      </span><span class=s>&quot;x3d&quot;</span><span class=p>,</span>
+<span class=w>      </span><span class=s>"glb"</span><span class=p>,</span>
+<span class=w>      </span><span class=s>"gltf"</span><span class=p>,</span>
+<span class=w>      </span><span class=s>"obj"</span><span class=p>,</span>
+<span class=w>      </span><span class=s>"wrl"</span><span class=p>,</span>
+<span class=w>      </span><span class=s>"x3d"</span><span class=p>,</span>
 <span class=w>  </span><span class=p>}};</span>
 
-<span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>fileName</span><span class=p>.</span><span class=n>find_last_of</span><span class=p>(</span><span class=s>&quot;.&quot;</span><span class=p>)</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>::</span><span class=n>npos</span><span class=p>)</span>
+<span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>fileName</span><span class=p>.</span><span class=n>find_last_of</span><span class=p>(</span><span class=s>"."</span><span class=p>)</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>::</span><span class=n>npos</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>extension</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>fileName</span><span class=p>.</span><span class=n>substr</span><span class=p>(</span><span class=n>fileName</span><span class=p>.</span><span class=n>find_last_of</span><span class=p>(</span><span class=s>&quot;.&quot;</span><span class=p>)</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=mi>1</span><span class=p>);</span>
+<span class=w>    </span><span class=n>extension</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>fileName</span><span class=p>.</span><span class=n>substr</span><span class=p>(</span><span class=n>fileName</span><span class=p>.</span><span class=n>find_last_of</span><span class=p>(</span><span class=s>"."</span><span class=p>)</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=mi>1</span><span class=p>);</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=w>  </span><span class=c1>// Make the extension lowercase</span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>transform</span><span class=p>(</span><span class=n>extension</span><span class=p>.</span><span class=n>begin</span><span class=p>(),</span><span class=w> </span><span class=n>extension</span><span class=p>.</span><span class=n>end</span><span class=p>(),</span><span class=w> </span><span class=n>extension</span><span class=p>.</span><span class=n>begin</span><span class=p>(),</span>
 <span class=w>                 </span><span class=o>::</span><span class=n>tolower</span><span class=p>);</span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>inputExtensions</span><span class=p>.</span><span class=n>find</span><span class=p>(</span><span class=n>extension</span><span class=p>)</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=n>inputExtensions</span><span class=p>.</span><span class=n>end</span><span class=p>())</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Invalid input extension.</span><span class=se>\n</span><span class=s>Valid extensions are: &quot;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Invalid input extension.</span><span class=se>\n</span><span class=s>Valid extensions are: "</span>
 <span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=k>auto</span><span class=w> </span><span class=n>it</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>inputExtensions</span><span class=p>.</span><span class=n>begin</span><span class=p>();</span><span class=w> </span><span class=n>it</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=n>inputExtensions</span><span class=p>.</span><span class=n>end</span><span class=p>();</span><span class=w> </span><span class=o>++</span><span class=n>it</span><span class=p>)</span>
 <span class=w>    </span><span class=p>{</span>
 <span class=w>      </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>it</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>prev</span><span class=p>(</span><span class=n>inputExtensions</span><span class=p>.</span><span class=n>end</span><span class=p>()))</span>
 <span class=w>      </span><span class=p>{</span>
-<span class=w>        </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=o>*</span><span class=n>it</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;, &quot;</span><span class=p>;</span>
+<span class=w>        </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=o>*</span><span class=n>it</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>", "</span><span class=p>;</span>
 <span class=w>      </span><span class=p>}</span>
 <span class=w>      </span><span class=k>else</span>
 <span class=w>      </span><span class=p>{</span>
@@ -147,7 +147,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>EXIT_FAILURE</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 
-<span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;wrl&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>"wrl"</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkVRMLImporter</span><span class=o>&gt;</span><span class=w> </span><span class=n>importer</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>importer</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>]);</span>
@@ -161,7 +161,7 @@ function registerListener(event, func) {
 <span class=cp>#endif</span>
 <span class=w>    </span><span class=n>outputFileArgOffset</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>2</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;3ds&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>"3ds"</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtk3DSImporter</span><span class=o>&gt;</span><span class=w> </span><span class=n>importer</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>importer</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>]);</span>
@@ -176,7 +176,7 @@ function registerListener(event, func) {
 <span class=cp>#endif</span>
 <span class=w>    </span><span class=n>outputFileArgOffset</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>2</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;gltf&quot;</span><span class=w> </span><span class=o>||</span><span class=w> </span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;glb&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>"gltf"</span><span class=w> </span><span class=o>||</span><span class=w> </span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>"glb"</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkGLTFImporter</span><span class=o>&gt;</span><span class=w> </span><span class=n>importer</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>importer</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>]);</span>
@@ -190,7 +190,7 @@ function registerListener(event, func) {
 <span class=cp>#endif</span>
 <span class=w>    </span><span class=n>outputFileArgOffset</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>2</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;obj&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>"obj"</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkOBJImporter</span><span class=o>&gt;</span><span class=w> </span><span class=n>importer</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>importer</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>]);</span>
@@ -208,13 +208,13 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=p>}</span>
 
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>outputFileName</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=n>outputFileArgOffset</span><span class=p>];</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>outputExtension</span><span class=p>{</span><span class=s>&quot;&quot;</span><span class=p>};</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>outputExtension</span><span class=p>{</span><span class=s>""</span><span class=p>};</span>
 <span class=w>  </span><span class=c1>// Split the file path and extension</span>
-<span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>outputFileName</span><span class=p>.</span><span class=n>find_last_of</span><span class=p>(</span><span class=s>&quot;.&quot;</span><span class=p>)</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>::</span><span class=n>npos</span><span class=p>)</span>
+<span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>outputFileName</span><span class=p>.</span><span class=n>find_last_of</span><span class=p>(</span><span class=s>"."</span><span class=p>)</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>::</span><span class=n>npos</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=n>outputExtension</span><span class=w> </span><span class=o>=</span>
-<span class=w>        </span><span class=n>outputFileName</span><span class=p>.</span><span class=n>substr</span><span class=p>(</span><span class=n>outputFileName</span><span class=p>.</span><span class=n>find_last_of</span><span class=p>(</span><span class=s>&quot;.&quot;</span><span class=p>)</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=mi>1</span><span class=p>);</span>
-<span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=n>pos</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>outputFileName</span><span class=p>.</span><span class=n>rfind</span><span class=p>(</span><span class=s>&quot;.&quot;</span><span class=p>,</span><span class=w> </span><span class=n>outputFileName</span><span class=p>.</span><span class=n>length</span><span class=p>());</span>
+<span class=w>        </span><span class=n>outputFileName</span><span class=p>.</span><span class=n>substr</span><span class=p>(</span><span class=n>outputFileName</span><span class=p>.</span><span class=n>find_last_of</span><span class=p>(</span><span class=s>"."</span><span class=p>)</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=mi>1</span><span class=p>);</span>
+<span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=n>pos</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>outputFileName</span><span class=p>.</span><span class=n>rfind</span><span class=p>(</span><span class=s>"."</span><span class=p>,</span><span class=w> </span><span class=n>outputFileName</span><span class=p>.</span><span class=n>length</span><span class=p>());</span>
 <span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>pos</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>::</span><span class=n>npos</span><span class=w> </span><span class=o>&amp;&amp;</span><span class=w> </span><span class=n>pos</span><span class=w> </span><span class=o>&gt;</span><span class=w> </span><span class=mi>0</span><span class=p>)</span>
 <span class=w>    </span><span class=p>{</span>
 <span class=w>      </span><span class=n>outputFileName</span><span class=p>.</span><span class=n>resize</span><span class=p>(</span><span class=n>pos</span><span class=p>);</span>
@@ -225,13 +225,13 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>outputExtensions</span><span class=p>.</span><span class=n>find</span><span class=p>(</span><span class=n>outputExtension</span><span class=p>)</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=n>outputExtensions</span><span class=p>.</span><span class=n>end</span><span class=p>())</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Invalid output extension.</span><span class=se>\n</span><span class=s>Valid extensions are: &quot;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Invalid output extension.</span><span class=se>\n</span><span class=s>Valid extensions are: "</span>
 <span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=k>auto</span><span class=w> </span><span class=n>it</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>outputExtensions</span><span class=p>.</span><span class=n>begin</span><span class=p>();</span><span class=w> </span><span class=n>it</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=n>outputExtensions</span><span class=p>.</span><span class=n>end</span><span class=p>();</span><span class=w> </span><span class=o>++</span><span class=n>it</span><span class=p>)</span>
 <span class=w>    </span><span class=p>{</span>
 <span class=w>      </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>it</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>prev</span><span class=p>(</span><span class=n>outputExtensions</span><span class=p>.</span><span class=n>end</span><span class=p>()))</span>
 <span class=w>      </span><span class=p>{</span>
-<span class=w>        </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=o>*</span><span class=n>it</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;, &quot;</span><span class=p>;</span>
+<span class=w>        </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=o>*</span><span class=n>it</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>", "</span><span class=p>;</span>
 <span class=w>      </span><span class=p>}</span>
 <span class=w>      </span><span class=k>else</span>
 <span class=w>      </span><span class=p>{</span>
@@ -241,52 +241,52 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>EXIT_FAILURE</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 
-<span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>outputExtension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;obj&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>outputExtension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>"obj"</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>exportFileName</span><span class=p>;</span>
-<span class=w>    </span><span class=n>exportFileName</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>outputFileName</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&quot;.&quot;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>outputExtension</span><span class=p>;</span>
+<span class=w>    </span><span class=n>exportFileName</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>outputFileName</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>"."</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>outputExtension</span><span class=p>;</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkOBJExporter</span><span class=o>&gt;</span><span class=w> </span><span class=n>exporter</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>stringstream</span><span class=w> </span><span class=n>comment</span><span class=p>;</span>
-<span class=w>    </span><span class=n>comment</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Converted by ImportExport from &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>fileName</span><span class=p>;</span>
+<span class=w>    </span><span class=n>comment</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Converted by ImportExport from "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>fileName</span><span class=p>;</span>
 <span class=w>    </span><span class=n>exporter</span><span class=o>-&gt;</span><span class=n>SetOBJFileComment</span><span class=p>(</span><span class=n>comment</span><span class=p>.</span><span class=n>str</span><span class=p>().</span><span class=n>c_str</span><span class=p>());</span>
 <span class=w>    </span><span class=n>exporter</span><span class=o>-&gt;</span><span class=n>SetMTLFileComment</span><span class=p>(</span><span class=n>comment</span><span class=p>.</span><span class=n>str</span><span class=p>().</span><span class=n>c_str</span><span class=p>());</span>
 <span class=w>    </span><span class=n>exporter</span><span class=o>-&gt;</span><span class=n>SetActiveRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>);</span>
 <span class=w>    </span><span class=n>exporter</span><span class=o>-&gt;</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renderWindow</span><span class=p>);</span>
 <span class=w>    </span><span class=n>exporter</span><span class=o>-&gt;</span><span class=n>SetFilePrefix</span><span class=p>(</span><span class=n>outputFileName</span><span class=p>.</span><span class=n>c_str</span><span class=p>());</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Writing &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>exportFileName</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Writing "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>exportFileName</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=n>exporter</span><span class=o>-&gt;</span><span class=n>Write</span><span class=p>();</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>outputExtension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;wrl&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>outputExtension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>"wrl"</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>exportFileName</span><span class=p>;</span>
-<span class=w>    </span><span class=n>exportFileName</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>outputFileName</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&quot;.&quot;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>outputExtension</span><span class=p>;</span>
+<span class=w>    </span><span class=n>exportFileName</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>outputFileName</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>"."</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>outputExtension</span><span class=p>;</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkVRMLExporter</span><span class=o>&gt;</span><span class=w> </span><span class=n>exporter</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>exporter</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>exportFileName</span><span class=p>.</span><span class=n>c_str</span><span class=p>());</span>
 <span class=w>    </span><span class=n>exporter</span><span class=o>-&gt;</span><span class=n>SetActiveRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>);</span>
 <span class=w>    </span><span class=n>exporter</span><span class=o>-&gt;</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renderWindow</span><span class=p>);</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Writing &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>exportFileName</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Writing "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>exportFileName</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=n>exporter</span><span class=o>-&gt;</span><span class=n>Write</span><span class=p>();</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>outputExtension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;gltf&quot;</span><span class=w> </span><span class=o>||</span><span class=w> </span><span class=n>outputExtension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;glb&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>outputExtension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>"gltf"</span><span class=w> </span><span class=o>||</span><span class=w> </span><span class=n>outputExtension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>"glb"</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>exportFileName</span><span class=p>;</span>
-<span class=w>    </span><span class=n>exportFileName</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>outputFileName</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&quot;.&quot;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&quot;gltf&quot;</span><span class=p>;</span>
+<span class=w>    </span><span class=n>exportFileName</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>outputFileName</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>"."</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>"gltf"</span><span class=p>;</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkGLTFExporter</span><span class=o>&gt;</span><span class=w> </span><span class=n>exporter</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>exporter</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>exportFileName</span><span class=p>.</span><span class=n>c_str</span><span class=p>());</span>
 <span class=w>    </span><span class=n>exporter</span><span class=o>-&gt;</span><span class=n>SetActiveRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>);</span>
 <span class=w>    </span><span class=n>exporter</span><span class=o>-&gt;</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renderWindow</span><span class=p>);</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Writing &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>exportFileName</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Writing "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>exportFileName</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=n>exporter</span><span class=o>-&gt;</span><span class=n>Write</span><span class=p>();</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>outputExtension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;x3d&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>outputExtension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>"x3d"</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>exportFileName</span><span class=p>;</span>
-<span class=w>    </span><span class=n>exportFileName</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>outputFileName</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&quot;.&quot;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>outputExtension</span><span class=p>;</span>
+<span class=w>    </span><span class=n>exportFileName</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>outputFileName</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>"."</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>outputExtension</span><span class=p>;</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkX3DExporter</span><span class=o>&gt;</span><span class=w> </span><span class=n>exporter</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>exporter</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>exportFileName</span><span class=p>.</span><span class=n>c_str</span><span class=p>());</span>
 <span class=w>    </span><span class=n>exporter</span><span class=o>-&gt;</span><span class=n>SetActiveRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>);</span>
 <span class=w>    </span><span class=n>exporter</span><span class=o>-&gt;</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renderWindow</span><span class=p>);</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Writing &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>exportFileName</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Writing "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>exportFileName</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=n>exporter</span><span class=o>-&gt;</span><span class=n>Write</span><span class=p>();</span>
 <span class=w>  </span><span class=p>}</span>
 
@@ -311,11 +311,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;ImportToExport: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"ImportToExport: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>ImportToExport</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>ImportToExport.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>ImportToExport</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

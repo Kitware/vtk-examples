@@ -119,7 +119,7 @@ function registerListener(event, func) {
 </span><span class=w>                          </span><span class=kt>void</span><span class=o>*</span><span class=w> </span><span class=n>clientData</span><span class=p>,</span><span class=w> </span><span class=kt>void</span><span class=o>*</span><span class=w> </span><span class=n>callData</span><span class=p>);</span>
 <span class=p>}</span>
 
-<span class=kt>int</span><span class=w> </span><span class=n>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=p>[])</span>
+<span class=kt>int</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=p>[])</span>
 <span class=p>{</span>
 <span class=w>  </span><span class=c1>// Create a set of points.</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPoints</span><span class=o>&gt;</span><span class=w> </span><span class=n>points</span><span class=p>;</span>
@@ -146,12 +146,12 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>actor</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>actor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>);</span>
 <span class=w>  </span><span class=n>actor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetPointSize</span><span class=p>(</span><span class=mi>8</span><span class=p>);</span>
-<span class=w>  </span><span class=n>actor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Gold&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>actor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Gold"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderer</span><span class=p>;</span>
 </span><span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderWindow</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;AreaPicking&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"AreaPicking"</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkAreaPicker</span><span class=o>&gt;</span><span class=w> </span><span class=n>areaPicker</span><span class=p>;</span>
 </span>
@@ -161,15 +161,15 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor</span><span class=p>);</span>
 
-<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;DarkSlateGray&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"DarkSlateGray"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
 
-<span class=w>  </span><span class=c1>// For vtkInteractorStyleRubberBandPick - use &#39;r&#39; and left-mouse to draw a</span>
+<span class=w>  </span><span class=c1>// For vtkInteractorStyleRubberBandPick - use 'r' and left-mouse to draw a</span>
 <span class=w>  </span><span class=c1>// selection box used to pick.</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkInteractorStyleRubberBandPick</span><span class=o>&gt;</span><span class=w> </span><span class=n>style</span><span class=p>;</span>
 </span>
-<span class=w>  </span><span class=c1>// For vtkInteractorStyleTrackballCamera - use &#39;p&#39; to pick at the current</span>
+<span class=w>  </span><span class=c1>// For vtkInteractorStyleTrackballCamera - use 'p' to pick at the current</span>
 <span class=w>  </span><span class=c1>// mouse position.</span>
 <span class=w>  </span><span class=c1>//  vtkNew&lt;vtkInteractorStyleTrackballCamera&gt; style;</span>
 <span class=w>  </span><span class=c1>//    paraview</span>
@@ -192,7 +192,7 @@ function registerListener(event, func) {
 <span class=w>                          </span><span class=kt>void</span><span class=o>*</span><span class=w> </span><span class=n>vtkNotUsed</span><span class=p>(</span><span class=n>clientData</span><span class=p>),</span>
 <span class=w>                          </span><span class=kt>void</span><span class=o>*</span><span class=w> </span><span class=n>vtkNotUsed</span><span class=p>(</span><span class=n>callData</span><span class=p>))</span>
 <span class=p>{</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Pick.&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Pick."</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=hll><span class=w>  </span><span class=n>vtkAreaPicker</span><span class=o>*</span><span class=w> </span><span class=n>areaPicker</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>static_cast</span><span class=o>&lt;</span><span class=n>vtkAreaPicker</span><span class=o>*&gt;</span><span class=p>(</span><span class=n>caller</span><span class=p>);</span>
 </span><span class=hll><span class=w>  </span><span class=n>vtkProp3DCollection</span><span class=o>*</span><span class=w> </span><span class=n>props</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>areaPicker</span><span class=o>-&gt;</span><span class=n>GetProp3Ds</span><span class=p>();</span>
 </span><span class=w>  </span><span class=n>props</span><span class=o>-&gt;</span><span class=n>InitTraversal</span><span class=p>();</span>
@@ -200,7 +200,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=n>vtkIdType</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>props</span><span class=o>-&gt;</span><span class=n>GetNumberOfItems</span><span class=p>();</span><span class=w> </span><span class=n>i</span><span class=o>++</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=hll><span class=w>    </span><span class=n>vtkProp3D</span><span class=w> </span><span class=k>const</span><span class=o>*</span><span class=w> </span><span class=n>prop</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>props</span><span class=o>-&gt;</span><span class=n>GetNextProp3D</span><span class=p>();</span>
-</span><span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Picked prop: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>prop</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+</span><span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Picked prop: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>prop</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=p>}</span>
 <span class=p>}</span><span class=w> </span><span class=c1>// namespace</span>
@@ -221,11 +221,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;AreaPicking: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"AreaPicking: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>AreaPicking</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>AreaPicking.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>AreaPicking</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

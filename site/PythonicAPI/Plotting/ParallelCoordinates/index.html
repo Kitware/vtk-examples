@@ -75,22 +75,22 @@ function registerListener(event, func) {
 </span>
     <span class=c1># Set up a 2D scene, add an XY chart to it.</span>
 <span class=hll>    <span class=n>view</span> <span class=o>=</span> <span class=n>vtkContextView</span><span class=p>()</span>
-</span>    <span class=n>view</span><span class=o>.</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>.</span><span class=n>background</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Gainsboro&#39;</span><span class=p>)</span>
+</span>    <span class=n>view</span><span class=o>.</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>.</span><span class=n>background</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Gainsboro'</span><span class=p>)</span>
     <span class=n>view</span><span class=o>.</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>.</span><span class=n>size</span> <span class=o>=</span> <span class=p>(</span><span class=mi>800</span><span class=p>,</span> <span class=mi>600</span><span class=p>)</span>
-    <span class=n>view</span><span class=o>.</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>.</span><span class=n>window_name</span> <span class=o>=</span> <span class=s1>&#39;ParallelCoordinates&#39;</span>
+    <span class=n>view</span><span class=o>.</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>.</span><span class=n>window_name</span> <span class=o>=</span> <span class=s1>'ParallelCoordinates'</span>
 
 <span class=hll>    <span class=n>chart</span> <span class=o>=</span> <span class=n>vtkChartParallelCoordinates</span><span class=p>()</span>
 </span>    <span class=n>view</span><span class=o>.</span><span class=n>scene</span><span class=o>.</span><span class=n>AddItem</span><span class=p>(</span><span class=n>chart</span><span class=p>)</span>
 
     <span class=c1># Create a table with some points in it...</span>
 <span class=hll>    <span class=n>table</span> <span class=o>=</span> <span class=n>vtkTable</span><span class=p>()</span>
-</span><span class=hll>    <span class=n>arr_x</span> <span class=o>=</span> <span class=n>vtkFloatArray</span><span class=p>(</span><span class=n>name</span><span class=o>=</span><span class=s1>&#39;Field 1&#39;</span><span class=p>)</span>
+</span><span class=hll>    <span class=n>arr_x</span> <span class=o>=</span> <span class=n>vtkFloatArray</span><span class=p>(</span><span class=n>name</span><span class=o>=</span><span class=s1>'Field 1'</span><span class=p>)</span>
 </span>    <span class=n>table</span><span class=o>.</span><span class=n>AddColumn</span><span class=p>(</span><span class=n>arr_x</span><span class=p>)</span>
-<span class=hll>    <span class=n>arr_c</span> <span class=o>=</span> <span class=n>vtkFloatArray</span><span class=p>(</span><span class=n>name</span><span class=o>=</span><span class=s1>&#39;Field 2&#39;</span><span class=p>)</span>
+<span class=hll>    <span class=n>arr_c</span> <span class=o>=</span> <span class=n>vtkFloatArray</span><span class=p>(</span><span class=n>name</span><span class=o>=</span><span class=s1>'Field 2'</span><span class=p>)</span>
 </span>    <span class=n>table</span><span class=o>.</span><span class=n>AddColumn</span><span class=p>(</span><span class=n>arr_c</span><span class=p>)</span>
-<span class=hll>    <span class=n>arr_s</span> <span class=o>=</span> <span class=n>vtkFloatArray</span><span class=p>(</span><span class=n>name</span><span class=o>=</span><span class=s1>&#39;Field 3&#39;</span><span class=p>)</span>
+<span class=hll>    <span class=n>arr_s</span> <span class=o>=</span> <span class=n>vtkFloatArray</span><span class=p>(</span><span class=n>name</span><span class=o>=</span><span class=s1>'Field 3'</span><span class=p>)</span>
 </span>    <span class=n>table</span><span class=o>.</span><span class=n>AddColumn</span><span class=p>(</span><span class=n>arr_s</span><span class=p>)</span>
-<span class=hll>    <span class=n>arr_s2</span> <span class=o>=</span> <span class=n>vtkFloatArray</span><span class=p>(</span><span class=n>name</span><span class=o>=</span><span class=s1>&#39;Field 4&#39;</span><span class=p>)</span>
+<span class=hll>    <span class=n>arr_s2</span> <span class=o>=</span> <span class=n>vtkFloatArray</span><span class=p>(</span><span class=n>name</span><span class=o>=</span><span class=s1>'Field 4'</span><span class=p>)</span>
 </span>    <span class=n>table</span><span class=o>.</span><span class=n>AddColumn</span><span class=p>(</span><span class=n>arr_s2</span><span class=p>)</span>
 
     <span class=c1># Test charting with a few more points...</span>
@@ -106,7 +106,7 @@ function registerListener(event, func) {
 
     <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>4</span><span class=p>):</span>
         <span class=n>chart</span><span class=o>.</span><span class=n>GetAxis</span><span class=p>(</span><span class=n>i</span><span class=p>)</span><span class=o>.</span><span class=n>title_properties</span><span class=o>.</span><span class=n>font_size</span> <span class=o>=</span> <span class=mi>12</span>
-        <span class=n>chart</span><span class=o>.</span><span class=n>GetAxis</span><span class=p>(</span><span class=n>i</span><span class=p>)</span><span class=o>.</span><span class=n>title_properties</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Black&#39;</span><span class=p>)</span>
+        <span class=n>chart</span><span class=o>.</span><span class=n>GetAxis</span><span class=p>(</span><span class=n>i</span><span class=p>)</span><span class=o>.</span><span class=n>title_properties</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Black'</span><span class=p>)</span>
 
     <span class=n>view</span><span class=o>.</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>.</span><span class=n>multi_samples</span> <span class=o>=</span> <span class=mi>0</span>
 
@@ -115,6 +115,6 @@ function registerListener(event, func) {
     <span class=n>view</span><span class=o>.</span><span class=n>GetInteractor</span><span class=p>()</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

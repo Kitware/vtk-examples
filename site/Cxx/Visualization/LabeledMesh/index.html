@@ -141,7 +141,7 @@ function registerListener(event, func) {
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor2D</span><span class=o>&gt;</span><span class=w> </span><span class=n>rectActor</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>rectActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>rectMapper</span><span class=p>);</span>
-<span class=w>  </span><span class=n>rectActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Black&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>rectActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Black"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=w>  </span><span class=c1>// Create a sphere and its associated mapper and actor.</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkSphereSource</span><span class=o>&gt;</span><span class=w> </span><span class=n>sphere</span><span class=p>;</span>
@@ -151,7 +151,7 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>sphereActor</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>sphereActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>sphereMapper</span><span class=p>);</span>
 <span class=w>  </span><span class=n>sphereActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
-<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;BurlyWood&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"BurlyWood"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=w>  </span><span class=c1>// Generate data arrays containing point and cell ids</span>
 <span class=cp>#ifdef USE_USE_GENERATE_IDS</span>
@@ -183,12 +183,12 @@ function registerListener(event, func) {
 <span class=cp>#ifdef USE_USE_GENERATE_IDS</span>
 <span class=w>  </span><span class=c1>// Note: We need to change the field_data_name because the point ID array</span>
 <span class=w>  </span><span class=c1>//       default name has changed in vtkGenerateIds.</span>
-<span class=w>  </span><span class=n>ldm</span><span class=o>-&gt;</span><span class=n>SetFieldDataName</span><span class=p>(</span><span class=s>&quot;vtkPointIds&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>ldm</span><span class=o>-&gt;</span><span class=n>SetFieldDataName</span><span class=p>(</span><span class=s>"vtkPointIds"</span><span class=p>);</span>
 <span class=cp>#endif</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor2D</span><span class=o>&gt;</span><span class=w> </span><span class=n>pointLabels</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>pointLabels</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>ldm</span><span class=p>);</span>
-<span class=w>  </span><span class=n>pointLabels</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Yellow&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>pointLabels</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Yellow"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=w>  </span><span class=c1>// Create labels for cells</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkCellCenters</span><span class=o>&gt;</span><span class=w> </span><span class=n>cc</span><span class=p>;</span>
@@ -206,7 +206,7 @@ function registerListener(event, func) {
 </span><span class=w>  </span><span class=n>cellMapper</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>visCells</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 <span class=w>  </span><span class=n>cellMapper</span><span class=o>-&gt;</span><span class=n>SetLabelModeToLabelFieldData</span><span class=p>();</span>
 <span class=w>  </span><span class=n>cellMapper</span><span class=o>-&gt;</span><span class=n>GetLabelTextProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
-<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;DarkGreen&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"DarkGreen"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor2D</span><span class=o>&gt;</span><span class=w> </span><span class=n>cellLabels</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>cellLabels</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>cellMapper</span><span class=p>);</span>
@@ -223,10 +223,10 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>ren1</span><span class=o>-&gt;</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>rectActor</span><span class=p>);</span>
 <span class=w>  </span><span class=n>ren1</span><span class=o>-&gt;</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>pointLabels</span><span class=p>);</span>
 <span class=w>  </span><span class=n>ren1</span><span class=o>-&gt;</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>cellLabels</span><span class=p>);</span>
-<span class=w>  </span><span class=n>ren1</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;SlateGray&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>ren1</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"SlateGray"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>500</span><span class=p>,</span><span class=w> </span><span class=mi>500</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;LabeledMesh&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"LabeledMesh"</span><span class=p>);</span>
 
 <span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
 
@@ -298,11 +298,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;LabeledMesh: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"LabeledMesh: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>LabeledMesh</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>LabeledMesh.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>LabeledMesh</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

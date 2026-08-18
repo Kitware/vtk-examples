@@ -78,7 +78,7 @@ function registerListener(event, func) {
 </span>
 <span class=p>}</span><span class=w> </span><span class=c1>// namespace</span>
 
-<span class=kt>int</span><span class=w> </span><span class=n>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>argv</span><span class=p>[])</span>
+<span class=kt>int</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>argv</span><span class=p>[])</span>
 <span class=p>{</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span><span class=w> </span><span class=n>polydata</span><span class=p>;</span>
 </span>
@@ -88,25 +88,25 @@ function registerListener(event, func) {
 
 <span class=w>    </span><span class=c1>// Read File</span>
 <span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>filename</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>];</span><span class=w> </span><span class=c1>// first command line argument</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Reading file &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>filename</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;...&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Reading file "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>filename</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"..."</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkXMLPolyDataReader</span><span class=o>&gt;</span><span class=w> </span><span class=n>reader</span><span class=p>;</span>
-</span><span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Reading &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>filename</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+</span><span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Reading "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>filename</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>filename</span><span class=p>.</span><span class=n>c_str</span><span class=p>());</span>
 <span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 <span class=w>    </span><span class=n>polydata</span><span class=o>-&gt;</span><span class=n>DeepCopy</span><span class=p>(</span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>());</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=w>  </span><span class=k>else</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Creating a sphere...&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Creating a sphere..."</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkSphereSource</span><span class=o>&gt;</span><span class=w> </span><span class=n>sphereSource</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>sphereSource</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;In main: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>sphereSource</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetNumberOfPoints</span><span class=p>()</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"In main: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>sphereSource</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetNumberOfPoints</span><span class=p>()</span>
 <span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=n>polydata</span><span class=o>-&gt;</span><span class=n>DeepCopy</span><span class=p>(</span><span class=n>sphereSource</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>());</span>
 <span class=w>  </span><span class=p>}</span>
 
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;PolyData address: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>polydata</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"PolyData address: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>polydata</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 
 <span class=w>  </span><span class=n>TestPointNormals</span><span class=p>(</span><span class=n>polydata</span><span class=p>);</span>
 
@@ -119,14 +119,14 @@ function registerListener(event, func) {
 
 <span class=hll><span class=kt>void</span><span class=w> </span><span class=nf>TestPointNormals</span><span class=p>(</span><span class=n>vtkPolyData</span><span class=o>*</span><span class=w> </span><span class=n>polydata</span><span class=p>)</span>
 </span><span class=p>{</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;In TestPointNormals: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>polydata</span><span class=o>-&gt;</span><span class=n>GetNumberOfPoints</span><span class=p>()</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"In TestPointNormals: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>polydata</span><span class=o>-&gt;</span><span class=n>GetNumberOfPoints</span><span class=p>()</span>
 <span class=w>            </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>  </span><span class=c1>// Try to read normals directly</span>
 <span class=w>  </span><span class=kt>bool</span><span class=w> </span><span class=n>hasPointNormals</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>GetPointNormals</span><span class=p>(</span><span class=n>polydata</span><span class=p>);</span>
 
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>hasPointNormals</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;No point normals were found. Computing normals...&quot;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"No point normals were found. Computing normals..."</span>
 <span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 
 <span class=w>    </span><span class=c1>// Generate normals</span>
@@ -152,12 +152,12 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=c1>// Try to read normals again</span>
 <span class=w>    </span><span class=n>hasPointNormals</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>GetPointNormals</span><span class=p>(</span><span class=n>polydata</span><span class=p>);</span>
 
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;On the second try, has point normals? &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>hasPointNormals</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"On the second try, has point normals? "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>hasPointNormals</span>
 <span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=w>  </span><span class=k>else</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Point normals were found!&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Point normals were found!"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=p>}</span>
 
@@ -168,7 +168,7 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>hasCellNormals</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;No cell normals were found. Computing normals...&quot;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"No cell normals were found. Computing normals..."</span>
 <span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 
 <span class=w>    </span><span class=c1>// Generate normals</span>
@@ -194,38 +194,38 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=c1>// Try to read normals again</span>
 <span class=w>    </span><span class=n>hasCellNormals</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>GetCellNormals</span><span class=p>(</span><span class=n>polydata</span><span class=p>);</span>
 
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;On the second try, has cell normals? &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>hasCellNormals</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"On the second try, has cell normals? "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>hasCellNormals</span>
 <span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=w>  </span><span class=k>else</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Cell normals were found!&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Cell normals were found!"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=p>}</span>
 
 <span class=hll><span class=kt>bool</span><span class=w> </span><span class=nf>GetPointNormals</span><span class=p>(</span><span class=n>vtkPolyData</span><span class=o>*</span><span class=w> </span><span class=n>polydata</span><span class=p>)</span>
 </span><span class=p>{</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;In GetPointNormals: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>polydata</span><span class=o>-&gt;</span><span class=n>GetNumberOfPoints</span><span class=p>()</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"In GetPointNormals: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>polydata</span><span class=o>-&gt;</span><span class=n>GetNumberOfPoints</span><span class=p>()</span>
 <span class=w>            </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Looking for point normals...&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Looking for point normals..."</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 
 <span class=w>  </span><span class=c1>// Count points</span>
 <span class=w>  </span><span class=n>vtkIdType</span><span class=w> </span><span class=n>numPoints</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>polydata</span><span class=o>-&gt;</span><span class=n>GetNumberOfPoints</span><span class=p>();</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;There are &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>numPoints</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; points.&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"There are "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>numPoints</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" points."</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 
 <span class=w>  </span><span class=c1>// Count triangles</span>
 <span class=w>  </span><span class=n>vtkIdType</span><span class=w> </span><span class=n>numPolys</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>polydata</span><span class=o>-&gt;</span><span class=n>GetNumberOfPolys</span><span class=p>();</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;There are &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>numPolys</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; polys.&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"There are "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>numPolys</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" polys."</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 
 <span class=w>  </span><span class=c1>////////////////////////////////////////////////////////////////</span>
 <span class=w>  </span><span class=c1>// Double normals in an array</span>
 <span class=hll><span class=w>  </span><span class=n>vtkDoubleArray</span><span class=o>*</span><span class=w> </span><span class=n>normalDataDouble</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>dynamic_cast</span><span class=o>&lt;</span><span class=n>vtkDoubleArray</span><span class=o>*&gt;</span><span class=p>(</span>
-</span><span class=w>      </span><span class=n>polydata</span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetArray</span><span class=p>(</span><span class=s>&quot;Normals&quot;</span><span class=p>));</span>
+</span><span class=w>      </span><span class=n>polydata</span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetArray</span><span class=p>(</span><span class=s>"Normals"</span><span class=p>));</span>
 
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>normalDataDouble</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=kt>int</span><span class=w> </span><span class=n>nc</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>normalDataDouble</span><span class=o>-&gt;</span><span class=n>GetNumberOfTuples</span><span class=p>();</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;There are &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>nc</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; components in normalDataDouble&quot;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"There are "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>nc</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" components in normalDataDouble"</span>
 <span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=nb>true</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
@@ -233,12 +233,12 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=c1>////////////////////////////////////////////////////////////////</span>
 <span class=w>  </span><span class=c1>// Double normals in an array</span>
 <span class=hll><span class=w>  </span><span class=n>vtkFloatArray</span><span class=o>*</span><span class=w> </span><span class=n>normalDataFloat</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>dynamic_cast</span><span class=o>&lt;</span><span class=n>vtkFloatArray</span><span class=o>*&gt;</span><span class=p>(</span>
-</span><span class=w>      </span><span class=n>polydata</span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetArray</span><span class=p>(</span><span class=s>&quot;Normals&quot;</span><span class=p>));</span>
+</span><span class=w>      </span><span class=n>polydata</span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetArray</span><span class=p>(</span><span class=s>"Normals"</span><span class=p>));</span>
 
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>normalDataFloat</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=kt>int</span><span class=w> </span><span class=n>nc</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>normalDataFloat</span><span class=o>-&gt;</span><span class=n>GetNumberOfTuples</span><span class=p>();</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;There are &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>nc</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; components in normalDataFloat&quot;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"There are "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>nc</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" components in normalDataFloat"</span>
 <span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=nb>true</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
@@ -250,8 +250,8 @@ function registerListener(event, func) {
 </span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>normalsDouble</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;There are &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>normalsDouble</span><span class=o>-&gt;</span><span class=n>GetNumberOfComponents</span><span class=p>()</span>
-<span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; components in normalsDouble&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"There are "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>normalsDouble</span><span class=o>-&gt;</span><span class=n>GetNumberOfComponents</span><span class=p>()</span>
+<span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" components in normalsDouble"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=nb>true</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 
@@ -262,8 +262,8 @@ function registerListener(event, func) {
 </span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>normalsFloat</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;There are &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>normalsFloat</span><span class=o>-&gt;</span><span class=n>GetNumberOfComponents</span><span class=p>()</span>
-<span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; components in normalsFloat&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"There are "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>normalsFloat</span><span class=o>-&gt;</span><span class=n>GetNumberOfComponents</span><span class=p>()</span>
+<span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" components in normalsFloat"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=nb>true</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 
@@ -273,52 +273,52 @@ function registerListener(event, func) {
 </span><span class=w>      </span><span class=n>polydata</span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetNormals</span><span class=p>();</span><span class=w> </span><span class=c1>// works</span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>normalsGeneric</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;There are &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>normalsGeneric</span><span class=o>-&gt;</span><span class=n>GetNumberOfTuples</span><span class=p>()</span>
-<span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; normals in normalsGeneric&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"There are "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>normalsGeneric</span><span class=o>-&gt;</span><span class=n>GetNumberOfTuples</span><span class=p>()</span>
+<span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" normals in normalsGeneric"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 
 <span class=w>    </span><span class=kt>double</span><span class=w> </span><span class=n>testDouble</span><span class=p>[</span><span class=mi>3</span><span class=p>];</span>
 <span class=w>    </span><span class=n>normalsGeneric</span><span class=o>-&gt;</span><span class=n>GetTuple</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=n>testDouble</span><span class=p>);</span>
 
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Double: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>testDouble</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>testDouble</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; &quot;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Double: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>testDouble</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>testDouble</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" "</span>
 <span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>testDouble</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 
-<span class=w>    </span><span class=c1>// Can&#39;t do this:</span>
+<span class=w>    </span><span class=c1>// Can't do this:</span>
 <span class=w>    </span><span class=cm>/*</span>
 <span class=cm>    float testFloat[3];</span>
 <span class=cm>    normalsGeneric-&gt;GetTuple(0, testFloat);</span>
 
-<span class=cm>    std::cout &lt;&lt; &quot;Float: &quot; &lt;&lt; testFloat[0] &lt;&lt; &quot; &quot;</span>
-<span class=cm>              &lt;&lt; testFloat[1] &lt;&lt; &quot; &quot; &lt;&lt; testFloat[2] &lt;&lt; std::endl;</span>
+<span class=cm>    std::cout &lt;&lt; "Float: " &lt;&lt; testFloat[0] &lt;&lt; " "</span>
+<span class=cm>              &lt;&lt; testFloat[1] &lt;&lt; " " &lt;&lt; testFloat[2] &lt;&lt; std::endl;</span>
 <span class=cm>    */</span>
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=nb>true</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 
 <span class=w>  </span><span class=c1>// If the function has not yet quit, there were none of these types of normals</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Normals not found!&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Normals not found!"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>  </span><span class=k>return</span><span class=w> </span><span class=nb>false</span><span class=p>;</span>
 <span class=p>}</span>
 
 <span class=hll><span class=kt>bool</span><span class=w> </span><span class=nf>GetCellNormals</span><span class=p>(</span><span class=n>vtkPolyData</span><span class=o>*</span><span class=w> </span><span class=n>polydata</span><span class=p>)</span>
 </span><span class=p>{</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Looking for cell normals...&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Looking for cell normals..."</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 
 <span class=w>  </span><span class=c1>// Count points</span>
 <span class=w>  </span><span class=n>vtkIdType</span><span class=w> </span><span class=n>numCells</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>polydata</span><span class=o>-&gt;</span><span class=n>GetNumberOfCells</span><span class=p>();</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;There are &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>numCells</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; cells.&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"There are "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>numCells</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" cells."</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 
 <span class=w>  </span><span class=c1>// Count triangles</span>
 <span class=w>  </span><span class=n>vtkIdType</span><span class=w> </span><span class=n>numPolys</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>polydata</span><span class=o>-&gt;</span><span class=n>GetNumberOfPolys</span><span class=p>();</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;There are &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>numPolys</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; polys.&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"There are "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>numPolys</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" polys."</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 
 <span class=w>  </span><span class=c1>////////////////////////////////////////////////////////////////</span>
 <span class=w>  </span><span class=c1>// Double normals in an array</span>
 <span class=hll><span class=w>  </span><span class=n>vtkDoubleArray</span><span class=o>*</span><span class=w> </span><span class=n>normalDataDouble</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>dynamic_cast</span><span class=o>&lt;</span><span class=n>vtkDoubleArray</span><span class=o>*&gt;</span><span class=p>(</span>
-</span><span class=w>      </span><span class=n>polydata</span><span class=o>-&gt;</span><span class=n>GetCellData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetArray</span><span class=p>(</span><span class=s>&quot;Normals&quot;</span><span class=p>));</span>
+</span><span class=w>      </span><span class=n>polydata</span><span class=o>-&gt;</span><span class=n>GetCellData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetArray</span><span class=p>(</span><span class=s>"Normals"</span><span class=p>));</span>
 
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>normalDataDouble</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=kt>int</span><span class=w> </span><span class=n>nc</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>normalDataDouble</span><span class=o>-&gt;</span><span class=n>GetNumberOfTuples</span><span class=p>();</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;There are &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>nc</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; components in normalDataDouble&quot;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"There are "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>nc</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" components in normalDataDouble"</span>
 <span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=nb>true</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
@@ -326,12 +326,12 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=c1>////////////////////////////////////////////////////////////////</span>
 <span class=w>  </span><span class=c1>// Double normals in an array</span>
 <span class=hll><span class=w>  </span><span class=n>vtkFloatArray</span><span class=o>*</span><span class=w> </span><span class=n>normalDataFloat</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>dynamic_cast</span><span class=o>&lt;</span><span class=n>vtkFloatArray</span><span class=o>*&gt;</span><span class=p>(</span>
-</span><span class=w>      </span><span class=n>polydata</span><span class=o>-&gt;</span><span class=n>GetCellData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetArray</span><span class=p>(</span><span class=s>&quot;Normals&quot;</span><span class=p>));</span>
+</span><span class=w>      </span><span class=n>polydata</span><span class=o>-&gt;</span><span class=n>GetCellData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetArray</span><span class=p>(</span><span class=s>"Normals"</span><span class=p>));</span>
 
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>normalDataFloat</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=kt>int</span><span class=w> </span><span class=n>nc</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>normalDataFloat</span><span class=o>-&gt;</span><span class=n>GetNumberOfTuples</span><span class=p>();</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;There are &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>nc</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; components in normalDataFloat&quot;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"There are "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>nc</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" components in normalDataFloat"</span>
 <span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=nb>true</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
@@ -343,8 +343,8 @@ function registerListener(event, func) {
 </span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>normalsDouble</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;There are &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>normalsDouble</span><span class=o>-&gt;</span><span class=n>GetNumberOfComponents</span><span class=p>()</span>
-<span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; components in normalsDouble&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"There are "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>normalsDouble</span><span class=o>-&gt;</span><span class=n>GetNumberOfComponents</span><span class=p>()</span>
+<span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" components in normalsDouble"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=nb>true</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 
@@ -355,8 +355,8 @@ function registerListener(event, func) {
 </span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>normalsFloat</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;There are &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>normalsFloat</span><span class=o>-&gt;</span><span class=n>GetNumberOfComponents</span><span class=p>()</span>
-<span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; components in normalsFloat&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"There are "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>normalsFloat</span><span class=o>-&gt;</span><span class=n>GetNumberOfComponents</span><span class=p>()</span>
+<span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" components in normalsFloat"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=nb>true</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 
@@ -365,28 +365,28 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>vtkDataArray</span><span class=o>*</span><span class=w> </span><span class=n>normalsGeneric</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>polydata</span><span class=o>-&gt;</span><span class=n>GetCellData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetNormals</span><span class=p>();</span><span class=w> </span><span class=c1>// works</span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>normalsGeneric</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;There are &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>normalsGeneric</span><span class=o>-&gt;</span><span class=n>GetNumberOfTuples</span><span class=p>()</span>
-<span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; normals in normalsGeneric&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"There are "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>normalsGeneric</span><span class=o>-&gt;</span><span class=n>GetNumberOfTuples</span><span class=p>()</span>
+<span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" normals in normalsGeneric"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 
 <span class=w>    </span><span class=kt>double</span><span class=w> </span><span class=n>testDouble</span><span class=p>[</span><span class=mi>3</span><span class=p>];</span>
 <span class=w>    </span><span class=n>normalsGeneric</span><span class=o>-&gt;</span><span class=n>GetTuple</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=n>testDouble</span><span class=p>);</span>
 
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Double: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>testDouble</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>testDouble</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; &quot;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Double: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>testDouble</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>testDouble</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" "</span>
 <span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>testDouble</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 
-<span class=w>    </span><span class=c1>// Can&#39;t do this:</span>
+<span class=w>    </span><span class=c1>// Can't do this:</span>
 <span class=w>    </span><span class=cm>/*</span>
 <span class=cm>    float testFloat[3];</span>
 <span class=cm>    normalsGeneric-&gt;GetTuple(0, testFloat);</span>
 
-<span class=cm>    std::cout &lt;&lt; &quot;Float: &quot; &lt;&lt; testFloat[0] &lt;&lt; &quot; &quot;</span>
-<span class=cm>              &lt;&lt; testFloat[1] &lt;&lt; &quot; &quot; &lt;&lt; testFloat[2] &lt;&lt; std::endl;</span>
+<span class=cm>    std::cout &lt;&lt; "Float: " &lt;&lt; testFloat[0] &lt;&lt; " "</span>
+<span class=cm>              &lt;&lt; testFloat[1] &lt;&lt; " " &lt;&lt; testFloat[2] &lt;&lt; std::endl;</span>
 <span class=cm>    */</span>
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=nb>true</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 
 <span class=w>  </span><span class=c1>// If the function has not yet quit, there were none of these types of normals</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Normals not found!&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Normals not found!"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>  </span><span class=k>return</span><span class=w> </span><span class=nb>false</span><span class=p>;</span>
 <span class=p>}</span>
 
@@ -404,11 +404,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;PolyDataExtractNormals: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"PolyDataExtractNormals: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>PolyDataExtractNormals</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>PolyDataExtractNormals.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>PolyDataExtractNormals</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

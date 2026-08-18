@@ -80,7 +80,7 @@ function registerListener(event, func) {
 <span class=w>      </span><span class=p>{</span>
 <span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>lib</span><span class=p>.</span><span class=na>IsLoaded</span><span class=p>())</span><span class=w> </span>
 <span class=w>        </span><span class=p>{</span>
-<span class=w>          </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&quot; not loaded&quot;</span><span class=p>);</span>
+<span class=w>          </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>" not loaded"</span><span class=p>);</span>
 <span class=w>        </span><span class=p>}</span>
 <span class=w>      </span><span class=p>}</span>
 <span class=w>    </span><span class=p>}</span>
@@ -95,7 +95,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=c1>//parse command line arguments</span>
 <span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>args</span><span class=p>.</span><span class=na>length</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=mi>1</span><span class=p>)</span><span class=w> </span>
 <span class=w>    </span><span class=p>{</span>
-<span class=w>      </span><span class=n>System</span><span class=p>.</span><span class=na>err</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&quot;Usage: java -classpath ... Filename(.mhd) e.g FullHead.mhd&quot;</span><span class=p>);</span>
+<span class=w>      </span><span class=n>System</span><span class=p>.</span><span class=na>err</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>"Usage: java -classpath ... Filename(.mhd) e.g FullHead.mhd"</span><span class=p>);</span>
 <span class=w>      </span><span class=k>return</span><span class=p>;</span>
 <span class=w>    </span><span class=p>}</span>
 <span class=w>    </span><span class=n>String</span><span class=w> </span><span class=n>inputFilename</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>args</span><span class=o>[</span><span class=mi>0</span><span class=o>]</span><span class=p>;</span>
@@ -104,7 +104,7 @@ function registerListener(event, func) {
 </span>
 <span class=w>    </span><span class=kt>double</span><span class=w> </span><span class=n>Bgcolor</span><span class=o>[]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=kt>double</span><span class=o>[</span><span class=mi>4</span><span class=o>]</span><span class=p>;</span>
 
-<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>&quot;SteelBlue&quot;</span><span class=p>,</span><span class=w> </span><span class=n>Bgcolor</span><span class=p>);</span>
+<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>"SteelBlue"</span><span class=p>,</span><span class=w> </span><span class=n>Bgcolor</span><span class=p>);</span>
 
 <span class=w>    </span><span class=c1>// Create the renderer, render window and interactor.</span>
 <span class=hll><span class=w>    </span><span class=n>vtkRenderer</span><span class=w> </span><span class=n>ren</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkRenderer</span><span class=p>();</span>
@@ -147,7 +147,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=n>volumeScalarOpacity</span><span class=p>.</span><span class=na>AddPoint</span><span class=p>(</span><span class=mi>1150</span><span class=p>,</span><span class=w> </span><span class=mf>0.85</span><span class=p>);</span>
 
 <span class=w>    </span><span class=c1>// The gradient opacity function is used to decrease the opacity</span>
-<span class=w>    </span><span class=c1>// in the &quot;flat&quot; regions of the volume while maintaining the opacity</span>
+<span class=w>    </span><span class=c1>// in the "flat" regions of the volume while maintaining the opacity</span>
 <span class=w>    </span><span class=c1>// at the boundaries between tissue types.  The gradient is measured</span>
 <span class=w>    </span><span class=c1>// as the amount by which the intensity changes over unit distance.</span>
 <span class=w>    </span><span class=c1>// For most medical data, the unit distance is 1mm.</span>
@@ -160,7 +160,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=c1>// volume, and sets other volume properties.  The interpolation should</span>
 <span class=w>    </span><span class=c1>// be set to linear to do a high-quality rendering.  The ShadeOn option</span>
 <span class=w>    </span><span class=c1>// turns on directional lighting, which will usually enhance the</span>
-<span class=w>    </span><span class=c1>// appearance of the volume and make it look more &quot;3D&quot;.  However,</span>
+<span class=w>    </span><span class=c1>// appearance of the volume and make it look more "3D".  However,</span>
 <span class=w>    </span><span class=c1>// the quality of the shading depends on how accurately the gradient</span>
 <span class=w>    </span><span class=c1>// of the volume can be calculated, and for noisy data the gradient</span>
 <span class=w>    </span><span class=c1>// estimation will be very poor.  The impact of the shading can be</span>
@@ -189,7 +189,7 @@ function registerListener(event, func) {
 
 <span class=w>    </span><span class=c1>// Set up an initial view of the volume.  The focal point will be the</span>
 <span class=w>    </span><span class=c1>// center of the volume, and the camera position will be 400mm to the</span>
-<span class=w>    </span><span class=c1>// patient&#39;s left (which is our right).</span>
+<span class=w>    </span><span class=c1>// patient's left (which is our right).</span>
 
 <span class=hll><span class=w>    </span><span class=n>vtkCamera</span><span class=w> </span><span class=n>camera</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkCamera</span><span class=p>();</span>
 </span><span class=w>    </span><span class=n>camera</span><span class=p>.</span><span class=na>SetViewUp</span><span class=w> </span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=o>-</span><span class=mi>1</span><span class=p>);</span>

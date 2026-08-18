@@ -96,7 +96,7 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>input_box_plot_table</span> <span class=o>=</span> <span class=n>vtkTable</span><span class=p>()</span>
 </span>
     <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>num_param</span><span class=p>):</span>
-        <span class=n>run</span> <span class=o>=</span> <span class=sa>f</span><span class=s1>&#39;Run </span><span class=si>{</span><span class=n>i</span><span class=si>:</span><span class=s1>d</span><span class=si>}</span><span class=s1>&#39;</span>
+        <span class=n>run</span> <span class=o>=</span> <span class=sa>f</span><span class=s1>'Run </span><span class=si>{</span><span class=n>i</span><span class=si>:</span><span class=s1>d</span><span class=si>}</span><span class=s1>'</span>
 <span class=hll>        <span class=n>arr_index</span> <span class=o>=</span> <span class=n>vtkIntArray</span><span class=p>(</span><span class=n>name</span><span class=o>=</span><span class=n>run</span><span class=p>)</span>
 </span>        <span class=n>input_box_plot_table</span><span class=o>.</span><span class=n>AddColumn</span><span class=p>(</span><span class=n>arr_index</span><span class=p>)</span>
 
@@ -129,26 +129,26 @@ function registerListener(event, func) {
     <span class=n>chart</span><span class=o>.</span><span class=n>GetPlot</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>out_table</span><span class=p>)</span>
     <span class=n>chart</span><span class=o>.</span><span class=n>show_legend</span> <span class=o>=</span> <span class=kc>True</span>
     <span class=n>chart</span><span class=o>.</span><span class=n>column_visibility_all</span> <span class=o>=</span> <span class=kc>True</span>
-    <span class=n>chart</span><span class=o>.</span><span class=n>title</span> <span class=o>=</span> <span class=s1>&#39;Michelson-Morley experiment&#39;</span>
+    <span class=n>chart</span><span class=o>.</span><span class=n>title</span> <span class=o>=</span> <span class=s1>'Michelson-Morley experiment'</span>
     <span class=n>chart</span><span class=o>.</span><span class=n>GetTitleProperties</span><span class=p>()</span><span class=o>.</span><span class=n>SetFontSize</span><span class=p>(</span><span class=mi>16</span><span class=p>)</span>
-    <span class=n>chart</span><span class=o>.</span><span class=n>GetYAxis</span><span class=p>()</span><span class=o>.</span><span class=n>title</span> <span class=o>=</span> <span class=s1>&#39;Speed of Light (km/s - 299000)&#39;</span>
+    <span class=n>chart</span><span class=o>.</span><span class=n>GetYAxis</span><span class=p>()</span><span class=o>.</span><span class=n>title</span> <span class=o>=</span> <span class=s1>'Speed of Light (km/s - 299000)'</span>
 
     <span class=c1># Set the labels.</span>
 <span class=hll>    <span class=n>labels</span> <span class=o>=</span> <span class=n>vtkStringArray</span><span class=p>()</span>
 </span>    <span class=n>labels</span><span class=o>.</span><span class=n>SetNumberOfValues</span><span class=p>(</span><span class=n>num_param</span><span class=p>)</span>
     <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>num_param</span><span class=p>):</span>
-        <span class=n>run</span> <span class=o>=</span> <span class=sa>f</span><span class=s1>&#39;Run </span><span class=si>{</span><span class=n>i</span><span class=si>:</span><span class=s1>d</span><span class=si>}</span><span class=s1>&#39;</span>
+        <span class=n>run</span> <span class=o>=</span> <span class=sa>f</span><span class=s1>'Run </span><span class=si>{</span><span class=n>i</span><span class=si>:</span><span class=s1>d</span><span class=si>}</span><span class=s1>'</span>
         <span class=n>labels</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=n>i</span><span class=p>,</span> <span class=n>run</span><span class=p>)</span>
     <span class=n>chart</span><span class=o>.</span><span class=n>GetPlot</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span><span class=o>.</span><span class=n>SetLabels</span><span class=p>(</span><span class=n>labels</span><span class=p>)</span>
 
     <span class=c1># Render the scene.</span>
     <span class=n>view</span><span class=o>.</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>.</span><span class=n>SetMultiSamples</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
-    <span class=n>view</span><span class=o>.</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>.</span><span class=n>background</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;LightGrey&#39;</span><span class=p>)</span>
+    <span class=n>view</span><span class=o>.</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>.</span><span class=n>background</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'LightGrey'</span><span class=p>)</span>
     <span class=n>view</span><span class=o>.</span><span class=n>GetInteractor</span><span class=p>()</span><span class=o>.</span><span class=n>Initialize</span><span class=p>()</span>
     <span class=n>view</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
     <span class=n>view</span><span class=o>.</span><span class=n>GetInteractor</span><span class=p>()</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

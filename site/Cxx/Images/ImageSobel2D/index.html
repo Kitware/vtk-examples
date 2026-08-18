@@ -78,9 +78,9 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span><span class=w> </span><span class=n>colors</span><span class=p>;</span>
 </span>
 <span class=hll><span class=w>  </span><span class=n>vtkColor3ub</span><span class=w> </span><span class=n>color1</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor</span><span class=p>(</span><span class=s>&quot;Black&quot;</span><span class=p>,</span><span class=w> </span><span class=n>color1</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor</span><span class=p>(</span><span class=s>"Black"</span><span class=p>,</span><span class=w> </span><span class=n>color1</span><span class=p>);</span>
 <span class=hll><span class=w>  </span><span class=n>vtkColor3ub</span><span class=w> </span><span class=n>color2</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor</span><span class=p>(</span><span class=s>&quot;Red&quot;</span><span class=p>,</span><span class=w> </span><span class=n>color2</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor</span><span class=p>(</span><span class=s>"Red"</span><span class=p>,</span><span class=w> </span><span class=n>color2</span><span class=p>);</span>
 
 <span class=w>  </span><span class=c1>// Create an image of a rectangle</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageCanvasSource2D</span><span class=o>&gt;</span><span class=w> </span><span class=n>source</span><span class=p>;</span>
@@ -149,7 +149,7 @@ function registerListener(event, func) {
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkArrowSource</span><span class=o>&gt;</span><span class=w> </span><span class=n>arrowSource</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>sobelFilter</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetActiveVectors</span><span class=p>(</span>
-<span class=w>      </span><span class=s>&quot;ImageScalarsGradient&quot;</span><span class=p>);</span>
+<span class=w>      </span><span class=s>"ImageScalarsGradient"</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkGlyph3DMapper</span><span class=o>&gt;</span><span class=w> </span><span class=n>sobelMapper</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>sobelMapper</span><span class=o>-&gt;</span><span class=n>ScalingOn</span><span class=p>();</span>
@@ -173,25 +173,25 @@ function registerListener(event, func) {
 </span><span class=w>  </span><span class=n>originalRenderer</span><span class=o>-&gt;</span><span class=n>SetViewport</span><span class=p>(</span><span class=n>originalViewport</span><span class=p>);</span>
 <span class=w>  </span><span class=n>originalRenderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>originalActor</span><span class=p>);</span>
 <span class=w>  </span><span class=n>originalRenderer</span><span class=o>-&gt;</span><span class=n>ResetCamera</span><span class=p>();</span>
-<span class=w>  </span><span class=n>originalRenderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;DodgerBlue&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>originalRenderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"DodgerBlue"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span><span class=w> </span><span class=n>xRenderer</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>xRenderer</span><span class=o>-&gt;</span><span class=n>SetViewport</span><span class=p>(</span><span class=n>xViewport</span><span class=p>);</span>
 <span class=w>  </span><span class=n>xRenderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>xActor</span><span class=p>);</span>
 <span class=w>  </span><span class=n>xRenderer</span><span class=o>-&gt;</span><span class=n>ResetCamera</span><span class=p>();</span>
-<span class=w>  </span><span class=n>xRenderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;CornflowerBlue&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>xRenderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"CornflowerBlue"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span><span class=w> </span><span class=n>yRenderer</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>yRenderer</span><span class=o>-&gt;</span><span class=n>SetViewport</span><span class=p>(</span><span class=n>yViewport</span><span class=p>);</span>
 <span class=w>  </span><span class=n>yRenderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>yActor</span><span class=p>);</span>
 <span class=w>  </span><span class=n>yRenderer</span><span class=o>-&gt;</span><span class=n>ResetCamera</span><span class=p>();</span>
-<span class=w>  </span><span class=n>yRenderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;CornflowerBlue&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>yRenderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"CornflowerBlue"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span><span class=w> </span><span class=n>sobelRenderer</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>sobelRenderer</span><span class=o>-&gt;</span><span class=n>SetViewport</span><span class=p>(</span><span class=n>sobelViewport</span><span class=p>);</span>
 <span class=w>  </span><span class=n>sobelRenderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>sobelActor</span><span class=p>);</span>
 <span class=w>  </span><span class=n>sobelRenderer</span><span class=o>-&gt;</span><span class=n>ResetCamera</span><span class=p>();</span>
-<span class=w>  </span><span class=n>sobelRenderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;SteelBlue&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>sobelRenderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"SteelBlue"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderWindow</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>1000</span><span class=p>,</span><span class=w> </span><span class=mi>250</span><span class=p>);</span>
@@ -199,7 +199,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>xRenderer</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>yRenderer</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>sobelRenderer</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;ImageSobel2D&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"ImageSobel2D"</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderWindowInteractor</span><span class=p>;</span>
 </span><span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkInteractorStyleImage</span><span class=o>&gt;</span><span class=w> </span><span class=n>style</span><span class=p>;</span>
@@ -236,11 +236,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;ImageSobel2D: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"ImageSobel2D: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>ImageSobel2D</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>ImageSobel2D.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>ImageSobel2D</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

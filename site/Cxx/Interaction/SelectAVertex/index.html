@@ -147,10 +147,10 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>MoveActor</span><span class=o>-&gt;</span><span class=n>VisibilityOff</span><span class=p>();</span>
 <span class=w>    </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>MoveActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetPointSize</span><span class=p>(</span><span class=mi>10</span><span class=p>);</span>
 <span class=w>    </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>MoveActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
-<span class=w>        </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>color</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Pink&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>        </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>color</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Pink"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=p>}</span>
 
-<span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=n>OnMouseMove</span><span class=p>()</span><span class=w> </span><span class=k>override</span>
+<span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=nf>OnMouseMove</span><span class=p>()</span><span class=w> </span><span class=k>override</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Move</span><span class=p>)</span>
 <span class=w>    </span><span class=p>{</span>
@@ -160,7 +160,7 @@ function registerListener(event, func) {
 <span class=hll><span class=w>    </span><span class=n>vtkInteractorStyleTrackballActor</span><span class=o>::</span><span class=n>OnMouseMove</span><span class=p>();</span>
 </span><span class=w>  </span><span class=p>}</span>
 
-<span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=n>OnMiddleButtonUp</span><span class=p>()</span><span class=w> </span><span class=k>override</span>
+<span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=nf>OnMiddleButtonUp</span><span class=p>()</span><span class=w> </span><span class=k>override</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>EndPan</span><span class=p>();</span>
 
@@ -173,7 +173,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>GetCurrentRenderer</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
 <span class=w>    </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>GetCurrentRenderer</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=n>OnMiddleButtonDown</span><span class=p>()</span><span class=w> </span><span class=k>override</span>
+<span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=nf>OnMiddleButtonDown</span><span class=p>()</span><span class=w> </span><span class=k>override</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=c1>// Get the selected point.</span>
 <span class=w>    </span><span class=kt>int</span><span class=w> </span><span class=n>x</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Interactor</span><span class=o>-&gt;</span><span class=n>GetEventPosition</span><span class=p>()[</span><span class=mi>0</span><span class=p>];</span>
@@ -194,11 +194,11 @@ function registerListener(event, func) {
 <span class=w>      </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Move</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nb>true</span><span class=p>;</span>
 <span class=w>      </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>SelectedPoint</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>PointPicker</span><span class=o>-&gt;</span><span class=n>GetPointId</span><span class=p>();</span>
 
-<span class=w>      </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Dragging point &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>SelectedPoint</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>      </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Dragging point "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>SelectedPoint</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 
 <span class=w>      </span><span class=kt>double</span><span class=w> </span><span class=n>p</span><span class=p>[</span><span class=mi>3</span><span class=p>];</span>
 <span class=w>      </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Data</span><span class=o>-&gt;</span><span class=n>GetPoint</span><span class=p>(</span><span class=k>this</span><span class=o>-&gt;</span><span class=n>SelectedPoint</span><span class=p>,</span><span class=w> </span><span class=n>p</span><span class=p>);</span>
-<span class=w>      </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;p: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>p</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>p</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>p</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>      </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"p: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>p</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>p</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>p</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>      </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>MoveActor</span><span class=o>-&gt;</span><span class=n>SetPosition</span><span class=p>(</span><span class=n>p</span><span class=p>);</span>
 
 <span class=w>      </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>GetCurrentRenderer</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=k>this</span><span class=o>-&gt;</span><span class=n>MoveActor</span><span class=p>);</span>
@@ -246,19 +246,19 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>actor</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>actor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>);</span>
 <span class=w>  </span><span class=n>actor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetPointSize</span><span class=p>(</span><span class=mi>10</span><span class=p>);</span>
-<span class=w>  </span><span class=n>actor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Tomato&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>actor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Tomato"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=w>  </span><span class=c1>// Visualize</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderer</span><span class=p>;</span>
 </span><span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderWindow</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;SelectAVertex&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"SelectAVertex"</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderWindowInteractor</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>renderWindowInteractor</span><span class=o>-&gt;</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renderWindow</span><span class=p>);</span>
 
 <span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Gray&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Gray"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
 
@@ -290,11 +290,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;SelectAVertex: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"SelectAVertex: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>SelectAVertex</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>SelectAVertex.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>SelectAVertex</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

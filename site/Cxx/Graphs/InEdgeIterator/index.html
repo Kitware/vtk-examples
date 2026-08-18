@@ -70,7 +70,7 @@ function registerListener(event, func) {
 
 <span class=p>}</span><span class=w> </span><span class=c1>// namespace</span>
 
-<span class=kt>int</span><span class=w> </span><span class=n>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=p>[])</span>
+<span class=kt>int</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=p>[])</span>
 <span class=p>{</span>
 <span class=w>  </span><span class=n>Undirected</span><span class=p>();</span>
 <span class=w>  </span><span class=n>Directed</span><span class=p>();</span>
@@ -99,7 +99,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=k>while</span><span class=w> </span><span class=p>(</span><span class=n>it</span><span class=o>-&gt;</span><span class=n>HasNext</span><span class=p>())</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=n>vtkInEdgeType</span><span class=w> </span><span class=n>edge</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>it</span><span class=o>-&gt;</span><span class=n>Next</span><span class=p>();</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Edge id: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>edge</span><span class=p>.</span><span class=n>Id</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; Source: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>edge</span><span class=p>.</span><span class=n>Source</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Edge id: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>edge</span><span class=p>.</span><span class=n>Id</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" Source: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>edge</span><span class=p>.</span><span class=n>Source</span>
 <span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=p>}</span>
@@ -117,30 +117,30 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>g</span><span class=o>-&gt;</span><span class=n>AddEdge</span><span class=p>(</span><span class=n>v0</span><span class=p>,</span><span class=w> </span><span class=n>v2</span><span class=p>);</span>
 
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Finding edges connected to vertex 0&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Finding edges connected to vertex 0"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkInEdgeIterator</span><span class=o>&gt;</span><span class=w> </span><span class=n>it</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>g</span><span class=o>-&gt;</span><span class=n>GetInEdges</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=n>it</span><span class=p>);</span>
 
 <span class=w>    </span><span class=k>while</span><span class=w> </span><span class=p>(</span><span class=n>it</span><span class=o>-&gt;</span><span class=n>HasNext</span><span class=p>())</span>
 <span class=w>    </span><span class=p>{</span>
 <span class=w>      </span><span class=n>vtkInEdgeType</span><span class=w> </span><span class=n>edge</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>it</span><span class=o>-&gt;</span><span class=n>Next</span><span class=p>();</span>
-<span class=w>      </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Edge id: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>edge</span><span class=p>.</span><span class=n>Id</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Source: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>edge</span><span class=p>.</span><span class=n>Source</span>
+<span class=w>      </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Edge id: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>edge</span><span class=p>.</span><span class=n>Id</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Source: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>edge</span><span class=p>.</span><span class=n>Source</span>
 <span class=w>                </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=p>}</span>
 
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Nothing should be output, vertex 0 has no incoming edges!&quot;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Nothing should be output, vertex 0 has no incoming edges!"</span>
 <span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Finding edges connected to vertex 1&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Finding edges connected to vertex 1"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkInEdgeIterator</span><span class=o>&gt;</span><span class=w> </span><span class=n>it</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>g</span><span class=o>-&gt;</span><span class=n>GetInEdges</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=n>it</span><span class=p>);</span>
 
 <span class=w>    </span><span class=k>while</span><span class=w> </span><span class=p>(</span><span class=n>it</span><span class=o>-&gt;</span><span class=n>HasNext</span><span class=p>())</span>
 <span class=w>    </span><span class=p>{</span>
 <span class=w>      </span><span class=n>vtkInEdgeType</span><span class=w> </span><span class=n>edge</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>it</span><span class=o>-&gt;</span><span class=n>Next</span><span class=p>();</span>
-<span class=w>      </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Edge id: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>edge</span><span class=p>.</span><span class=n>Id</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Source: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>edge</span><span class=p>.</span><span class=n>Source</span>
+<span class=w>      </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Edge id: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>edge</span><span class=p>.</span><span class=n>Id</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Source: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>edge</span><span class=p>.</span><span class=n>Source</span>
 <span class=w>                </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=p>}</span>
 <span class=w>  </span><span class=p>}</span>
@@ -157,11 +157,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;InEdgeIterator: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"InEdgeIterator: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>InEdgeIterator</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>InEdgeIterator.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>InEdgeIterator</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

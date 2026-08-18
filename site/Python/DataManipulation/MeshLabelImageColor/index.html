@@ -105,7 +105,7 @@ function registerListener(event, func) {
     <span class=n>voi</span><span class=o>.</span><span class=n>SetSampleRate</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
     <span class=n>voi</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>  <span class=c1># Necessary for GetScalarRange().</span>
     <span class=n>srange</span> <span class=o>=</span> <span class=n>voi</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetScalarRange</span><span class=p>()</span>  <span class=c1># Needs Update() before!</span>
-    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Range&#39;</span><span class=p>,</span> <span class=n>srange</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s1>'Range'</span><span class=p>,</span> <span class=n>srange</span><span class=p>)</span>
 
     <span class=c1># Prepare surface generation.</span>
     <span class=c1># For label images.</span>
@@ -119,7 +119,7 @@ function registerListener(event, func) {
 </span>    <span class=n>contour</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>voi</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=c1># contour.ComputeNormalsOn()</span>
 
-    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Doing label&#39;</span><span class=p>,</span> <span class=n>index</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s1>'Doing label'</span><span class=p>,</span> <span class=n>index</span><span class=p>)</span>
 
     <span class=n>contour</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>index</span><span class=p>)</span>
     <span class=n>contour</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>  <span class=c1># Needed for GetNumberOfPolys()!!!</span>
@@ -139,9 +139,9 @@ function registerListener(event, func) {
 
     <span class=c1># Find min and max of the smoother error.</span>
     <span class=n>se_range</span> <span class=o>=</span> <span class=n>smoother</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>.</span><span class=n>GetScalars</span><span class=p>()</span><span class=o>.</span><span class=n>GetRange</span><span class=p>()</span>
-    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Smoother error range:&#39;</span><span class=p>,</span> <span class=n>se_range</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s1>'Smoother error range:'</span><span class=p>,</span> <span class=n>se_range</span><span class=p>)</span>
     <span class=k>if</span> <span class=n>se_range</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>&gt;</span> <span class=mi>1</span><span class=p>:</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Big smoother error: min/max:&#39;</span><span class=p>,</span> <span class=n>se_range</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=n>se_range</span><span class=p>[</span><span class=mi>1</span><span class=p>])</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'Big smoother error: min/max:'</span><span class=p>,</span> <span class=n>se_range</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=n>se_range</span><span class=p>[</span><span class=mi>1</span><span class=p>])</span>
 
     <span class=n>lut</span> <span class=o>=</span> <span class=n>get_diverging_lut</span><span class=p>(</span><span class=mi>4</span><span class=p>)</span>
 
@@ -171,14 +171,14 @@ function registerListener(event, func) {
 
     <span class=c1># Create the renderer.</span>
 <span class=hll>    <span class=n>ren</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>()</span>
-</span>    <span class=n>ren</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;DimGray&#39;</span><span class=p>))</span>
+</span>    <span class=n>ren</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'DimGray'</span><span class=p>))</span>
     <span class=n>ren</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor</span><span class=p>)</span>
 
     <span class=c1># Create a window for the renderer of size 600X600</span>
 <span class=hll>    <span class=n>ren_win</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>()</span>
 </span>    <span class=n>ren_win</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>ren</span><span class=p>)</span>
     <span class=n>ren_win</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>600</span><span class=p>,</span> <span class=mi>600</span><span class=p>)</span>
-    <span class=n>ren_win</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;MeshLabelImageColor&#39;</span><span class=p>)</span>
+    <span class=n>ren_win</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>'MeshLabelImageColor'</span><span class=p>)</span>
     <span class=n>ren_win</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
 
     <span class=c1># Set a user interface interactor for the render window.</span>
@@ -192,24 +192,24 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_program_parameters</span><span class=p>():</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>argparse</span>
-    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;MeshLabelImageColor.&#39;</span>
-    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;</span>
+    <span class=n>description</span> <span class=o>=</span> <span class=s1>'MeshLabelImageColor.'</span>
+    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>'''</span>
 <span class=s1>        Takes a label image in Meta format and meshes a single label of it.</span>
-<span class=s1>   &#39;&#39;&#39;</span>
+<span class=s1>   '''</span>
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;filename&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;labels.mhd&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;label&#39;</span><span class=p>,</span> <span class=n>nargs</span><span class=o>=</span><span class=s1>&#39;?&#39;</span><span class=p>,</span> <span class=n>const</span><span class=o>=</span><span class=mi>1</span><span class=p>,</span> <span class=nb>type</span><span class=o>=</span><span class=nb>int</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mi>31</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The label to use e.g 31&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'filename'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'labels.mhd'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'label'</span><span class=p>,</span> <span class=n>nargs</span><span class=o>=</span><span class=s1>'?'</span><span class=p>,</span> <span class=n>const</span><span class=o>=</span><span class=mi>1</span><span class=p>,</span> <span class=nb>type</span><span class=o>=</span><span class=nb>int</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mi>31</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'The label to use e.g 31'</span><span class=p>)</span>
     <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
     <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>filename</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>label</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_diverging_lut</span><span class=p>(</span><span class=n>ct</span><span class=o>=</span><span class=mi>0</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    See: [Diverging Color Maps for Scientific Visualization](https://www.kennethmoreland.com/color-maps/)</span>
 
 <span class=sd>    :param ct: The index of the color map to use.</span>
 <span class=sd>    :return: The lookup table.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 
     <span class=n>cm</span> <span class=o>=</span> <span class=nb>dict</span><span class=p>()</span>
     <span class=c1># Start point = 0.0, mid point = 0.5 and end point = 1.0.</span>
@@ -229,7 +229,7 @@ function registerListener(event, func) {
     <span class=n>ct</span> <span class=o>=</span> <span class=nb>abs</span><span class=p>(</span><span class=n>ct</span><span class=p>)</span>
     <span class=k>if</span> <span class=n>ct</span> <span class=o>&gt;</span> <span class=nb>len</span><span class=p>(</span><span class=n>cm</span><span class=p>)</span> <span class=o>-</span> <span class=mi>1</span><span class=p>:</span>
         <span class=n>ct</span> <span class=o>=</span> <span class=mi>0</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;The selected diverging color map is unavailable. Using the default cool to warm one.&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'The selected diverging color map is unavailable. Using the default cool to warm one.'</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>ctf</span> <span class=o>=</span> <span class=n>vtkColorTransferFunction</span><span class=p>()</span>
 </span>    <span class=n>ctf</span><span class=o>.</span><span class=n>SetColorSpaceToDiverging</span><span class=p>()</span>
@@ -250,14 +250,14 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>vtk_version_ok</span><span class=p>(</span><span class=n>major</span><span class=p>,</span> <span class=n>minor</span><span class=p>,</span> <span class=n>build</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Check the VTK version.</span>
 
 <span class=sd>    :param major: Requested major version.</span>
 <span class=sd>    :param minor: Requested minor version.</span>
 <span class=sd>    :param build: Requested build version.</span>
 <span class=sd>    :return: True if the requested VTK version is &gt;= the actual VTK version.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=n>requested_version</span> <span class=o>=</span> <span class=p>(</span><span class=mi>100</span> <span class=o>*</span> <span class=nb>int</span><span class=p>(</span><span class=n>major</span><span class=p>)</span> <span class=o>+</span> <span class=nb>int</span><span class=p>(</span><span class=n>minor</span><span class=p>))</span> <span class=o>*</span> <span class=mi>100000000</span> <span class=o>+</span> <span class=nb>int</span><span class=p>(</span><span class=n>build</span><span class=p>)</span>
 <span class=hll>    <span class=n>ver</span> <span class=o>=</span> <span class=n>vtkVersion</span><span class=p>()</span>
 </span>    <span class=n>actual_version</span> <span class=o>=</span> <span class=p>(</span><span class=mi>100</span> <span class=o>*</span> <span class=n>ver</span><span class=o>.</span><span class=n>GetVTKMajorVersion</span><span class=p>()</span> <span class=o>+</span> <span class=n>ver</span><span class=o>.</span><span class=n>GetVTKMinorVersion</span><span class=p>())</span> \
@@ -268,6 +268,6 @@ function registerListener(event, func) {
         <span class=k>return</span> <span class=kc>False</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

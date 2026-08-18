@@ -82,7 +82,7 @@ function registerListener(event, func) {
 <span class=k>def</span><span class=w> </span><span class=nf>main</span><span class=p>():</span>
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
-    <span class=c1># colors.SetColor(&#39;bkg&#39;, [0.1, 0.2, 0.4, 1.0])</span>
+    <span class=c1># colors.SetColor('bkg', [0.1, 0.2, 0.4, 1.0])</span>
 
 <span class=hll>    <span class=n>source</span> <span class=o>=</span> <span class=n>vtkSphereSource</span><span class=p>()</span>
 </span>
@@ -91,7 +91,7 @@ function registerListener(event, func) {
 
 <span class=hll>    <span class=n>actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>actor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>)</span>
-    <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;MistyRose&#39;</span><span class=p>))</span>
+    <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'MistyRose'</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>()</span>
 </span><span class=hll>    <span class=n>render_window</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>()</span>
@@ -102,8 +102,8 @@ function registerListener(event, func) {
 
     <span class=c1># Create the TextActor</span>
 <span class=hll>    <span class=n>text_actor</span> <span class=o>=</span> <span class=n>vtkTextActor</span><span class=p>()</span>
-</span>    <span class=n>text_actor</span><span class=o>.</span><span class=n>SetInput</span><span class=p>(</span><span class=s1>&#39;This is a test&#39;</span><span class=p>)</span>
-    <span class=n>text_actor</span><span class=o>.</span><span class=n>GetTextProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Lime&#39;</span><span class=p>))</span>
+</span>    <span class=n>text_actor</span><span class=o>.</span><span class=n>SetInput</span><span class=p>(</span><span class=s1>'This is a test'</span><span class=p>)</span>
+    <span class=n>text_actor</span><span class=o>.</span><span class=n>GetTextProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Lime'</span><span class=p>))</span>
 
     <span class=c1># Create the text representation. Used for positioning the text_actor</span>
 <span class=hll>    <span class=n>text_representation</span> <span class=o>=</span> <span class=n>vtkTextRepresentation</span><span class=p>()</span>
@@ -116,7 +116,7 @@ function registerListener(event, func) {
     <span class=c1>#</span>
     <span class=c1># SelectableOn/Off indicates whether the interior region of the widget can be</span>
     <span class=c1># selected or not. If not, then events (such as left mouse down) allow the user</span>
-    <span class=c1># to &#39;move&#39; the widget, and no selection is possible. Otherwise the</span>
+    <span class=c1># to 'move' the widget, and no selection is possible. Otherwise the</span>
     <span class=c1># SelectRegion() method is invoked.</span>
 <span class=hll>    <span class=n>text_widget</span> <span class=o>=</span> <span class=n>vtkTextWidget</span><span class=p>()</span>
 </span>    <span class=n>text_widget</span><span class=o>.</span><span class=n>SetRepresentation</span><span class=p>(</span><span class=n>text_representation</span><span class=p>)</span>
@@ -126,9 +126,9 @@ function registerListener(event, func) {
     <span class=n>text_widget</span><span class=o>.</span><span class=n>SelectableOff</span><span class=p>()</span>
 
     <span class=n>renderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor</span><span class=p>)</span>
-    <span class=n>renderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;MidnightBLue&#39;</span><span class=p>))</span>
+    <span class=n>renderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'MidnightBLue'</span><span class=p>))</span>
     <span class=n>render_window</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>300</span><span class=p>,</span> <span class=mi>300</span><span class=p>)</span>
-    <span class=n>render_window</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;TextWidget&#39;</span><span class=p>)</span>
+    <span class=n>render_window</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>'TextWidget'</span><span class=p>)</span>
 
     <span class=n>interactor</span><span class=o>.</span><span class=n>Initialize</span><span class=p>()</span>
     <span class=n>render_window</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
@@ -136,6 +136,6 @@ function registerListener(event, func) {
     <span class=n>interactor</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

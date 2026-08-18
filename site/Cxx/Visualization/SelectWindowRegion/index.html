@@ -117,12 +117,12 @@ function registerListener(event, func) {
 <span class=w>                                      </span><span class=kt>void</span><span class=o>*</span><span class=w> </span><span class=n>clientData</span><span class=p>,</span><span class=w> </span><span class=kt>void</span><span class=o>*</span><span class=w> </span><span class=n>callData</span><span class=p>);</span>
 <span class=p>}</span>
 
-<span class=kt>int</span><span class=w> </span><span class=n>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>argv</span><span class=p>[])</span>
+<span class=kt>int</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>argv</span><span class=p>[])</span>
 <span class=p>{</span>
 <span class=w>  </span><span class=c1>// Parse input arguments.</span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>argc</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=mi>2</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Required parameters: Filename e.g. Ox.jpg&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Required parameters: Filename e.g. Ox.jpg"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>EXIT_FAILURE</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 
@@ -147,12 +147,12 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderer</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>ResetCamera</span><span class=p>();</span>
-<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;SlateGray&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"SlateGray"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=w>  </span><span class=c1>// Setup render window.</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderWindow</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;SelectWindowRegion&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"SelectWindowRegion"</span><span class=p>);</span>
 
 <span class=w>  </span><span class=c1>// Setup 2D interaction style.</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkInteractorStyleRubberBand2D</span><span class=o>&gt;</span><span class=w> </span><span class=n>style</span><span class=p>;</span>
@@ -179,7 +179,7 @@ function registerListener(event, func) {
 <span class=w>                                      </span><span class=kt>void</span><span class=o>*</span><span class=w> </span><span class=n>vtkNotUsed</span><span class=p>(</span><span class=n>clientData</span><span class=p>),</span>
 <span class=w>                                      </span><span class=kt>void</span><span class=o>*</span><span class=w> </span><span class=n>callData</span><span class=p>)</span>
 <span class=p>{</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Selection changed callback&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Selection changed callback"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 
 <span class=w>  </span><span class=k>const</span><span class=w> </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>int</span><span class=o>*</span><span class=w> </span><span class=n>rect</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>reinterpret_cast</span><span class=o>&lt;</span><span class=kt>unsigned</span><span class=w> </span><span class=kt>int</span><span class=o>*&gt;</span><span class=p>(</span><span class=n>callData</span><span class=p>);</span>
 <span class=w>  </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>pos1X</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>rect</span><span class=p>[</span><span class=mi>0</span><span class=p>];</span>
@@ -187,8 +187,8 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>pos2X</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>rect</span><span class=p>[</span><span class=mi>2</span><span class=p>];</span>
 <span class=w>  </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>pos2Y</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>rect</span><span class=p>[</span><span class=mi>3</span><span class=p>];</span>
 
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Start x: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>pos1X</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; Start y: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>pos1Y</span>
-<span class=w>            </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; End x: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>pos2X</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; End y: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>pos2Y</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Start x: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>pos1X</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" Start y: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>pos1Y</span>
+<span class=w>            </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" End x: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>pos2X</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" End y: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>pos2Y</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=p>}</span>
 
 <span class=cm>/*</span>
@@ -197,13 +197,13 @@ function registerListener(event, func) {
 
 <span class=hll><span class=cm>void vtkInteractorStyleRubberBand2D::OnLeftButtonUp()</span>
 </span><span class=cm>{</span>
-<span class=cm>  std::cout &lt;&lt; &quot;LeftButtonUp!&quot; &lt;&lt; std::endl;</span>
+<span class=cm>  std::cout &lt;&lt; "LeftButtonUp!" &lt;&lt; std::endl;</span>
 
-<span class=cm>  std::cout &lt;&lt; &quot;Start: &quot; &lt;&lt; this-&gt;StartPosition[0] &lt;&lt; &quot; &quot; &lt;&lt;</span>
-<span class=cm>this-&gt;StartPosition[1] &lt;&lt; std::endl; std::cout &lt;&lt; &quot;End: &quot; &lt;&lt;</span>
-<span class=cm>this-&gt;EndPosition[0] &lt;&lt; &quot; &quot; &lt;&lt; this-&gt;EndPosition[1] &lt;&lt; std::endl;</span>
+<span class=cm>  std::cout &lt;&lt; "Start: " &lt;&lt; this-&gt;StartPosition[0] &lt;&lt; " " &lt;&lt;</span>
+<span class=cm>this-&gt;StartPosition[1] &lt;&lt; std::endl; std::cout &lt;&lt; "End: " &lt;&lt;</span>
+<span class=cm>this-&gt;EndPosition[0] &lt;&lt; " " &lt;&lt; this-&gt;EndPosition[1] &lt;&lt; std::endl;</span>
 
-<span class=cm>  //this-&gt;Superclass.OnLeftButtonUp(); //doesn&#39;t work</span>
+<span class=cm>  //this-&gt;Superclass.OnLeftButtonUp(); //doesn't work</span>
 
 <span class=hll><span class=cm>  InvokeEvent(vtkCommand::EndPickEvent);</span>
 </span><span class=hll><span class=cm>  InvokeEvent(vtkCommand::SelectionChangedEvent);</span>
@@ -228,11 +228,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;SelectWindowRegion: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"SelectWindowRegion: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>SelectWindowRegion</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>SelectWindowRegion.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>SelectWindowRegion</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

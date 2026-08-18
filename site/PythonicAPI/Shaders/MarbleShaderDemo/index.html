@@ -108,22 +108,22 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_program_parameters</span><span class=p>():</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>argparse</span>
-    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;MarbleShaderDemo.&#39;</span>
-    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;</span>
-<span class=s1>    &#39;&#39;&#39;</span>
+    <span class=n>description</span> <span class=o>=</span> <span class=s1>'MarbleShaderDemo.'</span>
+    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>'''</span>
+<span class=s1>    '''</span>
 
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
                                      <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawTextHelpFormatter</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;shader&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The shader e.g. PerlnNoise.glsl.&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-f&#39;</span><span class=p>,</span> <span class=s1>&#39;--pd_file&#39;</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Enter a polydata file e.g teapot.g.&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;--veinfreq&#39;</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mf>7.5</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Controls the lowest frequency of the color veins e.g. 10&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;--veinlevels&#39;</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mi>3</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Controls how many &quot;levels&quot; of vein tendrils it has e.g. 3&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;--warpfreq&#39;</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mf>1.5</span><span class=p>,</span>
-                        <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Controls the lowest frequency of the turbulent warping in the marble e.g. 1.5&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;--warping&#39;</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mf>0.5</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Controls how much turbulent warping there will be e.g. 0.5&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;--vein_color&#39;</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=s2>&quot;Green&quot;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The color of the veins e.g. green&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;--sharpness&#39;</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mi>8</span><span class=p>,</span>
-                        <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Controls how sharp or fuzzy the veins are (higher = sharper) e.g. 8&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'shader'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'The shader e.g. PerlnNoise.glsl.'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-f'</span><span class=p>,</span> <span class=s1>'--pd_file'</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'Enter a polydata file e.g teapot.g.'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'--veinfreq'</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mf>7.5</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'Controls the lowest frequency of the color veins e.g. 10'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'--veinlevels'</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mi>3</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'Controls how many "levels" of vein tendrils it has e.g. 3'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'--warpfreq'</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mf>1.5</span><span class=p>,</span>
+                        <span class=n>help</span><span class=o>=</span><span class=s1>'Controls the lowest frequency of the turbulent warping in the marble e.g. 1.5'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'--warping'</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mf>0.5</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'Controls how much turbulent warping there will be e.g. 0.5'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'--vein_color'</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=s2>"Green"</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'The color of the veins e.g. green'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'--sharpness'</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mi>8</span><span class=p>,</span>
+                        <span class=n>help</span><span class=o>=</span><span class=s1>'Controls how sharp or fuzzy the veins are (higher = sharper) e.g. 8'</span><span class=p>)</span>
     <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
     <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>shader</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>pd_file</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>veinfreq</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>veinlevels</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>warpfreq</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>warping</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>vein_color</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>sharpness</span>
 
@@ -133,7 +133,7 @@ function registerListener(event, func) {
 
     <span class=n>shader_file</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>shader</span><span class=p>)</span>
     <span class=k>if</span> <span class=ow>not</span> <span class=n>shader_file</span><span class=o>.</span><span class=n>is_file</span><span class=p>():</span>
-        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;</span><span class=si>{</span><span class=n>shader_file</span><span class=si>}</span><span class=s1> not found.&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'</span><span class=si>{</span><span class=n>shader_file</span><span class=si>}</span><span class=s1> not found.'</span><span class=p>)</span>
         <span class=k>return</span>
 
     <span class=n>name</span> <span class=o>=</span> <span class=kc>None</span>
@@ -146,14 +146,14 @@ function registerListener(event, func) {
                 <span class=k>return</span>
             <span class=n>name</span> <span class=o>=</span> <span class=n>fn</span><span class=o>.</span><span class=n>name</span>
         <span class=k>else</span><span class=p>:</span>
-            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;</span><span class=si>{</span><span class=n>fn</span><span class=si>}</span><span class=s1> not found.&#39;</span><span class=p>)</span>
+            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'</span><span class=si>{</span><span class=n>fn</span><span class=si>}</span><span class=s1> not found.'</span><span class=p>)</span>
             <span class=k>return</span>
     <span class=k>if</span> <span class=n>pd_file</span> <span class=ow>is</span> <span class=kc>None</span> <span class=ow>or</span> <span class=n>poly_data</span> <span class=ow>is</span> <span class=kc>None</span><span class=p>:</span>
 <span class=hll>        <span class=n>source</span> <span class=o>=</span> <span class=n>vtkSphereSource</span><span class=p>(</span><span class=n>phi_resolution</span><span class=o>=</span><span class=mi>25</span><span class=p>,</span> <span class=n>theta_resolution</span><span class=o>=</span><span class=mi>25</span><span class=p>)</span>
 </span>        <span class=n>poly_data</span> <span class=o>=</span> <span class=n>source</span><span class=o>.</span><span class=n>update</span><span class=p>()</span><span class=o>.</span><span class=n>output</span>
-        <span class=n>name</span> <span class=o>=</span> <span class=s1>&#39;Generated Sphere&#39;</span>
+        <span class=n>name</span> <span class=o>=</span> <span class=s1>'Generated Sphere'</span>
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
-</span>    <span class=n>colors</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=s1>&#39;Bkg&#39;</span><span class=p>,</span> <span class=mi>26</span><span class=p>,</span> <span class=mi>51</span><span class=p>,</span> <span class=mi>102</span><span class=p>,</span> <span class=mi>255</span><span class=p>)</span>
+</span>    <span class=n>colors</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=s1>'Bkg'</span><span class=p>,</span> <span class=mi>26</span><span class=p>,</span> <span class=mi>51</span><span class=p>,</span> <span class=mi>102</span><span class=p>,</span> <span class=mi>255</span><span class=p>)</span>
 
     <span class=n>ShaderProperties</span><span class=o>.</span><span class=n>veinfreq</span> <span class=o>=</span> <span class=n>veinfreq</span>
     <span class=n>ShaderProperties</span><span class=o>.</span><span class=n>veinlevels</span> <span class=o>=</span> <span class=n>veinlevels</span>
@@ -172,10 +172,10 @@ function registerListener(event, func) {
     <span class=c1># Build the pipeline.</span>
     <span class=c1># ren1 is for the slider rendering,</span>
     <span class=c1># ren2 is for the object rendering.</span>
-<span class=hll>    <span class=n>ren1</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>viewport</span><span class=o>=</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.2</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>),</span> <span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Snow&#39;</span><span class=p>))</span>
-</span><span class=hll>    <span class=n>ren2</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>viewport</span><span class=o>=</span><span class=p>(</span><span class=mf>0.2</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>),</span> <span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;SlateGray&#39;</span><span class=p>))</span>
+<span class=hll>    <span class=n>ren1</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>viewport</span><span class=o>=</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.2</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>),</span> <span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Snow'</span><span class=p>))</span>
+</span><span class=hll>    <span class=n>ren2</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>viewport</span><span class=o>=</span><span class=p>(</span><span class=mf>0.2</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>),</span> <span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'SlateGray'</span><span class=p>))</span>
 </span>
-<span class=hll>    <span class=n>render_window</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>size</span><span class=o>=</span><span class=p>(</span><span class=mi>800</span><span class=p>,</span> <span class=mi>480</span><span class=p>),</span> <span class=n>window_name</span><span class=o>=</span><span class=s1>&#39;MarbleShaderDemo&#39;</span><span class=p>)</span>
+<span class=hll>    <span class=n>render_window</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>size</span><span class=o>=</span><span class=p>(</span><span class=mi>800</span><span class=p>,</span> <span class=mi>480</span><span class=p>),</span> <span class=n>window_name</span><span class=o>=</span><span class=s1>'MarbleShaderDemo'</span><span class=p>)</span>
 </span>    <span class=c1># The order here is important.</span>
     <span class=c1># This ensures that the sliders will be in ren1.</span>
     <span class=n>render_window</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>ren2</span><span class=p>)</span>
@@ -201,7 +201,7 @@ function registerListener(event, func) {
 
 <span class=hll>    <span class=n>actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>(</span><span class=n>mapper</span><span class=o>=</span><span class=n>mapper</span><span class=p>)</span>
 </span>    <span class=n>actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>diffuse</span> <span class=o>=</span> <span class=mf>1.0</span>
-    <span class=n>actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>diffuse_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Wheat&#39;</span><span class=p>)</span>
+    <span class=n>actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>diffuse_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Wheat'</span><span class=p>)</span>
     <span class=n>actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>specular</span> <span class=o>=</span> <span class=mf>.5</span>
     <span class=n>actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>specular_power</span> <span class=o>=</span> <span class=mi>50</span>
 
@@ -228,7 +228,7 @@ function registerListener(event, func) {
     <span class=n>cmd</span> <span class=o>=</span> <span class=n>get_fragment_shader_replacement3</span><span class=p>()</span>
     <span class=n>sp</span><span class=o>.</span><span class=n>AddFragmentShaderReplacement</span><span class=p>(</span><span class=o>*</span><span class=n>cmd</span><span class=p>)</span>
 
-    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;------------</span><span class=se>\n</span><span class=s1>Input: </span><span class=si>{</span><span class=n>name</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'------------</span><span class=se>\n</span><span class=s1>Input: </span><span class=si>{</span><span class=n>name</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
     <span class=n>disp_parameters</span><span class=p>()</span>
     <span class=n>shader_callback</span> <span class=o>=</span> <span class=n>ShaderCallback</span><span class=p>()</span>
 <span class=hll>    <span class=n>mapper</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=n>vtkCommand</span><span class=o>.</span><span class=n>UpdateShaderEvent</span><span class=p>,</span> <span class=n>shader_callback</span><span class=o>.</span><span class=n>vtk_shader_callback</span><span class=p>)</span>
@@ -246,7 +246,7 @@ function registerListener(event, func) {
     <span class=n>sp</span><span class=o>.</span><span class=n>Range</span><span class=o>.</span><span class=n>minimum_value</span> <span class=o>=</span> <span class=mf>1.0</span>
     <span class=n>sp</span><span class=o>.</span><span class=n>Range</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>ShaderProperties</span><span class=o>.</span><span class=n>veinfreq</span>
     <span class=n>sp</span><span class=o>.</span><span class=n>Range</span><span class=o>.</span><span class=n>maximum_value</span> <span class=o>=</span> <span class=mf>15.0</span>
-    <span class=n>sp</span><span class=o>.</span><span class=n>Text</span><span class=o>.</span><span class=n>title</span> <span class=o>=</span> <span class=s1>&#39;Vein Frequency&#39;</span>
+    <span class=n>sp</span><span class=o>.</span><span class=n>Text</span><span class=o>.</span><span class=n>title</span> <span class=o>=</span> <span class=s1>'Vein Frequency'</span>
     <span class=c1>#  Screen coordinates.</span>
     <span class=n>sp</span><span class=o>.</span><span class=n>Position</span><span class=o>.</span><span class=n>point1</span> <span class=o>=</span> <span class=p>(</span><span class=n>pos_x0</span><span class=p>,</span> <span class=n>pos_y</span><span class=p>)</span>
     <span class=n>sp</span><span class=o>.</span><span class=n>Position</span><span class=o>.</span><span class=n>point2</span> <span class=o>=</span> <span class=p>(</span><span class=n>pos_x1</span><span class=p>,</span> <span class=n>pos_y</span><span class=p>)</span>
@@ -261,7 +261,7 @@ function registerListener(event, func) {
     <span class=n>sp</span><span class=o>.</span><span class=n>Range</span><span class=o>.</span><span class=n>minimum_value</span> <span class=o>=</span> <span class=mi>1</span>
     <span class=n>sp</span><span class=o>.</span><span class=n>Range</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>ShaderProperties</span><span class=o>.</span><span class=n>veinlevels</span>
     <span class=n>sp</span><span class=o>.</span><span class=n>Range</span><span class=o>.</span><span class=n>maximum_value</span> <span class=o>=</span> <span class=mi>5</span>
-    <span class=n>sp</span><span class=o>.</span><span class=n>Text</span><span class=o>.</span><span class=n>title</span> <span class=o>=</span> <span class=s1>&#39;Vein Levels&#39;</span>
+    <span class=n>sp</span><span class=o>.</span><span class=n>Text</span><span class=o>.</span><span class=n>title</span> <span class=o>=</span> <span class=s1>'Vein Levels'</span>
     <span class=c1>#  Screen coordinates.</span>
     <span class=n>sp</span><span class=o>.</span><span class=n>Position</span><span class=o>.</span><span class=n>point1</span> <span class=o>=</span> <span class=p>(</span><span class=n>pos_x0</span><span class=p>,</span> <span class=n>pos_y</span><span class=p>)</span>
     <span class=n>sp</span><span class=o>.</span><span class=n>Position</span><span class=o>.</span><span class=n>point2</span> <span class=o>=</span> <span class=p>(</span><span class=n>pos_x1</span><span class=p>,</span> <span class=n>pos_y</span><span class=p>)</span>
@@ -276,7 +276,7 @@ function registerListener(event, func) {
     <span class=n>sp</span><span class=o>.</span><span class=n>Range</span><span class=o>.</span><span class=n>minimum_value</span> <span class=o>=</span> <span class=mi>1</span>
     <span class=n>sp</span><span class=o>.</span><span class=n>Range</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>ShaderProperties</span><span class=o>.</span><span class=n>warpfreq</span>
     <span class=n>sp</span><span class=o>.</span><span class=n>Range</span><span class=o>.</span><span class=n>maximum_value</span> <span class=o>=</span> <span class=mi>2</span>
-    <span class=n>sp</span><span class=o>.</span><span class=n>Text</span><span class=o>.</span><span class=n>title</span> <span class=o>=</span> <span class=s1>&#39;Warp Frequency&#39;</span>
+    <span class=n>sp</span><span class=o>.</span><span class=n>Text</span><span class=o>.</span><span class=n>title</span> <span class=o>=</span> <span class=s1>'Warp Frequency'</span>
     <span class=c1>#  Screen coordinates.</span>
     <span class=n>sp</span><span class=o>.</span><span class=n>Position</span><span class=o>.</span><span class=n>point1</span> <span class=o>=</span> <span class=p>(</span><span class=n>pos_x0</span><span class=p>,</span> <span class=n>pos_y</span><span class=p>)</span>
     <span class=n>sp</span><span class=o>.</span><span class=n>Position</span><span class=o>.</span><span class=n>point2</span> <span class=o>=</span> <span class=p>(</span><span class=n>pos_x1</span><span class=p>,</span> <span class=n>pos_y</span><span class=p>)</span>
@@ -291,7 +291,7 @@ function registerListener(event, func) {
     <span class=n>sp</span><span class=o>.</span><span class=n>Range</span><span class=o>.</span><span class=n>minimum_value</span> <span class=o>=</span> <span class=mf>0.0</span>
     <span class=n>sp</span><span class=o>.</span><span class=n>Range</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>ShaderProperties</span><span class=o>.</span><span class=n>warping</span>
     <span class=n>sp</span><span class=o>.</span><span class=n>Range</span><span class=o>.</span><span class=n>maximum_value</span> <span class=o>=</span> <span class=mf>1.0</span>
-    <span class=n>sp</span><span class=o>.</span><span class=n>Text</span><span class=o>.</span><span class=n>title</span> <span class=o>=</span> <span class=s1>&#39;Warping&#39;</span>
+    <span class=n>sp</span><span class=o>.</span><span class=n>Text</span><span class=o>.</span><span class=n>title</span> <span class=o>=</span> <span class=s1>'Warping'</span>
     <span class=c1>#  Screen coordinates.</span>
     <span class=n>sp</span><span class=o>.</span><span class=n>Position</span><span class=o>.</span><span class=n>point1</span> <span class=o>=</span> <span class=p>(</span><span class=n>pos_x0</span><span class=p>,</span> <span class=n>pos_y</span><span class=p>)</span>
     <span class=n>sp</span><span class=o>.</span><span class=n>Position</span><span class=o>.</span><span class=n>point2</span> <span class=o>=</span> <span class=p>(</span><span class=n>pos_x1</span><span class=p>,</span> <span class=n>pos_y</span><span class=p>)</span>
@@ -306,7 +306,7 @@ function registerListener(event, func) {
     <span class=n>sp</span><span class=o>.</span><span class=n>Range</span><span class=o>.</span><span class=n>minimum_value</span> <span class=o>=</span> <span class=mf>0.01</span>
     <span class=n>sp</span><span class=o>.</span><span class=n>Range</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>ShaderProperties</span><span class=o>.</span><span class=n>sharpness</span>
     <span class=n>sp</span><span class=o>.</span><span class=n>Range</span><span class=o>.</span><span class=n>maximum_value</span> <span class=o>=</span> <span class=mf>10.0</span>
-    <span class=n>sp</span><span class=o>.</span><span class=n>Text</span><span class=o>.</span><span class=n>title</span> <span class=o>=</span> <span class=s1>&#39;Sharpness&#39;</span>
+    <span class=n>sp</span><span class=o>.</span><span class=n>Text</span><span class=o>.</span><span class=n>title</span> <span class=o>=</span> <span class=s1>'Sharpness'</span>
     <span class=c1>#  Screen coordinates.</span>
     <span class=n>sp</span><span class=o>.</span><span class=n>Position</span><span class=o>.</span><span class=n>point1</span> <span class=o>=</span> <span class=p>(</span><span class=n>pos_x0</span><span class=p>,</span> <span class=n>pos_y</span><span class=p>)</span>
     <span class=n>sp</span><span class=o>.</span><span class=n>Position</span><span class=o>.</span><span class=n>point2</span> <span class=o>=</span> <span class=p>(</span><span class=n>pos_x1</span><span class=p>,</span> <span class=n>pos_y</span><span class=p>)</span>
@@ -328,39 +328,39 @@ function registerListener(event, func) {
 
     <span class=n>bounds</span> <span class=o>=</span> <span class=n>transform</span><span class=o>.</span><span class=n>output</span><span class=o>.</span><span class=n>bounds</span>
     <span class=n>ranges</span> <span class=o>=</span> <span class=n>get_ranges</span><span class=p>(</span><span class=n>bounds</span><span class=p>)</span>
-    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;------------</span><span class=se>\n</span><span class=s1>Range:&#39;</span>
-          <span class=sa>f</span><span class=s1>&#39; x: </span><span class=si>{</span><span class=n>ranges</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=si>:</span><span class=s1>8.6f</span><span class=si>}</span><span class=s1>&#39;</span>
-          <span class=sa>f</span><span class=s1>&#39; y: </span><span class=si>{</span><span class=n>ranges</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=si>:</span><span class=s1>8.6f</span><span class=si>}</span><span class=s1>&#39;</span>
-          <span class=sa>f</span><span class=s1>&#39; z: </span><span class=si>{</span><span class=n>ranges</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span><span class=si>:</span><span class=s1>8.6f</span><span class=si>}</span><span class=s1>&#39;</span>
-          <span class=sa>f</span><span class=s1>&#39;</span><span class=se>\n</span><span class=s1>------------&#39;</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'------------</span><span class=se>\n</span><span class=s1>Range:'</span>
+          <span class=sa>f</span><span class=s1>' x: </span><span class=si>{</span><span class=n>ranges</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=si>:</span><span class=s1>8.6f</span><span class=si>}</span><span class=s1>'</span>
+          <span class=sa>f</span><span class=s1>' y: </span><span class=si>{</span><span class=n>ranges</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=si>:</span><span class=s1>8.6f</span><span class=si>}</span><span class=s1>'</span>
+          <span class=sa>f</span><span class=s1>' z: </span><span class=si>{</span><span class=n>ranges</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span><span class=si>:</span><span class=s1>8.6f</span><span class=si>}</span><span class=s1>'</span>
+          <span class=sa>f</span><span class=s1>'</span><span class=se>\n</span><span class=s1>------------'</span><span class=p>)</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>read_poly_data</span><span class=p>(</span><span class=n>file_name</span><span class=p>):</span>
     <span class=k>if</span> <span class=ow>not</span> <span class=n>file_name</span><span class=p>:</span>
-        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;No file name.&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'No file name.'</span><span class=p>)</span>
         <span class=k>return</span> <span class=kc>None</span>
 
-    <span class=n>valid_suffixes</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;.g&#39;</span><span class=p>,</span> <span class=s1>&#39;.obj&#39;</span><span class=p>,</span> <span class=s1>&#39;.stl&#39;</span><span class=p>,</span> <span class=s1>&#39;.ply&#39;</span><span class=p>,</span> <span class=s1>&#39;.vtk&#39;</span><span class=p>,</span> <span class=s1>&#39;.vtp&#39;</span><span class=p>]</span>
+    <span class=n>valid_suffixes</span> <span class=o>=</span> <span class=p>[</span><span class=s1>'.g'</span><span class=p>,</span> <span class=s1>'.obj'</span><span class=p>,</span> <span class=s1>'.stl'</span><span class=p>,</span> <span class=s1>'.ply'</span><span class=p>,</span> <span class=s1>'.vtk'</span><span class=p>,</span> <span class=s1>'.vtp'</span><span class=p>]</span>
     <span class=n>path</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
     <span class=n>ext</span> <span class=o>=</span> <span class=kc>None</span>
     <span class=k>if</span> <span class=n>path</span><span class=o>.</span><span class=n>suffix</span><span class=p>:</span>
         <span class=n>ext</span> <span class=o>=</span> <span class=n>path</span><span class=o>.</span><span class=n>suffix</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span>
     <span class=k>if</span> <span class=n>path</span><span class=o>.</span><span class=n>suffix</span> <span class=ow>not</span> <span class=ow>in</span> <span class=n>valid_suffixes</span><span class=p>:</span>
-        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;No reader for this file suffix: </span><span class=si>{</span><span class=n>ext</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'No reader for this file suffix: </span><span class=si>{</span><span class=n>ext</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
         <span class=k>return</span> <span class=kc>None</span>
 
     <span class=n>reader</span> <span class=o>=</span> <span class=kc>None</span>
-    <span class=k>if</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>&#39;.ply&#39;</span><span class=p>:</span>
+    <span class=k>if</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>'.ply'</span><span class=p>:</span>
 <span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkPLYReader</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=n>file_name</span><span class=p>)</span>
-</span>    <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>&#39;.vtp&#39;</span><span class=p>:</span>
+</span>    <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>'.vtp'</span><span class=p>:</span>
 <span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkXMLPolyDataReader</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=n>file_name</span><span class=p>)</span>
-</span>    <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>&#39;.obj&#39;</span><span class=p>:</span>
+</span>    <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>'.obj'</span><span class=p>:</span>
 <span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkOBJReader</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=n>file_name</span><span class=p>)</span>
-</span>    <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>&#39;.stl&#39;</span><span class=p>:</span>
+</span>    <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>'.stl'</span><span class=p>:</span>
 <span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkSTLReader</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=n>file_name</span><span class=p>)</span>
-</span>    <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>&#39;.vtk&#39;</span><span class=p>:</span>
+</span>    <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>'.vtk'</span><span class=p>:</span>
 <span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkPolyDataReader</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=n>file_name</span><span class=p>)</span>
-</span>    <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>&#39;.g&#39;</span><span class=p>:</span>
+</span>    <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>'.g'</span><span class=p>:</span>
 <span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkBYUReader</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=n>file_name</span><span class=p>)</span>
 </span>
     <span class=k>if</span> <span class=n>reader</span><span class=p>:</span>
@@ -378,10 +378,10 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_vertex_shader_replacement1</span><span class=p>():</span>
     <span class=n>res</span> <span class=o>=</span> <span class=p>(</span>
-        <span class=s1>&#39;//VTK::Normal::Dec&#39;</span><span class=p>,</span>  <span class=c1># replace the normal block</span>
+        <span class=s1>'//VTK::Normal::Dec'</span><span class=p>,</span>  <span class=c1># replace the normal block</span>
         <span class=kc>True</span><span class=p>,</span>  <span class=c1># before the standard replacements</span>
-        <span class=s1>&#39;//VTK::Normal::Dec</span><span class=se>\n</span><span class=s1>&#39;</span> <span class=o>+</span>
-        <span class=s1>&#39;   out vec4 myVertexMC;</span><span class=se>\n</span><span class=s1>&#39;</span><span class=p>,</span>  <span class=c1># we still want the default</span>
+        <span class=s1>'//VTK::Normal::Dec</span><span class=se>\n</span><span class=s1>'</span> <span class=o>+</span>
+        <span class=s1>'   out vec4 myVertexMC;</span><span class=se>\n</span><span class=s1>'</span><span class=p>,</span>  <span class=c1># we still want the default</span>
         <span class=kc>False</span>  <span class=c1># only do it once</span>
     <span class=p>)</span>
     <span class=k>return</span> <span class=n>res</span>
@@ -389,10 +389,10 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_vertex_shader_replacement2</span><span class=p>():</span>
     <span class=n>res</span> <span class=o>=</span> <span class=p>(</span>
-        <span class=s1>&#39;//VTK::Normal::Impl&#39;</span><span class=p>,</span>  <span class=c1># replace the normal block</span>
+        <span class=s1>'//VTK::Normal::Impl'</span><span class=p>,</span>  <span class=c1># replace the normal block</span>
         <span class=kc>True</span><span class=p>,</span>  <span class=c1># before the standard replacements</span>
-        <span class=s1>&#39;//VTK::Normal::Impl</span><span class=se>\n</span><span class=s1>&#39;</span> <span class=o>+</span>
-        <span class=s1>&#39;  myVertexMC = vertexMC;</span><span class=se>\n</span><span class=s1>&#39;</span><span class=p>,</span>  <span class=c1># we still want the default</span>
+        <span class=s1>'//VTK::Normal::Impl</span><span class=se>\n</span><span class=s1>'</span> <span class=o>+</span>
+        <span class=s1>'  myVertexMC = vertexMC;</span><span class=se>\n</span><span class=s1>'</span><span class=p>,</span>  <span class=c1># we still want the default</span>
         <span class=kc>False</span>  <span class=c1># only do it once</span>
     <span class=p>)</span>
     <span class=k>return</span> <span class=n>res</span>
@@ -400,7 +400,7 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_fragment_shader_replacement1</span><span class=p>(</span><span class=n>shader_code</span><span class=p>):</span>
     <span class=n>res</span> <span class=o>=</span> <span class=p>(</span>
-        <span class=s1>&#39;//VTK::System::Dec&#39;</span><span class=p>,</span>
+        <span class=s1>'//VTK::System::Dec'</span><span class=p>,</span>
         <span class=kc>False</span><span class=p>,</span>  <span class=c1># before the standard replacements</span>
         <span class=n>shader_code</span><span class=p>,</span>
         <span class=kc>False</span>  <span class=c1># only do it once</span>
@@ -410,16 +410,16 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_fragment_shader_replacement2</span><span class=p>():</span>
     <span class=n>res</span> <span class=o>=</span> <span class=p>(</span>
-        <span class=s1>&#39;//VTK::Normal::Dec&#39;</span><span class=p>,</span>  <span class=c1># replace the normal block</span>
+        <span class=s1>'//VTK::Normal::Dec'</span><span class=p>,</span>  <span class=c1># replace the normal block</span>
         <span class=kc>True</span><span class=p>,</span>  <span class=c1># before the standard replacements</span>
-        <span class=s1>&#39;//VTK::Normal::Dec</span><span class=se>\n</span><span class=s1>&#39;</span>  <span class=c1># we still want the default</span>
-        <span class=s1>&#39;  varying vec4 myVertexMC;</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=s1>&#39;  uniform vec3 veincolor = vec3(1.0, 1.0, 1.0);</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=s1>&#39;  uniform float veinfreq = 10.0;</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=s1>&#39;  uniform int veinlevels = 2;</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=s1>&#39;  uniform float warpfreq = 1;</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=s1>&#39;  uniform float warping = 0.5;</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=s1>&#39;  uniform float sharpness = 8.0;</span><span class=se>\n</span><span class=s1>&#39;</span><span class=p>,</span>
+        <span class=s1>'//VTK::Normal::Dec</span><span class=se>\n</span><span class=s1>'</span>  <span class=c1># we still want the default</span>
+        <span class=s1>'  varying vec4 myVertexMC;</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=s1>'  uniform vec3 veincolor = vec3(1.0, 1.0, 1.0);</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=s1>'  uniform float veinfreq = 10.0;</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=s1>'  uniform int veinlevels = 2;</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=s1>'  uniform float warpfreq = 1;</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=s1>'  uniform float warping = 0.5;</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=s1>'  uniform float sharpness = 8.0;</span><span class=se>\n</span><span class=s1>'</span><span class=p>,</span>
         <span class=kc>False</span>  <span class=c1># only do it once</span>
     <span class=p>)</span>
     <span class=k>return</span> <span class=n>res</span>
@@ -427,49 +427,49 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_fragment_shader_replacement3</span><span class=p>():</span>
     <span class=n>res</span> <span class=o>=</span> <span class=p>(</span>
-        <span class=s1>&#39;//VTK::Light::Impl&#39;</span><span class=p>,</span>  <span class=c1># replace the light block</span>
+        <span class=s1>'//VTK::Light::Impl'</span><span class=p>,</span>  <span class=c1># replace the light block</span>
         <span class=kc>False</span><span class=p>,</span>  <span class=c1># before the standard replacements</span>
-        <span class=s1>&#39;//VTK::Light::Impl</span><span class=se>\n</span><span class=s1>&#39;</span>  <span class=c1># we still want the default calc</span>
-        <span class=s1>&#39;</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=s1>&#39;#define pnoise(x) ((noise(x) + 1.0) / 2.0)</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=s1>&#39;#define snoise(x) (2.0 * pnoise(x) - 1.0)</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=s1>&#39;  vec3 Ct;</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=s1>&#39;  int i;</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=s1>&#39;  float turb, freq;</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=s1>&#39;  float turbsum;</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=s1>&#39;  /* perturb the lookup */</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=s1>&#39;  freq = 1.0;</span><span class=se>\n</span><span class=s1> &#39;</span>
-        <span class=s1>&#39; vec4 offset = vec4(0.0,0.0,0.0,0.0);</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=s1>&#39;  vec4 noisyPoint;</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=s1>&#39;  vec4 myLocalVertexMC = myVertexMC;</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=s1>&#39;</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=s1>&#39;    for (i = 0;  i &lt; 6;  i += 1) {</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=s1>&#39;noisyPoint[0] = snoise(warpfreq * freq * myLocalVertexMC);</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=s1>&#39;noisyPoint[1] = snoise(warpfreq * freq * myLocalVertexMC);</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=s1>&#39;noisyPoint[2] = snoise(warpfreq * freq * myLocalVertexMC);</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=s1>&#39;noisyPoint[3] = 1.0;</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=s1>&#39;offset += 2.0 * warping * (noisyPoint - 0.5)  / freq;</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=s1>&#39;freq *= 2.0;</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=s1>&#39;    }</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=s1>&#39;    myLocalVertexMC.x += offset.x;</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=s1>&#39;    myLocalVertexMC.y += offset.y;</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=s1>&#39;    myLocalVertexMC.z += offset.z;</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=s1>&#39;</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=s1>&#39;    /* Now calculate the veining function for the lookup area */</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=s1>&#39;    turbsum = 0.0;  freq = 1.0;</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=s1>&#39;    myLocalVertexMC *= veinfreq;</span><span class=se>\n</span><span class=s1> &#39;</span>
-        <span class=s1>&#39;   for (i = 0;  i &lt; veinlevels;  i += 1) {</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=s1>&#39;     turb = abs (snoise (myLocalVertexMC));</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=s1>&#39;     turb = pow (smoothstep (0.8, 1.0, 1.0 - turb), sharpness) / freq;</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=s1>&#39;     turbsum += (1.0-turbsum) * turb;</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=s1>&#39;     freq *= 1.5;</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=s1>&#39;     myLocalVertexMC *= 1.5;</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=s1>&#39;   }</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=s1>&#39;</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=s1>&#39;    Ct = mix (diffuseColor, veincolor, turbsum);</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=s1>&#39;</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=s1>&#39;  fragOutput0.rgb = opacity * (ambientColor + Ct + specular);</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=s1>&#39;  fragOutput0.a = opacity;</span><span class=se>\n</span><span class=s1>&#39;</span><span class=p>,</span>
+        <span class=s1>'//VTK::Light::Impl</span><span class=se>\n</span><span class=s1>'</span>  <span class=c1># we still want the default calc</span>
+        <span class=s1>'</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=s1>'#define pnoise(x) ((noise(x) + 1.0) / 2.0)</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=s1>'#define snoise(x) (2.0 * pnoise(x) - 1.0)</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=s1>'  vec3 Ct;</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=s1>'  int i;</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=s1>'  float turb, freq;</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=s1>'  float turbsum;</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=s1>'  /* perturb the lookup */</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=s1>'  freq = 1.0;</span><span class=se>\n</span><span class=s1> '</span>
+        <span class=s1>' vec4 offset = vec4(0.0,0.0,0.0,0.0);</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=s1>'  vec4 noisyPoint;</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=s1>'  vec4 myLocalVertexMC = myVertexMC;</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=s1>'</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=s1>'    for (i = 0;  i &lt; 6;  i += 1) {</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=s1>'noisyPoint[0] = snoise(warpfreq * freq * myLocalVertexMC);</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=s1>'noisyPoint[1] = snoise(warpfreq * freq * myLocalVertexMC);</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=s1>'noisyPoint[2] = snoise(warpfreq * freq * myLocalVertexMC);</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=s1>'noisyPoint[3] = 1.0;</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=s1>'offset += 2.0 * warping * (noisyPoint - 0.5)  / freq;</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=s1>'freq *= 2.0;</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=s1>'    }</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=s1>'    myLocalVertexMC.x += offset.x;</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=s1>'    myLocalVertexMC.y += offset.y;</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=s1>'    myLocalVertexMC.z += offset.z;</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=s1>'</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=s1>'    /* Now calculate the veining function for the lookup area */</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=s1>'    turbsum = 0.0;  freq = 1.0;</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=s1>'    myLocalVertexMC *= veinfreq;</span><span class=se>\n</span><span class=s1> '</span>
+        <span class=s1>'   for (i = 0;  i &lt; veinlevels;  i += 1) {</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=s1>'     turb = abs (snoise (myLocalVertexMC));</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=s1>'     turb = pow (smoothstep (0.8, 1.0, 1.0 - turb), sharpness) / freq;</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=s1>'     turbsum += (1.0-turbsum) * turb;</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=s1>'     freq *= 1.5;</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=s1>'     myLocalVertexMC *= 1.5;</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=s1>'   }</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=s1>'</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=s1>'    Ct = mix (diffuseColor, veincolor, turbsum);</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=s1>'</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=s1>'  fragOutput0.rgb = opacity * (ambientColor + Ct + specular);</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=s1>'  fragOutput0.a = opacity;</span><span class=se>\n</span><span class=s1>'</span><span class=p>,</span>
         <span class=kc>False</span>  <span class=c1># only do it once</span>
     <span class=p>)</span>
     <span class=k>return</span> <span class=n>res</span>
@@ -491,13 +491,13 @@ function registerListener(event, func) {
         <span class=n>program</span> <span class=o>=</span> <span class=n>calldata</span>
         <span class=k>if</span> <span class=n>program</span> <span class=ow>is</span> <span class=ow>not</span> <span class=kc>None</span><span class=p>:</span>
             <span class=c1># diffuseColor = [0.4, 0.7, 0.6]</span>
-            <span class=c1># program.SetUniform3f(&quot;diffuseColorUniform&quot;, diffuseColor)</span>
-            <span class=n>program</span><span class=o>.</span><span class=n>SetUniform3f</span><span class=p>(</span><span class=s2>&quot;veincolor&quot;</span><span class=p>,</span> <span class=n>ShaderProperties</span><span class=o>.</span><span class=n>veincolor</span><span class=p>)</span>
-            <span class=n>program</span><span class=o>.</span><span class=n>SetUniformf</span><span class=p>(</span><span class=s2>&quot;veinfreq&quot;</span><span class=p>,</span> <span class=n>ShaderProperties</span><span class=o>.</span><span class=n>veinfreq</span><span class=p>)</span>
-            <span class=n>program</span><span class=o>.</span><span class=n>SetUniformi</span><span class=p>(</span><span class=s2>&quot;veinlevels&quot;</span><span class=p>,</span> <span class=n>ShaderProperties</span><span class=o>.</span><span class=n>veinlevels</span><span class=p>)</span>
-            <span class=n>program</span><span class=o>.</span><span class=n>SetUniformf</span><span class=p>(</span><span class=s2>&quot;warpfreq&quot;</span><span class=p>,</span> <span class=n>ShaderProperties</span><span class=o>.</span><span class=n>warpfreq</span><span class=p>)</span>
-            <span class=n>program</span><span class=o>.</span><span class=n>SetUniformf</span><span class=p>(</span><span class=s2>&quot;warping&quot;</span><span class=p>,</span> <span class=n>ShaderProperties</span><span class=o>.</span><span class=n>warping</span><span class=p>)</span>
-            <span class=n>program</span><span class=o>.</span><span class=n>SetUniformf</span><span class=p>(</span><span class=s2>&quot;sharpness&quot;</span><span class=p>,</span> <span class=n>ShaderProperties</span><span class=o>.</span><span class=n>sharpness</span><span class=p>)</span>
+            <span class=c1># program.SetUniform3f("diffuseColorUniform", diffuseColor)</span>
+            <span class=n>program</span><span class=o>.</span><span class=n>SetUniform3f</span><span class=p>(</span><span class=s2>"veincolor"</span><span class=p>,</span> <span class=n>ShaderProperties</span><span class=o>.</span><span class=n>veincolor</span><span class=p>)</span>
+            <span class=n>program</span><span class=o>.</span><span class=n>SetUniformf</span><span class=p>(</span><span class=s2>"veinfreq"</span><span class=p>,</span> <span class=n>ShaderProperties</span><span class=o>.</span><span class=n>veinfreq</span><span class=p>)</span>
+            <span class=n>program</span><span class=o>.</span><span class=n>SetUniformi</span><span class=p>(</span><span class=s2>"veinlevels"</span><span class=p>,</span> <span class=n>ShaderProperties</span><span class=o>.</span><span class=n>veinlevels</span><span class=p>)</span>
+            <span class=n>program</span><span class=o>.</span><span class=n>SetUniformf</span><span class=p>(</span><span class=s2>"warpfreq"</span><span class=p>,</span> <span class=n>ShaderProperties</span><span class=o>.</span><span class=n>warpfreq</span><span class=p>)</span>
+            <span class=n>program</span><span class=o>.</span><span class=n>SetUniformf</span><span class=p>(</span><span class=s2>"warping"</span><span class=p>,</span> <span class=n>ShaderProperties</span><span class=o>.</span><span class=n>warping</span><span class=p>)</span>
+            <span class=n>program</span><span class=o>.</span><span class=n>SetUniformf</span><span class=p>(</span><span class=s2>"sharpness"</span><span class=p>,</span> <span class=n>ShaderProperties</span><span class=o>.</span><span class=n>sharpness</span><span class=p>)</span>
 
             <span class=k>if</span> <span class=bp>self</span><span class=o>.</span><span class=n>has_changed</span><span class=p>():</span>
                 <span class=n>disp_parameters</span><span class=p>()</span>
@@ -530,31 +530,31 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>disp_parameters</span><span class=p>():</span>
     <span class=nb>print</span><span class=p>(</span>
-        <span class=sa>f</span><span class=s1>&#39;------------</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=sa>f</span><span class=s1>&#39;veincolor:  (</span><span class=si>{</span><span class=n>fmt_floats</span><span class=p>(</span><span class=n>ShaderProperties</span><span class=o>.</span><span class=n>veincolor</span><span class=p>,</span><span class=w> </span><span class=mi>8</span><span class=p>,</span><span class=w> </span><span class=mi>6</span><span class=p>,</span><span class=w> </span><span class=s2>&quot;f&quot;</span><span class=p>)</span><span class=si>}</span><span class=s1>)</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=sa>f</span><span class=s1>&#39;veinfreq:   </span><span class=si>{</span><span class=n>ShaderProperties</span><span class=o>.</span><span class=n>veinfreq</span><span class=si>:</span><span class=s1>5.2f</span><span class=si>}</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=sa>f</span><span class=s1>&#39;veinlevels: </span><span class=si>{</span><span class=n>ShaderProperties</span><span class=o>.</span><span class=n>veinlevels</span><span class=si>:</span><span class=s1>2d</span><span class=si>}</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=sa>f</span><span class=s1>&#39;warpfreq:   </span><span class=si>{</span><span class=n>ShaderProperties</span><span class=o>.</span><span class=n>warpfreq</span><span class=si>:</span><span class=s1>5.2f</span><span class=si>}</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=sa>f</span><span class=s1>&#39;warping:    </span><span class=si>{</span><span class=n>ShaderProperties</span><span class=o>.</span><span class=n>warping</span><span class=si>:</span><span class=s1>5.2f</span><span class=si>}</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=sa>f</span><span class=s1>&#39;sharpness:  </span><span class=si>{</span><span class=n>ShaderProperties</span><span class=o>.</span><span class=n>sharpness</span><span class=si>:</span><span class=s1>5.2f</span><span class=si>}</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=sa>f</span><span class=s1>&#39;------------&#39;</span>
+        <span class=sa>f</span><span class=s1>'------------</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=sa>f</span><span class=s1>'veincolor:  (</span><span class=si>{</span><span class=n>fmt_floats</span><span class=p>(</span><span class=n>ShaderProperties</span><span class=o>.</span><span class=n>veincolor</span><span class=p>,</span><span class=w> </span><span class=mi>8</span><span class=p>,</span><span class=w> </span><span class=mi>6</span><span class=p>,</span><span class=w> </span><span class=s2>"f"</span><span class=p>)</span><span class=si>}</span><span class=s1>)</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=sa>f</span><span class=s1>'veinfreq:   </span><span class=si>{</span><span class=n>ShaderProperties</span><span class=o>.</span><span class=n>veinfreq</span><span class=si>:</span><span class=s1>5.2f</span><span class=si>}</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=sa>f</span><span class=s1>'veinlevels: </span><span class=si>{</span><span class=n>ShaderProperties</span><span class=o>.</span><span class=n>veinlevels</span><span class=si>:</span><span class=s1>2d</span><span class=si>}</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=sa>f</span><span class=s1>'warpfreq:   </span><span class=si>{</span><span class=n>ShaderProperties</span><span class=o>.</span><span class=n>warpfreq</span><span class=si>:</span><span class=s1>5.2f</span><span class=si>}</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=sa>f</span><span class=s1>'warping:    </span><span class=si>{</span><span class=n>ShaderProperties</span><span class=o>.</span><span class=n>warping</span><span class=si>:</span><span class=s1>5.2f</span><span class=si>}</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=sa>f</span><span class=s1>'sharpness:  </span><span class=si>{</span><span class=n>ShaderProperties</span><span class=o>.</span><span class=n>sharpness</span><span class=si>:</span><span class=s1>5.2f</span><span class=si>}</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=sa>f</span><span class=s1>'------------'</span>
     <span class=p>)</span>
 
 
-<span class=k>def</span><span class=w> </span><span class=nf>fmt_floats</span><span class=p>(</span><span class=n>v</span><span class=p>,</span> <span class=n>w</span><span class=o>=</span><span class=mi>0</span><span class=p>,</span> <span class=n>d</span><span class=o>=</span><span class=mi>6</span><span class=p>,</span> <span class=n>pt</span><span class=o>=</span><span class=s1>&#39;g&#39;</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=k>def</span><span class=w> </span><span class=nf>fmt_floats</span><span class=p>(</span><span class=n>v</span><span class=p>,</span> <span class=n>w</span><span class=o>=</span><span class=mi>0</span><span class=p>,</span> <span class=n>d</span><span class=o>=</span><span class=mi>6</span><span class=p>,</span> <span class=n>pt</span><span class=o>=</span><span class=s1>'g'</span><span class=p>):</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Pretty print a list or tuple of floats.</span>
 
 <span class=sd>    :param v: The list or tuple of floats.</span>
 <span class=sd>    :param w: Total width of the field.</span>
 <span class=sd>    :param d: The number of decimal places.</span>
-<span class=sd>    :param pt: The presentation type, &#39;f&#39;, &#39;g&#39; or &#39;e&#39;.</span>
+<span class=sd>    :param pt: The presentation type, 'f', 'g' or 'e'.</span>
 <span class=sd>    :return: A string.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=n>pt</span> <span class=o>=</span> <span class=n>pt</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span>
-    <span class=k>if</span> <span class=n>pt</span> <span class=ow>not</span> <span class=ow>in</span> <span class=p>[</span><span class=s1>&#39;f&#39;</span><span class=p>,</span> <span class=s1>&#39;g&#39;</span><span class=p>,</span> <span class=s1>&#39;e&#39;</span><span class=p>]:</span>
-        <span class=n>pt</span> <span class=o>=</span> <span class=s1>&#39;f&#39;</span>
-    <span class=k>return</span> <span class=s1>&#39;, &#39;</span><span class=o>.</span><span class=n>join</span><span class=p>([</span><span class=sa>f</span><span class=s1>&#39;</span><span class=si>{</span><span class=n>element</span><span class=si>:{</span><span class=n>w</span><span class=si>}</span><span class=s1>.</span><span class=si>{</span><span class=n>d</span><span class=si>}{</span><span class=n>pt</span><span class=si>}}</span><span class=s1>&#39;</span> <span class=k>for</span> <span class=n>element</span> <span class=ow>in</span> <span class=n>v</span><span class=p>])</span>
+    <span class=k>if</span> <span class=n>pt</span> <span class=ow>not</span> <span class=ow>in</span> <span class=p>[</span><span class=s1>'f'</span><span class=p>,</span> <span class=s1>'g'</span><span class=p>,</span> <span class=s1>'e'</span><span class=p>]:</span>
+        <span class=n>pt</span> <span class=o>=</span> <span class=s1>'f'</span>
+    <span class=k>return</span> <span class=s1>', '</span><span class=o>.</span><span class=n>join</span><span class=p>([</span><span class=sa>f</span><span class=s1>'</span><span class=si>{</span><span class=n>element</span><span class=si>:{</span><span class=n>w</span><span class=si>}</span><span class=s1>.</span><span class=si>{</span><span class=n>d</span><span class=si>}{</span><span class=n>pt</span><span class=si>}}</span><span class=s1>'</span> <span class=k>for</span> <span class=n>element</span> <span class=ow>in</span> <span class=n>v</span><span class=p>])</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>make_slider_properties</span><span class=p>():</span>
@@ -571,32 +571,32 @@ function registerListener(event, func) {
     <span class=n>sp</span><span class=o>.</span><span class=n>Dimensions</span><span class=o>.</span><span class=n>label_height</span> <span class=o>=</span> <span class=mf>0.025</span>
     <span class=c1># Set color properties:</span>
     <span class=c1># Change the color of the knob that slides.</span>
-    <span class=n>sp</span><span class=o>.</span><span class=n>Colors</span><span class=o>.</span><span class=n>slider_color</span> <span class=o>=</span> <span class=s1>&#39;Green&#39;</span>
+    <span class=n>sp</span><span class=o>.</span><span class=n>Colors</span><span class=o>.</span><span class=n>slider_color</span> <span class=o>=</span> <span class=s1>'Green'</span>
     <span class=c1># Change the color of the text indicating what the slider controls.</span>
-    <span class=n>sp</span><span class=o>.</span><span class=n>Colors</span><span class=o>.</span><span class=n>title_color</span> <span class=o>=</span> <span class=s1>&#39;Black&#39;</span>
+    <span class=n>sp</span><span class=o>.</span><span class=n>Colors</span><span class=o>.</span><span class=n>title_color</span> <span class=o>=</span> <span class=s1>'Black'</span>
     <span class=c1># Change the color of the text displaying the value.</span>
-    <span class=n>sp</span><span class=o>.</span><span class=n>Colors</span><span class=o>.</span><span class=n>label_color</span> <span class=o>=</span> <span class=s1>&#39;DarkSlateGray&#39;</span>
+    <span class=n>sp</span><span class=o>.</span><span class=n>Colors</span><span class=o>.</span><span class=n>label_color</span> <span class=o>=</span> <span class=s1>'DarkSlateGray'</span>
     <span class=c1># Change the color of the knob when the mouse is held on it.</span>
-    <span class=n>sp</span><span class=o>.</span><span class=n>Colors</span><span class=o>.</span><span class=n>selected_color</span> <span class=o>=</span> <span class=s1>&#39;Lime&#39;</span>
+    <span class=n>sp</span><span class=o>.</span><span class=n>Colors</span><span class=o>.</span><span class=n>selected_color</span> <span class=o>=</span> <span class=s1>'Lime'</span>
     <span class=c1># Change the color of the bar.</span>
-    <span class=n>sp</span><span class=o>.</span><span class=n>Colors</span><span class=o>.</span><span class=n>bar_color</span> <span class=o>=</span> <span class=s1>&#39;Black&#39;</span>
+    <span class=n>sp</span><span class=o>.</span><span class=n>Colors</span><span class=o>.</span><span class=n>bar_color</span> <span class=o>=</span> <span class=s1>'Black'</span>
     <span class=c1># Change the color of the ends of the bar.</span>
-    <span class=n>sp</span><span class=o>.</span><span class=n>Colors</span><span class=o>.</span><span class=n>bar_ends_color</span> <span class=o>=</span> <span class=s1>&#39;Indigo&#39;</span>
+    <span class=n>sp</span><span class=o>.</span><span class=n>Colors</span><span class=o>.</span><span class=n>bar_ends_color</span> <span class=o>=</span> <span class=s1>'Indigo'</span>
     <span class=c1># Change the color of the ends of the bar.</span>
-    <span class=n>sp</span><span class=o>.</span><span class=n>Colors</span><span class=o>.</span><span class=n>slider_color</span> <span class=o>=</span> <span class=s1>&#39;BurlyWood&#39;</span>
+    <span class=n>sp</span><span class=o>.</span><span class=n>Colors</span><span class=o>.</span><span class=n>slider_color</span> <span class=o>=</span> <span class=s1>'BurlyWood'</span>
 
     <span class=k>return</span> <span class=n>sp</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>make_2d_slider_widget</span><span class=p>(</span><span class=n>properties</span><span class=p>,</span> <span class=n>current_renderer</span><span class=p>,</span> <span class=n>interactor</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Make a 2D slider widget.</span>
 
 <span class=sd>    :param properties: The 2D slider properties.</span>
 <span class=hll><span class=sd>    :param current_renderer: The current vtkRenderer (where the slider is rendered).</span>
 </span><span class=sd>    :param interactor: The vtkInteractor.</span>
 <span class=sd>    :return: The slider widget.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
 <span class=hll>    <span class=n>slider_rep</span> <span class=o>=</span> <span class=n>vtkSliderRepresentation2D</span><span class=p>(</span><span class=n>minimum_value</span><span class=o>=</span><span class=n>properties</span><span class=o>.</span><span class=n>Range</span><span class=o>.</span><span class=n>minimum_value</span><span class=p>,</span>
@@ -628,9 +628,9 @@ function registerListener(event, func) {
 
     <span class=n>title_font_family</span> <span class=o>=</span> <span class=n>properties</span><span class=o>.</span><span class=n>Text</span><span class=o>.</span><span class=n>title_font_family</span>
     <span class=k>match</span> <span class=n>title_font_family</span><span class=p>:</span>
-        <span class=k>case</span> <span class=s1>&#39;Courier&#39;</span><span class=p>:</span>
+        <span class=k>case</span> <span class=s1>'Courier'</span><span class=p>:</span>
             <span class=n>slider_rep</span><span class=o>.</span><span class=n>title_property</span><span class=o>.</span><span class=n>SetFontFamilyToCourier</span><span class=p>()</span>
-        <span class=k>case</span> <span class=s1>&#39;Times&#39;</span><span class=p>:</span>
+        <span class=k>case</span> <span class=s1>'Times'</span><span class=p>:</span>
             <span class=n>slider_rep</span><span class=o>.</span><span class=n>title_property</span><span class=o>.</span><span class=n>SetFontFamilyToTimes</span><span class=p>()</span>
         <span class=k>case</span><span class=w> </span><span class=k>_</span><span class=p>:</span>
             <span class=n>slider_rep</span><span class=o>.</span><span class=n>title_property</span><span class=o>.</span><span class=n>SetFontFamilyToArial</span><span class=p>()</span>
@@ -639,9 +639,9 @@ function registerListener(event, func) {
     <span class=n>slider_rep</span><span class=o>.</span><span class=n>title_property</span><span class=o>.</span><span class=n>shadow</span> <span class=o>=</span> <span class=n>properties</span><span class=o>.</span><span class=n>Text</span><span class=o>.</span><span class=n>title_shadow</span>
     <span class=n>label_font_family</span> <span class=o>=</span> <span class=n>properties</span><span class=o>.</span><span class=n>Text</span><span class=o>.</span><span class=n>label_font_family</span>
     <span class=k>match</span> <span class=n>label_font_family</span><span class=p>:</span>
-        <span class=k>case</span> <span class=s1>&#39;Courier&#39;</span><span class=p>:</span>
+        <span class=k>case</span> <span class=s1>'Courier'</span><span class=p>:</span>
             <span class=n>slider_rep</span><span class=o>.</span><span class=n>label_property</span><span class=o>.</span><span class=n>SetFontFamilyToCourier</span><span class=p>()</span>
-        <span class=k>case</span> <span class=s1>&#39;Times&#39;</span><span class=p>:</span>
+        <span class=k>case</span> <span class=s1>'Times'</span><span class=p>:</span>
             <span class=n>slider_rep</span><span class=o>.</span><span class=n>label_property</span><span class=o>.</span><span class=n>SetFontFamilyToTimes</span><span class=p>()</span>
         <span class=k>case</span><span class=w> </span><span class=k>_</span><span class=p>:</span>
             <span class=n>slider_rep</span><span class=o>.</span><span class=n>label_property</span><span class=o>.</span><span class=n>SetFontFamilyToArial</span><span class=p>()</span>
@@ -660,8 +660,8 @@ function registerListener(event, func) {
 <span class=k>class</span><span class=w> </span><span class=nc>SliderCallbackVeinFreq</span><span class=p>:</span>
 
     <span class=k>def</span><span class=w> </span><span class=fm>__init__</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
-<span class=w>        </span><span class=sd>&quot;&quot;&quot;</span>
-<span class=sd>        &quot;&quot;&quot;</span>
+<span class=w>        </span><span class=sd>"""</span>
+<span class=sd>        """</span>
         <span class=k>pass</span>
 
     <span class=k>def</span><span class=w> </span><span class=fm>__call__</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>caller</span><span class=p>,</span> <span class=n>ev</span><span class=p>):</span>
@@ -674,8 +674,8 @@ function registerListener(event, func) {
 <span class=k>class</span><span class=w> </span><span class=nc>SliderCallbackVeinLevels</span><span class=p>:</span>
 
     <span class=k>def</span><span class=w> </span><span class=fm>__init__</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
-<span class=w>        </span><span class=sd>&quot;&quot;&quot;</span>
-<span class=sd>        &quot;&quot;&quot;</span>
+<span class=w>        </span><span class=sd>"""</span>
+<span class=sd>        """</span>
         <span class=k>pass</span>
 
     <span class=k>def</span><span class=w> </span><span class=fm>__call__</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>caller</span><span class=p>,</span> <span class=n>ev</span><span class=p>):</span>
@@ -689,8 +689,8 @@ function registerListener(event, func) {
 <span class=k>class</span><span class=w> </span><span class=nc>SliderCallbackWarpFreq</span><span class=p>:</span>
 
     <span class=k>def</span><span class=w> </span><span class=fm>__init__</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
-<span class=w>        </span><span class=sd>&quot;&quot;&quot;</span>
-<span class=sd>        &quot;&quot;&quot;</span>
+<span class=w>        </span><span class=sd>"""</span>
+<span class=sd>        """</span>
         <span class=k>pass</span>
 
     <span class=k>def</span><span class=w> </span><span class=fm>__call__</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>caller</span><span class=p>,</span> <span class=n>ev</span><span class=p>):</span>
@@ -703,8 +703,8 @@ function registerListener(event, func) {
 <span class=k>class</span><span class=w> </span><span class=nc>SliderCallbackWarping</span><span class=p>:</span>
 
     <span class=k>def</span><span class=w> </span><span class=fm>__init__</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
-<span class=w>        </span><span class=sd>&quot;&quot;&quot;</span>
-<span class=sd>        &quot;&quot;&quot;</span>
+<span class=w>        </span><span class=sd>"""</span>
+<span class=sd>        """</span>
         <span class=k>pass</span>
 
     <span class=k>def</span><span class=w> </span><span class=fm>__call__</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>caller</span><span class=p>,</span> <span class=n>ev</span><span class=p>):</span>
@@ -717,8 +717,8 @@ function registerListener(event, func) {
 <span class=k>class</span><span class=w> </span><span class=nc>SliderCallbackSharpness</span><span class=p>:</span>
 
     <span class=k>def</span><span class=w> </span><span class=fm>__init__</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
-<span class=w>        </span><span class=sd>&quot;&quot;&quot;</span>
-<span class=sd>        &quot;&quot;&quot;</span>
+<span class=w>        </span><span class=sd>"""</span>
+<span class=sd>        """</span>
         <span class=k>pass</span>
 
     <span class=k>def</span><span class=w> </span><span class=fm>__call__</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>caller</span><span class=p>,</span> <span class=n>ev</span><span class=p>):</span>
@@ -746,12 +746,12 @@ function registerListener(event, func) {
 <span class=k>class</span><span class=w> </span><span class=nc>Slider2DProperties</span><span class=p>:</span>
     <span class=nd>@dataclass</span>
     <span class=k>class</span><span class=w> </span><span class=nc>Colors</span><span class=p>:</span>
-        <span class=n>title_color</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s1>&#39;White&#39;</span>
-        <span class=n>label_color</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s1>&#39;White&#39;</span>
-        <span class=n>slider_color</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s1>&#39;White&#39;</span>
-        <span class=n>selected_color</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s1>&#39;HotPink&#39;</span>
-        <span class=n>bar_color</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s1>&#39;White&#39;</span>
-        <span class=n>bar_ends_color</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s1>&#39;White&#39;</span>
+        <span class=n>title_color</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s1>'White'</span>
+        <span class=n>label_color</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s1>'White'</span>
+        <span class=n>slider_color</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s1>'White'</span>
+        <span class=n>selected_color</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s1>'HotPink'</span>
+        <span class=n>bar_color</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s1>'White'</span>
+        <span class=n>bar_ends_color</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s1>'White'</span>
 
     <span class=nd>@dataclass</span>
     <span class=k>class</span><span class=w> </span><span class=nc>Dimensions</span><span class=p>:</span>
@@ -778,12 +778,12 @@ function registerListener(event, func) {
     <span class=nd>@dataclass</span>
     <span class=k>class</span><span class=w> </span><span class=nc>Text</span><span class=p>:</span>
         <span class=c1># Font families are: Ariel, Courier and Times</span>
-        <span class=n>title</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s1>&#39;&#39;</span>
-        <span class=n>title_font_family</span> <span class=o>=</span> <span class=s1>&#39;Arial&#39;</span>
+        <span class=n>title</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s1>''</span>
+        <span class=n>title_font_family</span> <span class=o>=</span> <span class=s1>'Arial'</span>
         <span class=n>title_bold</span><span class=p>:</span> <span class=nb>bool</span> <span class=o>=</span> <span class=kc>True</span>
         <span class=n>title_italic</span><span class=p>:</span> <span class=nb>bool</span> <span class=o>=</span> <span class=kc>False</span>
         <span class=n>title_shadow</span><span class=p>:</span> <span class=nb>bool</span> <span class=o>=</span> <span class=kc>True</span>
-        <span class=n>label_font_family</span> <span class=o>=</span> <span class=s1>&#39;Arial&#39;</span>
+        <span class=n>label_font_family</span> <span class=o>=</span> <span class=s1>'Arial'</span>
         <span class=n>label_bold</span><span class=p>:</span> <span class=nb>bool</span> <span class=o>=</span> <span class=kc>True</span>
         <span class=n>label_italic</span><span class=p>:</span> <span class=nb>bool</span> <span class=o>=</span> <span class=kc>False</span>
         <span class=n>label_shadow</span><span class=p>:</span> <span class=nb>bool</span> <span class=o>=</span> <span class=kc>True</span>
@@ -799,6 +799,6 @@ function registerListener(event, func) {
     <span class=n>sharpness</span><span class=p>:</span> <span class=nb>float</span> <span class=o>=</span> <span class=mf>8.0</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

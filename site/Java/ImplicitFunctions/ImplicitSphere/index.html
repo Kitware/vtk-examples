@@ -76,7 +76,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>vtkNativeLibrary</span><span class=p>.</span><span class=na>LoadAllNativeLibraries</span><span class=p>())</span><span class=w> </span><span class=p>{</span>
 <span class=w>      </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=n>vtkNativeLibrary</span><span class=w> </span><span class=n>lib</span><span class=w> </span><span class=p>:</span><span class=w> </span><span class=n>vtkNativeLibrary</span><span class=p>.</span><span class=na>values</span><span class=p>())</span><span class=w> </span><span class=p>{</span>
 <span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>lib</span><span class=p>.</span><span class=na>IsLoaded</span><span class=p>())</span><span class=w> </span><span class=p>{</span>
-<span class=w>          </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&quot; not loaded&quot;</span><span class=p>);</span>
+<span class=w>          </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>" not loaded"</span><span class=p>);</span>
 <span class=w>        </span><span class=p>}</span>
 <span class=w>      </span><span class=p>}</span>
 <span class=w>    </span><span class=p>}</span>
@@ -87,7 +87,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=kd>public</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>main</span><span class=w> </span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=o>[]</span><span class=n>args</span><span class=p>)</span><span class=w> </span><span class=p>{</span>
 <span class=w>    </span><span class=c1>// </span>
 <span class=hll><span class=w>    </span><span class=c1>// Next we create an instance of vtkSphereSource and set some of its</span>
-</span><span class=hll><span class=w>    </span><span class=c1>// properties. The instance of vtkSphereSource &quot;sphere&quot; is part of a</span>
+</span><span class=hll><span class=w>    </span><span class=c1>// properties. The instance of vtkSphereSource "sphere" is part of a</span>
 </span><span class=w>    </span><span class=c1>// visualization pipeline (it is a source process object); it produces data</span>
 <span class=hll><span class=w>    </span><span class=c1>// (output type is vtkPolyData) which other filters may process.</span>
 </span><span class=w>    </span><span class=c1>//</span>
@@ -149,9 +149,9 @@ function registerListener(event, func) {
 </span><span class=w>    </span><span class=n>sphereMapper</span><span class=p>.</span><span class=na>SetInput</span><span class=p>(</span><span class=w> </span><span class=n>apf</span><span class=p>.</span><span class=na>GetOutput</span><span class=p>()</span><span class=w> </span><span class=p>);</span>
 <span class=w>    </span><span class=c1>// </span>
 <span class=w>    </span><span class=c1>// Create an actor to represent the sphere. The actor orchestrates rendering</span>
-<span class=w>    </span><span class=c1>// of the mapper&#39;s graphics primitives. An actor also refers to properties</span>
+<span class=w>    </span><span class=c1>// of the mapper's graphics primitives. An actor also refers to properties</span>
 <span class=hll><span class=w>    </span><span class=c1>// via a vtkProperty instance, and includes an internal transformation</span>
-</span><span class=w>    </span><span class=c1>// matrix. We set this actor&#39;s mapper to be sphereMapper which we created</span>
+</span><span class=w>    </span><span class=c1>// matrix. We set this actor's mapper to be sphereMapper which we created</span>
 <span class=w>    </span><span class=c1>// above.</span>
 <span class=w>    </span><span class=c1>//</span>
 <span class=hll><span class=w>    </span><span class=n>vtkActor</span><span class=w> </span><span class=n>sphereActor</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkActor</span><span class=p>();</span>

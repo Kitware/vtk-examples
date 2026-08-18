@@ -69,7 +69,7 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=c1>// create a 2-element array</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkDoubleArray</span><span class=o>&gt;</span><span class=w> </span><span class=n>array</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>array</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>&quot;array&quot;</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>array</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>"array"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>array</span><span class=o>-&gt;</span><span class=n>SetNumberOfComponents</span><span class=p>(</span><span class=mi>1</span><span class=p>);</span>
 <span class=w>  </span><span class=n>array</span><span class=o>-&gt;</span><span class=n>SetNumberOfTuples</span><span class=p>(</span><span class=mi>2</span><span class=p>);</span>
 <span class=w>  </span><span class=n>array</span><span class=o>-&gt;</span><span class=n>SetValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mf>1.</span><span class=p>);</span>
@@ -79,8 +79,8 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkInformation</span><span class=o>*</span><span class=w> </span><span class=n>info</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>array</span><span class=o>-&gt;</span><span class=n>GetInformation</span><span class=p>();</span>
 </span>
 <span class=w>  </span><span class=c1>// add one attribute, a double vector</span>
-<span class=w>  </span><span class=k>const</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>name</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&quot;myKey&quot;</span><span class=p>;</span>
-<span class=w>  </span><span class=k>const</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>location</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&quot;MyClass&quot;</span><span class=p>;</span><span class=w> </span><span class=c1>//</span>
+<span class=w>  </span><span class=k>const</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>name</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>"myKey"</span><span class=p>;</span>
+<span class=w>  </span><span class=k>const</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>location</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>"MyClass"</span><span class=p>;</span><span class=w> </span><span class=c1>//</span>
 <span class=w>  </span><span class=k>const</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>length</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>3</span><span class=p>;</span>
 <span class=hll><span class=w>  </span><span class=n>vtkInformationDoubleVectorKey</span><span class=o>*</span><span class=w> </span><span class=n>key</span><span class=w> </span><span class=o>=</span>
 </span><span class=hll><span class=w>      </span><span class=k>new</span><span class=w> </span><span class=n>vtkInformationDoubleVectorKey</span><span class=p>(</span><span class=n>name</span><span class=p>,</span><span class=w> </span><span class=n>location</span><span class=p>,</span><span class=w> </span><span class=n>length</span><span class=p>);</span>
@@ -89,8 +89,8 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=c1>// extract the key</span>
 <span class=w>  </span><span class=k>const</span><span class=w> </span><span class=kt>double</span><span class=o>*</span><span class=w> </span><span class=n>vals</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>info</span><span class=o>-&gt;</span><span class=n>Get</span><span class=p>(</span><span class=n>key</span><span class=p>);</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;extracted values are: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>vals</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;, &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>vals</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;, &quot;</span>
-<span class=w>            </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>vals</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=sc>&#39;\n&#39;</span><span class=p>;</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"extracted values are: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>vals</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>", "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>vals</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>", "</span>
+<span class=w>            </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>vals</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=sc>'\n'</span><span class=p>;</span>
 
 <span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>EXIT_SUCCESS</span><span class=p>;</span>
 <span class=p>}</span>
@@ -103,11 +103,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;AttachAttributes: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"AttachAttributes: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>AttachAttributes</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>AttachAttributes.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>AttachAttributes</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

@@ -124,7 +124,7 @@ function registerListener(event, func) {
 </span><span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkIntArray</span><span class=o>&gt;</span><span class=w> </span><span class=n>CreateExtremeValueDistribution</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span><span class=w> </span><span class=kt>double</span><span class=p>,</span>
 </span><span class=w>                                                            </span><span class=kt>double</span><span class=p>);</span>
 <span class=p>}</span><span class=w> </span><span class=c1>// namespace</span>
-<span class=kt>int</span><span class=w> </span><span class=n>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=p>[])</span>
+<span class=kt>int</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=p>[])</span>
 <span class=p>{</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span><span class=w> </span><span class=n>colors</span><span class=p>;</span>
@@ -133,16 +133,16 @@ function registerListener(event, func) {
 </span>
 <span class=w>  </span><span class=kt>int</span><span class=w> </span><span class=n>count</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>100000</span><span class=p>;</span>
 <span class=hll><span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=p>,</span><span class=w> </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkIntArray</span><span class=o>&gt;&gt;</span><span class=w> </span><span class=n>frequencies</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>frequencies</span><span class=p>[</span><span class=s>&quot;Uniform Distribution&quot;</span><span class=p>]</span><span class=w> </span><span class=o>=</span>
+</span><span class=w>  </span><span class=n>frequencies</span><span class=p>[</span><span class=s>"Uniform Distribution"</span><span class=p>]</span><span class=w> </span><span class=o>=</span>
 <span class=w>      </span><span class=n>CreateUniformDistribution</span><span class=p>(</span><span class=n>count</span><span class=p>,</span><span class=w> </span><span class=mf>-200.0</span><span class=p>,</span><span class=w> </span><span class=mf>200.0</span><span class=p>);</span>
-<span class=w>  </span><span class=n>frequencies</span><span class=p>[</span><span class=s>&quot;Normal Distribution&quot;</span><span class=p>]</span><span class=w> </span><span class=o>=</span>
+<span class=w>  </span><span class=n>frequencies</span><span class=p>[</span><span class=s>"Normal Distribution"</span><span class=p>]</span><span class=w> </span><span class=o>=</span>
 <span class=w>      </span><span class=n>CreateNormalDistribution</span><span class=p>(</span><span class=n>count</span><span class=p>,</span><span class=w> </span><span class=mf>0.0</span><span class=p>,</span><span class=w> </span><span class=mf>6.0</span><span class=p>);</span>
-<span class=w>  </span><span class=n>frequencies</span><span class=p>[</span><span class=s>&quot;Weibull Distribution&quot;</span><span class=p>]</span><span class=w> </span><span class=o>=</span>
+<span class=w>  </span><span class=n>frequencies</span><span class=p>[</span><span class=s>"Weibull Distribution"</span><span class=p>]</span><span class=w> </span><span class=o>=</span>
 <span class=w>      </span><span class=n>CreateWeibullDistribution</span><span class=p>(</span><span class=n>count</span><span class=p>,</span><span class=w> </span><span class=mf>1.5</span><span class=p>,</span><span class=w> </span><span class=mf>1.0</span><span class=p>);</span>
-<span class=w>  </span><span class=n>frequencies</span><span class=p>[</span><span class=s>&quot;Gamma Distribution&quot;</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>CreateGammaDistribution</span><span class=p>(</span><span class=n>count</span><span class=p>,</span><span class=w> </span><span class=mf>2.0</span><span class=p>,</span><span class=w> </span><span class=mf>2.0</span><span class=p>);</span>
-<span class=w>  </span><span class=n>frequencies</span><span class=p>[</span><span class=s>&quot;Cauchy Distribution&quot;</span><span class=p>]</span><span class=w> </span><span class=o>=</span>
+<span class=w>  </span><span class=n>frequencies</span><span class=p>[</span><span class=s>"Gamma Distribution"</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>CreateGammaDistribution</span><span class=p>(</span><span class=n>count</span><span class=p>,</span><span class=w> </span><span class=mf>2.0</span><span class=p>,</span><span class=w> </span><span class=mf>2.0</span><span class=p>);</span>
+<span class=w>  </span><span class=n>frequencies</span><span class=p>[</span><span class=s>"Cauchy Distribution"</span><span class=p>]</span><span class=w> </span><span class=o>=</span>
 <span class=w>      </span><span class=n>CreateCauchyDistribution</span><span class=p>(</span><span class=n>count</span><span class=p>,</span><span class=w> </span><span class=mf>-1.0</span><span class=p>,</span><span class=w> </span><span class=mf>2.0</span><span class=p>);</span>
-<span class=w>  </span><span class=n>frequencies</span><span class=p>[</span><span class=s>&quot;Extreme Value Distribution&quot;</span><span class=p>]</span><span class=w> </span><span class=o>=</span>
+<span class=w>  </span><span class=n>frequencies</span><span class=p>[</span><span class=s>"Extreme Value Distribution"</span><span class=p>]</span><span class=w> </span><span class=o>=</span>
 <span class=w>      </span><span class=n>CreateExtremeValueDistribution</span><span class=p>(</span><span class=n>count</span><span class=p>,</span><span class=w> </span><span class=mf>.5</span><span class=p>,</span><span class=w> </span><span class=mf>1.0</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;&gt;</span><span class=w> </span><span class=n>renderers</span><span class=p>;</span>
@@ -158,13 +158,13 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=n>chart</span><span class=o>-&gt;</span><span class=n>SetTitle</span><span class=p>(</span><span class=n>fit</span><span class=o>-&gt;</span><span class=n>first</span><span class=p>.</span><span class=n>c_str</span><span class=p>());</span>
 <span class=w>    </span><span class=n>chart</span><span class=o>-&gt;</span><span class=n>GetPositionCoordinate</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetValue</span><span class=p>(</span><span class=mf>0.05</span><span class=p>,</span><span class=w> </span><span class=mf>0.05</span><span class=p>,</span><span class=w> </span><span class=mf>0.0</span><span class=p>);</span>
 <span class=w>    </span><span class=n>chart</span><span class=o>-&gt;</span><span class=n>GetPosition2Coordinate</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetValue</span><span class=p>(</span><span class=mf>0.95</span><span class=p>,</span><span class=w> </span><span class=mf>0.85</span><span class=p>,</span><span class=w> </span><span class=mf>0.0</span><span class=p>);</span>
-<span class=w>    </span><span class=n>chart</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Yellow&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>    </span><span class=n>chart</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Yellow"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>    </span><span class=n>chart</span><span class=o>-&gt;</span><span class=n>LegendVisibilityOff</span><span class=p>();</span>
 <span class=w>    </span><span class=n>chart</span><span class=o>-&gt;</span><span class=n>LabelVisibilityOff</span><span class=p>();</span>
 <span class=w>    </span><span class=n>chart</span><span class=o>-&gt;</span><span class=n>TitleVisibilityOff</span><span class=p>();</span>
 <span class=w>    </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>c</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>c</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>count</span><span class=p>;</span><span class=w> </span><span class=o>++</span><span class=n>c</span><span class=p>)</span>
 <span class=w>    </span><span class=p>{</span>
-<span class=w>      </span><span class=n>chart</span><span class=o>-&gt;</span><span class=n>SetBarColor</span><span class=p>(</span><span class=n>c</span><span class=p>,</span><span class=w> </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;MidnightBlue&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>      </span><span class=n>chart</span><span class=o>-&gt;</span><span class=n>SetBarColor</span><span class=p>(</span><span class=n>c</span><span class=p>,</span><span class=w> </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"MidnightBlue"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>    </span><span class=p>}</span>
 <span class=w>    </span><span class=c1>// Create a title.</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTextProperty</span><span class=o>&gt;</span><span class=w> </span><span class=n>titleProperty</span><span class=p>;</span>
@@ -181,12 +181,12 @@ function registerListener(event, func) {
 <span class=w>        </span><span class=o>-&gt;</span><span class=n>SetCoordinateSystemToNormalizedViewport</span><span class=p>();</span>
 <span class=w>    </span><span class=n>titleActor</span><span class=o>-&gt;</span><span class=n>GetPositionCoordinate</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetValue</span><span class=p>(</span><span class=mf>.5</span><span class=p>,</span><span class=w> </span><span class=mf>.85</span><span class=p>,</span><span class=w> </span><span class=mf>0.0</span><span class=p>);</span>
 <span class=w>    </span><span class=n>titleActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
-<span class=w>        </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;MidnightBlue&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>        </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"MidnightBlue"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderer</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>chart</span><span class=p>);</span>
 <span class=w>    </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>titleActor</span><span class=p>);</span>
-<span class=w>    </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;SlateGray&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>    </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"SlateGray"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>    </span><span class=n>renderers</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>renderer</span><span class=p>);</span>
 <span class=w>    </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>);</span>
 <span class=w>  </span><span class=p>}</span>
@@ -198,7 +198,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=c1>// Define side length (in pixels) of each renderer square.</span>
 <span class=w>  </span><span class=kt>int</span><span class=w> </span><span class=n>rendererSize</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>300</span><span class=p>;</span>
 
-<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;CompareRandomGeneratorsCxx&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"CompareRandomGeneratorsCxx"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=n>rendererSize</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=n>gridCols</span><span class=p>,</span><span class=w> </span><span class=n>rendererSize</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=n>gridRows</span><span class=p>);</span>
 
 <span class=w>  </span><span class=c1>// Set up a grid of viewports for each renderer.</span>
@@ -209,7 +209,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=p>{</span>
 <span class=w>      </span><span class=c1>// auto index = row * gridCols + col;</span>
 
-<span class=w>      </span><span class=c1>// Set the renderer&#39;s viewport dimensions (xmin, ymin, xmax, ymax) within</span>
+<span class=w>      </span><span class=c1>// Set the renderer's viewport dimensions (xmin, ymin, xmax, ymax) within</span>
 <span class=w>      </span><span class=c1>// the render window. Note that for the Y values, we need to subtract the</span>
 <span class=w>      </span><span class=c1>// row index from gridRows because the viewport Y axis points upwards, but</span>
 <span class=w>      </span><span class=c1>// we want to draw the grid from top to down.</span>
@@ -271,7 +271,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=n>frequenciesArray</span><span class=o>-&gt;</span><span class=n>SetTypedTuple</span><span class=p>(</span><span class=n>i</span><span class=p>,</span><span class=w> </span><span class=o>&amp;</span><span class=n>frequencies</span><span class=p>[</span><span class=n>i</span><span class=p>]);</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=n>frequenciesArray</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>&quot;frequencies&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>frequenciesArray</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>"frequencies"</span><span class=p>);</span>
 
 <span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>frequenciesArray</span><span class=p>;</span>
 <span class=p>}</span>
@@ -313,7 +313,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=n>frequenciesArray</span><span class=o>-&gt;</span><span class=n>SetTypedTuple</span><span class=p>(</span><span class=n>i</span><span class=p>,</span><span class=w> </span><span class=o>&amp;</span><span class=n>frequencies</span><span class=p>[</span><span class=n>i</span><span class=p>]);</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=n>frequenciesArray</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>&quot;frequencies&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>frequenciesArray</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>"frequencies"</span><span class=p>);</span>
 
 <span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>frequenciesArray</span><span class=p>;</span>
 <span class=p>}</span>
@@ -354,7 +354,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=n>frequenciesArray</span><span class=o>-&gt;</span><span class=n>SetTypedTuple</span><span class=p>(</span><span class=n>i</span><span class=p>,</span><span class=w> </span><span class=o>&amp;</span><span class=n>frequencies</span><span class=p>[</span><span class=n>i</span><span class=p>]);</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=n>frequenciesArray</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>&quot;frequencies&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>frequenciesArray</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>"frequencies"</span><span class=p>);</span>
 
 <span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>frequenciesArray</span><span class=p>;</span>
 <span class=p>}</span>
@@ -395,7 +395,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=n>frequenciesArray</span><span class=o>-&gt;</span><span class=n>SetTypedTuple</span><span class=p>(</span><span class=n>i</span><span class=p>,</span><span class=w> </span><span class=o>&amp;</span><span class=n>frequencies</span><span class=p>[</span><span class=n>i</span><span class=p>]);</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=n>frequenciesArray</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>&quot;frequencies&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>frequenciesArray</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>"frequencies"</span><span class=p>);</span>
 
 <span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>frequenciesArray</span><span class=p>;</span>
 <span class=p>}</span>
@@ -439,7 +439,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=n>frequenciesArray</span><span class=o>-&gt;</span><span class=n>SetTypedTuple</span><span class=p>(</span><span class=n>i</span><span class=p>,</span><span class=w> </span><span class=o>&amp;</span><span class=n>frequencies</span><span class=p>[</span><span class=n>i</span><span class=p>]);</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=n>frequenciesArray</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>&quot;frequencies&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>frequenciesArray</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>"frequencies"</span><span class=p>);</span>
 
 <span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>frequenciesArray</span><span class=p>;</span>
 <span class=p>}</span>
@@ -481,7 +481,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=n>frequenciesArray</span><span class=o>-&gt;</span><span class=n>SetTypedTuple</span><span class=p>(</span><span class=n>i</span><span class=p>,</span><span class=w> </span><span class=o>&amp;</span><span class=n>frequencies</span><span class=p>[</span><span class=n>i</span><span class=p>]);</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=n>frequenciesArray</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>&quot;frequencies&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>frequenciesArray</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>"frequencies"</span><span class=p>);</span>
 
 <span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>frequenciesArray</span><span class=p>;</span>
 <span class=p>}</span>
@@ -504,11 +504,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;CompareRandomGeneratorsCxx: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"CompareRandomGeneratorsCxx: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>CompareRandomGeneratorsCxx</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>CompareRandomGeneratorsCxx.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>CompareRandomGeneratorsCxx</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

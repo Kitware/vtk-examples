@@ -114,14 +114,14 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_program_parameters</span><span class=p>():</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>argparse</span>
-<span class=hll>    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;How to align two vtkPolyData</span><span class=se>\&#39;</span><span class=s1>s.&#39;</span>
-</span>    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;</span>
+<span class=hll>    <span class=n>description</span> <span class=o>=</span> <span class=s1>'How to align two vtkPolyData</span><span class=se>\'</span><span class=s1>s.'</span>
+</span>    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>'''</span>
 
-<span class=s1>    &#39;&#39;&#39;</span>
+<span class=s1>    '''</span>
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
                                      <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawTextHelpFormatter</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;src_fn&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The polydata source file name,e.g. thingiverse/Grey_Nurse_Shark.stl.&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;tgt_fn&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The polydata target file name, e.g. greatWhite.stl.&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'src_fn'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'The polydata source file name,e.g. thingiverse/Grey_Nurse_Shark.stl.'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'tgt_fn'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'The polydata target file name, e.g. greatWhite.stl.'</span><span class=p>)</span>
 
     <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
 
@@ -132,14 +132,14 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
     <span class=n>src_fn</span><span class=p>,</span> <span class=n>tgt_fn</span> <span class=o>=</span> <span class=n>get_program_parameters</span><span class=p>()</span>
-    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Loading source:&#39;</span><span class=p>,</span> <span class=n>src_fn</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s1>'Loading source:'</span><span class=p>,</span> <span class=n>src_fn</span><span class=p>)</span>
     <span class=n>source_polydata</span> <span class=o>=</span> <span class=n>read_poly_data</span><span class=p>(</span><span class=n>src_fn</span><span class=p>)</span>
     <span class=c1># Save the source polydata in case the alignment process does not improve</span>
     <span class=c1># segmentation.</span>
 <span class=hll>    <span class=n>original_source_polydata</span> <span class=o>=</span> <span class=n>vtkPolyData</span><span class=p>()</span>
 </span>    <span class=n>original_source_polydata</span><span class=o>.</span><span class=n>DeepCopy</span><span class=p>(</span><span class=n>source_polydata</span><span class=p>)</span>
 
-    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Loading target:&#39;</span><span class=p>,</span> <span class=n>tgt_fn</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s1>'Loading target:'</span><span class=p>,</span> <span class=n>tgt_fn</span><span class=p>)</span>
     <span class=n>target_polydata</span> <span class=o>=</span> <span class=n>read_poly_data</span><span class=p>(</span><span class=n>tgt_fn</span><span class=p>)</span>
 
     <span class=c1># If the target orientation is markedly different, you may need to apply a</span>
@@ -147,7 +147,7 @@ function registerListener(event, func) {
     <span class=c1># For example, when using Grey_Nurse_Shark.stl as the source and</span>
     <span class=c1># greatWhite.stl as the target, you need to transform the target.</span>
 <span class=hll>    <span class=n>trnf</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
-</span>    <span class=k>if</span> <span class=n>Path</span><span class=p>(</span><span class=n>src_fn</span><span class=p>)</span><span class=o>.</span><span class=n>name</span> <span class=o>==</span> <span class=s1>&#39;Grey_Nurse_Shark.stl&#39;</span> <span class=ow>and</span> <span class=n>Path</span><span class=p>(</span><span class=n>tgt_fn</span><span class=p>)</span><span class=o>.</span><span class=n>name</span> <span class=o>==</span> <span class=s1>&#39;greatWhite.stl&#39;</span><span class=p>:</span>
+</span>    <span class=k>if</span> <span class=n>Path</span><span class=p>(</span><span class=n>src_fn</span><span class=p>)</span><span class=o>.</span><span class=n>name</span> <span class=o>==</span> <span class=s1>'Grey_Nurse_Shark.stl'</span> <span class=ow>and</span> <span class=n>Path</span><span class=p>(</span><span class=n>tgt_fn</span><span class=p>)</span><span class=o>.</span><span class=n>name</span> <span class=o>==</span> <span class=s1>'greatWhite.stl'</span><span class=p>:</span>
         <span class=n>trnf</span><span class=o>.</span><span class=n>RotateY</span><span class=p>(</span><span class=mi>90</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>tpd</span> <span class=o>=</span> <span class=n>vtkTransformPolyDataFilter</span><span class=p>()</span>
@@ -166,7 +166,7 @@ function registerListener(event, func) {
     <span class=n>distance</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>source_polydata</span><span class=p>)</span>
     <span class=n>distance</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
 
-    <span class=n>distance_before_align</span> <span class=o>=</span> <span class=n>distance</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span><span class=o>.</span><span class=n>GetFieldData</span><span class=p>()</span><span class=o>.</span><span class=n>GetArray</span><span class=p>(</span><span class=s1>&#39;HausdorffDistance&#39;</span><span class=p>)</span><span class=o>.</span><span class=n>GetComponent</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
+    <span class=n>distance_before_align</span> <span class=o>=</span> <span class=n>distance</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span><span class=o>.</span><span class=n>GetFieldData</span><span class=p>()</span><span class=o>.</span><span class=n>GetArray</span><span class=p>(</span><span class=s1>'HausdorffDistance'</span><span class=p>)</span><span class=o>.</span><span class=n>GetComponent</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
 
     <span class=c1># Get initial alignment using oriented bounding boxes.</span>
     <span class=n>align_bounding_boxes</span><span class=p>(</span><span class=n>source_polydata</span><span class=p>,</span> <span class=n>tpd</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>())</span>
@@ -175,7 +175,7 @@ function registerListener(event, func) {
     <span class=n>distance</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>source_polydata</span><span class=p>)</span>
     <span class=n>distance</span><span class=o>.</span><span class=n>Modified</span><span class=p>()</span>
     <span class=n>distance</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
-    <span class=n>distance_after_align</span> <span class=o>=</span> <span class=n>distance</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span><span class=o>.</span><span class=n>GetFieldData</span><span class=p>()</span><span class=o>.</span><span class=n>GetArray</span><span class=p>(</span><span class=s1>&#39;HausdorffDistance&#39;</span><span class=p>)</span><span class=o>.</span><span class=n>GetComponent</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
+    <span class=n>distance_after_align</span> <span class=o>=</span> <span class=n>distance</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span><span class=o>.</span><span class=n>GetFieldData</span><span class=p>()</span><span class=o>.</span><span class=n>GetArray</span><span class=p>(</span><span class=s1>'HausdorffDistance'</span><span class=p>)</span><span class=o>.</span><span class=n>GetComponent</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
 
     <span class=n>best_distance</span> <span class=o>=</span> <span class=nb>min</span><span class=p>(</span><span class=n>distance_before_align</span><span class=p>,</span> <span class=n>distance_after_align</span><span class=p>)</span>
 
@@ -209,30 +209,30 @@ function registerListener(event, func) {
     <span class=n>distance</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
 
     <span class=c1># Note: If there is an error extracting eigenfunctions, then this will be zero.</span>
-    <span class=n>distance_after_icp</span> <span class=o>=</span> <span class=n>distance</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span><span class=o>.</span><span class=n>GetFieldData</span><span class=p>()</span><span class=o>.</span><span class=n>GetArray</span><span class=p>(</span><span class=s1>&#39;HausdorffDistance&#39;</span><span class=p>)</span><span class=o>.</span><span class=n>GetComponent</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
+    <span class=n>distance_after_icp</span> <span class=o>=</span> <span class=n>distance</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span><span class=o>.</span><span class=n>GetFieldData</span><span class=p>()</span><span class=o>.</span><span class=n>GetArray</span><span class=p>(</span><span class=s1>'HausdorffDistance'</span><span class=p>)</span><span class=o>.</span><span class=n>GetComponent</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
 
     <span class=c1># Check if ICP worked.</span>
     <span class=k>if</span> <span class=ow>not</span> <span class=p>(</span><span class=n>math</span><span class=o>.</span><span class=n>isnan</span><span class=p>(</span><span class=n>icp_mean_distance</span><span class=p>)</span> <span class=ow>or</span> <span class=n>math</span><span class=o>.</span><span class=n>isinf</span><span class=p>(</span><span class=n>icp_mean_distance</span><span class=p>)):</span>
         <span class=k>if</span> <span class=n>distance_after_icp</span> <span class=o>&lt;</span> <span class=n>best_distance</span><span class=p>:</span>
             <span class=n>best_distance</span> <span class=o>=</span> <span class=n>distance_after_icp</span>
 
-    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Distances:&#39;</span><span class=p>)</span>
-    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;  Before aligning:                        </span><span class=si>{:0.5f}</span><span class=s1>&#39;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>distance_before_align</span><span class=p>))</span>
-    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;  Aligning using oriented bounding boxes: </span><span class=si>{:0.5f}</span><span class=s1>&#39;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>distance_before_align</span><span class=p>))</span>
-    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;  Aligning using IterativeClosestPoint:   </span><span class=si>{:0.5f}</span><span class=s1>&#39;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>distance_after_icp</span><span class=p>))</span>
-    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;  Best distance:                          </span><span class=si>{:0.5f}</span><span class=s1>&#39;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>best_distance</span><span class=p>))</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s1>'Distances:'</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s1>'  Before aligning:                        </span><span class=si>{:0.5f}</span><span class=s1>'</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>distance_before_align</span><span class=p>))</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s1>'  Aligning using oriented bounding boxes: </span><span class=si>{:0.5f}</span><span class=s1>'</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>distance_before_align</span><span class=p>))</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s1>'  Aligning using IterativeClosestPoint:   </span><span class=si>{:0.5f}</span><span class=s1>'</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>distance_after_icp</span><span class=p>))</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s1>'  Best distance:                          </span><span class=si>{:0.5f}</span><span class=s1>'</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>best_distance</span><span class=p>))</span>
 
     <span class=c1># Select the source to use.</span>
 <span class=hll>    <span class=n>source_mapper</span> <span class=o>=</span> <span class=n>vtkDataSetMapper</span><span class=p>()</span>
 </span>    <span class=k>if</span> <span class=n>best_distance</span> <span class=o>==</span> <span class=n>distance_before_align</span><span class=p>:</span>
         <span class=n>source_mapper</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>original_source_polydata</span><span class=p>)</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Using original alignment&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'Using original alignment'</span><span class=p>)</span>
     <span class=k>elif</span> <span class=n>best_distance</span> <span class=o>==</span> <span class=n>distance_after_align</span><span class=p>:</span>
         <span class=n>source_mapper</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>source_polydata</span><span class=p>)</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Using alignment by OBB&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'Using alignment by OBB'</span><span class=p>)</span>
     <span class=k>else</span><span class=p>:</span>
         <span class=n>source_mapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>transform</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Using alignment by ICP&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'Using alignment by ICP'</span><span class=p>)</span>
     <span class=n>source_mapper</span><span class=o>.</span><span class=n>ScalarVisibilityOff</span><span class=p>()</span>
 
 
@@ -243,17 +243,17 @@ function registerListener(event, func) {
         <span class=n>writer</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>source_polydata</span><span class=p>)</span>
     <span class=k>else</span><span class=p>:</span>
         <span class=n>writer</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>transform</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>())</span>
-    <span class=n>writer</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=s1>&#39;AlignedSource.vtk&#39;</span><span class=p>)</span>
+    <span class=n>writer</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=s1>'AlignedSource.vtk'</span><span class=p>)</span>
     <span class=n>writer</span><span class=o>.</span><span class=n>Write</span><span class=p>()</span>
     <span class=n>writer</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>tpd</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>())</span>
-    <span class=n>writer</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=s1>&#39;Target.vtk&#39;</span><span class=p>)</span>
+    <span class=n>writer</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=s1>'Target.vtk'</span><span class=p>)</span>
     <span class=n>writer</span><span class=o>.</span><span class=n>Write</span><span class=p>()</span>
 
 <span class=hll>    <span class=n>source_actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>source_actor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>source_mapper</span><span class=p>)</span>
     <span class=n>source_actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetOpacity</span><span class=p>(</span><span class=mf>0.6</span><span class=p>)</span>
     <span class=n>source_actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetDiffuseColor</span><span class=p>(</span>
-        <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;White&#39;</span><span class=p>))</span>
+        <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'White'</span><span class=p>))</span>
     <span class=n>renderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>source_actor</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>target_mapper</span> <span class=o>=</span> <span class=n>vtkDataSetMapper</span><span class=p>()</span>
@@ -263,11 +263,11 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>target_actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>target_actor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>target_mapper</span><span class=p>)</span>
     <span class=n>target_actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetDiffuseColor</span><span class=p>(</span>
-        <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Tomato&#39;</span><span class=p>))</span>
+        <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Tomato'</span><span class=p>))</span>
     <span class=n>renderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>target_actor</span><span class=p>)</span>
 
     <span class=n>render_window</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>)</span>
-    <span class=n>renderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;sea_green_light&quot;</span><span class=p>))</span>
+    <span class=n>renderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>"sea_green_light"</span><span class=p>))</span>
     <span class=n>renderer</span><span class=o>.</span><span class=n>UseHiddenLineRemovalOn</span><span class=p>()</span>
 
     <span class=k>if</span> <span class=n>vtk_version_ok</span><span class=p>(</span><span class=mi>9</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>20210718</span><span class=p>):</span>
@@ -282,7 +282,7 @@ function registerListener(event, func) {
 <span class=hll>        <span class=n>axes</span> <span class=o>=</span> <span class=n>vtkAxesActor</span><span class=p>()</span>
 </span><span class=hll>        <span class=n>widget</span> <span class=o>=</span> <span class=n>vtkOrientationMarkerWidget</span><span class=p>()</span>
 </span>        <span class=n>rgba</span> <span class=o>=</span> <span class=p>[</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>]</span>
-        <span class=n>colors</span><span class=o>.</span><span class=n>GetColor</span><span class=p>(</span><span class=s2>&quot;Carrot&quot;</span><span class=p>,</span> <span class=n>rgba</span><span class=p>)</span>
+        <span class=n>colors</span><span class=o>.</span><span class=n>GetColor</span><span class=p>(</span><span class=s2>"Carrot"</span><span class=p>,</span> <span class=n>rgba</span><span class=p>)</span>
         <span class=n>widget</span><span class=o>.</span><span class=n>SetOutlineColor</span><span class=p>(</span><span class=n>rgba</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=n>rgba</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span> <span class=n>rgba</span><span class=p>[</span><span class=mi>2</span><span class=p>])</span>
         <span class=n>widget</span><span class=o>.</span><span class=n>SetOrientationMarker</span><span class=p>(</span><span class=n>axes</span><span class=p>)</span>
         <span class=n>widget</span><span class=o>.</span><span class=n>SetInteractor</span><span class=p>(</span><span class=n>interactor</span><span class=p>)</span>
@@ -292,20 +292,20 @@ function registerListener(event, func) {
 
     <span class=n>render_window</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>640</span><span class=p>,</span> <span class=mi>480</span><span class=p>)</span>
     <span class=n>render_window</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
-    <span class=n>render_window</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;AlignTwoPolyDatas&#39;</span><span class=p>)</span>
+    <span class=n>render_window</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>'AlignTwoPolyDatas'</span><span class=p>)</span>
 
     <span class=n>interactor</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>vtk_version_ok</span><span class=p>(</span><span class=n>major</span><span class=p>,</span> <span class=n>minor</span><span class=p>,</span> <span class=n>build</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Check the VTK version.</span>
 
 <span class=sd>    :param major: Major version.</span>
 <span class=sd>    :param minor: Minor version.</span>
 <span class=sd>    :param build: Build version.</span>
 <span class=sd>    :return: True if the requested VTK version is greater or equal to the actual VTK version.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=n>needed_version</span> <span class=o>=</span> <span class=mi>10000000000</span> <span class=o>*</span> <span class=nb>int</span><span class=p>(</span><span class=n>major</span><span class=p>)</span> <span class=o>+</span> <span class=mi>100000000</span> <span class=o>*</span> <span class=nb>int</span><span class=p>(</span><span class=n>minor</span><span class=p>)</span> <span class=o>+</span> <span class=nb>int</span><span class=p>(</span><span class=n>build</span><span class=p>)</span>
     <span class=k>try</span><span class=p>:</span>
         <span class=n>vtk_version_number</span> <span class=o>=</span> <span class=n>VTK_VERSION_NUMBER</span>
@@ -323,32 +323,32 @@ function registerListener(event, func) {
     <span class=kn>import</span><span class=w> </span><span class=nn>os</span>
     <span class=n>path</span><span class=p>,</span> <span class=n>extension</span> <span class=o>=</span> <span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>splitext</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
     <span class=n>extension</span> <span class=o>=</span> <span class=n>extension</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span>
-    <span class=k>if</span> <span class=n>extension</span> <span class=o>==</span> <span class=s2>&quot;.ply&quot;</span><span class=p>:</span>
+    <span class=k>if</span> <span class=n>extension</span> <span class=o>==</span> <span class=s2>".ply"</span><span class=p>:</span>
 <span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkPLYReader</span><span class=p>()</span>
 </span>        <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
         <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
         <span class=n>poly_data</span> <span class=o>=</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span>
-    <span class=k>elif</span> <span class=n>extension</span> <span class=o>==</span> <span class=s2>&quot;.vtp&quot;</span><span class=p>:</span>
+    <span class=k>elif</span> <span class=n>extension</span> <span class=o>==</span> <span class=s2>".vtp"</span><span class=p>:</span>
 <span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkXMLPolyDataReader</span><span class=p>()</span>
 </span>        <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
         <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
         <span class=n>poly_data</span> <span class=o>=</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span>
-    <span class=k>elif</span> <span class=n>extension</span> <span class=o>==</span> <span class=s2>&quot;.obj&quot;</span><span class=p>:</span>
+    <span class=k>elif</span> <span class=n>extension</span> <span class=o>==</span> <span class=s2>".obj"</span><span class=p>:</span>
 <span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkOBJReader</span><span class=p>()</span>
 </span>        <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
         <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
         <span class=n>poly_data</span> <span class=o>=</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span>
-    <span class=k>elif</span> <span class=n>extension</span> <span class=o>==</span> <span class=s2>&quot;.stl&quot;</span><span class=p>:</span>
+    <span class=k>elif</span> <span class=n>extension</span> <span class=o>==</span> <span class=s2>".stl"</span><span class=p>:</span>
 <span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkSTLReader</span><span class=p>()</span>
 </span>        <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
         <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
         <span class=n>poly_data</span> <span class=o>=</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span>
-    <span class=k>elif</span> <span class=n>extension</span> <span class=o>==</span> <span class=s2>&quot;.vtk&quot;</span><span class=p>:</span>
+    <span class=k>elif</span> <span class=n>extension</span> <span class=o>==</span> <span class=s2>".vtk"</span><span class=p>:</span>
 <span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkPolyDataReader</span><span class=p>()</span>
 </span>        <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
         <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
         <span class=n>poly_data</span> <span class=o>=</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span>
-    <span class=k>elif</span> <span class=n>extension</span> <span class=o>==</span> <span class=s2>&quot;.g&quot;</span><span class=p>:</span>
+    <span class=k>elif</span> <span class=n>extension</span> <span class=o>==</span> <span class=s2>".g"</span><span class=p>:</span>
 <span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkBYUReader</span><span class=p>()</span>
 </span>        <span class=n>reader</span><span class=o>.</span><span class=n>SetGeometryFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
         <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
@@ -383,7 +383,7 @@ function registerListener(event, func) {
     <span class=n>best_distance</span> <span class=o>=</span> <span class=n>VTK_DOUBLE_MAX</span>
 <span class=hll>    <span class=n>best_points</span> <span class=o>=</span> <span class=n>vtkPoints</span><span class=p>()</span>
 </span>    <span class=n>best_distance</span> <span class=o>=</span> <span class=n>best_bounding_box</span><span class=p>(</span>
-        <span class=s2>&quot;X&quot;</span><span class=p>,</span>
+        <span class=s2>"X"</span><span class=p>,</span>
         <span class=n>target</span><span class=p>,</span>
         <span class=n>source</span><span class=p>,</span>
         <span class=n>target_landmarks</span><span class=p>,</span>
@@ -391,7 +391,7 @@ function registerListener(event, func) {
         <span class=n>best_distance</span><span class=p>,</span>
         <span class=n>best_points</span><span class=p>)</span>
     <span class=n>best_distance</span> <span class=o>=</span> <span class=n>best_bounding_box</span><span class=p>(</span>
-        <span class=s2>&quot;Y&quot;</span><span class=p>,</span>
+        <span class=s2>"Y"</span><span class=p>,</span>
         <span class=n>target</span><span class=p>,</span>
         <span class=n>source</span><span class=p>,</span>
         <span class=n>target_landmarks</span><span class=p>,</span>
@@ -399,7 +399,7 @@ function registerListener(event, func) {
         <span class=n>best_distance</span><span class=p>,</span>
         <span class=n>best_points</span><span class=p>)</span>
     <span class=n>best_distance</span> <span class=o>=</span> <span class=n>best_bounding_box</span><span class=p>(</span>
-        <span class=s2>&quot;Z&quot;</span><span class=p>,</span>
+        <span class=s2>"Z"</span><span class=p>,</span>
         <span class=n>target</span><span class=p>,</span>
         <span class=n>source</span><span class=p>,</span>
         <span class=n>target_landmarks</span><span class=p>,</span>
@@ -438,9 +438,9 @@ function registerListener(event, func) {
         <span class=c1># Rotate about center</span>
         <span class=n>test_transform</span><span class=o>.</span><span class=n>Identity</span><span class=p>()</span>
         <span class=n>test_transform</span><span class=o>.</span><span class=n>Translate</span><span class=p>(</span><span class=n>source_center</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=n>source_center</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span> <span class=n>source_center</span><span class=p>[</span><span class=mi>2</span><span class=p>])</span>
-        <span class=k>if</span> <span class=n>axis</span> <span class=o>==</span> <span class=s2>&quot;X&quot;</span><span class=p>:</span>
+        <span class=k>if</span> <span class=n>axis</span> <span class=o>==</span> <span class=s2>"X"</span><span class=p>:</span>
             <span class=n>test_transform</span><span class=o>.</span><span class=n>RotateX</span><span class=p>(</span><span class=n>angle</span><span class=p>)</span>
-        <span class=k>elif</span> <span class=n>axis</span> <span class=o>==</span> <span class=s2>&quot;Y&quot;</span><span class=p>:</span>
+        <span class=k>elif</span> <span class=n>axis</span> <span class=o>==</span> <span class=s2>"Y"</span><span class=p>:</span>
             <span class=n>test_transform</span><span class=o>.</span><span class=n>RotateY</span><span class=p>(</span><span class=n>angle</span><span class=p>)</span>
         <span class=k>else</span><span class=p>:</span>
             <span class=n>test_transform</span><span class=o>.</span><span class=n>RotateZ</span><span class=p>(</span><span class=n>angle</span><span class=p>)</span>
@@ -461,7 +461,7 @@ function registerListener(event, func) {
         <span class=n>distance</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>lm_transform_pd</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>())</span>
         <span class=n>distance</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
 
-        <span class=n>test_distance</span> <span class=o>=</span> <span class=n>distance</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span><span class=o>.</span><span class=n>GetFieldData</span><span class=p>()</span><span class=o>.</span><span class=n>GetArray</span><span class=p>(</span><span class=s2>&quot;HausdorffDistance&quot;</span><span class=p>)</span><span class=o>.</span><span class=n>GetComponent</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
+        <span class=n>test_distance</span> <span class=o>=</span> <span class=n>distance</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span><span class=o>.</span><span class=n>GetFieldData</span><span class=p>()</span><span class=o>.</span><span class=n>GetArray</span><span class=p>(</span><span class=s2>"HausdorffDistance"</span><span class=p>)</span><span class=o>.</span><span class=n>GetComponent</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
         <span class=k>if</span> <span class=n>test_distance</span> <span class=o>&lt;</span> <span class=n>best_distance</span><span class=p>:</span>
             <span class=n>best_distance</span> <span class=o>=</span> <span class=n>test_distance</span>
             <span class=n>best_points</span><span class=o>.</span><span class=n>DeepCopy</span><span class=p>(</span><span class=n>test_transform_pd</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetPoints</span><span class=p>())</span>
@@ -469,6 +469,6 @@ function registerListener(event, func) {
     <span class=k>return</span> <span class=n>best_distance</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

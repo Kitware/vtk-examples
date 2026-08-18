@@ -122,7 +122,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=c1>// Create the text mappers and the associated Actor2Ds.</span>
 
 <span class=w>  </span><span class=c1>// The font and text properties (except justification) are the same for</span>
-<span class=w>  </span><span class=c1>// each single line mapper. Let&#39;s create a common text property object</span>
+<span class=w>  </span><span class=c1>// each single line mapper. Let's create a common text property object</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTextProperty</span><span class=o>&gt;</span><span class=w> </span><span class=n>singleLineTextProp</span><span class=p>;</span>
 </span>
 <span class=w>  </span><span class=n>singleLineTextProp</span><span class=o>-&gt;</span><span class=n>SetFontSize</span><span class=p>(</span><span class=n>font_size</span><span class=p>);</span>
@@ -132,7 +132,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>singleLineTextProp</span><span class=o>-&gt;</span><span class=n>ShadowOff</span><span class=p>();</span>
 
 <span class=w>  </span><span class=c1>// The font and text properties (except justification) are the same for</span>
-<span class=w>  </span><span class=c1>// each multi line mapper. Let&#39;s create a common text property object</span>
+<span class=w>  </span><span class=c1>// each multi line mapper. Let's create a common text property object</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTextProperty</span><span class=o>&gt;</span><span class=w> </span><span class=n>multiLineTextProp</span><span class=p>;</span>
 </span>
 <span class=w>  </span><span class=n>multiLineTextProp</span><span class=o>-&gt;</span><span class=n>ShallowCopy</span><span class=p>(</span><span class=n>singleLineTextProp</span><span class=p>);</span>
@@ -145,12 +145,12 @@ function registerListener(event, func) {
 </span>
 <span class=w>  </span><span class=c1>// The text is on a single line and bottom-justified.</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTextMapper</span><span class=o>&gt;</span><span class=w> </span><span class=n>singleLineTextB</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>singleLineTextB</span><span class=o>-&gt;</span><span class=n>SetInput</span><span class=p>(</span><span class=s>&quot;Single line (bottom)&quot;</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>singleLineTextB</span><span class=o>-&gt;</span><span class=n>SetInput</span><span class=p>(</span><span class=s>"Single line (bottom)"</span><span class=p>);</span>
 <span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>tprop</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>singleLineTextB</span><span class=o>-&gt;</span><span class=n>GetTextProperty</span><span class=p>();</span>
 <span class=w>  </span><span class=n>tprop</span><span class=o>-&gt;</span><span class=n>ShallowCopy</span><span class=p>(</span><span class=n>singleLineTextProp</span><span class=p>);</span>
 
 <span class=w>  </span><span class=n>tprop</span><span class=o>-&gt;</span><span class=n>SetVerticalJustificationToBottom</span><span class=p>();</span>
-<span class=w>  </span><span class=n>tprop</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Tomato&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>tprop</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Tomato"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor2D</span><span class=o>&gt;</span><span class=w> </span><span class=n>singleLineTextActorB</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>singleLineTextActorB</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>singleLineTextB</span><span class=p>);</span>
@@ -161,11 +161,11 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=c1>// The text is on a single line and center-justified (vertical</span>
 <span class=w>  </span><span class=c1>// justification).</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTextMapper</span><span class=o>&gt;</span><span class=w> </span><span class=n>singleLineTextC</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>singleLineTextC</span><span class=o>-&gt;</span><span class=n>SetInput</span><span class=p>(</span><span class=s>&quot;Single line (centered)&quot;</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>singleLineTextC</span><span class=o>-&gt;</span><span class=n>SetInput</span><span class=p>(</span><span class=s>"Single line (centered)"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>tprop</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>singleLineTextC</span><span class=o>-&gt;</span><span class=n>GetTextProperty</span><span class=p>();</span>
 <span class=w>  </span><span class=n>tprop</span><span class=o>-&gt;</span><span class=n>ShallowCopy</span><span class=p>(</span><span class=n>singleLineTextProp</span><span class=p>);</span>
 <span class=w>  </span><span class=n>tprop</span><span class=o>-&gt;</span><span class=n>SetVerticalJustificationToCentered</span><span class=p>();</span>
-<span class=w>  </span><span class=n>tprop</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;DarkGreen&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>tprop</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"DarkGreen"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor2D</span><span class=o>&gt;</span><span class=w> </span><span class=n>singleLineTextActorC</span><span class=p>;</span>
 </span>
 <span class=w>  </span><span class=n>singleLineTextActorC</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>singleLineTextC</span><span class=p>);</span>
@@ -175,11 +175,11 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=c1>// The text is on a single line and top-justified.</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTextMapper</span><span class=o>&gt;</span><span class=w> </span><span class=n>singleLineTextT</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>singleLineTextT</span><span class=o>-&gt;</span><span class=n>SetInput</span><span class=p>(</span><span class=s>&quot;Single line (top)&quot;</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>singleLineTextT</span><span class=o>-&gt;</span><span class=n>SetInput</span><span class=p>(</span><span class=s>"Single line (top)"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>tprop</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>singleLineTextT</span><span class=o>-&gt;</span><span class=n>GetTextProperty</span><span class=p>();</span>
 <span class=w>  </span><span class=n>tprop</span><span class=o>-&gt;</span><span class=n>ShallowCopy</span><span class=p>(</span><span class=n>singleLineTextProp</span><span class=p>);</span>
 <span class=w>  </span><span class=n>tprop</span><span class=o>-&gt;</span><span class=n>SetVerticalJustificationToTop</span><span class=p>();</span>
-<span class=w>  </span><span class=n>tprop</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Peacock&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>tprop</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Peacock"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor2D</span><span class=o>&gt;</span><span class=w> </span><span class=n>singleLineTextActorT</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>singleLineTextActorT</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>singleLineTextT</span><span class=p>);</span>
@@ -189,12 +189,12 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=c1>// The text is on multiple lines and left- and top-justified.</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTextMapper</span><span class=o>&gt;</span><span class=w> </span><span class=n>textMapperL</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>textMapperL</span><span class=o>-&gt;</span><span class=n>SetInput</span><span class=p>(</span><span class=s>&quot;This is</span><span class=se>\n</span><span class=s>multi-line</span><span class=se>\n</span><span class=s>text output</span><span class=se>\n</span><span class=s>(left-top)&quot;</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>textMapperL</span><span class=o>-&gt;</span><span class=n>SetInput</span><span class=p>(</span><span class=s>"This is</span><span class=se>\n</span><span class=s>multi-line</span><span class=se>\n</span><span class=s>text output</span><span class=se>\n</span><span class=s>(left-top)"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>tprop</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>textMapperL</span><span class=o>-&gt;</span><span class=n>GetTextProperty</span><span class=p>();</span>
 <span class=w>  </span><span class=n>tprop</span><span class=o>-&gt;</span><span class=n>ShallowCopy</span><span class=p>(</span><span class=n>multiLineTextProp</span><span class=p>);</span>
 <span class=w>  </span><span class=n>tprop</span><span class=o>-&gt;</span><span class=n>SetJustificationToLeft</span><span class=p>();</span>
 <span class=w>  </span><span class=n>tprop</span><span class=o>-&gt;</span><span class=n>SetVerticalJustificationToTop</span><span class=p>();</span>
-<span class=w>  </span><span class=n>tprop</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Tomato&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>tprop</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Tomato"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor2D</span><span class=o>&gt;</span><span class=w> </span><span class=n>textActorL</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>textActorL</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>textMapperL</span><span class=p>);</span>
@@ -204,12 +204,12 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=c1>// The text is on multiple lines and center-justified (both horizontal and</span>
 <span class=w>  </span><span class=c1>// vertical).</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTextMapper</span><span class=o>&gt;</span><span class=w> </span><span class=n>textMapperC</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>textMapperC</span><span class=o>-&gt;</span><span class=n>SetInput</span><span class=p>(</span><span class=s>&quot;This is</span><span class=se>\n</span><span class=s>multi-line</span><span class=se>\n</span><span class=s>text output</span><span class=se>\n</span><span class=s>(centered)&quot;</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>textMapperC</span><span class=o>-&gt;</span><span class=n>SetInput</span><span class=p>(</span><span class=s>"This is</span><span class=se>\n</span><span class=s>multi-line</span><span class=se>\n</span><span class=s>text output</span><span class=se>\n</span><span class=s>(centered)"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>tprop</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>textMapperC</span><span class=o>-&gt;</span><span class=n>GetTextProperty</span><span class=p>();</span>
 <span class=w>  </span><span class=n>tprop</span><span class=o>-&gt;</span><span class=n>ShallowCopy</span><span class=p>(</span><span class=n>multiLineTextProp</span><span class=p>);</span>
 <span class=w>  </span><span class=n>tprop</span><span class=o>-&gt;</span><span class=n>SetJustificationToCentered</span><span class=p>();</span>
 <span class=w>  </span><span class=n>tprop</span><span class=o>-&gt;</span><span class=n>SetVerticalJustificationToCentered</span><span class=p>();</span>
-<span class=w>  </span><span class=n>tprop</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;DarkGreen&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>tprop</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"DarkGreen"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor2D</span><span class=o>&gt;</span><span class=w> </span><span class=n>textActorC</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>textActorC</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>textMapperC</span><span class=p>);</span>
@@ -218,12 +218,12 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=c1>// The text is on multiple lines and right- and bottom-justified.</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTextMapper</span><span class=o>&gt;</span><span class=w> </span><span class=n>textMapperR</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>textMapperR</span><span class=o>-&gt;</span><span class=n>SetInput</span><span class=p>(</span><span class=s>&quot;This is</span><span class=se>\n</span><span class=s>multi-line</span><span class=se>\n</span><span class=s>text output</span><span class=se>\n</span><span class=s>(right-bottom)&quot;</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>textMapperR</span><span class=o>-&gt;</span><span class=n>SetInput</span><span class=p>(</span><span class=s>"This is</span><span class=se>\n</span><span class=s>multi-line</span><span class=se>\n</span><span class=s>text output</span><span class=se>\n</span><span class=s>(right-bottom)"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>tprop</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>textMapperR</span><span class=o>-&gt;</span><span class=n>GetTextProperty</span><span class=p>();</span>
 <span class=w>  </span><span class=n>tprop</span><span class=o>-&gt;</span><span class=n>ShallowCopy</span><span class=p>(</span><span class=n>multiLineTextProp</span><span class=p>);</span>
 <span class=w>  </span><span class=n>tprop</span><span class=o>-&gt;</span><span class=n>SetJustificationToRight</span><span class=p>();</span>
 <span class=w>  </span><span class=n>tprop</span><span class=o>-&gt;</span><span class=n>SetVerticalJustificationToBottom</span><span class=p>();</span>
-<span class=w>  </span><span class=n>tprop</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Peacock&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>tprop</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Peacock"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor2D</span><span class=o>&gt;</span><span class=w> </span><span class=n>textActorR</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>textActorR</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>textMapperR</span><span class=p>);</span>
@@ -287,7 +287,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>mapper</span><span class=o>-&gt;</span><span class=n>SetTransformCoordinate</span><span class=p>(</span><span class=n>normCoords</span><span class=p>);</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor2D</span><span class=o>&gt;</span><span class=w> </span><span class=n>gridActor</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>gridActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>);</span>
-<span class=w>  </span><span class=n>gridActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;DimGray&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>gridActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"DimGray"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=w>  </span><span class=c1>// Create the Renderer, RenderWindow, and RenderWindowInteractor</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderer</span><span class=p>;</span>
@@ -307,12 +307,12 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>singleLineTextActorT</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>gridActor</span><span class=p>);</span>
 
-<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Silver&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Silver"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>640</span><span class=p>,</span><span class=w> </span><span class=mi>480</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>GetActiveCamera</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>Zoom</span><span class=p>(</span><span class=mf>1.5</span><span class=p>);</span>
 
 <span class=w>  </span><span class=n>interactor</span><span class=o>-&gt;</span><span class=n>Initialize</span><span class=p>();</span>
-<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;MultiLineText&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"MultiLineText"</span><span class=p>);</span>
 
 <span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
 <span class=w>  </span><span class=n>interactor</span><span class=o>-&gt;</span><span class=n>Start</span><span class=p>();</span>
@@ -336,11 +336,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;MultiLineText: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"MultiLineText: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>MultiLineText</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>MultiLineText.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>MultiLineText</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

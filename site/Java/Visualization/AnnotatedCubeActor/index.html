@@ -76,7 +76,7 @@ function registerListener(event, func) {
 <span class=w>      </span><span class=p>{</span>
 <span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>lib</span><span class=p>.</span><span class=na>IsLoaded</span><span class=p>())</span><span class=w> </span>
 <span class=w>        </span><span class=p>{</span>
-<span class=w>          </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&quot; not loaded&quot;</span><span class=p>);</span>
+<span class=w>          </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>" not loaded"</span><span class=p>);</span>
 <span class=w>        </span><span class=p>}</span>
 <span class=w>      </span><span class=p>}</span>
 <span class=w>    </span><span class=p>}</span>
@@ -110,15 +110,15 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=kt>double</span><span class=w> </span><span class=n>Zplus</span><span class=o>[]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=kt>double</span><span class=o>[</span><span class=mi>4</span><span class=o>]</span><span class=p>;</span>
 <span class=w>    </span><span class=kt>double</span><span class=w> </span><span class=n>Zminus</span><span class=o>[]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=kt>double</span><span class=o>[</span><span class=mi>4</span><span class=o>]</span><span class=p>;</span>
 
-<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>&quot;DeepPink&quot;</span><span class=p>,</span><span class=w> </span><span class=n>renBgcolor</span><span class=p>);</span>
-<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>&quot;Aquamarine&quot;</span><span class=p>,</span><span class=w> </span><span class=n>Cubecolor</span><span class=p>);</span>
-<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>&quot;Gold&quot;</span><span class=p>,</span><span class=w> </span><span class=n>CubeTextEdge</span><span class=p>);</span>
-<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>&quot;Turquoise&quot;</span><span class=p>,</span><span class=w> </span><span class=n>Xplus</span><span class=p>);</span>
-<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>&quot;Turquoise&quot;</span><span class=p>,</span><span class=w> </span><span class=n>Xminus</span><span class=p>);</span>
-<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>&quot;Mint&quot;</span><span class=p>,</span><span class=w> </span><span class=n>Yplus</span><span class=p>);</span>
-<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>&quot;Mint&quot;</span><span class=p>,</span><span class=w> </span><span class=n>Yminus</span><span class=p>);</span>
-<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>&quot;RoyalBlue&quot;</span><span class=p>,</span><span class=w> </span><span class=n>Yplus</span><span class=p>);</span>
-<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>&quot;RoyalBlue&quot;</span><span class=p>,</span><span class=w> </span><span class=n>Yminus</span><span class=p>);</span>
+<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>"DeepPink"</span><span class=p>,</span><span class=w> </span><span class=n>renBgcolor</span><span class=p>);</span>
+<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>"Aquamarine"</span><span class=p>,</span><span class=w> </span><span class=n>Cubecolor</span><span class=p>);</span>
+<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>"Gold"</span><span class=p>,</span><span class=w> </span><span class=n>CubeTextEdge</span><span class=p>);</span>
+<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>"Turquoise"</span><span class=p>,</span><span class=w> </span><span class=n>Xplus</span><span class=p>);</span>
+<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>"Turquoise"</span><span class=p>,</span><span class=w> </span><span class=n>Xminus</span><span class=p>);</span>
+<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>"Mint"</span><span class=p>,</span><span class=w> </span><span class=n>Yplus</span><span class=p>);</span>
+<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>"Mint"</span><span class=p>,</span><span class=w> </span><span class=n>Yminus</span><span class=p>);</span>
+<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>"RoyalBlue"</span><span class=p>,</span><span class=w> </span><span class=n>Yplus</span><span class=p>);</span>
+<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>"RoyalBlue"</span><span class=p>,</span><span class=w> </span><span class=n>Yminus</span><span class=p>);</span>
 
 <span class=hll><span class=w>    </span><span class=n>vtkAnnotatedCubeActor</span><span class=w> </span><span class=n>Cube</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkAnnotatedCubeActor</span><span class=p>();</span>
 </span><span class=w>    </span><span class=n>Cube</span><span class=p>.</span><span class=na>SetFaceTextScale</span><span class=p>(</span><span class=mf>0.666667</span><span class=p>);</span>
@@ -135,12 +135,12 @@ function registerListener(event, func) {
 </span><span class=w>    </span><span class=n>iren</span><span class=p>.</span><span class=na>SetRenderWindow</span><span class=p>(</span><span class=n>renWin</span><span class=p>);</span>
 
 <span class=w>    </span><span class=c1>// anatomic labelling </span>
-<span class=w>    </span><span class=n>Cube</span><span class=p>.</span><span class=na>SetXPlusFaceText</span><span class=p>(</span><span class=s>&quot;A&quot;</span><span class=p>);</span>
-<span class=w>    </span><span class=n>Cube</span><span class=p>.</span><span class=na>SetXMinusFaceText</span><span class=p>(</span><span class=s>&quot;P&quot;</span><span class=p>);</span>
-<span class=w>    </span><span class=n>Cube</span><span class=p>.</span><span class=na>SetYPlusFaceText</span><span class=p>(</span><span class=s>&quot;L&quot;</span><span class=p>);</span>
-<span class=w>    </span><span class=n>Cube</span><span class=p>.</span><span class=na>SetYMinusFaceText</span><span class=p>(</span><span class=s>&quot;R&quot;</span><span class=p>);</span>
-<span class=w>    </span><span class=n>Cube</span><span class=p>.</span><span class=na>SetZPlusFaceText</span><span class=p>(</span><span class=s>&quot;S&quot;</span><span class=p>);</span>
-<span class=w>    </span><span class=n>Cube</span><span class=p>.</span><span class=na>SetZMinusFaceText</span><span class=p>(</span><span class=s>&quot;I&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>Cube</span><span class=p>.</span><span class=na>SetXPlusFaceText</span><span class=p>(</span><span class=s>"A"</span><span class=p>);</span>
+<span class=w>    </span><span class=n>Cube</span><span class=p>.</span><span class=na>SetXMinusFaceText</span><span class=p>(</span><span class=s>"P"</span><span class=p>);</span>
+<span class=w>    </span><span class=n>Cube</span><span class=p>.</span><span class=na>SetYPlusFaceText</span><span class=p>(</span><span class=s>"L"</span><span class=p>);</span>
+<span class=w>    </span><span class=n>Cube</span><span class=p>.</span><span class=na>SetYMinusFaceText</span><span class=p>(</span><span class=s>"R"</span><span class=p>);</span>
+<span class=w>    </span><span class=n>Cube</span><span class=p>.</span><span class=na>SetZPlusFaceText</span><span class=p>(</span><span class=s>"S"</span><span class=p>);</span>
+<span class=w>    </span><span class=n>Cube</span><span class=p>.</span><span class=na>SetZMinusFaceText</span><span class=p>(</span><span class=s>"I"</span><span class=p>);</span>
 
 <span class=w>    </span><span class=c1>// change the vector text colors</span>
 <span class=w>    </span><span class=n>Cube</span><span class=p>.</span><span class=na>GetTextEdgesProperty</span><span class=p>().</span><span class=na>SetColor</span><span class=p>(</span><span class=n>CubeTextEdge</span><span class=p>);</span>

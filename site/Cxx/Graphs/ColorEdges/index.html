@@ -124,12 +124,12 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=c1>// Create the color array.</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkIntArray</span><span class=o>&gt;</span><span class=w> </span><span class=n>edgeColors</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>edgeColors</span><span class=o>-&gt;</span><span class=n>SetNumberOfComponents</span><span class=p>(</span><span class=mi>1</span><span class=p>);</span>
-<span class=w>  </span><span class=n>edgeColors</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>&quot;Color&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>edgeColors</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>"Color"</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkLookupTable</span><span class=o>&gt;</span><span class=w> </span><span class=n>lookupTable</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>lookupTable</span><span class=o>-&gt;</span><span class=n>SetNumberOfTableValues</span><span class=p>(</span><span class=mi>2</span><span class=p>);</span>
-<span class=w>  </span><span class=n>lookupTable</span><span class=o>-&gt;</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s>&quot;Red&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
-<span class=w>  </span><span class=n>lookupTable</span><span class=o>-&gt;</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s>&quot;Lime&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>lookupTable</span><span class=o>-&gt;</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s>"Red"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>lookupTable</span><span class=o>-&gt;</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s>"Lime"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=n>lookupTable</span><span class=o>-&gt;</span><span class=n>Build</span><span class=p>();</span>
 
 <span class=w>  </span><span class=n>edgeColors</span><span class=o>-&gt;</span><span class=n>InsertNextValue</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span>
@@ -142,9 +142,9 @@ function registerListener(event, func) {
 </span><span class=w>  </span><span class=n>graphLayoutView</span><span class=o>-&gt;</span><span class=n>AddRepresentationFromInput</span><span class=p>(</span><span class=n>graph</span><span class=p>);</span>
 <span class=w>  </span><span class=c1>// Needs VTK::InfovisBoostGraphAlgorithms.</span>
 <span class=w>  </span><span class=c1>// graphLayoutView-&gt;SetLayoutStrategyToTree();</span>
-<span class=w>  </span><span class=n>graphLayoutView</span><span class=o>-&gt;</span><span class=n>SetLayoutStrategy</span><span class=p>(</span><span class=s>&quot;Simple 2D&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>graphLayoutView</span><span class=o>-&gt;</span><span class=n>SetLayoutStrategy</span><span class=p>(</span><span class=s>"Simple 2D"</span><span class=p>);</span>
 
-<span class=w>  </span><span class=n>graphLayoutView</span><span class=o>-&gt;</span><span class=n>SetEdgeColorArrayName</span><span class=p>(</span><span class=s>&quot;Color&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>graphLayoutView</span><span class=o>-&gt;</span><span class=n>SetEdgeColorArrayName</span><span class=p>(</span><span class=s>"Color"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>graphLayoutView</span><span class=o>-&gt;</span><span class=n>ColorEdgesOn</span><span class=p>();</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkViewTheme</span><span class=o>&gt;</span><span class=w> </span><span class=n>theme</span><span class=p>;</span>
@@ -153,11 +153,11 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>graphLayoutView</span><span class=o>-&gt;</span><span class=n>ApplyViewTheme</span><span class=p>(</span><span class=n>theme</span><span class=p>);</span>
 <span class=w>  </span><span class=n>graphLayoutView</span><span class=o>-&gt;</span><span class=n>ResetCamera</span><span class=p>();</span>
 <span class=w>  </span><span class=c1>// graphLayoutView-&gt;GetRenderer()-&gt;SetBackground(</span>
-<span class=w>  </span><span class=c1>//    colors-&gt;GetColor3d(&quot;Navy&quot;).GetData());</span>
+<span class=w>  </span><span class=c1>//    colors-&gt;GetColor3d("Navy").GetData());</span>
 <span class=w>  </span><span class=c1>// graphLayoutView-&gt;GetRenderer()-&gt;SetBackground2(</span>
-<span class=w>  </span><span class=c1>//    colors-&gt;GetColor3d(&quot;MidnightBlue&quot;).GetData());</span>
+<span class=w>  </span><span class=c1>//    colors-&gt;GetColor3d("MidnightBlue").GetData());</span>
 <span class=w>  </span><span class=n>graphLayoutView</span><span class=o>-&gt;</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetActiveCamera</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>Zoom</span><span class=p>(</span><span class=mf>0.8</span><span class=p>);</span>
-<span class=w>  </span><span class=n>graphLayoutView</span><span class=o>-&gt;</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;ColorEdges&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>graphLayoutView</span><span class=o>-&gt;</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"ColorEdges"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>graphLayoutView</span><span class=o>-&gt;</span><span class=n>GetInteractor</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>Initialize</span><span class=p>();</span>
 <span class=w>  </span><span class=n>graphLayoutView</span><span class=o>-&gt;</span><span class=n>GetInteractor</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>Start</span><span class=p>();</span>
 
@@ -182,11 +182,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;ColorEdges: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"ColorEdges: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>ColorEdges</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>ColorEdges.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>ColorEdges</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

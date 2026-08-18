@@ -94,7 +94,7 @@ function registerListener(event, func) {
 <span class=w>      </span><span class=p>{</span>
 <span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>lib</span><span class=p>.</span><span class=na>IsLoaded</span><span class=p>())</span><span class=w> </span>
 <span class=w>        </span><span class=p>{</span>
-<span class=w>          </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&quot; not loaded&quot;</span><span class=p>);</span>
+<span class=w>          </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>" not loaded"</span><span class=p>);</span>
 <span class=w>        </span><span class=p>}</span>
 <span class=w>      </span><span class=p>}</span>
 <span class=w>    </span><span class=p>}</span>
@@ -157,7 +157,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=n>renWin</span><span class=p>.</span><span class=na>resetCameraClippingRange</span><span class=p>();</span>
 
 <span class=w>    </span><span class=c1>// Add Java UI components</span>
-<span class=w>    </span><span class=n>exitButton</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>JButton</span><span class=p>(</span><span class=s>&quot;Exit&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>exitButton</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>JButton</span><span class=p>(</span><span class=s>"Exit"</span><span class=p>);</span>
 <span class=w>    </span><span class=n>exitButton</span><span class=p>.</span><span class=na>addActionListener</span><span class=p>(</span><span class=k>this</span><span class=p>);</span>
 
 <span class=w>    </span><span class=n>add</span><span class=p>(</span><span class=n>renWin</span><span class=p>,</span><span class=w> </span><span class=n>BorderLayout</span><span class=p>.</span><span class=na>CENTER</span><span class=p>);</span>
@@ -179,7 +179,7 @@ function registerListener(event, func) {
 <span class=w>      </span><span class=p>{</span>
 <span class=w>        </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>run</span><span class=p>()</span><span class=w> </span>
 <span class=w>        </span><span class=p>{</span>
-<span class=w>          </span><span class=n>JFrame</span><span class=w> </span><span class=n>frame</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>JFrame</span><span class=p>(</span><span class=s>&quot;Long Line&quot;</span><span class=p>);</span>
+<span class=w>          </span><span class=n>JFrame</span><span class=w> </span><span class=n>frame</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>JFrame</span><span class=p>(</span><span class=s>"Long Line"</span><span class=p>);</span>
 <span class=w>          </span><span class=n>frame</span><span class=p>.</span><span class=na>setDefaultCloseOperation</span><span class=p>(</span><span class=n>JFrame</span><span class=p>.</span><span class=na>EXIT_ON_CLOSE</span><span class=p>);</span>
 <span class=w>          </span><span class=n>frame</span><span class=p>.</span><span class=na>getContentPane</span><span class=p>().</span><span class=na>setLayout</span><span class=p>(</span><span class=k>new</span><span class=w> </span><span class=n>BorderLayout</span><span class=p>());</span>
 <span class=w>          </span><span class=n>frame</span><span class=p>.</span><span class=na>getContentPane</span><span class=p>().</span><span class=na>add</span><span class=p>(</span><span class=k>new</span><span class=w> </span><span class=n>LongLine</span><span class=p>(),</span><span class=w> </span><span class=n>BorderLayout</span><span class=p>.</span><span class=na>CENTER</span><span class=p>);</span>

@@ -84,15 +84,15 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_program_parameters</span><span class=p>():</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>argparse</span>
-    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;Plot the scalar field of points onto a PolyData surface.&#39;</span>
-    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;</span>
+    <span class=n>description</span> <span class=o>=</span> <span class=s1>'Plot the scalar field of points onto a PolyData surface.'</span>
+    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>'''</span>
 <span class=hll><span class=s1>This example uses vtkPointInterpolator with a Gaussian Kernel (or other kernel)</span>
 </span><span class=s1> to interpolate and extrapolate more smoothly the fields inside and outside the probed area.</span>
-<span class=s1>    &#39;&#39;&#39;</span>
+<span class=s1>    '''</span>
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
                                      <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawTextHelpFormatter</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;points_fn&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;sparsePoints.txt.&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;probe_fn&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;InterpolatingOnSTL_final.stl.&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'points_fn'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'sparsePoints.txt.'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'probe_fn'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'InterpolatingOnSTL_final.stl.'</span><span class=p>)</span>
 
     <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
     <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>points_fn</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>probe_fn</span>
@@ -104,12 +104,12 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
 <span class=hll>    <span class=n>points_reader</span> <span class=o>=</span> <span class=n>vtkDelimitedTextReader</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=n>points_fn</span><span class=p>,</span> <span class=n>detect_numeric_columns</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span>
-</span>                                           <span class=n>field_delimiter_characters</span><span class=o>=</span><span class=s1>&#39;</span><span class=se>\t</span><span class=s1>&#39;</span><span class=p>,</span> <span class=n>have_headers</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+</span>                                           <span class=n>field_delimiter_characters</span><span class=o>=</span><span class=s1>'</span><span class=se>\t</span><span class=s1>'</span><span class=p>,</span> <span class=n>have_headers</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>table_points</span> <span class=o>=</span> <span class=n>vtkTableToPolyData</span><span class=p>(</span><span class=n>x_column</span><span class=o>=</span><span class=s1>&#39;x&#39;</span><span class=p>,</span> <span class=n>y_column</span><span class=o>=</span><span class=s1>&#39;y&#39;</span><span class=p>,</span> <span class=n>z_column</span><span class=o>=</span><span class=s1>&#39;z&#39;</span><span class=p>)</span>
+<span class=hll>    <span class=n>table_points</span> <span class=o>=</span> <span class=n>vtkTableToPolyData</span><span class=p>(</span><span class=n>x_column</span><span class=o>=</span><span class=s1>'x'</span><span class=p>,</span> <span class=n>y_column</span><span class=o>=</span><span class=s1>'y'</span><span class=p>,</span> <span class=n>z_column</span><span class=o>=</span><span class=s1>'z'</span><span class=p>)</span>
 </span>
     <span class=n>points</span> <span class=o>=</span> <span class=p>(</span><span class=n>points_reader</span> <span class=o>&gt;&gt;</span> <span class=n>table_points</span><span class=p>)</span><span class=o>.</span><span class=n>update</span><span class=p>()</span><span class=o>.</span><span class=n>output</span>
-    <span class=n>points</span><span class=o>.</span><span class=n>point_data</span><span class=o>.</span><span class=n>SetActiveScalars</span><span class=p>(</span><span class=s1>&#39;val&#39;</span><span class=p>)</span>
+    <span class=n>points</span><span class=o>.</span><span class=n>point_data</span><span class=o>.</span><span class=n>SetActiveScalars</span><span class=p>(</span><span class=s1>'val'</span><span class=p>)</span>
     <span class=nb>range</span> <span class=o>=</span> <span class=n>points</span><span class=o>.</span><span class=n>point_data</span><span class=o>.</span><span class=n>scalars</span><span class=o>.</span><span class=n>range</span>
 
     <span class=c1># Read a probe surface.</span>
@@ -136,7 +136,7 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>(</span><span class=n>mapper</span><span class=o>=</span><span class=n>mapper</span><span class=p>)</span>
 </span>    <span class=n>actor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>)</span>
 
-    <span class=n>splat_shader_code</span> <span class=o>=</span> <span class=s2>&quot;&quot;&quot;</span>
+    <span class=n>splat_shader_code</span> <span class=o>=</span> <span class=s2>"""</span>
 <span class=s2>        //VTK::Color::Impl</span><span class=se>\n</span>
 <span class=s2>        float dist = dot(offsetVCVSOutput.xy,offsetVCVSOutput.xy);</span><span class=se>\n</span>
 <span class=s2>        if (dist &gt; 1.0) {</span><span class=se>\n</span>
@@ -146,14 +146,14 @@ function registerListener(event, func) {
 <span class=s2>          ambientColor *= scale;</span><span class=se>\n</span>
 <span class=s2>          diffuseColor *= scale;</span><span class=se>\n</span>
 <span class=s2>        }</span><span class=se>\n</span>
-<span class=s2>    &quot;&quot;&quot;</span>
+<span class=s2>    """</span>
 <span class=hll>    <span class=n>point_mapper</span> <span class=o>=</span> <span class=n>vtkPointGaussianMapper</span><span class=p>(</span><span class=n>input_data</span><span class=o>=</span><span class=n>points</span><span class=p>,</span> <span class=n>scalar_range</span><span class=o>=</span><span class=nb>range</span><span class=p>,</span> <span class=n>scale_factor</span><span class=o>=</span><span class=mf>0.6</span><span class=p>,</span> <span class=n>emissive</span><span class=o>=</span><span class=kc>False</span><span class=p>)</span>
 </span>    <span class=n>point_mapper</span><span class=o>.</span><span class=n>splat_shader_code</span> <span class=o>=</span> <span class=n>splat_shader_code</span>
 
 <span class=hll>    <span class=n>point_actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>(</span><span class=n>mapper</span><span class=o>=</span><span class=n>point_mapper</span><span class=p>)</span>
 </span>
-<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;SlateGray&#39;</span><span class=p>))</span>
-</span><span class=hll>    <span class=n>ren_win</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>size</span><span class=o>=</span><span class=p>(</span><span class=mi>640</span><span class=p>,</span> <span class=mi>480</span><span class=p>),</span> <span class=n>window_name</span><span class=o>=</span><span class=s1>&#39;PointInterpolator&#39;</span><span class=p>)</span>
+<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'SlateGray'</span><span class=p>))</span>
+</span><span class=hll>    <span class=n>ren_win</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>size</span><span class=o>=</span><span class=p>(</span><span class=mi>640</span><span class=p>,</span> <span class=mi>480</span><span class=p>),</span> <span class=n>window_name</span><span class=o>=</span><span class=s1>'PointInterpolator'</span><span class=p>)</span>
 </span>    <span class=n>ren_win</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>)</span>
 <span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>iren</span><span class=o>.</span><span class=n>render_window</span> <span class=o>=</span> <span class=n>ren_win</span>
@@ -170,6 +170,6 @@ function registerListener(event, func) {
     <span class=n>iren</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

@@ -89,15 +89,15 @@ function registerListener(event, func) {
 
     <span class=c1># Create the renderers.</span>
     <span class=n>renderers</span> <span class=o>=</span> <span class=n>OrderedDict</span><span class=p>()</span>
-    <span class=n>renderers</span><span class=p>[</span><span class=s1>&#39;flatSphereRenderer&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=n>CreateSphere</span><span class=p>(</span><span class=kc>True</span><span class=p>)</span>
-    <span class=n>renderers</span><span class=p>[</span><span class=s1>&#39;flatCylinderRenderer&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=n>CreateCylinder</span><span class=p>(</span><span class=kc>True</span><span class=p>)</span>
-    <span class=n>renderers</span><span class=p>[</span><span class=s1>&#39;flatIsoSurfaceRenderer&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=n>CreateIsoSurface</span><span class=p>(</span><span class=kc>True</span><span class=p>)</span>
-    <span class=n>renderers</span><span class=p>[</span><span class=s1>&#39;flatModelRenderer&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=n>CreateModel</span><span class=p>(</span><span class=kc>True</span><span class=p>,</span> <span class=n>fileName</span><span class=p>)</span>
+    <span class=n>renderers</span><span class=p>[</span><span class=s1>'flatSphereRenderer'</span><span class=p>]</span> <span class=o>=</span> <span class=n>CreateSphere</span><span class=p>(</span><span class=kc>True</span><span class=p>)</span>
+    <span class=n>renderers</span><span class=p>[</span><span class=s1>'flatCylinderRenderer'</span><span class=p>]</span> <span class=o>=</span> <span class=n>CreateCylinder</span><span class=p>(</span><span class=kc>True</span><span class=p>)</span>
+    <span class=n>renderers</span><span class=p>[</span><span class=s1>'flatIsoSurfaceRenderer'</span><span class=p>]</span> <span class=o>=</span> <span class=n>CreateIsoSurface</span><span class=p>(</span><span class=kc>True</span><span class=p>)</span>
+    <span class=n>renderers</span><span class=p>[</span><span class=s1>'flatModelRenderer'</span><span class=p>]</span> <span class=o>=</span> <span class=n>CreateModel</span><span class=p>(</span><span class=kc>True</span><span class=p>,</span> <span class=n>fileName</span><span class=p>)</span>
 
-    <span class=n>renderers</span><span class=p>[</span><span class=s1>&#39;smoothSphereRenderer&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=n>CreateSphere</span><span class=p>(</span><span class=kc>False</span><span class=p>)</span>
-    <span class=n>renderers</span><span class=p>[</span><span class=s1>&#39;smoothCylinderRenderer&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=n>CreateCylinder</span><span class=p>(</span><span class=kc>False</span><span class=p>)</span>
-    <span class=n>renderers</span><span class=p>[</span><span class=s1>&#39;smoothIsoSurfaceRenderer&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=n>CreateIsoSurface</span><span class=p>(</span><span class=kc>False</span><span class=p>)</span>
-    <span class=n>renderers</span><span class=p>[</span><span class=s1>&#39;smoothModelRenderer&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=n>CreateModel</span><span class=p>(</span><span class=kc>False</span><span class=p>,</span> <span class=n>fileName</span><span class=p>)</span>
+    <span class=n>renderers</span><span class=p>[</span><span class=s1>'smoothSphereRenderer'</span><span class=p>]</span> <span class=o>=</span> <span class=n>CreateSphere</span><span class=p>(</span><span class=kc>False</span><span class=p>)</span>
+    <span class=n>renderers</span><span class=p>[</span><span class=s1>'smoothCylinderRenderer'</span><span class=p>]</span> <span class=o>=</span> <span class=n>CreateCylinder</span><span class=p>(</span><span class=kc>False</span><span class=p>)</span>
+    <span class=n>renderers</span><span class=p>[</span><span class=s1>'smoothIsoSurfaceRenderer'</span><span class=p>]</span> <span class=o>=</span> <span class=n>CreateIsoSurface</span><span class=p>(</span><span class=kc>False</span><span class=p>)</span>
+    <span class=n>renderers</span><span class=p>[</span><span class=s1>'smoothModelRenderer'</span><span class=p>]</span> <span class=o>=</span> <span class=n>CreateModel</span><span class=p>(</span><span class=kc>False</span><span class=p>,</span> <span class=n>fileName</span><span class=p>)</span>
 
     <span class=c1># Get the keys</span>
     <span class=n>keys</span> <span class=o>=</span> <span class=nb>list</span><span class=p>(</span><span class=n>renderers</span><span class=o>.</span><span class=n>keys</span><span class=p>())</span>
@@ -110,7 +110,7 @@ function registerListener(event, func) {
     <span class=n>yGridDimensions</span> <span class=o>=</span> <span class=mi>2</span>
 
     <span class=n>renderWindow</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=n>rendererSize</span> <span class=o>*</span> <span class=n>xGridDimensions</span><span class=p>,</span> <span class=n>rendererSize</span> <span class=o>*</span> <span class=n>yGridDimensions</span><span class=p>)</span>
-    <span class=n>renderWindow</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;FlatVersusGouraud&#39;</span><span class=p>)</span>
+    <span class=n>renderWindow</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>'FlatVersusGouraud'</span><span class=p>)</span>
 
     <span class=k>for</span> <span class=n>row</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>yGridDimensions</span><span class=p>):</span>
         <span class=k>for</span> <span class=n>col</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>xGridDimensions</span><span class=p>):</span>
@@ -124,7 +124,7 @@ function registerListener(event, func) {
             <span class=n>renderers</span><span class=p>[</span><span class=n>keys</span><span class=p>[</span><span class=n>index</span><span class=p>]]</span><span class=o>.</span><span class=n>SetViewport</span><span class=p>(</span><span class=n>viewport</span><span class=p>)</span>
 
     <span class=k>for</span> <span class=n>r</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=nb>len</span><span class=p>(</span><span class=n>renderers</span><span class=p>)):</span>
-        <span class=n>renderers</span><span class=p>[</span><span class=n>keys</span><span class=p>[</span><span class=n>r</span><span class=p>]]</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;SlateGray&#39;</span><span class=p>))</span>
+        <span class=n>renderers</span><span class=p>[</span><span class=n>keys</span><span class=p>[</span><span class=n>r</span><span class=p>]]</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'SlateGray'</span><span class=p>))</span>
         <span class=n>renderers</span><span class=p>[</span><span class=n>keys</span><span class=p>[</span><span class=n>r</span><span class=p>]]</span><span class=o>.</span><span class=n>GetActiveCamera</span><span class=p>()</span><span class=o>.</span><span class=n>Azimuth</span><span class=p>(</span><span class=mi>20</span><span class=p>)</span>
         <span class=n>renderers</span><span class=p>[</span><span class=n>keys</span><span class=p>[</span><span class=n>r</span><span class=p>]]</span><span class=o>.</span><span class=n>GetActiveCamera</span><span class=p>()</span><span class=o>.</span><span class=n>Elevation</span><span class=p>(</span><span class=mi>30</span><span class=p>)</span>
         <span class=n>renderers</span><span class=p>[</span><span class=n>keys</span><span class=p>[</span><span class=n>r</span><span class=p>]]</span><span class=o>.</span><span class=n>ResetCamera</span><span class=p>()</span>
@@ -142,30 +142,30 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_program_parameters</span><span class=p>():</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>argparse</span>
-    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;Flat and Gouraud shading.&#39;</span>
-    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;</span>
+    <span class=n>description</span> <span class=o>=</span> <span class=s1>'Flat and Gouraud shading.'</span>
+    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>'''</span>
 <span class=s1>    Flat and Gouraud shading.</span>
-<span class=s1>   &#39;&#39;&#39;</span>
+<span class=s1>   '''</span>
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
                                      <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawDescriptionHelpFormatter</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;filename&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;cow.obj.&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'filename'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'cow.obj.'</span><span class=p>)</span>
     <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
     <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>filename</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>CreateSphere</span><span class=p>(</span><span class=n>flat</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&#39;&#39;&#39;</span>
+<span class=w>    </span><span class=sd>'''</span>
 
 <span class=sd>    :param flat: The interpolation to use (flat or Gouraud).</span>
 <span class=sd>    :return: the renderer</span>
-<span class=sd>    &#39;&#39;&#39;</span>
+<span class=sd>    '''</span>
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span><span class=hll>    <span class=n>sphere</span> <span class=o>=</span> <span class=n>vtkSphereSource</span><span class=p>()</span>
 </span><span class=hll>    <span class=n>mapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>mapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>sphere</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
 <span class=hll>    <span class=n>actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>actor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>)</span>
-    <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;MistyRose&#39;</span><span class=p>))</span>
+    <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'MistyRose'</span><span class=p>))</span>
     <span class=k>if</span> <span class=n>flat</span><span class=p>:</span>
         <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetInterpolationToFlat</span><span class=p>()</span>
     <span class=k>else</span><span class=p>:</span>
@@ -176,18 +176,18 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>CreateCylinder</span><span class=p>(</span><span class=n>flat</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&#39;&#39;&#39;</span>
+<span class=w>    </span><span class=sd>'''</span>
 
 <span class=sd>    :param flat: The interpolation to use (flat or Gouraud).</span>
 <span class=sd>    :return: the renderer</span>
-<span class=sd>    &#39;&#39;&#39;</span>
+<span class=sd>    '''</span>
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span><span class=hll>    <span class=n>cylinder</span> <span class=o>=</span> <span class=n>vtkCylinderSource</span><span class=p>()</span>
 </span><span class=hll>    <span class=n>mapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>mapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>cylinder</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
 <span class=hll>    <span class=n>actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>actor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>)</span>
-    <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;MistyRose&#39;</span><span class=p>))</span>
+    <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'MistyRose'</span><span class=p>))</span>
     <span class=k>if</span> <span class=n>flat</span><span class=p>:</span>
         <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetInterpolationToFlat</span><span class=p>()</span>
     <span class=k>else</span><span class=p>:</span>
@@ -198,11 +198,11 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>CreateIsoSurface</span><span class=p>(</span><span class=n>flat</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&#39;&#39;&#39;</span>
+<span class=w>    </span><span class=sd>'''</span>
 
 <span class=sd>    :param flat: The interpolation to use (flat or Gouraud).</span>
 <span class=sd>    :return: the renderer</span>
-<span class=sd>    &#39;&#39;&#39;</span>
+<span class=sd>    '''</span>
 <span class=hll>    <span class=n>quadric</span> <span class=o>=</span> <span class=n>vtkQuadric</span><span class=p>()</span>
 </span>    <span class=n>quadric</span><span class=o>.</span><span class=n>SetCoefficients</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>3</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
 <span class=hll>    <span class=n>sample</span> <span class=o>=</span> <span class=n>vtkSampleFunction</span><span class=p>()</span>
@@ -229,12 +229,12 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>CreateModel</span><span class=p>(</span><span class=n>flat</span><span class=p>,</span> <span class=n>fileName</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&#39;&#39;&#39;</span>
+<span class=w>    </span><span class=sd>'''</span>
 
 <span class=sd>    :param flat: The interpolation to use (flat or Gouraud).</span>
 <span class=sd>    :param fileName: The file name.</span>
 <span class=sd>    :return: the renderer</span>
-<span class=sd>    &#39;&#39;&#39;</span>
+<span class=sd>    '''</span>
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span><span class=hll>    <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkOBJReader</span><span class=p>()</span>
 </span>    <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>fileName</span><span class=p>)</span>
@@ -242,7 +242,7 @@ function registerListener(event, func) {
 </span>    <span class=n>mapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
 <span class=hll>    <span class=n>actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>actor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>)</span>
-    <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Tan&#39;</span><span class=p>))</span>
+    <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Tan'</span><span class=p>))</span>
     <span class=k>if</span> <span class=n>flat</span><span class=p>:</span>
         <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetInterpolationToFlat</span><span class=p>()</span>
     <span class=k>else</span><span class=p>:</span>
@@ -252,6 +252,6 @@ function registerListener(event, func) {
     <span class=k>return</span> <span class=n>renderer</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

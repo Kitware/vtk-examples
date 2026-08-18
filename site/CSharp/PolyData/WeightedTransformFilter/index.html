@@ -75,7 +75,7 @@ function registerListener(event, func) {
 <span class=w>            </span><span class=n>WeightedTransformFilter</span><span class=p>();</span>
 <span class=w>         </span><span class=p>}</span>
 <span class=w>         </span><span class=k>catch</span><span class=p>(</span><span class=n>Exception</span><span class=w> </span><span class=n>ex</span><span class=p>)</span><span class=w> </span><span class=p>{</span>
-<span class=w>            </span><span class=n>MessageBox</span><span class=p>.</span><span class=n>Show</span><span class=p>(</span><span class=n>ex</span><span class=p>.</span><span class=n>Message</span><span class=p>,</span><span class=w> </span><span class=s>&quot;Exception&quot;</span><span class=p>,</span><span class=w> </span><span class=n>MessageBoxButtons</span><span class=p>.</span><span class=n>OK</span><span class=p>);</span>
+<span class=w>            </span><span class=n>MessageBox</span><span class=p>.</span><span class=n>Show</span><span class=p>(</span><span class=n>ex</span><span class=p>.</span><span class=n>Message</span><span class=p>,</span><span class=w> </span><span class=s>"Exception"</span><span class=p>,</span><span class=w> </span><span class=n>MessageBoxButtons</span><span class=p>.</span><span class=n>OK</span><span class=p>);</span>
 <span class=w>         </span><span class=p>}</span>
 <span class=w>      </span><span class=p>}</span>
 
@@ -120,7 +120,7 @@ function registerListener(event, func) {
 
 <span class=w>         </span><span class=c1>// Create field data to hold the array, and bind it to the sphere</span>
 <span class=hll><span class=w>         </span><span class=n>vtkFieldData</span><span class=w> </span><span class=n>fd</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>vtkFieldData</span><span class=p>.</span><span class=n>New</span><span class=p>();</span>
-</span><span class=w>         </span><span class=n>tfarray</span><span class=p>.</span><span class=n>SetName</span><span class=p>(</span><span class=s>&quot;weights&quot;</span><span class=p>);</span>
+</span><span class=w>         </span><span class=n>tfarray</span><span class=p>.</span><span class=n>SetName</span><span class=p>(</span><span class=s>"weights"</span><span class=p>);</span>
 <span class=w>         </span><span class=n>sphereData</span><span class=p>.</span><span class=n>GetPointData</span><span class=p>().</span><span class=n>AddArray</span><span class=p>(</span><span class=n>tfarray</span><span class=p>);</span>
 
 <span class=w>         </span><span class=c1>// Use an ordinary transform to stretch the shape</span>
@@ -146,7 +146,7 @@ function registerListener(event, func) {
 <span class=w>         </span><span class=n>weightedTrans</span><span class=p>.</span><span class=n>SetTransform</span><span class=p>(</span><span class=n>identity</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>);</span>
 <span class=w>         </span><span class=n>weightedTrans</span><span class=p>.</span><span class=n>SetTransform</span><span class=p>(</span><span class=n>rotated</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>);</span>
 <span class=w>         </span><span class=c1>// which data array should the filter use ?</span>
-<span class=w>         </span><span class=n>weightedTrans</span><span class=p>.</span><span class=n>SetWeightArray</span><span class=p>(</span><span class=s>&quot;weights&quot;</span><span class=p>);</span>
+<span class=w>         </span><span class=n>weightedTrans</span><span class=p>.</span><span class=n>SetWeightArray</span><span class=p>(</span><span class=s>"weights"</span><span class=p>);</span>
 
 <span class=w>         </span><span class=n>weightedTrans</span><span class=p>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>stretchFilter</span><span class=p>.</span><span class=n>GetOutputPort</span><span class=p>());</span>
 

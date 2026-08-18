@@ -81,9 +81,9 @@ function registerListener(event, func) {
 </span>
     <span class=c1># Set up a 2D scene, add an XY chart to it.</span>
 <span class=hll>    <span class=n>view</span> <span class=o>=</span> <span class=n>vtkContextView</span><span class=p>()</span>
-</span>    <span class=n>view</span><span class=o>.</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>.</span><span class=n>background</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;SlateGray&#39;</span><span class=p>)</span>
+</span>    <span class=n>view</span><span class=o>.</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>.</span><span class=n>background</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'SlateGray'</span><span class=p>)</span>
     <span class=n>view</span><span class=o>.</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>.</span><span class=n>size</span> <span class=o>=</span> <span class=p>(</span><span class=mi>600</span><span class=p>,</span> <span class=mi>350</span><span class=p>)</span>
-    <span class=n>view</span><span class=o>.</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>.</span><span class=n>window_name</span> <span class=o>=</span> <span class=s1>&#39;PieChart&#39;</span>
+    <span class=n>view</span><span class=o>.</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>.</span><span class=n>window_name</span> <span class=o>=</span> <span class=s1>'PieChart'</span>
 
 <span class=hll>    <span class=n>chart</span> <span class=o>=</span> <span class=n>vtkChartPie</span><span class=p>()</span>
 </span>    <span class=n>view</span><span class=o>.</span><span class=n>GetScene</span><span class=p>()</span><span class=o>.</span><span class=n>AddItem</span><span class=p>(</span><span class=n>chart</span><span class=p>)</span>
@@ -95,7 +95,7 @@ function registerListener(event, func) {
 </span><span class=hll>    <span class=n>label_array</span> <span class=o>=</span> <span class=n>vtkStringArray</span><span class=p>()</span>
 </span>
     <span class=n>db</span> <span class=o>=</span> <span class=n>get_data</span><span class=p>()</span>
-    <span class=n>arr_data</span><span class=o>.</span><span class=n>SetName</span><span class=p>(</span><span class=s1>&#39;2008 Circulation&#39;</span><span class=p>)</span>
+    <span class=n>arr_data</span><span class=o>.</span><span class=n>SetName</span><span class=p>(</span><span class=s1>'2008 Circulation'</span><span class=p>)</span>
     <span class=k>for</span> <span class=n>k</span><span class=p>,</span> <span class=n>v</span> <span class=ow>in</span> <span class=n>db</span><span class=o>.</span><span class=n>items</span><span class=p>():</span>
         <span class=n>arr_data</span><span class=o>.</span><span class=n>InsertNextValue</span><span class=p>(</span><span class=n>v</span><span class=p>)</span>
         <span class=n>label_array</span><span class=o>.</span><span class=n>InsertNextValue</span><span class=p>(</span><span class=n>k</span><span class=p>)</span>
@@ -110,12 +110,12 @@ function registerListener(event, func) {
     <span class=n>pie</span> <span class=o>=</span> <span class=n>chart</span><span class=o>.</span><span class=n>AddPlot</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
     <span class=n>pie</span><span class=o>.</span><span class=n>color_series</span> <span class=o>=</span> <span class=n>color_series</span>
     <span class=n>pie</span><span class=o>.</span><span class=n>input_data</span> <span class=o>=</span> <span class=n>table</span>
-    <span class=n>pie</span><span class=o>.</span><span class=n>SetInputArray</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=s1>&#39;2008 Circulation&#39;</span><span class=p>)</span>
+    <span class=n>pie</span><span class=o>.</span><span class=n>SetInputArray</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=s1>'2008 Circulation'</span><span class=p>)</span>
     <span class=n>pie</span><span class=o>.</span><span class=n>labels</span> <span class=o>=</span> <span class=n>label_array</span>
 
     <span class=n>chart</span><span class=o>.</span><span class=n>show_legend</span> <span class=o>=</span> <span class=kc>True</span>
 
-    <span class=n>chart</span><span class=o>.</span><span class=n>title</span> <span class=o>=</span> <span class=s1>&#39;Circulation 2008&#39;</span>
+    <span class=n>chart</span><span class=o>.</span><span class=n>title</span> <span class=o>=</span> <span class=s1>'Circulation 2008'</span>
 
     <span class=c1># Finally render the scene.</span>
     <span class=n>view</span><span class=o>.</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>.</span><span class=n>multi_samples</span> <span class=o>=</span> <span class=mi>0</span>
@@ -126,10 +126,10 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_data</span><span class=p>():</span>
     <span class=n>data</span> <span class=o>=</span> <span class=p>[</span><span class=mi>77938</span><span class=p>,</span> <span class=mi>9109</span><span class=p>,</span> <span class=mi>2070</span><span class=p>,</span> <span class=mi>12806</span><span class=p>,</span> <span class=mi>19514</span><span class=p>]</span>
-    <span class=n>labels</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;Books&#39;</span><span class=p>,</span> <span class=s1>&#39;New and Popular&#39;</span><span class=p>,</span> <span class=s1>&#39;Periodical&#39;</span><span class=p>,</span> <span class=s1>&#39;Audiobook&#39;</span><span class=p>,</span> <span class=s1>&#39;Video&#39;</span><span class=p>]</span>
+    <span class=n>labels</span> <span class=o>=</span> <span class=p>[</span><span class=s1>'Books'</span><span class=p>,</span> <span class=s1>'New and Popular'</span><span class=p>,</span> <span class=s1>'Periodical'</span><span class=p>,</span> <span class=s1>'Audiobook'</span><span class=p>,</span> <span class=s1>'Video'</span><span class=p>]</span>
     <span class=k>return</span> <span class=nb>dict</span><span class=p>(</span><span class=nb>zip</span><span class=p>(</span><span class=n>labels</span><span class=p>,</span> <span class=n>data</span><span class=p>))</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

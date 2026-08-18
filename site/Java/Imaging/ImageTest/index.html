@@ -80,7 +80,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>vtkNativeLibrary</span><span class=p>.</span><span class=na>LoadAllNativeLibraries</span><span class=p>())</span><span class=w> </span><span class=p>{</span>
 <span class=w>      </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=n>vtkNativeLibrary</span><span class=w> </span><span class=n>lib</span><span class=w> </span><span class=p>:</span><span class=w> </span><span class=n>vtkNativeLibrary</span><span class=p>.</span><span class=na>values</span><span class=p>())</span><span class=w> </span><span class=p>{</span>
 <span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>lib</span><span class=p>.</span><span class=na>IsLoaded</span><span class=p>())</span><span class=w> </span><span class=p>{</span>
-<span class=w>          </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&quot; not loaded&quot;</span><span class=p>);</span>
+<span class=w>          </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>" not loaded"</span><span class=p>);</span>
 <span class=w>        </span><span class=p>}</span>
 <span class=w>      </span><span class=p>}</span>
 <span class=w>    </span><span class=p>}</span>
@@ -101,15 +101,15 @@ function registerListener(event, func) {
 <span class=cm>         * test of the imagereaderfactory.</span>
 <span class=cm>         * only does one file per exection.</span>
 <span class=cm>         */</span>
-<span class=w>    </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&quot;init in ImageTest&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>"init in ImageTest"</span><span class=p>);</span>
 <span class=hll><span class=w>    </span><span class=n>ren1</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkRenderer</span><span class=p>();</span>
 </span><span class=hll><span class=w>    </span><span class=n>renWin</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkRenderWindow</span><span class=p>();</span>
 </span><span class=hll><span class=w>    </span><span class=n>iren</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkRenderWindowInteractor</span><span class=p>();</span>
 </span><span class=hll><span class=w>    </span><span class=n>imageStyle</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkInteractorStyleImage</span><span class=p>();</span>
 </span>
-<span class=w>    </span><span class=n>FileDialog</span><span class=w> </span><span class=n>fd</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>FileDialog</span><span class=p>(</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>Frame</span><span class=p>(),</span><span class=s>&quot;File name to load&quot;</span><span class=p>,</span>
+<span class=w>    </span><span class=n>FileDialog</span><span class=w> </span><span class=n>fd</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>FileDialog</span><span class=p>(</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>Frame</span><span class=p>(),</span><span class=s>"File name to load"</span><span class=p>,</span>
 <span class=w>                                    </span><span class=n>FileDialog</span><span class=p>.</span><span class=na>LOAD</span><span class=p>);</span>
-<span class=w>    </span><span class=n>fd</span><span class=p>.</span><span class=na>setFile</span><span class=p>(</span><span class=s>&quot;*.*&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>fd</span><span class=p>.</span><span class=na>setFile</span><span class=p>(</span><span class=s>"*.*"</span><span class=p>);</span>
 <span class=w>    </span><span class=n>fd</span><span class=p>.</span><span class=na>setVisible</span><span class=p>(</span><span class=kc>true</span><span class=p>);</span>
 <span class=w>    </span><span class=n>String</span><span class=w> </span><span class=n>selected</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>fd</span><span class=p>.</span><span class=na>getFile</span><span class=p>();</span>
 <span class=w>    </span><span class=n>fd</span><span class=p>.</span><span class=na>setVisible</span><span class=p>(</span><span class=kc>false</span><span class=p>);</span>
@@ -135,14 +135,14 @@ function registerListener(event, func) {
 
 <span class=w>        </span><span class=n>iren</span><span class=p>.</span><span class=na>Initialize</span><span class=p>();</span>
 <span class=w>        </span><span class=n>iren</span><span class=p>.</span><span class=na>Start</span><span class=p>();</span>
-<span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&quot;Return from interactor&quot;</span><span class=p>);</span>
+<span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>"Return from interactor"</span><span class=p>);</span>
 <span class=w>        </span><span class=n>renWin</span><span class=p>.</span><span class=na>Finalize</span><span class=p>();</span>
 <span class=w>      </span><span class=p>}</span><span class=w> </span><span class=k>else</span><span class=w> </span><span class=p>{</span>
-<span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&quot;No reader found for &quot;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>outname</span><span class=p>);</span>
+<span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>"No reader found for "</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>outname</span><span class=p>);</span>
 <span class=w>      </span><span class=p>}</span>
 
 <span class=w>    </span><span class=p>}</span><span class=w> </span><span class=k>else</span><span class=w> </span><span class=p>{</span>
-<span class=w>      </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&quot;No file name selected&quot;</span><span class=p>);</span>
+<span class=w>      </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>"No file name selected"</span><span class=p>);</span>
 <span class=w>    </span><span class=p>}</span>
 
 <span class=w>  </span><span class=p>}</span>

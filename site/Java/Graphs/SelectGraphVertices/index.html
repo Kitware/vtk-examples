@@ -82,7 +82,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>vtkNativeLibrary</span><span class=p>.</span><span class=na>LoadAllNativeLibraries</span><span class=p>())</span><span class=w> </span><span class=p>{</span>
 <span class=w>      </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=n>vtkNativeLibrary</span><span class=w> </span><span class=n>lib</span><span class=w> </span><span class=p>:</span><span class=w> </span><span class=n>vtkNativeLibrary</span><span class=p>.</span><span class=na>values</span><span class=p>())</span><span class=w> </span><span class=p>{</span>
 <span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>lib</span><span class=p>.</span><span class=na>IsLoaded</span><span class=p>())</span><span class=w> </span><span class=p>{</span>
-<span class=w>          </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&quot; not loaded&quot;</span><span class=p>);</span>
+<span class=w>          </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>" not loaded"</span><span class=p>);</span>
 <span class=w>        </span><span class=p>}</span>
 <span class=w>      </span><span class=p>}</span>
 <span class=w>    </span><span class=p>}</span>
@@ -125,11 +125,11 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=cm>/*</span>
 <span class=hll><span class=cm>     * The vtkDataRepresentation should already have a vtkAnnotationLink,</span>
 </span><span class=cm>     * so we just want to grab it and add an observer with our callback function attached</span>
-<span class=cm>     * Note that Java callbacks use the this &quot;pointer&quot; to anchor vtk objects used by the callback</span>
+<span class=cm>     * Note that Java callbacks use the this "pointer" to anchor vtk objects used by the callback</span>
 <span class=cm>     * to establish references to required vtkobjects.</span>
 <span class=cm>     */</span>
 <span class=w>    </span><span class=n>link</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>rep</span><span class=p>.</span><span class=na>GetAnnotationLink</span><span class=p>();</span>
-<span class=w>    </span><span class=n>link</span><span class=p>.</span><span class=na>AddObserver</span><span class=p>(</span><span class=s>&quot;AnnotationChangedEvent&quot;</span><span class=p>,</span><span class=w> </span><span class=k>this</span><span class=p>,</span><span class=w> </span><span class=s>&quot;selectionCallback&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>link</span><span class=p>.</span><span class=na>AddObserver</span><span class=p>(</span><span class=s>"AnnotationChangedEvent"</span><span class=p>,</span><span class=w> </span><span class=k>this</span><span class=p>,</span><span class=w> </span><span class=s>"selectionCallback"</span><span class=p>);</span>
 
 <span class=w>    </span><span class=n>view</span><span class=p>.</span><span class=na>GetRenderWindow</span><span class=p>().</span><span class=na>SetSize</span><span class=p>(</span><span class=mi>600</span><span class=p>,</span><span class=w> </span><span class=mi>600</span><span class=p>);</span>
 <span class=w>    </span><span class=n>view</span><span class=p>.</span><span class=na>ResetCamera</span><span class=p>();</span>
@@ -149,7 +149,7 @@ function registerListener(event, func) {
 
 <span class=w>    </span><span class=c1>// There can be two selection nodes, but which one is vertices and which is edges</span>
 <span class=w>    </span><span class=c1>// does not seem to be guaranteed...</span>
-<span class=w>    </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&quot;in selection callback&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>"in selection callback"</span><span class=p>);</span>
 
 <span class=hll><span class=w>    </span><span class=n>vtkSelection</span><span class=w> </span><span class=n>sel</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>link</span><span class=p>.</span><span class=na>GetCurrentSelection</span><span class=p>();</span>
 </span><span class=hll><span class=w>    </span><span class=n>vtkSelectionNode</span><span class=w> </span><span class=n>node0</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>sel</span><span class=p>.</span><span class=na>GetNode</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span>
@@ -165,28 +165,28 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>sel_list0</span><span class=p>.</span><span class=na>GetNumberOfTuples</span><span class=p>()</span><span class=w> </span><span class=o>&gt;</span><span class=w> </span><span class=mi>0</span><span class=p>)</span><span class=w> </span><span class=p>{</span>
 <span class=w>      </span><span class=n>printFieldType</span><span class=p>(</span><span class=n>node0_field_type</span><span class=p>);</span>
 <span class=w>      </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>ii</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>ii</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>sel_list0</span><span class=p>.</span><span class=na>GetNumberOfTuples</span><span class=p>();</span><span class=w> </span><span class=n>ii</span><span class=o>++</span><span class=p>)</span><span class=w> </span><span class=p>{</span>
-<span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>print</span><span class=p>(</span><span class=s>&quot;\t&quot;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>sel_list0</span><span class=p>.</span><span class=na>GetValue</span><span class=p>(</span><span class=n>ii</span><span class=p>));</span>
+<span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>print</span><span class=p>(</span><span class=s>"\t"</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>sel_list0</span><span class=p>.</span><span class=na>GetValue</span><span class=p>(</span><span class=n>ii</span><span class=p>));</span>
 <span class=w>      </span><span class=p>}</span>
-<span class=w>      </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&quot; - on list 0.&quot;</span><span class=p>);</span>
+<span class=w>      </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>" - on list 0."</span><span class=p>);</span>
 <span class=w>    </span><span class=p>}</span>
 <span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>sel_list1</span><span class=p>.</span><span class=na>GetNumberOfTuples</span><span class=p>()</span><span class=w> </span><span class=o>&gt;</span><span class=w> </span><span class=mi>0</span><span class=p>)</span><span class=w> </span><span class=p>{</span>
 <span class=w>      </span><span class=n>printFieldType</span><span class=p>(</span><span class=n>node1_field_type</span><span class=p>);</span>
 <span class=w>      </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>ii</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>ii</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>sel_list1</span><span class=p>.</span><span class=na>GetNumberOfTuples</span><span class=p>();</span><span class=w> </span><span class=n>ii</span><span class=o>++</span><span class=p>)</span><span class=w> </span><span class=p>{</span>
-<span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>print</span><span class=p>(</span><span class=s>&quot;\t&quot;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>sel_list1</span><span class=p>.</span><span class=na>GetValue</span><span class=p>(</span><span class=n>ii</span><span class=p>));</span>
+<span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>print</span><span class=p>(</span><span class=s>"\t"</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>sel_list1</span><span class=p>.</span><span class=na>GetValue</span><span class=p>(</span><span class=n>ii</span><span class=p>));</span>
 <span class=w>      </span><span class=p>}</span>
-<span class=w>      </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&quot; - on list 1.&quot;</span><span class=p>);</span>
+<span class=w>      </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>" - on list 1."</span><span class=p>);</span>
 <span class=w>    </span><span class=p>}</span>
-<span class=w>    </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&quot;- - -&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>"- - -"</span><span class=p>);</span>
 
 <span class=w>  </span><span class=p>}</span>
 
 <span class=w>  </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>printFieldType</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>field_type</span><span class=p>)</span><span class=w> </span><span class=p>{</span>
 <span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>field_type</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=mi>3</span><span class=p>)</span>
-<span class=w>      </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>print</span><span class=p>(</span><span class=s>&quot;Vertices Selected:&quot;</span><span class=p>);</span>
+<span class=w>      </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>print</span><span class=p>(</span><span class=s>"Vertices Selected:"</span><span class=p>);</span>
 <span class=w>    </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>field_type</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=mi>4</span><span class=p>)</span>
-<span class=w>      </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>print</span><span class=p>(</span><span class=s>&quot;Edges Selected:&quot;</span><span class=p>);</span>
+<span class=w>      </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>print</span><span class=p>(</span><span class=s>"Edges Selected:"</span><span class=p>);</span>
 <span class=w>    </span><span class=k>else</span>
-<span class=w>      </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>print</span><span class=p>(</span><span class=s>&quot;Unknown type:&quot;</span><span class=p>);</span>
+<span class=w>      </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>print</span><span class=p>(</span><span class=s>"Unknown type:"</span><span class=p>);</span>
 <span class=w>  </span><span class=p>}</span>
 
 <span class=p>}</span>

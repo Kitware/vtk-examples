@@ -94,65 +94,65 @@ function registerListener(event, func) {
 </span><span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkUnstructuredGrid</span><span class=o>&gt;</span><span class=w> </span><span class=n>MakePolygon</span><span class=p>();</span>
 </span><span class=p>}</span><span class=w> </span><span class=c1>// namespace</span>
 
-<span class=kt>int</span><span class=w> </span><span class=n>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=p>[])</span>
+<span class=kt>int</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=p>[])</span>
 <span class=p>{</span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>&gt;</span><span class=w> </span><span class=n>filenames</span><span class=p>;</span>
 <span class=hll><span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkUnstructuredGrid</span><span class=o>&gt;&gt;</span><span class=w> </span><span class=n>uGrids</span><span class=p>;</span>
 </span>
 <span class=hll><span class=w>  </span><span class=n>uGrids</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>MakeUnstructuredGrid</span><span class=p>(</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkVertex</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>()));</span>
-</span><span class=w>  </span><span class=n>filenames</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=s>&quot;Vertex.vtu&quot;</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>filenames</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=s>"Vertex.vtu"</span><span class=p>);</span>
 
 <span class=w>  </span><span class=n>uGrids</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>MakePolyVertex</span><span class=p>());</span>
-<span class=w>  </span><span class=n>filenames</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=s>&quot;PolyVertex.vtu&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>filenames</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=s>"PolyVertex.vtu"</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>uGrids</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>MakeUnstructuredGrid</span><span class=p>(</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkLine</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>()));</span>
-</span><span class=w>  </span><span class=n>filenames</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=s>&quot;Line.vtu&quot;</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>filenames</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=s>"Line.vtu"</span><span class=p>);</span>
 
 <span class=w>  </span><span class=n>uGrids</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>MakePolyLine</span><span class=p>());</span>
-<span class=w>  </span><span class=n>filenames</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=s>&quot;PolyLine.vtu&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>filenames</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=s>"PolyLine.vtu"</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>uGrids</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>MakeUnstructuredGrid</span><span class=p>(</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkTriangle</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>()));</span>
-</span><span class=w>  </span><span class=n>filenames</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=s>&quot;Triangle.vtu&quot;</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>filenames</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=s>"Triangle.vtu"</span><span class=p>);</span>
 
 <span class=w>  </span><span class=n>uGrids</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>MakeTriangleStrip</span><span class=p>());</span>
-<span class=w>  </span><span class=n>filenames</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=s>&quot;TriangleStrip.vtu&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>filenames</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=s>"TriangleStrip.vtu"</span><span class=p>);</span>
 
 <span class=w>  </span><span class=n>uGrids</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>MakePolygon</span><span class=p>());</span>
-<span class=w>  </span><span class=n>filenames</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=s>&quot;Polygon.vtu&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>filenames</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=s>"Polygon.vtu"</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>uGrids</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>MakeUnstructuredGrid</span><span class=p>(</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPixel</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>()));</span>
-</span><span class=w>  </span><span class=n>filenames</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=s>&quot;Pixel.vtu&quot;</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>filenames</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=s>"Pixel.vtu"</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>uGrids</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>MakeUnstructuredGrid</span><span class=p>(</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkQuad</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>()));</span>
-</span><span class=w>  </span><span class=n>filenames</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=s>&quot;Quad.vtu&quot;</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>filenames</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=s>"Quad.vtu"</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>uGrids</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>MakeUnstructuredGrid</span><span class=p>(</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkTetra</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>()));</span>
-</span><span class=w>  </span><span class=n>filenames</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=s>&quot;Tetra.vtu&quot;</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>filenames</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=s>"Tetra.vtu"</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>uGrids</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>MakeUnstructuredGrid</span><span class=p>(</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkVoxel</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>()));</span>
-</span><span class=w>  </span><span class=n>filenames</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=s>&quot;Voxel.vtu&quot;</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>filenames</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=s>"Voxel.vtu"</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>uGrids</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>MakeUnstructuredGrid</span><span class=p>(</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkHexahedron</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>()));</span>
-</span><span class=w>  </span><span class=n>filenames</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=s>&quot;Hexahedron.vtu&quot;</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>filenames</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=s>"Hexahedron.vtu"</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>uGrids</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>MakeUnstructuredGrid</span><span class=p>(</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkWedge</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>()));</span>
-</span><span class=w>  </span><span class=n>filenames</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=s>&quot;Wedge.vtu&quot;</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>filenames</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=s>"Wedge.vtu"</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>uGrids</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>MakeUnstructuredGrid</span><span class=p>(</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPyramid</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>()));</span>
-</span><span class=w>  </span><span class=n>filenames</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=s>&quot;Pyramid.vtu&quot;</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>filenames</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=s>"Pyramid.vtu"</span><span class=p>);</span>
 
 <span class=w>  </span><span class=n>uGrids</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span>
 <span class=hll><span class=w>      </span><span class=n>MakeUnstructuredGrid</span><span class=p>(</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPentagonalPrism</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>()));</span>
-</span><span class=w>  </span><span class=n>filenames</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=s>&quot;PentagonalPrism.vtu&quot;</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>filenames</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=s>"PentagonalPrism.vtu"</span><span class=p>);</span>
 
 <span class=w>  </span><span class=n>uGrids</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span>
 <span class=hll><span class=w>      </span><span class=n>MakeUnstructuredGrid</span><span class=p>(</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkHexagonalPrism</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>()));</span>
-</span><span class=w>  </span><span class=n>filenames</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=s>&quot;HexagonalPrism.vtu&quot;</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>filenames</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=s>"HexagonalPrism.vtu"</span><span class=p>);</span>
 
 <span class=w>  </span><span class=c1>// Write each grid into  a file</span>
 <span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=kt>unsigned</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>uGrids</span><span class=p>.</span><span class=n>size</span><span class=p>();</span><span class=w> </span><span class=o>++</span><span class=n>i</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Writing: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>filenames</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Writing: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>filenames</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkXMLDataSetWriter</span><span class=o>&gt;</span><span class=w> </span><span class=n>writer</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>writer</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>filenames</span><span class=p>[</span><span class=n>i</span><span class=p>].</span><span class=n>c_str</span><span class=p>());</span>
 <span class=w>    </span><span class=n>writer</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>uGrids</span><span class=p>[</span><span class=n>i</span><span class=p>]);</span>
@@ -305,11 +305,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;WriteXMLLinearCells: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"WriteXMLLinearCells: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>WriteXMLLinearCells</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>WriteXMLLinearCells.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>WriteXMLLinearCells</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

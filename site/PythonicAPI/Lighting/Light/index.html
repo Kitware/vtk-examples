@@ -84,7 +84,7 @@ function registerListener(event, func) {
 <span class=k>def</span><span class=w> </span><span class=nf>main</span><span class=p>():</span>
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
-<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Black&#39;</span><span class=p>),</span> <span class=n>background2</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;SkyBlue&#39;</span><span class=p>),</span>
+<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Black'</span><span class=p>),</span> <span class=n>background2</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'SkyBlue'</span><span class=p>),</span>
 </span>                           <span class=n>gradient_background</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>automatic_light_creation</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
 
     <span class=c1># Create a light.</span>
@@ -94,12 +94,12 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>light</span> <span class=o>=</span> <span class=n>vtkLight</span><span class=p>(</span><span class=n>light_type</span><span class=o>=</span><span class=n>Light</span><span class=o>.</span><span class=n>LightType</span><span class=o>.</span><span class=n>VTK_LIGHT_TYPE_SCENE_LIGHT</span><span class=p>,</span>
 </span>                     <span class=n>position</span><span class=o>=</span><span class=n>light_position</span><span class=p>,</span> <span class=n>positional</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span>
                      <span class=n>focal_point</span><span class=o>=</span><span class=n>light_focal_point</span><span class=p>,</span> <span class=n>cone_angle</span><span class=o>=</span><span class=mi>10</span><span class=p>,</span>
-                     <span class=n>diffuse_color</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Red&#39;</span><span class=p>),</span>
-                     <span class=n>ambient_color</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Lime&#39;</span><span class=p>),</span>
-                     <span class=n>specular_color</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Blue&#39;</span><span class=p>)</span>
+                     <span class=n>diffuse_color</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Red'</span><span class=p>),</span>
+                     <span class=n>ambient_color</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Lime'</span><span class=p>),</span>
+                     <span class=n>specular_color</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Blue'</span><span class=p>)</span>
                      <span class=p>)</span>
     <span class=n>original_lights</span> <span class=o>=</span> <span class=n>renderer</span><span class=o>.</span><span class=n>lights</span>
-    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;Originally there </span><span class=si>{</span><span class=n>lights_txt</span><span class=p>(</span><span class=n>original_lights</span><span class=p>)</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'Originally there </span><span class=si>{</span><span class=n>lights_txt</span><span class=p>(</span><span class=n>original_lights</span><span class=p>)</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
 
     <span class=c1># Display where the light is.</span>
 <span class=hll>    <span class=n>light_actor</span> <span class=o>=</span> <span class=n>vtkLightActor</span><span class=p>(</span><span class=n>light</span><span class=o>=</span><span class=n>light</span><span class=p>)</span>
@@ -110,7 +110,7 @@ function registerListener(event, func) {
 </span><span class=hll>    <span class=n>light_focal_point_mapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>light_focal_point_sphere</span> <span class=o>&gt;&gt;</span> <span class=n>light_focal_point_mapper</span>
 <span class=hll>    <span class=n>light_focal_point_actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>(</span><span class=n>mapper</span><span class=o>=</span><span class=n>light_focal_point_mapper</span><span class=p>)</span>
-</span>    <span class=n>light_focal_point_actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Yellow&#39;</span><span class=p>)</span>
+</span>    <span class=n>light_focal_point_actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Yellow'</span><span class=p>)</span>
     <span class=n>renderer</span><span class=o>.</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>light_focal_point_actor</span><span class=p>)</span>
 
     <span class=c1># Create a plane for the light to shine on.</span>
@@ -119,15 +119,15 @@ function registerListener(event, func) {
 </span><span class=hll>    <span class=n>plane_actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>(</span><span class=n>mapper</span><span class=o>=</span><span class=n>plane_mapper</span><span class=p>)</span>
 </span>    <span class=n>renderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>plane_actor</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>ren_win</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>window_name</span><span class=o>=</span><span class=s1>&#39;Light&#39;</span><span class=p>)</span>
+<span class=hll>    <span class=n>ren_win</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>window_name</span><span class=o>=</span><span class=s1>'Light'</span><span class=p>)</span>
 </span>    <span class=n>ren_win</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>)</span>
 <span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>iren</span><span class=o>.</span><span class=n>render_window</span> <span class=o>=</span> <span class=n>ren_win</span>
 
     <span class=n>ren_win</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
-    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;Now there </span><span class=si>{</span><span class=n>lights_txt</span><span class=p>(</span><span class=n>original_lights</span><span class=p>)</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'Now there </span><span class=si>{</span><span class=n>lights_txt</span><span class=p>(</span><span class=n>original_lights</span><span class=p>)</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
     <span class=n>renderer</span><span class=o>.</span><span class=n>AddLight</span><span class=p>(</span><span class=n>light</span><span class=p>)</span>  <span class=c1># We must do this after ren_win.Render()</span>
-    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;Now there </span><span class=si>{</span><span class=n>lights_txt</span><span class=p>(</span><span class=n>original_lights</span><span class=p>)</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'Now there </span><span class=si>{</span><span class=n>lights_txt</span><span class=p>(</span><span class=n>original_lights</span><span class=p>)</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
 
     <span class=n>camera</span> <span class=o>=</span> <span class=n>renderer</span><span class=o>.</span><span class=n>active_camera</span>
     <span class=n>camera</span><span class=o>.</span><span class=n>position</span> <span class=o>=</span> <span class=p>(</span><span class=o>-</span><span class=mf>2.17199</span><span class=p>,</span> <span class=o>-</span><span class=mf>2.50774</span><span class=p>,</span> <span class=mf>2.18</span><span class=p>)</span>
@@ -143,11 +143,11 @@ function registerListener(event, func) {
     <span class=n>number_of_lights</span> <span class=o>=</span> <span class=n>light_collection</span><span class=o>.</span><span class=n>number_of_items</span>
     <span class=k>match</span> <span class=n>number_of_lights</span><span class=p>:</span>
         <span class=k>case</span> <span class=mi>0</span><span class=p>:</span>
-            <span class=k>return</span> <span class=sa>f</span><span class=s1>&#39;are no lights.&#39;</span>
+            <span class=k>return</span> <span class=sa>f</span><span class=s1>'are no lights.'</span>
         <span class=k>case</span> <span class=mi>1</span><span class=p>:</span>
-            <span class=k>return</span> <span class=sa>f</span><span class=s1>&#39;is one light.&#39;</span>
+            <span class=k>return</span> <span class=sa>f</span><span class=s1>'is one light.'</span>
         <span class=k>case</span><span class=w> </span><span class=k>_</span><span class=p>:</span>
-            <span class=k>return</span> <span class=sa>f</span><span class=s1>&#39;are </span><span class=si>{</span><span class=n>number_of_lights</span><span class=si>}</span><span class=s1> lights.&#39;</span>
+            <span class=k>return</span> <span class=sa>f</span><span class=s1>'are </span><span class=si>{</span><span class=n>number_of_lights</span><span class=si>}</span><span class=s1> lights.'</span>
 
 
 <span class=nd>@dataclass</span><span class=p>(</span><span class=n>frozen</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
@@ -159,6 +159,6 @@ function registerListener(event, func) {
         <span class=n>VTK_LIGHT_TYPE_SCENE_LIGHT</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>3</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

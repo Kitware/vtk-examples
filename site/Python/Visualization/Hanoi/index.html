@@ -89,9 +89,9 @@ function registerListener(event, func) {
 
 
 <span class=k>class</span><span class=w> </span><span class=nc>GV</span><span class=p>(</span><span class=nb>object</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Used to store global variables.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 
     <span class=k>def</span><span class=w> </span><span class=fm>__init__</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>numberOfPucks</span><span class=o>=</span><span class=mi>5</span><span class=p>,</span> <span class=n>numberOfSteps</span><span class=o>=</span><span class=mi>5</span><span class=p>,</span> <span class=n>puckResolution</span><span class=o>=</span><span class=mi>48</span><span class=p>,</span> <span class=n>configuration</span><span class=o>=</span><span class=mi>0</span><span class=p>):</span>
         <span class=bp>self</span><span class=o>.</span><span class=n>numberOfPucks</span> <span class=o>=</span> <span class=n>numberOfPucks</span>
@@ -118,12 +118,12 @@ function registerListener(event, func) {
 <span class=c1># Globals</span>
 <span class=n>gv</span> <span class=o>=</span> <span class=n>GV</span><span class=p>()</span>
 <span class=hll><span class=n>renWin</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>()</span>
-</span><span class=sd>&quot;&quot;&quot;</span>
+</span><span class=sd>"""</span>
 <span class=sd>   For pegStack we use a list of lists where the sublists correspond to the</span>
 <span class=sd>      source, target and helper pegs.</span>
 <span class=sd>   Python lists can be used as a stack since they have append() (corresponding</span>
 <span class=sd>      to push()) and pop().</span>
-<span class=sd>&quot;&quot;&quot;</span>
+<span class=sd>"""</span>
 <span class=n>pegStack</span> <span class=o>=</span> <span class=p>[[],</span> <span class=p>[],</span> <span class=p>[]]</span>
 
 
@@ -137,7 +137,7 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>iren</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renWin</span><span class=p>)</span>
 
-    <span class=n>ren</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;PapayaWhip&#39;</span><span class=p>))</span>
+    <span class=n>ren</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'PapayaWhip'</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>camera</span> <span class=o>=</span> <span class=n>vtkCamera</span><span class=p>()</span>
 </span>    <span class=n>camera</span><span class=o>.</span><span class=n>SetPosition</span><span class=p>(</span><span class=mf>41.0433</span><span class=p>,</span> <span class=mf>27.9637</span><span class=p>,</span> <span class=mf>30.442</span><span class=p>)</span>
@@ -169,7 +169,7 @@ function registerListener(event, func) {
 </span>    <span class=n>ren</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>table</span><span class=p>)</span>
     <span class=n>table</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>tableMapper</span><span class=p>)</span>
     <span class=c1># table.GetProperty().SetColor(0.9569, 0.6431, 0.3765)</span>
-    <span class=n>table</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;SaddleBrown&#39;</span><span class=p>))</span>
+    <span class=n>table</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'SaddleBrown'</span><span class=p>))</span>
     <span class=n>table</span><span class=o>.</span><span class=n>AddPosition</span><span class=p>(</span><span class=n>gv</span><span class=o>.</span><span class=n>D</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
     <span class=n>table</span><span class=o>.</span><span class=n>SetScale</span><span class=p>(</span><span class=mi>4</span> <span class=o>*</span> <span class=n>gv</span><span class=o>.</span><span class=n>D</span><span class=p>,</span> <span class=mi>2</span> <span class=o>*</span> <span class=n>gv</span><span class=o>.</span><span class=n>D</span><span class=p>,</span> <span class=mi>3</span> <span class=o>*</span> <span class=n>gv</span><span class=o>.</span><span class=n>D</span><span class=p>)</span>
     <span class=n>table</span><span class=o>.</span><span class=n>RotateX</span><span class=p>(</span><span class=mi>90</span><span class=p>)</span>
@@ -183,7 +183,7 @@ function registerListener(event, func) {
 </span>        <span class=n>ren</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>peg</span><span class=p>[</span><span class=n>i</span><span class=p>])</span>
         <span class=n>peg</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>pegMapper</span><span class=p>)</span>
         <span class=c1># peg[i].GetProperty().SetColor(1, 1, 1)</span>
-        <span class=n>peg</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Lavender&#39;</span><span class=p>))</span>
+        <span class=n>peg</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Lavender'</span><span class=p>))</span>
         <span class=n>peg</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>AddPosition</span><span class=p>(</span><span class=n>i</span> <span class=o>*</span> <span class=n>gv</span><span class=o>.</span><span class=n>D</span><span class=p>,</span> <span class=n>gv</span><span class=o>.</span><span class=n>H</span> <span class=o>/</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
         <span class=n>peg</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>SetScale</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>gv</span><span class=o>.</span><span class=n>H</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
 
@@ -207,10 +207,10 @@ function registerListener(event, func) {
 
     <span class=c1># Reset the camera to view all actors.</span>
     <span class=n>renWin</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
-    <span class=n>renWin</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;Hanoi&#39;</span><span class=p>)</span>
+    <span class=n>renWin</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>'Hanoi'</span><span class=p>)</span>
 
     <span class=k>if</span> <span class=n>gv</span><span class=o>.</span><span class=n>configuration</span> <span class=o>==</span> <span class=mi>3</span><span class=p>:</span>
-        <span class=n>WriteImage</span><span class=p>(</span><span class=s1>&#39;hanoi0.png&#39;</span><span class=p>,</span> <span class=n>renWin</span><span class=p>,</span> <span class=n>rgba</span><span class=o>=</span><span class=kc>False</span><span class=p>)</span>
+        <span class=n>WriteImage</span><span class=p>(</span><span class=s1>'hanoi0.png'</span><span class=p>,</span> <span class=n>renWin</span><span class=p>,</span> <span class=n>rgba</span><span class=o>=</span><span class=kc>False</span><span class=p>)</span>
 
     <span class=k>if</span> <span class=n>gv</span><span class=o>.</span><span class=n>configuration</span> <span class=o>!=</span> <span class=mi>1</span><span class=p>:</span>
         <span class=c1># Begin recursion.</span>
@@ -221,13 +221,13 @@ function registerListener(event, func) {
 
             <span class=n>renWin</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
             <span class=k>if</span> <span class=n>gv</span><span class=o>.</span><span class=n>configuration</span> <span class=o>==</span> <span class=mi>3</span><span class=p>:</span>
-                <span class=n>WriteImage</span><span class=p>(</span><span class=s1>&#39;hanoi2.png&#39;</span><span class=p>,</span> <span class=n>renWin</span><span class=p>,</span> <span class=n>rgba</span><span class=o>=</span><span class=kc>False</span><span class=p>)</span>
+                <span class=n>WriteImage</span><span class=p>(</span><span class=s1>'hanoi2.png'</span><span class=p>,</span> <span class=n>renWin</span><span class=p>,</span> <span class=n>rgba</span><span class=o>=</span><span class=kc>False</span><span class=p>)</span>
         <span class=c1># Report output.</span>
-        <span class=n>s</span> <span class=o>=</span> <span class=s1>&#39;Number of moves: </span><span class=si>{:d}</span><span class=se>\n</span><span class=s1>Polygons rendered each frame: </span><span class=si>{:d}</span><span class=se>\n</span><span class=s1>Total number of frames: </span><span class=si>{:d}</span><span class=s1>&#39;</span>
+        <span class=n>s</span> <span class=o>=</span> <span class=s1>'Number of moves: </span><span class=si>{:d}</span><span class=se>\n</span><span class=s1>Polygons rendered each frame: </span><span class=si>{:d}</span><span class=se>\n</span><span class=s1>Total number of frames: </span><span class=si>{:d}</span><span class=s1>'</span>
         <span class=nb>print</span><span class=p>(</span><span class=n>s</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>gv</span><span class=o>.</span><span class=n>numberOfMoves</span><span class=p>,</span> <span class=mi>3</span> <span class=o>*</span> <span class=mi>8</span> <span class=o>+</span> <span class=mi>1</span> <span class=o>+</span> <span class=n>gv</span><span class=o>.</span><span class=n>numberOfPucks</span> <span class=o>*</span> <span class=p>(</span><span class=mi>2</span> <span class=o>+</span> <span class=n>gv</span><span class=o>.</span><span class=n>puckResolution</span><span class=p>),</span>
                        <span class=n>gv</span><span class=o>.</span><span class=n>numberOfMoves</span> <span class=o>*</span> <span class=mi>3</span> <span class=o>*</span> <span class=n>gv</span><span class=o>.</span><span class=n>numberOfSteps</span><span class=p>))</span>
 
-    <span class=n>iren</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=s1>&#39;EndInteractionEvent&#39;</span><span class=p>,</span> <span class=n>OrientationObserver</span><span class=p>(</span><span class=n>ren</span><span class=o>.</span><span class=n>GetActiveCamera</span><span class=p>()))</span>
+    <span class=n>iren</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=s1>'EndInteractionEvent'</span><span class=p>,</span> <span class=n>OrientationObserver</span><span class=p>(</span><span class=n>ren</span><span class=o>.</span><span class=n>GetActiveCamera</span><span class=p>()))</span>
 
     <span class=c1># Render the image.</span>
     <span class=n>iren</span><span class=o>.</span><span class=n>Initialize</span><span class=p>()</span>
@@ -243,8 +243,8 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_program_parameters</span><span class=p>():</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>argparse</span>
-    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;Towers of Hanoi. .&#39;</span>
-    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;</span>
+    <span class=n>description</span> <span class=o>=</span> <span class=s1>'Towers of Hanoi. .'</span>
+    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>'''</span>
 <span class=s1>Where:  -p specifies the number of pucks.</span>
 <span class=s1>        -s specifies the number of steps.</span>
 <span class=s1>        -r specifies the puck resolution.</span>
@@ -254,13 +254,13 @@ function registerListener(event, func) {
 <span class=s1>            2 intermediate configuration.</span>
 <span class=s1>            3 final configuration and save images</span>
 <span class=s1>Defaults:  -p 5 -s 5 -r 48 -c 0</span>
-<span class=s1>    &#39;&#39;&#39;</span>
+<span class=s1>    '''</span>
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
                                      <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawDescriptionHelpFormatter</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;--numberOfPucks&#39;</span><span class=p>,</span> <span class=s1>&#39;-p&#39;</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mi>5</span><span class=p>,</span> <span class=nb>type</span><span class=o>=</span><span class=nb>int</span><span class=p>,</span> <span class=n>nargs</span><span class=o>=</span><span class=s1>&#39;?&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The number of pucks.&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;--numberOfSteps&#39;</span><span class=p>,</span> <span class=s1>&#39;-s&#39;</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mi>5</span><span class=p>,</span> <span class=nb>type</span><span class=o>=</span><span class=nb>int</span><span class=p>,</span> <span class=n>nargs</span><span class=o>=</span><span class=s1>&#39;?&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The number of steps.&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;--puckResolution&#39;</span><span class=p>,</span> <span class=s1>&#39;-r&#39;</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mi>48</span><span class=p>,</span> <span class=nb>type</span><span class=o>=</span><span class=nb>int</span><span class=p>,</span> <span class=n>nargs</span><span class=o>=</span><span class=s1>&#39;?&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The puck resolution.&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;--configuration&#39;</span><span class=p>,</span> <span class=s1>&#39;-c&#39;</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mi>0</span><span class=p>,</span> <span class=nb>type</span><span class=o>=</span><span class=nb>int</span><span class=p>,</span> <span class=n>nargs</span><span class=o>=</span><span class=s1>&#39;?&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The configuration.&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'--numberOfPucks'</span><span class=p>,</span> <span class=s1>'-p'</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mi>5</span><span class=p>,</span> <span class=nb>type</span><span class=o>=</span><span class=nb>int</span><span class=p>,</span> <span class=n>nargs</span><span class=o>=</span><span class=s1>'?'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'The number of pucks.'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'--numberOfSteps'</span><span class=p>,</span> <span class=s1>'-s'</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mi>5</span><span class=p>,</span> <span class=nb>type</span><span class=o>=</span><span class=nb>int</span><span class=p>,</span> <span class=n>nargs</span><span class=o>=</span><span class=s1>'?'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'The number of steps.'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'--puckResolution'</span><span class=p>,</span> <span class=s1>'-r'</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mi>48</span><span class=p>,</span> <span class=nb>type</span><span class=o>=</span><span class=nb>int</span><span class=p>,</span> <span class=n>nargs</span><span class=o>=</span><span class=s1>'?'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'The puck resolution.'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'--configuration'</span><span class=p>,</span> <span class=s1>'-c'</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mi>0</span><span class=p>,</span> <span class=nb>type</span><span class=o>=</span><span class=nb>int</span><span class=p>,</span> <span class=n>nargs</span><span class=o>=</span><span class=s1>'?'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'The configuration.'</span><span class=p>)</span>
     <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
     <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>numberOfPucks</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>numberOfSteps</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>puckResolution</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>configuration</span>
 
@@ -273,16 +273,16 @@ function registerListener(event, func) {
     <span class=n>configuration</span> <span class=o>=</span> <span class=nb>abs</span><span class=p>(</span><span class=n>configuration</span><span class=p>)</span>
     <span class=n>check</span> <span class=o>=</span> <span class=kc>True</span>
     <span class=k>if</span> <span class=n>numberOfPucks</span> <span class=o>&lt;</span> <span class=mi>2</span><span class=p>:</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Please use more pucks!&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'Please use more pucks!'</span><span class=p>)</span>
         <span class=n>check</span> <span class=o>=</span> <span class=kc>False</span>
     <span class=k>if</span> <span class=n>numberOfPucks</span> <span class=o>&gt;</span> <span class=n>maxPucks</span><span class=p>:</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Too many pucks specified! Maximum is&#39;</span><span class=p>,</span> <span class=n>maxPucks</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'Too many pucks specified! Maximum is'</span><span class=p>,</span> <span class=n>maxPucks</span><span class=p>)</span>
         <span class=n>check</span> <span class=o>=</span> <span class=kc>False</span>
     <span class=k>if</span> <span class=n>numberOfSteps</span> <span class=o>&lt;</span> <span class=mi>3</span><span class=p>:</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Please use more steps!&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'Please use more steps!'</span><span class=p>)</span>
         <span class=n>check</span> <span class=o>=</span> <span class=kc>False</span>
     <span class=k>if</span> <span class=n>configuration</span> <span class=o>&gt;</span> <span class=mi>3</span><span class=p>:</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;0 &gt;= configuration &lt;= 3&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'0 &gt;= configuration &lt;= 3'</span><span class=p>)</span>
         <span class=n>check</span> <span class=o>=</span> <span class=kc>False</span>
     <span class=k>if</span> <span class=n>check</span><span class=p>:</span>
         <span class=n>gv</span><span class=o>.</span><span class=n>update</span><span class=p>(</span><span class=n>numberOfPucks</span><span class=p>,</span> <span class=n>numberOfSteps</span><span class=p>,</span> <span class=n>puckResolution</span><span class=p>,</span> <span class=n>configuration</span><span class=p>)</span>
@@ -290,12 +290,12 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>MovePuck</span><span class=p>(</span><span class=n>peg1</span><span class=p>,</span> <span class=n>peg2</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    This routine is responsible for moving pucks from peg1 to peg2.</span>
 <span class=sd>    :param peg1: Initial peg.</span>
 <span class=sd>    :param peg2: Final peg.</span>
 <span class=sd>    :return:</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=n>gv</span><span class=o>.</span><span class=n>numberOfMoves</span> <span class=o>+=</span> <span class=mi>1</span>
 
     <span class=c1># Get the actor to move</span>
@@ -326,7 +326,7 @@ function registerListener(event, func) {
                 <span class=n>renWin</span><span class=o>.</span><span class=n>GetRenderers</span><span class=p>()</span><span class=o>.</span><span class=n>GetFirstRenderer</span><span class=p>()</span><span class=o>.</span><span class=n>SetActiveCamera</span><span class=p>(</span><span class=n>camera1</span><span class=p>)</span>
                 <span class=n>renWin</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
                 <span class=k>if</span> <span class=n>gv</span><span class=o>.</span><span class=n>configuration</span> <span class=o>==</span> <span class=mi>3</span><span class=p>:</span>
-                    <span class=n>WriteImage</span><span class=p>(</span><span class=s1>&#39;hanoi1.png&#39;</span><span class=p>,</span> <span class=n>renWin</span><span class=p>,</span> <span class=n>rgba</span><span class=o>=</span><span class=kc>False</span><span class=p>)</span>
+                    <span class=n>WriteImage</span><span class=p>(</span><span class=s1>'hanoi1.png'</span><span class=p>,</span> <span class=n>renWin</span><span class=p>,</span> <span class=n>rgba</span><span class=o>=</span><span class=kc>False</span><span class=p>)</span>
                 <span class=k>if</span> <span class=n>gv</span><span class=o>.</span><span class=n>configuration</span> <span class=o>==</span> <span class=mi>2</span><span class=p>:</span>
                     <span class=n>gv</span><span class=o>.</span><span class=n>gotFigure2</span> <span class=o>=</span> <span class=kc>True</span>
                     <span class=k>break</span>
@@ -346,14 +346,14 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>Hanoi</span><span class=p>(</span><span class=n>n</span><span class=p>,</span> <span class=n>peg1</span><span class=p>,</span> <span class=n>peg2</span><span class=p>,</span> <span class=n>peg3</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Tower of Hanoi.</span>
 <span class=sd>    :param n: Number of disks.</span>
 <span class=sd>    :param peg1: Source</span>
 <span class=sd>    :param peg2: Target</span>
 <span class=sd>    :param peg3: Helper</span>
 <span class=sd>    :return:</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=c1># If gotFigure2 is true, we break out of the recursion.</span>
     <span class=k>if</span> <span class=n>gv</span><span class=o>.</span><span class=n>gotFigure2</span><span class=p>:</span>
         <span class=k>return</span>
@@ -373,23 +373,23 @@ function registerListener(event, func) {
 
     <span class=k>def</span><span class=w> </span><span class=fm>__call__</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>caller</span><span class=p>,</span> <span class=n>ev</span><span class=p>):</span>
         <span class=c1># Just do this to demonstrate who called callback and the event that triggered it.</span>
-        <span class=nb>print</span><span class=p>(</span><span class=n>caller</span><span class=o>.</span><span class=n>GetClassName</span><span class=p>(),</span> <span class=s1>&#39;Event Id:&#39;</span><span class=p>,</span> <span class=n>ev</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=n>caller</span><span class=o>.</span><span class=n>GetClassName</span><span class=p>(),</span> <span class=s1>'Event Id:'</span><span class=p>,</span> <span class=n>ev</span><span class=p>)</span>
         <span class=c1># Now print the camera orientation.</span>
         <span class=n>CameraOrientation</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>cam</span><span class=p>)</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>CameraOrientation</span><span class=p>(</span><span class=n>cam</span><span class=p>):</span>
-    <span class=n>fmt1</span> <span class=o>=</span> <span class=s1>&#39;</span><span class=si>{:&gt;15s}</span><span class=s1>&#39;</span>
-    <span class=n>fmt2</span> <span class=o>=</span> <span class=s1>&#39;</span><span class=si>{:9.6g}</span><span class=s1>&#39;</span>
-    <span class=nb>print</span><span class=p>(</span><span class=n>fmt1</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=s1>&#39;Position:&#39;</span><span class=p>),</span> <span class=s1>&#39;, &#39;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=nb>map</span><span class=p>(</span><span class=n>fmt2</span><span class=o>.</span><span class=n>format</span><span class=p>,</span> <span class=n>cam</span><span class=o>.</span><span class=n>GetPosition</span><span class=p>())))</span>
-    <span class=nb>print</span><span class=p>(</span><span class=n>fmt1</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=s1>&#39;Focal point:&#39;</span><span class=p>),</span> <span class=s1>&#39;, &#39;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=nb>map</span><span class=p>(</span><span class=n>fmt2</span><span class=o>.</span><span class=n>format</span><span class=p>,</span> <span class=n>cam</span><span class=o>.</span><span class=n>GetFocalPoint</span><span class=p>())))</span>
-    <span class=nb>print</span><span class=p>(</span><span class=n>fmt1</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=s1>&#39;Clipping range:&#39;</span><span class=p>),</span> <span class=s1>&#39;, &#39;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=nb>map</span><span class=p>(</span><span class=n>fmt2</span><span class=o>.</span><span class=n>format</span><span class=p>,</span> <span class=n>cam</span><span class=o>.</span><span class=n>GetClippingRange</span><span class=p>())))</span>
-    <span class=nb>print</span><span class=p>(</span><span class=n>fmt1</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=s1>&#39;View up:&#39;</span><span class=p>),</span> <span class=s1>&#39;, &#39;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=nb>map</span><span class=p>(</span><span class=n>fmt2</span><span class=o>.</span><span class=n>format</span><span class=p>,</span> <span class=n>cam</span><span class=o>.</span><span class=n>GetViewUp</span><span class=p>())))</span>
-    <span class=nb>print</span><span class=p>(</span><span class=n>fmt1</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=s1>&#39;Distance:&#39;</span><span class=p>),</span> <span class=n>fmt2</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>cam</span><span class=o>.</span><span class=n>GetDistance</span><span class=p>()))</span>
+    <span class=n>fmt1</span> <span class=o>=</span> <span class=s1>'</span><span class=si>{:&gt;15s}</span><span class=s1>'</span>
+    <span class=n>fmt2</span> <span class=o>=</span> <span class=s1>'</span><span class=si>{:9.6g}</span><span class=s1>'</span>
+    <span class=nb>print</span><span class=p>(</span><span class=n>fmt1</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=s1>'Position:'</span><span class=p>),</span> <span class=s1>', '</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=nb>map</span><span class=p>(</span><span class=n>fmt2</span><span class=o>.</span><span class=n>format</span><span class=p>,</span> <span class=n>cam</span><span class=o>.</span><span class=n>GetPosition</span><span class=p>())))</span>
+    <span class=nb>print</span><span class=p>(</span><span class=n>fmt1</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=s1>'Focal point:'</span><span class=p>),</span> <span class=s1>', '</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=nb>map</span><span class=p>(</span><span class=n>fmt2</span><span class=o>.</span><span class=n>format</span><span class=p>,</span> <span class=n>cam</span><span class=o>.</span><span class=n>GetFocalPoint</span><span class=p>())))</span>
+    <span class=nb>print</span><span class=p>(</span><span class=n>fmt1</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=s1>'Clipping range:'</span><span class=p>),</span> <span class=s1>', '</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=nb>map</span><span class=p>(</span><span class=n>fmt2</span><span class=o>.</span><span class=n>format</span><span class=p>,</span> <span class=n>cam</span><span class=o>.</span><span class=n>GetClippingRange</span><span class=p>())))</span>
+    <span class=nb>print</span><span class=p>(</span><span class=n>fmt1</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=s1>'View up:'</span><span class=p>),</span> <span class=s1>', '</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=nb>map</span><span class=p>(</span><span class=n>fmt2</span><span class=o>.</span><span class=n>format</span><span class=p>,</span> <span class=n>cam</span><span class=o>.</span><span class=n>GetViewUp</span><span class=p>())))</span>
+    <span class=nb>print</span><span class=p>(</span><span class=n>fmt1</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=s1>'Distance:'</span><span class=p>),</span> <span class=n>fmt2</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>cam</span><span class=o>.</span><span class=n>GetDistance</span><span class=p>()))</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>WriteImage</span><span class=p>(</span><span class=n>fileName</span><span class=p>,</span> <span class=n>renWin1</span><span class=p>,</span> <span class=n>rgba</span><span class=o>=</span><span class=kc>True</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Write the render window view to an image file.</span>
 
 <span class=sd>    Image types supported are:</span>
@@ -400,7 +400,7 @@ function registerListener(event, func) {
 <span class=sd>    :param renWin1: The render window.</span>
 <span class=sd>    :param rgba: Used to set the buffer type.</span>
 <span class=sd>    :return:</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 
     <span class=kn>import</span><span class=w> </span><span class=nn>os</span>
 
@@ -409,19 +409,19 @@ function registerListener(event, func) {
         <span class=n>path</span><span class=p>,</span> <span class=n>ext</span> <span class=o>=</span> <span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>splitext</span><span class=p>(</span><span class=n>fileName</span><span class=p>)</span>
         <span class=n>ext</span> <span class=o>=</span> <span class=n>ext</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span>
         <span class=k>if</span> <span class=ow>not</span> <span class=n>ext</span><span class=p>:</span>
-            <span class=n>ext</span> <span class=o>=</span> <span class=s1>&#39;.png&#39;</span>
+            <span class=n>ext</span> <span class=o>=</span> <span class=s1>'.png'</span>
             <span class=n>fileName</span> <span class=o>=</span> <span class=n>fileName</span> <span class=o>+</span> <span class=n>ext</span>
-        <span class=k>if</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>&#39;.bmp&#39;</span><span class=p>:</span>
+        <span class=k>if</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>'.bmp'</span><span class=p>:</span>
 <span class=hll>            <span class=n>writer</span> <span class=o>=</span> <span class=n>vtkBMPWriter</span><span class=p>()</span>
-</span>        <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>&#39;.jpg&#39;</span><span class=p>:</span>
+</span>        <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>'.jpg'</span><span class=p>:</span>
 <span class=hll>            <span class=n>writer</span> <span class=o>=</span> <span class=n>vtkJPEGWriter</span><span class=p>()</span>
-</span>        <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>&#39;.pnm&#39;</span><span class=p>:</span>
+</span>        <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>'.pnm'</span><span class=p>:</span>
 <span class=hll>            <span class=n>writer</span> <span class=o>=</span> <span class=n>vtkPNMWriter</span><span class=p>()</span>
-</span>        <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>&#39;.ps&#39;</span><span class=p>:</span>
+</span>        <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>'.ps'</span><span class=p>:</span>
             <span class=k>if</span> <span class=n>rgba</span><span class=p>:</span>
                 <span class=n>rgba</span> <span class=o>=</span> <span class=kc>False</span>
 <span class=hll>            <span class=n>writer</span> <span class=o>=</span> <span class=n>vtkPostScriptWriter</span><span class=p>()</span>
-</span>        <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>&#39;.tiff&#39;</span><span class=p>:</span>
+</span>        <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>'.tiff'</span><span class=p>:</span>
 <span class=hll>            <span class=n>writer</span> <span class=o>=</span> <span class=n>vtkTIFFWriter</span><span class=p>()</span>
 </span>        <span class=k>else</span><span class=p>:</span>
 <span class=hll>            <span class=n>writer</span> <span class=o>=</span> <span class=n>vtkPNGWriter</span><span class=p>()</span>
@@ -441,9 +441,9 @@ function registerListener(event, func) {
         <span class=n>writer</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>windowto_image_filter</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
         <span class=n>writer</span><span class=o>.</span><span class=n>Write</span><span class=p>()</span>
     <span class=k>else</span><span class=p>:</span>
-        <span class=k>raise</span> <span class=ne>RuntimeError</span><span class=p>(</span><span class=s1>&#39;Need a filename.&#39;</span><span class=p>)</span>
+        <span class=k>raise</span> <span class=ne>RuntimeError</span><span class=p>(</span><span class=s1>'Need a filename.'</span><span class=p>)</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

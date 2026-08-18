@@ -150,11 +150,11 @@ function registerListener(event, func) {
 
     <span class=c1># We add the volume to the renderer ...</span>
     <span class=n>renderer</span><span class=o>.</span><span class=n>AddVolume</span><span class=p>(</span><span class=n>volume</span><span class=p>)</span>
-    <span class=n>renderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;MistyRose&quot;</span><span class=p>))</span>
+    <span class=n>renderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>"MistyRose"</span><span class=p>))</span>
 
     <span class=c1># ... and set window size.</span>
     <span class=n>renderWin</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>400</span><span class=p>,</span> <span class=mi>400</span><span class=p>)</span>
-    <span class=n>renderWin</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;VTKWithNumpy&#39;</span><span class=p>)</span>
+    <span class=n>renderWin</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>'VTKWithNumpy'</span><span class=p>)</span>
 
     <span class=c1># A simple function to be called when the user decides to quit the application.</span>
     <span class=k>def</span><span class=w> </span><span class=nf>exitCheck</span><span class=p>(</span><span class=n>obj</span><span class=p>,</span> <span class=n>event</span><span class=p>):</span>
@@ -162,7 +162,7 @@ function registerListener(event, func) {
             <span class=n>obj</span><span class=o>.</span><span class=n>SetAbortRender</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
 
     <span class=c1># Tell the application to use the function as an exit check.</span>
-    <span class=n>renderWin</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=s2>&quot;AbortCheckEvent&quot;</span><span class=p>,</span> <span class=n>exitCheck</span><span class=p>)</span>
+    <span class=n>renderWin</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=s2>"AbortCheckEvent"</span><span class=p>,</span> <span class=n>exitCheck</span><span class=p>)</span>
 
     <span class=n>renderInteractor</span><span class=o>.</span><span class=n>Initialize</span><span class=p>()</span>
     <span class=c1># Because nothing will be rendered without any input, we order the first render manually</span>
@@ -171,6 +171,6 @@ function registerListener(event, func) {
     <span class=n>renderInteractor</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

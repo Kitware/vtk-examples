@@ -80,7 +80,7 @@ function registerListener(event, func) {
 <span class=w>      </span><span class=p>{</span>
 <span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>lib</span><span class=p>.</span><span class=na>IsLoaded</span><span class=p>())</span><span class=w> </span>
 <span class=w>        </span><span class=p>{</span>
-<span class=w>          </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&quot; not loaded&quot;</span><span class=p>);</span>
+<span class=w>          </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>" not loaded"</span><span class=p>);</span>
 <span class=w>        </span><span class=p>}</span>
 <span class=w>      </span><span class=p>}</span>
 <span class=w>    </span><span class=p>}</span>
@@ -100,9 +100,9 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=c1>//PolygonActor color</span>
 <span class=w>    </span><span class=kt>double</span><span class=w> </span><span class=n>PolygonActorColor</span><span class=o>[]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=kt>double</span><span class=o>[</span><span class=mi>4</span><span class=o>]</span><span class=p>;</span>
 
-<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>&quot;OrangeRed&quot;</span><span class=p>,</span><span class=w> </span><span class=n>SphereactorColor</span><span class=p>);</span>
-<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>&quot;SkyBlue&quot;</span><span class=p>,</span><span class=w> </span><span class=n>Bgcolor</span><span class=p>);</span>
-<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>&quot;Indigo&quot;</span><span class=p>,</span><span class=w> </span><span class=n>PolygonActorColor</span><span class=p>);</span>
+<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>"OrangeRed"</span><span class=p>,</span><span class=w> </span><span class=n>SphereactorColor</span><span class=p>);</span>
+<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>"SkyBlue"</span><span class=p>,</span><span class=w> </span><span class=n>Bgcolor</span><span class=p>);</span>
+<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>"Indigo"</span><span class=p>,</span><span class=w> </span><span class=n>PolygonActorColor</span><span class=p>);</span>
 
 
 <span class=w>    </span><span class=c1>//Create a Sphere</span>
@@ -147,8 +147,8 @@ function registerListener(event, func) {
 <span class=hll><span class=w>    </span><span class=n>vtkBalloonWidget</span><span class=w> </span><span class=n>BalloonWidget</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkBalloonWidget</span><span class=p>();</span>
 </span><span class=w>    </span><span class=n>BalloonWidget</span><span class=p>.</span><span class=na>SetInteractor</span><span class=p>(</span><span class=n>iren</span><span class=p>);</span>
 <span class=w>    </span><span class=n>BalloonWidget</span><span class=p>.</span><span class=na>SetRepresentation</span><span class=p>(</span><span class=n>BalloonRep</span><span class=p>);</span>
-<span class=w>    </span><span class=n>BalloonWidget</span><span class=p>.</span><span class=na>AddBalloon</span><span class=p>(</span><span class=n>SphereActor</span><span class=p>,</span><span class=s>&quot;Sphere&quot;</span><span class=p>);</span>
-<span class=w>    </span><span class=n>BalloonWidget</span><span class=p>.</span><span class=na>AddBalloon</span><span class=p>(</span><span class=n>PolygonActor</span><span class=p>,</span><span class=s>&quot;Polygon&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>BalloonWidget</span><span class=p>.</span><span class=na>AddBalloon</span><span class=p>(</span><span class=n>SphereActor</span><span class=p>,</span><span class=s>"Sphere"</span><span class=p>);</span>
+<span class=w>    </span><span class=n>BalloonWidget</span><span class=p>.</span><span class=na>AddBalloon</span><span class=p>(</span><span class=n>PolygonActor</span><span class=p>,</span><span class=s>"Polygon"</span><span class=p>);</span>
 
 <span class=w>    </span><span class=c1>// Visualise the arrow</span>
 <span class=w>    </span><span class=n>ren</span><span class=p>.</span><span class=na>AddActor</span><span class=p>(</span><span class=n>SphereActor</span><span class=p>);</span>

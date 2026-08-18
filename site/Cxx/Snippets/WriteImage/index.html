@@ -95,10 +95,10 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>fn</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>fileName</span><span class=p>;</span>
 <span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>ext</span><span class=p>;</span>
-<span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=n>found</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>fn</span><span class=p>.</span><span class=n>find_last_of</span><span class=p>(</span><span class=s>&quot;.&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=n>found</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>fn</span><span class=p>.</span><span class=n>find_last_of</span><span class=p>(</span><span class=s>"."</span><span class=p>);</span>
 <span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>found</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>::</span><span class=n>npos</span><span class=p>)</span>
 <span class=w>    </span><span class=p>{</span>
-<span class=w>      </span><span class=n>ext</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&quot;.png&quot;</span><span class=p>;</span>
+<span class=w>      </span><span class=n>ext</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>".png"</span><span class=p>;</span>
 <span class=w>      </span><span class=n>fn</span><span class=w> </span><span class=o>+=</span><span class=w> </span><span class=n>ext</span><span class=p>;</span>
 <span class=w>    </span><span class=p>}</span>
 <span class=w>    </span><span class=k>else</span>
@@ -109,19 +109,19 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>transform</span><span class=p>(</span><span class=n>ext</span><span class=p>.</span><span class=n>begin</span><span class=p>(),</span><span class=w> </span><span class=n>ext</span><span class=p>.</span><span class=n>end</span><span class=p>(),</span><span class=w> </span><span class=n>ext</span><span class=p>.</span><span class=n>begin</span><span class=p>(),</span>
 <span class=w>                   </span><span class=p>[</span><span class=o>=</span><span class=p>](</span><span class=kt>char</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>c</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w> </span><span class=k>return</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>tolower</span><span class=p>(</span><span class=n>c</span><span class=p>,</span><span class=w> </span><span class=n>loc</span><span class=p>);</span><span class=w> </span><span class=p>});</span>
 <span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=n>writer</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageWriter</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
-<span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>ext</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;.bmp&quot;</span><span class=p>)</span>
+<span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>ext</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>".bmp"</span><span class=p>)</span>
 <span class=w>    </span><span class=p>{</span>
 <span class=w>      </span><span class=n>writer</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkBMPWriter</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
 <span class=w>    </span><span class=p>}</span>
-<span class=w>    </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>ext</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;.jpg&quot;</span><span class=p>)</span>
+<span class=w>    </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>ext</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>".jpg"</span><span class=p>)</span>
 <span class=w>    </span><span class=p>{</span>
 <span class=w>      </span><span class=n>writer</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkJPEGWriter</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
 <span class=w>    </span><span class=p>}</span>
-<span class=w>    </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>ext</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;.pnm&quot;</span><span class=p>)</span>
+<span class=w>    </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>ext</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>".pnm"</span><span class=p>)</span>
 <span class=w>    </span><span class=p>{</span>
 <span class=w>      </span><span class=n>writer</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPNMWriter</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
 <span class=w>    </span><span class=p>}</span>
-<span class=w>    </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>ext</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;.ps&quot;</span><span class=p>)</span>
+<span class=w>    </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>ext</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>".ps"</span><span class=p>)</span>
 <span class=w>    </span><span class=p>{</span>
 <span class=w>      </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>rgba</span><span class=p>)</span>
 <span class=w>      </span><span class=p>{</span>
@@ -129,7 +129,7 @@ function registerListener(event, func) {
 <span class=w>      </span><span class=p>}</span>
 <span class=w>      </span><span class=n>writer</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPostScriptWriter</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
 <span class=w>    </span><span class=p>}</span>
-<span class=w>    </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>ext</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;.tiff&quot;</span><span class=p>)</span>
+<span class=w>    </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>ext</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>".tiff"</span><span class=p>)</span>
 <span class=w>    </span><span class=p>{</span>
 <span class=w>      </span><span class=n>writer</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkTIFFWriter</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
 <span class=w>    </span><span class=p>}</span>
@@ -158,7 +158,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=p>}</span>
 <span class=w>  </span><span class=k>else</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cerr</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;No filename provided.&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cerr</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"No filename provided."</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 
 <span class=w>  </span><span class=k>return</span><span class=p>;</span>

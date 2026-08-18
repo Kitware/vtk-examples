@@ -66,8 +66,8 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_program_parameters</span><span class=p>(</span><span class=n>argv</span><span class=p>):</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>argparse</span>
-    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;Generate a find_package(VTK COMPONENTS ...) command for CMake.&#39;</span>
-    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;</span>
+    <span class=n>description</span> <span class=o>=</span> <span class=s1>'Generate a find_package(VTK COMPONENTS ...) command for CMake.'</span>
+    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>'''</span>
 <span class=s1>Uses modules.json and your source files to generate a</span>
 <span class=s1>  find_package(VTK COMPONENTS ...) command listing all the vtk modules</span>
 <span class=s1>  needed by the C++ source and header files in your code.</span>
@@ -83,46 +83,46 @@ function registerListener(event, func) {
 
 <span class=s1>You will need to manually add any third-party modules</span>
 <span class=s1>   (if used) to the find_package command.</span>
-<span class=s1>    &#39;&#39;&#39;</span>
+<span class=s1>    '''</span>
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
                                      <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawTextHelpFormatter</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;json&#39;</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=p>[</span><span class=s1>&#39;modules.json&#39;</span><span class=p>],</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The path to the VTK JSON file (modules.json).&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;sources&#39;</span><span class=p>,</span> <span class=n>nargs</span><span class=o>=</span><span class=s1>&#39;+&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The path to the source files.&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-f&#39;</span><span class=p>,</span> <span class=s1>&#39;--file&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The file name to write the output too.&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'json'</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=p>[</span><span class=s1>'modules.json'</span><span class=p>],</span> <span class=n>help</span><span class=o>=</span><span class=s1>'The path to the VTK JSON file (modules.json).'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'sources'</span><span class=p>,</span> <span class=n>nargs</span><span class=o>=</span><span class=s1>'+'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'The path to the source files.'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-f'</span><span class=p>,</span> <span class=s1>'--file'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'The file name to write the output too.'</span><span class=p>)</span>
     <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
     <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>json</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>sources</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>file</span>
 
 
 <span class=k>class</span><span class=w> </span><span class=nc>Patterns</span><span class=p>:</span>
-    <span class=n>header_pattern</span> <span class=o>=</span> <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>&#39;^#include *[&lt;\&quot;](\S+)[&gt;\&quot;]&#39;</span><span class=p>)</span>
-    <span class=n>vtk_include_pattern</span> <span class=o>=</span> <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>&#39;^(vtk\S+)&#39;</span><span class=p>)</span>
-    <span class=n>vtk_qt_include_pattern</span> <span class=o>=</span> <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>&#39;^(QVTK\S+)&#39;</span><span class=p>)</span>
+    <span class=n>header_pattern</span> <span class=o>=</span> <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>'^#include *[&lt;\"](\S+)[&gt;\"]'</span><span class=p>)</span>
+    <span class=n>vtk_include_pattern</span> <span class=o>=</span> <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>'^(vtk\S+)'</span><span class=p>)</span>
+    <span class=n>vtk_qt_include_pattern</span> <span class=o>=</span> <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=sa>r</span><span class=s1>'^(QVTK\S+)'</span><span class=p>)</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_headers_modules</span><span class=p>(</span><span class=n>json_data</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    From the parsed JSON data file make a dictionary whose key is the</span>
 <span class=sd>     header filename and value is the module.</span>
 <span class=sd>    :param json_data: The parsed JSON file modules.json.</span>
 <span class=sd>    :return:</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 
     <span class=c1># The headers should be unique to a module, however we will not assume this.</span>
     <span class=n>res</span> <span class=o>=</span> <span class=n>collections</span><span class=o>.</span><span class=n>defaultdict</span><span class=p>(</span><span class=nb>set</span><span class=p>)</span>
-    <span class=k>for</span> <span class=n>k</span><span class=p>,</span> <span class=n>v</span> <span class=ow>in</span> <span class=n>json_data</span><span class=p>[</span><span class=s1>&#39;modules&#39;</span><span class=p>]</span><span class=o>.</span><span class=n>items</span><span class=p>():</span>
-        <span class=k>if</span> <span class=s1>&#39;headers&#39;</span> <span class=ow>in</span> <span class=n>v</span><span class=p>:</span>
-            <span class=k>for</span> <span class=n>k1</span> <span class=ow>in</span> <span class=n>v</span><span class=p>[</span><span class=s1>&#39;headers&#39;</span><span class=p>]:</span>
+    <span class=k>for</span> <span class=n>k</span><span class=p>,</span> <span class=n>v</span> <span class=ow>in</span> <span class=n>json_data</span><span class=p>[</span><span class=s1>'modules'</span><span class=p>]</span><span class=o>.</span><span class=n>items</span><span class=p>():</span>
+        <span class=k>if</span> <span class=s1>'headers'</span> <span class=ow>in</span> <span class=n>v</span><span class=p>:</span>
+            <span class=k>for</span> <span class=n>k1</span> <span class=ow>in</span> <span class=n>v</span><span class=p>[</span><span class=s1>'headers'</span><span class=p>]:</span>
                 <span class=n>res</span><span class=p>[</span><span class=n>k1</span><span class=p>]</span><span class=o>.</span><span class=n>add</span><span class=p>(</span><span class=n>k</span><span class=p>)</span>
     <span class=k>return</span> <span class=n>res</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_vtk_components</span><span class=p>(</span><span class=n>jpath</span><span class=p>,</span> <span class=n>paths</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Get the VTK components</span>
 <span class=sd>    :param jpath: The path to the JSON file.</span>
 <span class=sd>    :param paths: The C++ file paths.</span>
 <span class=sd>    :return:</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 
     <span class=k>with</span> <span class=nb>open</span><span class=p>(</span><span class=n>jpath</span><span class=p>)</span> <span class=k>as</span> <span class=n>data_file</span><span class=p>:</span>
         <span class=n>json_data</span> <span class=o>=</span> <span class=n>json</span><span class=o>.</span><span class=n>load</span><span class=p>(</span><span class=n>data_file</span><span class=p>)</span>
@@ -136,7 +136,7 @@ function registerListener(event, func) {
 
     <span class=k>for</span> <span class=n>path</span> <span class=ow>in</span> <span class=n>paths</span><span class=p>:</span>
         <span class=k>if</span> <span class=n>path</span><span class=o>.</span><span class=n>is_file</span><span class=p>():</span>
-            <span class=n>content</span> <span class=o>=</span> <span class=n>path</span><span class=o>.</span><span class=n>read_text</span><span class=p>()</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=s1>&#39;</span><span class=se>\n</span><span class=s1>&#39;</span><span class=p>)</span>
+            <span class=n>content</span> <span class=o>=</span> <span class=n>path</span><span class=o>.</span><span class=n>read_text</span><span class=p>()</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=s1>'</span><span class=se>\n</span><span class=s1>'</span><span class=p>)</span>
             <span class=k>for</span> <span class=n>line</span> <span class=ow>in</span> <span class=n>content</span><span class=p>:</span>
                 <span class=n>m</span> <span class=o>=</span> <span class=n>Patterns</span><span class=o>.</span><span class=n>header_pattern</span><span class=o>.</span><span class=n>match</span><span class=p>(</span><span class=n>line</span><span class=o>.</span><span class=n>strip</span><span class=p>())</span>
                 <span class=k>if</span> <span class=n>m</span><span class=p>:</span>
@@ -160,12 +160,12 @@ function registerListener(event, func) {
 
     <span class=k>if</span> <span class=n>headers</span><span class=p>:</span>
         <span class=k>for</span> <span class=n>m</span> <span class=ow>in</span> <span class=n>modules</span><span class=p>:</span>
-            <span class=k>if</span> <span class=ow>not</span> <span class=n>json_data</span><span class=p>[</span><span class=s1>&#39;modules&#39;</span><span class=p>][</span><span class=n>m</span><span class=p>][</span><span class=s1>&#39;implementable&#39;</span><span class=p>]:</span>
+            <span class=k>if</span> <span class=ow>not</span> <span class=n>json_data</span><span class=p>[</span><span class=s1>'modules'</span><span class=p>][</span><span class=n>m</span><span class=p>][</span><span class=s1>'implementable'</span><span class=p>]:</span>
                 <span class=k>continue</span>
-            <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=n>json_data</span><span class=p>[</span><span class=s1>&#39;modules&#39;</span><span class=p>]:</span>
+            <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=n>json_data</span><span class=p>[</span><span class=s1>'modules'</span><span class=p>]:</span>
                 <span class=k>if</span> <span class=n>i</span> <span class=ow>in</span> <span class=n>modules</span><span class=p>:</span>
                     <span class=k>continue</span>
-                <span class=k>if</span> <span class=n>m</span> <span class=ow>in</span> <span class=n>json_data</span><span class=p>[</span><span class=s1>&#39;modules&#39;</span><span class=p>][</span><span class=n>i</span><span class=p>][</span><span class=s1>&#39;implements&#39;</span><span class=p>]:</span>
+                <span class=k>if</span> <span class=n>m</span> <span class=ow>in</span> <span class=n>json_data</span><span class=p>[</span><span class=s1>'modules'</span><span class=p>][</span><span class=n>i</span><span class=p>][</span><span class=s1>'implements'</span><span class=p>]:</span>
                     <span class=c1># Suggest module i since it implements m</span>
                     <span class=n>mod_implements</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>add</span><span class=p>(</span><span class=n>m</span><span class=p>)</span>
 
@@ -173,63 +173,63 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>disp_components</span><span class=p>(</span><span class=n>modules</span><span class=p>,</span> <span class=n>module_implements</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    For the found modules display them in a form that the user can</span>
 <span class=sd>     copy/paste into their CMakeLists.txt file.</span>
 <span class=sd>    :param modules: The modules.</span>
 <span class=sd>    :param module_implements: Modules implementing other modules.</span>
 <span class=sd>    :return:</span>
-<span class=sd>    &quot;&quot;&quot;</span>
-    <span class=n>res</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;find_package(VTK</span><span class=se>\n</span><span class=s1> COMPONENTS&#39;</span><span class=p>]</span>
+<span class=sd>    """</span>
+    <span class=n>res</span> <span class=o>=</span> <span class=p>[</span><span class=s1>'find_package(VTK</span><span class=se>\n</span><span class=s1> COMPONENTS'</span><span class=p>]</span>
     <span class=k>for</span> <span class=n>m</span> <span class=ow>in</span> <span class=nb>sorted</span><span class=p>(</span><span class=n>modules</span><span class=p>):</span>
-        <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;    </span><span class=si>{:s}</span><span class=s1>&#39;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>m</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=s1>&#39;::&#39;</span><span class=p>)[</span><span class=mi>1</span><span class=p>]))</span>
+        <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>'    </span><span class=si>{:s}</span><span class=s1>'</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>m</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=s1>'::'</span><span class=p>)[</span><span class=mi>1</span><span class=p>]))</span>
     <span class=k>if</span> <span class=n>module_implements</span><span class=p>:</span>
         <span class=n>keys</span> <span class=o>=</span> <span class=nb>sorted</span><span class=p>(</span><span class=n>module_implements</span><span class=p>)</span>
-        <span class=n>max_width</span> <span class=o>=</span> <span class=nb>len</span><span class=p>(</span><span class=nb>max</span><span class=p>(</span><span class=n>keys</span><span class=p>,</span> <span class=n>key</span><span class=o>=</span><span class=nb>len</span><span class=p>)</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=s1>&#39;::&#39;</span><span class=p>)[</span><span class=mi>1</span><span class=p>])</span>
+        <span class=n>max_width</span> <span class=o>=</span> <span class=nb>len</span><span class=p>(</span><span class=nb>max</span><span class=p>(</span><span class=n>keys</span><span class=p>,</span> <span class=n>key</span><span class=o>=</span><span class=nb>len</span><span class=p>)</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=s1>'::'</span><span class=p>)[</span><span class=mi>1</span><span class=p>])</span>
         <span class=n>comments</span> <span class=o>=</span> <span class=p>[</span>
-            <span class=s1>&#39;    #&#39;</span><span class=p>,</span>
-            <span class=s1>&#39;    # These modules are suggested since they implement an existing module.&#39;</span><span class=p>,</span>
-            <span class=s1>&#39;    # You may need to uncomment one or more of these.&#39;</span><span class=p>,</span>
-            <span class=s1>&#39;    # If vtkRenderWindow is used and you want to use OpenGL,&#39;</span><span class=p>,</span>
-            <span class=s1>&#39;    #   you also need the RenderingOpenGL2 module.&#39;</span><span class=p>,</span>
-            <span class=s1>&#39;    # If vtkRenderWindowInteractor is used,&#39;</span><span class=p>,</span>
-            <span class=s1>&#39;    #    uncomment RenderingUI and possibly InteractionStyle.&#39;</span><span class=p>,</span>
-            <span class=s1>&#39;    # If text rendering is used, uncomment RenderingFreeType&#39;</span><span class=p>,</span>
-            <span class=s1>&#39;    #&#39;</span>
+            <span class=s1>'    #'</span><span class=p>,</span>
+            <span class=s1>'    # These modules are suggested since they implement an existing module.'</span><span class=p>,</span>
+            <span class=s1>'    # You may need to uncomment one or more of these.'</span><span class=p>,</span>
+            <span class=s1>'    # If vtkRenderWindow is used and you want to use OpenGL,'</span><span class=p>,</span>
+            <span class=s1>'    #   you also need the RenderingOpenGL2 module.'</span><span class=p>,</span>
+            <span class=s1>'    # If vtkRenderWindowInteractor is used,'</span><span class=p>,</span>
+            <span class=s1>'    #    uncomment RenderingUI and possibly InteractionStyle.'</span><span class=p>,</span>
+            <span class=s1>'    # If text rendering is used, uncomment RenderingFreeType'</span><span class=p>,</span>
+            <span class=s1>'    #'</span>
         <span class=p>]</span>
         <span class=n>res</span><span class=o>.</span><span class=n>extend</span><span class=p>(</span><span class=n>comments</span><span class=p>)</span>
         <span class=k>for</span> <span class=n>key</span> <span class=ow>in</span> <span class=n>keys</span><span class=p>:</span>
             <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span>
-                <span class=sa>f</span><span class=s1>&#39;    # </span><span class=si>{</span><span class=n>key</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=s2>&quot;::&quot;</span><span class=p>)[</span><span class=mi>1</span><span class=p>]</span><span class=si>:</span><span class=s1>&lt;</span><span class=si>{</span><span class=n>max_width</span><span class=si>}}</span><span class=s1> # implements </span><span class=si>{</span><span class=s2>&quot;, &quot;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=nb>sorted</span><span class=p>(</span><span class=n>module_implements</span><span class=p>[</span><span class=n>key</span><span class=p>]))</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
-    <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;)</span><span class=se>\n</span><span class=s1>&#39;</span><span class=p>)</span>
+                <span class=sa>f</span><span class=s1>'    # </span><span class=si>{</span><span class=n>key</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=s2>"::"</span><span class=p>)[</span><span class=mi>1</span><span class=p>]</span><span class=si>:</span><span class=s1>&lt;</span><span class=si>{</span><span class=n>max_width</span><span class=si>}}</span><span class=s1> # implements </span><span class=si>{</span><span class=s2>", "</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=nb>sorted</span><span class=p>(</span><span class=n>module_implements</span><span class=p>[</span><span class=n>key</span><span class=p>]))</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
+    <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>')</span><span class=se>\n</span><span class=s1>'</span><span class=p>)</span>
 
     <span class=k>return</span> <span class=n>res</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>disp_missing_components</span><span class=p>(</span><span class=n>inc_no_mod</span><span class=p>,</span> <span class=n>inc_no_mod_headers</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Display the headers along with the missing VTK modules.</span>
 
 <span class=sd>    :param inc_no_mod: Missing modules.</span>
 <span class=sd>    :param inc_no_mod_headers: Headers with missing modules.</span>
 <span class=sd>    :return:</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=k>if</span> <span class=n>inc_no_mod</span><span class=p>:</span>
-        <span class=n>res</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;&#39;</span>
-               <span class=s1>&#39;*&#39;</span> <span class=o>*</span> <span class=mi>64</span><span class=p>,</span>
-               <span class=s1>&#39;You will need to manually add the modules that&#39;</span><span class=p>,</span>
-               <span class=s1>&#39;  use these headers to the find_package command.&#39;</span><span class=p>,</span>
-               <span class=s1>&#39;These could be external modules not in the modules.json file.&#39;</span><span class=p>,</span>
-               <span class=s1>&#39;Or you may need to rebuild VTK to include the missing modules.&#39;</span><span class=p>,</span>
-               <span class=s1>&#39;&#39;</span><span class=p>,</span>
-               <span class=s1>&#39;Here are the vtk headers and corresponding files:&#39;</span><span class=p>]</span>
+        <span class=n>res</span> <span class=o>=</span> <span class=p>[</span><span class=s1>''</span>
+               <span class=s1>'*'</span> <span class=o>*</span> <span class=mi>64</span><span class=p>,</span>
+               <span class=s1>'You will need to manually add the modules that'</span><span class=p>,</span>
+               <span class=s1>'  use these headers to the find_package command.'</span><span class=p>,</span>
+               <span class=s1>'These could be external modules not in the modules.json file.'</span><span class=p>,</span>
+               <span class=s1>'Or you may need to rebuild VTK to include the missing modules.'</span><span class=p>,</span>
+               <span class=s1>''</span><span class=p>,</span>
+               <span class=s1>'Here are the vtk headers and corresponding files:'</span><span class=p>]</span>
         <span class=n>sinmd</span> <span class=o>=</span> <span class=nb>sorted</span><span class=p>(</span><span class=n>inc_no_mod</span><span class=p>)</span>
         <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=n>sinmd</span><span class=p>:</span>
             <span class=n>sh</span> <span class=o>=</span> <span class=nb>sorted</span><span class=p>(</span><span class=nb>list</span><span class=p>(</span><span class=n>inc_no_mod_headers</span><span class=p>[</span><span class=n>i</span><span class=p>]))</span>
-            <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;in </span><span class=si>{</span><span class=n>i</span><span class=si>}</span><span class=s1>:&#39;</span><span class=p>)</span>
+            <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=sa>f</span><span class=s1>'in </span><span class=si>{</span><span class=n>i</span><span class=si>}</span><span class=s1>:'</span><span class=p>)</span>
             <span class=k>for</span> <span class=n>j</span> <span class=ow>in</span> <span class=n>sh</span><span class=p>:</span>
-                <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;   </span><span class=si>{</span><span class=n>j</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
-        <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;*&#39;</span> <span class=o>*</span> <span class=mi>64</span><span class=p>)</span>
+                <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=sa>f</span><span class=s1>'   </span><span class=si>{</span><span class=n>j</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
+        <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>'*'</span> <span class=o>*</span> <span class=mi>64</span><span class=p>)</span>
 
         <span class=k>return</span> <span class=n>res</span>
     <span class=k>else</span><span class=p>:</span>
@@ -239,13 +239,13 @@ function registerListener(event, func) {
 <span class=k>def</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=n>json_path</span><span class=p>,</span> <span class=n>src_paths</span><span class=p>,</span> <span class=n>ofn</span><span class=p>):</span>
     <span class=n>jpath</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>json_path</span><span class=p>)</span>
     <span class=k>if</span> <span class=n>jpath</span><span class=o>.</span><span class=n>is_dir</span><span class=p>():</span>
-        <span class=n>jpath</span> <span class=o>=</span> <span class=n>jpath</span> <span class=o>/</span> <span class=s1>&#39;modules.json&#39;</span>
+        <span class=n>jpath</span> <span class=o>=</span> <span class=n>jpath</span> <span class=o>/</span> <span class=s1>'modules.json'</span>
     <span class=k>if</span> <span class=ow>not</span> <span class=n>jpath</span><span class=o>.</span><span class=n>is_file</span><span class=p>():</span>
-        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;Non existent JSON file: </span><span class=si>{</span><span class=n>jpath</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'Non existent JSON file: </span><span class=si>{</span><span class=n>jpath</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
         <span class=k>return</span>
 
     <span class=n>paths</span> <span class=o>=</span> <span class=nb>list</span><span class=p>()</span>
-    <span class=n>valid_ext</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;.h&#39;</span><span class=p>,</span> <span class=s1>&#39;.hxx&#39;</span><span class=p>,</span> <span class=s1>&#39;.cxx&#39;</span><span class=p>,</span> <span class=s1>&#39;.cpp&#39;</span><span class=p>,</span> <span class=s1>&#39;.txx&#39;</span><span class=p>]</span>
+    <span class=n>valid_ext</span> <span class=o>=</span> <span class=p>[</span><span class=s1>'.h'</span><span class=p>,</span> <span class=s1>'.hxx'</span><span class=p>,</span> <span class=s1>'.cxx'</span><span class=p>,</span> <span class=s1>'.cpp'</span><span class=p>,</span> <span class=s1>'.txx'</span><span class=p>]</span>
     <span class=n>path_list</span> <span class=o>=</span> <span class=nb>list</span><span class=p>()</span>
     <span class=k>for</span> <span class=n>fn</span> <span class=ow>in</span> <span class=n>src_paths</span><span class=p>:</span>
         <span class=n>path</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>fn</span><span class=p>)</span>
@@ -253,30 +253,30 @@ function registerListener(event, func) {
             <span class=n>paths</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>path</span><span class=p>)</span>
         <span class=k>elif</span> <span class=n>path</span><span class=o>.</span><span class=n>is_dir</span><span class=p>():</span>
             <span class=k>for</span> <span class=n>e</span> <span class=ow>in</span> <span class=n>valid_ext</span><span class=p>:</span>
-                <span class=n>path_list</span> <span class=o>+=</span> <span class=nb>list</span><span class=p>(</span><span class=n>Path</span><span class=p>(</span><span class=n>fn</span><span class=p>)</span><span class=o>.</span><span class=n>rglob</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;*</span><span class=si>{</span><span class=n>e</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>))</span>
+                <span class=n>path_list</span> <span class=o>+=</span> <span class=nb>list</span><span class=p>(</span><span class=n>Path</span><span class=p>(</span><span class=n>fn</span><span class=p>)</span><span class=o>.</span><span class=n>rglob</span><span class=p>(</span><span class=sa>f</span><span class=s1>'*</span><span class=si>{</span><span class=n>e</span><span class=si>}</span><span class=s1>'</span><span class=p>))</span>
             <span class=n>program_path</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=vm>__file__</span><span class=p>)</span>
             <span class=k>for</span> <span class=n>path</span> <span class=ow>in</span> <span class=n>path_list</span><span class=p>:</span>
                 <span class=k>if</span> <span class=n>path</span><span class=o>.</span><span class=n>resolve</span><span class=p>()</span> <span class=o>!=</span> <span class=n>program_path</span><span class=o>.</span><span class=n>resolve</span><span class=p>():</span>
                     <span class=n>paths</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>path</span><span class=p>)</span>
         <span class=k>else</span><span class=p>:</span>
-            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;Non existent path: </span><span class=si>{</span><span class=n>path</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'Non existent path: </span><span class=si>{</span><span class=n>path</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
 
     <span class=n>modules</span><span class=p>,</span> <span class=n>mod_implements</span><span class=p>,</span> <span class=n>inc_no_mod</span><span class=p>,</span> <span class=n>inc_no_mod_headers</span> <span class=o>=</span> <span class=n>get_vtk_components</span><span class=p>(</span><span class=n>jpath</span><span class=p>,</span> <span class=n>paths</span><span class=p>)</span>
 
-    <span class=n>res</span> <span class=o>=</span> <span class=s1>&#39;</span><span class=se>\n</span><span class=s1>&#39;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>disp_components</span><span class=p>(</span><span class=n>modules</span><span class=p>,</span> <span class=n>mod_implements</span><span class=p>))</span>
+    <span class=n>res</span> <span class=o>=</span> <span class=s1>'</span><span class=se>\n</span><span class=s1>'</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>disp_components</span><span class=p>(</span><span class=n>modules</span><span class=p>,</span> <span class=n>mod_implements</span><span class=p>))</span>
     <span class=k>if</span> <span class=n>inc_no_mod</span><span class=p>:</span>
-        <span class=n>res</span> <span class=o>+=</span> <span class=s1>&#39;</span><span class=se>\n</span><span class=s1>&#39;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>disp_missing_components</span><span class=p>(</span><span class=n>inc_no_mod</span><span class=p>,</span> <span class=n>inc_no_mod_headers</span><span class=p>))</span>
+        <span class=n>res</span> <span class=o>+=</span> <span class=s1>'</span><span class=se>\n</span><span class=s1>'</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>disp_missing_components</span><span class=p>(</span><span class=n>inc_no_mod</span><span class=p>,</span> <span class=n>inc_no_mod_headers</span><span class=p>))</span>
 
     <span class=k>if</span> <span class=n>ofn</span><span class=p>:</span>
         <span class=n>path</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>ofn</span><span class=p>)</span>
-        <span class=k>if</span> <span class=n>path</span><span class=o>.</span><span class=n>suffix</span> <span class=o>==</span> <span class=s1>&#39;&#39;</span><span class=p>:</span>
-            <span class=n>path</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>ofn</span><span class=p>)</span><span class=o>.</span><span class=n>with_suffix</span><span class=p>(</span><span class=s1>&#39;.txt&#39;</span><span class=p>)</span>
+        <span class=k>if</span> <span class=n>path</span><span class=o>.</span><span class=n>suffix</span> <span class=o>==</span> <span class=s1>''</span><span class=p>:</span>
+            <span class=n>path</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>ofn</span><span class=p>)</span><span class=o>.</span><span class=n>with_suffix</span><span class=p>(</span><span class=s1>'.txt'</span><span class=p>)</span>
         <span class=n>path</span><span class=o>.</span><span class=n>write_text</span><span class=p>(</span><span class=n>res</span><span class=p>)</span>
     <span class=k>else</span><span class=p>:</span>
         <span class=nb>print</span><span class=p>(</span><span class=n>res</span><span class=p>)</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>sys</span>
 
     <span class=n>json_paths</span><span class=p>,</span> <span class=n>src_paths</span><span class=p>,</span> <span class=n>ofn</span> <span class=o>=</span> <span class=n>get_program_parameters</span><span class=p>(</span><span class=n>sys</span><span class=o>.</span><span class=n>argv</span><span class=p>)</span>

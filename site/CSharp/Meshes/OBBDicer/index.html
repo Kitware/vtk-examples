@@ -75,7 +75,7 @@ function registerListener(event, func) {
 <span class=w>            </span><span class=n>OBBDicer</span><span class=p>(</span><span class=k>null</span><span class=p>);</span>
 <span class=w>         </span><span class=p>}</span>
 <span class=w>         </span><span class=k>catch</span><span class=p>(</span><span class=n>Exception</span><span class=w> </span><span class=n>ex</span><span class=p>)</span><span class=w> </span><span class=p>{</span>
-<span class=w>            </span><span class=n>MessageBox</span><span class=p>.</span><span class=n>Show</span><span class=p>(</span><span class=n>ex</span><span class=p>.</span><span class=n>Message</span><span class=p>,</span><span class=w> </span><span class=s>&quot;Exception&quot;</span><span class=p>,</span><span class=w> </span><span class=n>MessageBoxButtons</span><span class=p>.</span><span class=n>OK</span><span class=p>);</span>
+<span class=w>            </span><span class=n>MessageBox</span><span class=p>.</span><span class=n>Show</span><span class=p>(</span><span class=n>ex</span><span class=p>.</span><span class=n>Message</span><span class=p>,</span><span class=w> </span><span class=s>"Exception"</span><span class=p>,</span><span class=w> </span><span class=n>MessageBoxButtons</span><span class=p>.</span><span class=n>OK</span><span class=p>);</span>
 <span class=w>         </span><span class=p>}</span>
 <span class=w>      </span><span class=p>}</span>
 
@@ -111,8 +111,8 @@ function registerListener(event, func) {
 </span><span class=w>         </span><span class=n>inputMapper</span><span class=p>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>dicer</span><span class=p>.</span><span class=n>GetOutputPort</span><span class=p>());</span>
 <span class=w>         </span><span class=n>inputMapper</span><span class=p>.</span><span class=n>SetScalarRange</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=n>dicer</span><span class=p>.</span><span class=n>GetNumberOfActualPieces</span><span class=p>());</span>
 
-<span class=w>         </span><span class=n>Debug</span><span class=p>.</span><span class=n>WriteLine</span><span class=p>(</span><span class=s>&quot;Asked for: &quot;</span>
-<span class=w>                   </span><span class=o>+</span><span class=w> </span><span class=n>dicer</span><span class=p>.</span><span class=n>GetNumberOfPieces</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&quot; pieces, got: &quot;</span>
+<span class=w>         </span><span class=n>Debug</span><span class=p>.</span><span class=n>WriteLine</span><span class=p>(</span><span class=s>"Asked for: "</span>
+<span class=w>                   </span><span class=o>+</span><span class=w> </span><span class=n>dicer</span><span class=p>.</span><span class=n>GetNumberOfPieces</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>" pieces, got: "</span>
 <span class=w>                   </span><span class=o>+</span><span class=w> </span><span class=n>dicer</span><span class=p>.</span><span class=n>GetNumberOfActualPieces</span><span class=p>());</span>
 
 <span class=hll><span class=w>         </span><span class=n>vtkActor</span><span class=w> </span><span class=n>inputActor</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>vtkActor</span><span class=p>.</span><span class=n>New</span><span class=p>();</span>

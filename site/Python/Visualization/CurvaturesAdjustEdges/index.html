@@ -118,70 +118,70 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=n>argv</span><span class=p>):</span>
-    <span class=c1># desired_surface = &#39;Bour&#39;</span>
-    <span class=c1># desired_surface = &#39;Cube&#39;</span>
-    <span class=c1># desired_surface = &#39;Hills&#39;</span>
-    <span class=c1># desired_surface = &#39;Enneper&#39;</span>
-    <span class=c1># desired_surface = &#39;Mobius&#39;</span>
-    <span class=n>desired_surface</span> <span class=o>=</span> <span class=s1>&#39;RandomHills&#39;</span>
-    <span class=c1># desired_surface = &#39;Sphere&#39;</span>
-    <span class=c1># desired_surface = &#39;Torus&#39;</span>
+    <span class=c1># desired_surface = 'Bour'</span>
+    <span class=c1># desired_surface = 'Cube'</span>
+    <span class=c1># desired_surface = 'Hills'</span>
+    <span class=c1># desired_surface = 'Enneper'</span>
+    <span class=c1># desired_surface = 'Mobius'</span>
+    <span class=n>desired_surface</span> <span class=o>=</span> <span class=s1>'RandomHills'</span>
+    <span class=c1># desired_surface = 'Sphere'</span>
+    <span class=c1># desired_surface = 'Torus'</span>
     <span class=n>source</span> <span class=o>=</span> <span class=n>get_source</span><span class=p>(</span><span class=n>desired_surface</span><span class=p>)</span>
     <span class=k>if</span> <span class=ow>not</span> <span class=n>source</span><span class=p>:</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;The surface is not available.&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'The surface is not available.'</span><span class=p>)</span>
         <span class=k>return</span>
 
 <span class=hll>    <span class=n>gc</span> <span class=o>=</span> <span class=n>vtkCurvatures</span><span class=p>()</span>
 </span>    <span class=n>gc</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>source</span><span class=p>)</span>
     <span class=n>gc</span><span class=o>.</span><span class=n>SetCurvatureTypeToGaussian</span><span class=p>()</span>
     <span class=n>gc</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
-    <span class=k>if</span> <span class=n>desired_surface</span> <span class=ow>in</span> <span class=p>[</span><span class=s1>&#39;Bour&#39;</span><span class=p>,</span> <span class=s1>&#39;Enneper&#39;</span><span class=p>,</span> <span class=s1>&#39;Hills&#39;</span><span class=p>,</span> <span class=s1>&#39;RandomHills&#39;</span><span class=p>,</span> <span class=s1>&#39;Torus&#39;</span><span class=p>]:</span>
-        <span class=n>adjust_edge_curvatures</span><span class=p>(</span><span class=n>gc</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>(),</span> <span class=s1>&#39;Gauss_Curvature&#39;</span><span class=p>)</span>
-    <span class=k>if</span> <span class=n>desired_surface</span> <span class=o>==</span> <span class=s1>&#39;Bour&#39;</span><span class=p>:</span>
+    <span class=k>if</span> <span class=n>desired_surface</span> <span class=ow>in</span> <span class=p>[</span><span class=s1>'Bour'</span><span class=p>,</span> <span class=s1>'Enneper'</span><span class=p>,</span> <span class=s1>'Hills'</span><span class=p>,</span> <span class=s1>'RandomHills'</span><span class=p>,</span> <span class=s1>'Torus'</span><span class=p>]:</span>
+        <span class=n>adjust_edge_curvatures</span><span class=p>(</span><span class=n>gc</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>(),</span> <span class=s1>'Gauss_Curvature'</span><span class=p>)</span>
+    <span class=k>if</span> <span class=n>desired_surface</span> <span class=o>==</span> <span class=s1>'Bour'</span><span class=p>:</span>
         <span class=c1># Gaussian curvature is -1/(r(r+1)^4))</span>
-        <span class=n>constrain_curvatures</span><span class=p>(</span><span class=n>gc</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>(),</span> <span class=s1>&#39;Gauss_Curvature&#39;</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.0625</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.0625</span><span class=p>)</span>
-    <span class=k>if</span> <span class=n>desired_surface</span> <span class=o>==</span> <span class=s1>&#39;Enneper&#39;</span><span class=p>:</span>
+        <span class=n>constrain_curvatures</span><span class=p>(</span><span class=n>gc</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>(),</span> <span class=s1>'Gauss_Curvature'</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.0625</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.0625</span><span class=p>)</span>
+    <span class=k>if</span> <span class=n>desired_surface</span> <span class=o>==</span> <span class=s1>'Enneper'</span><span class=p>:</span>
         <span class=c1># Gaussian curvature is -4/(1 + r^2)^4</span>
-        <span class=n>constrain_curvatures</span><span class=p>(</span><span class=n>gc</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>(),</span> <span class=s1>&#39;Gauss_Curvature&#39;</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.25</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.25</span><span class=p>)</span>
-    <span class=k>if</span> <span class=n>desired_surface</span> <span class=o>==</span> <span class=s1>&#39;Cube&#39;</span><span class=p>:</span>
-        <span class=n>constrain_curvatures</span><span class=p>(</span><span class=n>gc</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>(),</span> <span class=s1>&#39;Gauss_Curvature&#39;</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>)</span>
-    <span class=k>if</span> <span class=n>desired_surface</span> <span class=o>==</span> <span class=s1>&#39;Mobius&#39;</span><span class=p>:</span>
-        <span class=n>constrain_curvatures</span><span class=p>(</span><span class=n>gc</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>(),</span> <span class=s1>&#39;Gauss_Curvature&#39;</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>)</span>
-    <span class=k>if</span> <span class=n>desired_surface</span> <span class=o>==</span> <span class=s1>&#39;Sphere&#39;</span><span class=p>:</span>
+        <span class=n>constrain_curvatures</span><span class=p>(</span><span class=n>gc</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>(),</span> <span class=s1>'Gauss_Curvature'</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.25</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.25</span><span class=p>)</span>
+    <span class=k>if</span> <span class=n>desired_surface</span> <span class=o>==</span> <span class=s1>'Cube'</span><span class=p>:</span>
+        <span class=n>constrain_curvatures</span><span class=p>(</span><span class=n>gc</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>(),</span> <span class=s1>'Gauss_Curvature'</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>)</span>
+    <span class=k>if</span> <span class=n>desired_surface</span> <span class=o>==</span> <span class=s1>'Mobius'</span><span class=p>:</span>
+        <span class=n>constrain_curvatures</span><span class=p>(</span><span class=n>gc</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>(),</span> <span class=s1>'Gauss_Curvature'</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>)</span>
+    <span class=k>if</span> <span class=n>desired_surface</span> <span class=o>==</span> <span class=s1>'Sphere'</span><span class=p>:</span>
         <span class=c1># Gaussian curvature is 1/r^2</span>
-        <span class=n>constrain_curvatures</span><span class=p>(</span><span class=n>gc</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>(),</span> <span class=s1>&#39;Gauss_Curvature&#39;</span><span class=p>,</span> <span class=mf>4.0</span><span class=p>,</span> <span class=mf>4.0</span><span class=p>)</span>
+        <span class=n>constrain_curvatures</span><span class=p>(</span><span class=n>gc</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>(),</span> <span class=s1>'Gauss_Curvature'</span><span class=p>,</span> <span class=mf>4.0</span><span class=p>,</span> <span class=mf>4.0</span><span class=p>)</span>
     <span class=n>source</span><span class=o>.</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>.</span><span class=n>AddArray</span><span class=p>(</span>
-        <span class=n>gc</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>.</span><span class=n>GetAbstractArray</span><span class=p>(</span><span class=s1>&#39;Gauss_Curvature&#39;</span><span class=p>))</span>
+        <span class=n>gc</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>.</span><span class=n>GetAbstractArray</span><span class=p>(</span><span class=s1>'Gauss_Curvature'</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>mc</span> <span class=o>=</span> <span class=n>vtkCurvatures</span><span class=p>()</span>
 </span>    <span class=n>mc</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>source</span><span class=p>)</span>
     <span class=n>mc</span><span class=o>.</span><span class=n>SetCurvatureTypeToMean</span><span class=p>()</span>
     <span class=n>mc</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
-    <span class=k>if</span> <span class=n>desired_surface</span> <span class=ow>in</span> <span class=p>[</span><span class=s1>&#39;Bour&#39;</span><span class=p>,</span> <span class=s1>&#39;Enneper&#39;</span><span class=p>,</span> <span class=s1>&#39;Hills&#39;</span><span class=p>,</span> <span class=s1>&#39;RandomHills&#39;</span><span class=p>,</span> <span class=s1>&#39;Torus&#39;</span><span class=p>]:</span>
-        <span class=n>adjust_edge_curvatures</span><span class=p>(</span><span class=n>mc</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>(),</span> <span class=s1>&#39;Mean_Curvature&#39;</span><span class=p>)</span>
-    <span class=k>if</span> <span class=n>desired_surface</span> <span class=o>==</span> <span class=s1>&#39;Bour&#39;</span><span class=p>:</span>
+    <span class=k>if</span> <span class=n>desired_surface</span> <span class=ow>in</span> <span class=p>[</span><span class=s1>'Bour'</span><span class=p>,</span> <span class=s1>'Enneper'</span><span class=p>,</span> <span class=s1>'Hills'</span><span class=p>,</span> <span class=s1>'RandomHills'</span><span class=p>,</span> <span class=s1>'Torus'</span><span class=p>]:</span>
+        <span class=n>adjust_edge_curvatures</span><span class=p>(</span><span class=n>mc</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>(),</span> <span class=s1>'Mean_Curvature'</span><span class=p>)</span>
+    <span class=k>if</span> <span class=n>desired_surface</span> <span class=o>==</span> <span class=s1>'Bour'</span><span class=p>:</span>
         <span class=c1># Mean curvature is 0</span>
-        <span class=n>constrain_curvatures</span><span class=p>(</span><span class=n>mc</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>(),</span> <span class=s1>&#39;Mean_Curvature&#39;</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>)</span>
-    <span class=k>if</span> <span class=n>desired_surface</span> <span class=o>==</span> <span class=s1>&#39;Enneper&#39;</span><span class=p>:</span>
+        <span class=n>constrain_curvatures</span><span class=p>(</span><span class=n>mc</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>(),</span> <span class=s1>'Mean_Curvature'</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>)</span>
+    <span class=k>if</span> <span class=n>desired_surface</span> <span class=o>==</span> <span class=s1>'Enneper'</span><span class=p>:</span>
         <span class=c1># Mean curvature is 0</span>
-        <span class=n>constrain_curvatures</span><span class=p>(</span><span class=n>mc</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>(),</span> <span class=s1>&#39;Mean_Curvature&#39;</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>)</span>
-    <span class=k>if</span> <span class=n>desired_surface</span> <span class=o>==</span> <span class=s1>&#39;Sphere&#39;</span><span class=p>:</span>
+        <span class=n>constrain_curvatures</span><span class=p>(</span><span class=n>mc</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>(),</span> <span class=s1>'Mean_Curvature'</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>)</span>
+    <span class=k>if</span> <span class=n>desired_surface</span> <span class=o>==</span> <span class=s1>'Sphere'</span><span class=p>:</span>
         <span class=c1># Mean curvature is 1/r</span>
-        <span class=n>constrain_curvatures</span><span class=p>(</span><span class=n>mc</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>(),</span> <span class=s1>&#39;Mean_Curvature&#39;</span><span class=p>,</span> <span class=mf>2.0</span><span class=p>,</span> <span class=mf>2.0</span><span class=p>)</span>
+        <span class=n>constrain_curvatures</span><span class=p>(</span><span class=n>mc</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>(),</span> <span class=s1>'Mean_Curvature'</span><span class=p>,</span> <span class=mf>2.0</span><span class=p>,</span> <span class=mf>2.0</span><span class=p>)</span>
     <span class=n>source</span><span class=o>.</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>.</span><span class=n>AddArray</span><span class=p>(</span>
-        <span class=n>mc</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>.</span><span class=n>GetAbstractArray</span><span class=p>(</span><span class=s1>&#39;Mean_Curvature&#39;</span><span class=p>))</span>
+        <span class=n>mc</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>.</span><span class=n>GetAbstractArray</span><span class=p>(</span><span class=s1>'Mean_Curvature'</span><span class=p>))</span>
 
     <span class=c1># Uncomment the following lines if you want to write out the polydata.</span>
     <span class=c1># writer = vtkXMLPolyDataWriter()</span>
-    <span class=c1># writer.SetFileName(&#39;Source.vtp&#39;)</span>
+    <span class=c1># writer.SetFileName('Source.vtp')</span>
     <span class=c1># writer.SetInputData(source)</span>
     <span class=c1># writer.SetDataModeToBinary()</span>
     <span class=c1># writer.Write()</span>
 
-    <span class=c1># Let&#39;s visualise what we have done.</span>
+    <span class=c1># Let's visualise what we have done.</span>
 
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
-</span>    <span class=n>colors</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=s2>&quot;ParaViewBkg&quot;</span><span class=p>,</span> <span class=p>[</span><span class=mi>82</span><span class=p>,</span> <span class=mi>87</span><span class=p>,</span> <span class=mi>110</span><span class=p>,</span> <span class=mi>255</span><span class=p>])</span>
+</span>    <span class=n>colors</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=s2>"ParaViewBkg"</span><span class=p>,</span> <span class=p>[</span><span class=mi>82</span><span class=p>,</span> <span class=mi>87</span><span class=p>,</span> <span class=mi>110</span><span class=p>,</span> <span class=mi>255</span><span class=p>])</span>
 
     <span class=n>window_width</span> <span class=o>=</span> <span class=mi>1024</span>
     <span class=n>window_height</span> <span class=o>=</span> <span class=mi>512</span>
@@ -214,10 +214,10 @@ function registerListener(event, func) {
 <span class=hll>        <span class=n>cam_orient_manipulator</span> <span class=o>=</span> <span class=n>vtkCameraOrientationWidget</span><span class=p>()</span>
 </span>        <span class=n>has_cow</span> <span class=o>=</span> <span class=kc>True</span>
 
-    <span class=n>curvature_types</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;Gauss_Curvature&#39;</span><span class=p>,</span> <span class=s1>&#39;Mean_Curvature&#39;</span><span class=p>]</span>
+    <span class=n>curvature_types</span> <span class=o>=</span> <span class=p>[</span><span class=s1>'Gauss_Curvature'</span><span class=p>,</span> <span class=s1>'Mean_Curvature'</span><span class=p>]</span>
     <span class=k>for</span> <span class=n>idx</span><span class=p>,</span> <span class=n>curvature_name</span> <span class=ow>in</span> <span class=nb>enumerate</span><span class=p>(</span><span class=n>curvature_types</span><span class=p>):</span>
 
-        <span class=n>curvature_title</span> <span class=o>=</span> <span class=n>curvature_name</span><span class=o>.</span><span class=n>replace</span><span class=p>(</span><span class=s1>&#39;_&#39;</span><span class=p>,</span> <span class=s1>&#39;</span><span class=se>\n</span><span class=s1>&#39;</span><span class=p>)</span>
+        <span class=n>curvature_title</span> <span class=o>=</span> <span class=n>curvature_name</span><span class=o>.</span><span class=n>replace</span><span class=p>(</span><span class=s1>'_'</span><span class=p>,</span> <span class=s1>'</span><span class=se>\n</span><span class=s1>'</span><span class=p>)</span>
 
         <span class=n>source</span><span class=o>.</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>.</span><span class=n>SetActiveScalars</span><span class=p>(</span><span class=n>curvature_name</span><span class=p>)</span>
         <span class=n>scalar_range</span> <span class=o>=</span> <span class=n>source</span><span class=o>.</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>.</span><span class=n>GetScalars</span><span class=p>(</span><span class=n>curvature_name</span><span class=p>)</span><span class=o>.</span><span class=n>GetRange</span><span class=p>()</span>
@@ -258,7 +258,7 @@ function registerListener(event, func) {
         <span class=n>text_actor</span><span class=o>.</span><span class=n>SetPosition</span><span class=p>(</span><span class=mi>250</span><span class=p>,</span> <span class=mi>16</span><span class=p>)</span>
 
 <span class=hll>        <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>()</span>
-</span>        <span class=n>renderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;ParaViewBkg&#39;</span><span class=p>))</span>
+</span>        <span class=n>renderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'ParaViewBkg'</span><span class=p>))</span>
 
         <span class=n>renderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor</span><span class=p>)</span>
         <span class=n>renderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>text_actor</span><span class=p>)</span>
@@ -281,19 +281,19 @@ function registerListener(event, func) {
         <span class=n>cam_orient_manipulator</span><span class=o>.</span><span class=n>On</span><span class=p>()</span>
 
     <span class=n>ren_win</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
-    <span class=n>ren_win</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;CurvaturesAdjustEdges&#39;</span><span class=p>)</span>
+    <span class=n>ren_win</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>'CurvaturesAdjustEdges'</span><span class=p>)</span>
     <span class=n>iren</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>vtk_version_ok</span><span class=p>(</span><span class=n>major</span><span class=p>,</span> <span class=n>minor</span><span class=p>,</span> <span class=n>build</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Check the VTK version.</span>
 
 <span class=sd>    :param major: Requested major version.</span>
 <span class=sd>    :param minor: Requested minor version.</span>
 <span class=sd>    :param build: Requested build version.</span>
 <span class=sd>    :return: True if the requested VTK version is &gt;= the actual VTK version.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=n>requested_version</span> <span class=o>=</span> <span class=p>(</span><span class=mi>100</span> <span class=o>*</span> <span class=nb>int</span><span class=p>(</span><span class=n>major</span><span class=p>)</span> <span class=o>+</span> <span class=nb>int</span><span class=p>(</span><span class=n>minor</span><span class=p>))</span> <span class=o>*</span> <span class=mi>100000000</span> <span class=o>+</span> <span class=nb>int</span><span class=p>(</span><span class=n>build</span><span class=p>)</span>
 <span class=hll>    <span class=n>ver</span> <span class=o>=</span> <span class=n>vtkVersion</span><span class=p>()</span>
 </span>    <span class=n>actual_version</span> <span class=o>=</span> <span class=p>(</span><span class=mi>100</span> <span class=o>*</span> <span class=n>ver</span><span class=o>.</span><span class=n>GetVTKMajorVersion</span><span class=p>()</span> <span class=o>+</span> <span class=n>ver</span><span class=o>.</span><span class=n>GetVTKMinorVersion</span><span class=p>())</span> \
@@ -305,30 +305,30 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>adjust_edge_curvatures</span><span class=p>(</span><span class=n>source</span><span class=p>,</span> <span class=n>curvature_name</span><span class=p>,</span> <span class=n>epsilon</span><span class=o>=</span><span class=mf>1.0e-08</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    This function adjusts curvatures along the edges of the surface by replacing</span>
 <span class=sd>     the value with the average value of the curvatures of points in the neighborhood.</span>
 
 <span class=hll><span class=sd>    Remember to update the vtkCurvatures object before calling this.</span>
 </span>
 <span class=hll><span class=sd>    :param source: A vtkPolyData object corresponding to the vtkCurvatures object.</span>
-</span><span class=sd>    :param curvature_name: The name of the curvature, &#39;Gauss_Curvature&#39; or &#39;Mean_Curvature&#39;.</span>
+</span><span class=sd>    :param curvature_name: The name of the curvature, 'Gauss_Curvature' or 'Mean_Curvature'.</span>
 <span class=sd>    :param epsilon: Absolute curvature values less than this will be set to zero.</span>
 <span class=sd>    :return:</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 
     <span class=k>def</span><span class=w> </span><span class=nf>point_neighbourhood</span><span class=p>(</span><span class=n>pt_id</span><span class=p>):</span>
-<span class=w>        </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>        </span><span class=sd>"""</span>
 <span class=sd>        Find the ids of the neighbours of pt_id.</span>
 
 <span class=sd>        :param pt_id: The point id.</span>
 <span class=sd>        :return: The neighbour ids.</span>
-<span class=sd>        &quot;&quot;&quot;</span>
-<span class=w>        </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=sd>        """</span>
+<span class=w>        </span><span class=sd>"""</span>
 <span class=sd>        Extract the topological neighbors for point pId. In two steps:</span>
 <span class=sd>        1) source.GetPointCells(pt_id, cell_ids)</span>
 <span class=sd>        2) source.GetCellPoints(cell_id, cell_point_ids) for all cell_id in cell_ids</span>
-<span class=sd>        &quot;&quot;&quot;</span>
+<span class=sd>        """</span>
 <span class=hll>        <span class=n>cell_ids</span> <span class=o>=</span> <span class=n>vtkIdList</span><span class=p>()</span>
 </span>        <span class=n>source</span><span class=o>.</span><span class=n>GetPointCells</span><span class=p>(</span><span class=n>pt_id</span><span class=p>,</span> <span class=n>cell_ids</span><span class=p>)</span>
         <span class=n>neighbour</span> <span class=o>=</span> <span class=nb>set</span><span class=p>()</span>
@@ -341,13 +341,13 @@ function registerListener(event, func) {
         <span class=k>return</span> <span class=n>neighbour</span>
 
     <span class=k>def</span><span class=w> </span><span class=nf>compute_distance</span><span class=p>(</span><span class=n>pt_id_a</span><span class=p>,</span> <span class=n>pt_id_b</span><span class=p>):</span>
-<span class=w>        </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>        </span><span class=sd>"""</span>
 <span class=sd>        Compute the distance between two points given their ids.</span>
 
 <span class=sd>        :param pt_id_a:</span>
 <span class=sd>        :param pt_id_b:</span>
 <span class=sd>        :return:</span>
-<span class=sd>        &quot;&quot;&quot;</span>
+<span class=sd>        """</span>
         <span class=n>pt_a</span> <span class=o>=</span> <span class=n>np</span><span class=o>.</span><span class=n>array</span><span class=p>(</span><span class=n>source</span><span class=o>.</span><span class=n>GetPoint</span><span class=p>(</span><span class=n>pt_id_a</span><span class=p>))</span>
         <span class=n>pt_b</span> <span class=o>=</span> <span class=n>np</span><span class=o>.</span><span class=n>array</span><span class=p>(</span><span class=n>source</span><span class=o>.</span><span class=n>GetPoint</span><span class=p>(</span><span class=n>pt_id_b</span><span class=p>))</span>
         <span class=k>return</span> <span class=n>np</span><span class=o>.</span><span class=n>linalg</span><span class=o>.</span><span class=n>norm</span><span class=p>(</span><span class=n>pt_a</span> <span class=o>-</span> <span class=n>pt_b</span><span class=p>)</span>
@@ -358,7 +358,7 @@ function registerListener(event, func) {
     <span class=n>curvatures</span> <span class=o>=</span> <span class=n>np_source</span><span class=o>.</span><span class=n>PointData</span><span class=p>[</span><span class=n>curvature_name</span><span class=p>]</span>
 
     <span class=c1>#  Get the boundary point IDs.</span>
-    <span class=n>array_name</span> <span class=o>=</span> <span class=s1>&#39;ids&#39;</span>
+    <span class=n>array_name</span> <span class=o>=</span> <span class=s1>'ids'</span>
     <span class=n>id_filter</span> <span class=o>=</span> <span class=n>vtkIdFilter</span><span class=p>()</span>
     <span class=n>id_filter</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>source</span><span class=p>)</span>
     <span class=n>id_filter</span><span class=o>.</span><span class=n>SetPointIds</span><span class=p>(</span><span class=kc>True</span><span class=p>)</span>
@@ -422,17 +422,17 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>constrain_curvatures</span><span class=p>(</span><span class=n>source</span><span class=p>,</span> <span class=n>curvature_name</span><span class=p>,</span> <span class=n>lower_bound</span><span class=o>=</span><span class=mf>0.0</span><span class=p>,</span> <span class=n>upper_bound</span><span class=o>=</span><span class=mf>0.0</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    This function constrains curvatures to the range [lower_bound ... upper_bound].</span>
 
 <span class=hll><span class=sd>    Remember to update the vtkCurvatures object before calling this.</span>
 </span>
 <span class=hll><span class=sd>    :param source: A vtkPolyData object corresponding to the vtkCurvatures object.</span>
-</span><span class=sd>    :param curvature_name: The name of the curvature, &#39;Gauss_Curvature&#39; or &#39;Mean_Curvature&#39;.</span>
+</span><span class=sd>    :param curvature_name: The name of the curvature, 'Gauss_Curvature' or 'Mean_Curvature'.</span>
 <span class=sd>    :param lower_bound: The lower bound.</span>
 <span class=sd>    :param upper_bound: The upper bound.</span>
 <span class=sd>    :return:</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 
     <span class=n>bounds</span> <span class=o>=</span> <span class=nb>list</span><span class=p>()</span>
     <span class=k>if</span> <span class=n>lower_bound</span> <span class=o>&lt;</span> <span class=n>upper_bound</span><span class=p>:</span>
@@ -461,7 +461,7 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_diverging_lut</span><span class=p>():</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    See: [Diverging Color Maps for Scientific Visualization](https://www.kennethmoreland.com/color-maps/)</span>
 <span class=sd>                       start point         midPoint            end point</span>
 <span class=sd>     cool to warm:     0.230, 0.299, 0.754 0.865, 0.865, 0.865 0.706, 0.016, 0.150</span>
@@ -471,7 +471,7 @@ function registerListener(event, func) {
 <span class=sd>     green to red:     0.085, 0.532, 0.201 0.865, 0.865, 0.865 0.758, 0.214, 0.233</span>
 
 <span class=sd>    :return:</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 <span class=hll>    <span class=n>ctf</span> <span class=o>=</span> <span class=n>vtkColorTransferFunction</span><span class=p>()</span>
 </span>    <span class=n>ctf</span><span class=o>.</span><span class=n>SetColorSpaceToDiverging</span><span class=p>()</span>
     <span class=c1># Cool to warm.</span>
@@ -497,9 +497,9 @@ function registerListener(event, func) {
 </span>    <span class=c1># Colour transfer function.</span>
 <span class=hll>    <span class=n>ctf</span> <span class=o>=</span> <span class=n>vtkColorTransferFunction</span><span class=p>()</span>
 </span>    <span class=n>ctf</span><span class=o>.</span><span class=n>SetColorSpaceToDiverging</span><span class=p>()</span>
-    <span class=n>p1</span> <span class=o>=</span> <span class=p>[</span><span class=mf>0.0</span><span class=p>]</span> <span class=o>+</span> <span class=nb>list</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;MidnightBlue&#39;</span><span class=p>))</span>
-    <span class=n>p2</span> <span class=o>=</span> <span class=p>[</span><span class=mf>0.5</span><span class=p>]</span> <span class=o>+</span> <span class=nb>list</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Gainsboro&#39;</span><span class=p>))</span>
-    <span class=n>p3</span> <span class=o>=</span> <span class=p>[</span><span class=mf>1.0</span><span class=p>]</span> <span class=o>+</span> <span class=nb>list</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;DarkOrange&#39;</span><span class=p>))</span>
+    <span class=n>p1</span> <span class=o>=</span> <span class=p>[</span><span class=mf>0.0</span><span class=p>]</span> <span class=o>+</span> <span class=nb>list</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'MidnightBlue'</span><span class=p>))</span>
+    <span class=n>p2</span> <span class=o>=</span> <span class=p>[</span><span class=mf>0.5</span><span class=p>]</span> <span class=o>+</span> <span class=nb>list</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Gainsboro'</span><span class=p>))</span>
+    <span class=n>p3</span> <span class=o>=</span> <span class=p>[</span><span class=mf>1.0</span><span class=p>]</span> <span class=o>+</span> <span class=nb>list</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'DarkOrange'</span><span class=p>))</span>
     <span class=n>ctf</span><span class=o>.</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=o>*</span><span class=n>p1</span><span class=p>)</span>
     <span class=n>ctf</span><span class=o>.</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=o>*</span><span class=n>p2</span><span class=p>)</span>
     <span class=n>ctf</span><span class=o>.</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=o>*</span><span class=n>p3</span><span class=p>)</span>
@@ -613,7 +613,7 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>textures</span> <span class=o>=</span> <span class=n>vtkFloatArray</span><span class=p>()</span>
 </span>    <span class=n>textures</span><span class=o>.</span><span class=n>SetNumberOfComponents</span><span class=p>(</span><span class=mi>2</span><span class=p>)</span>
     <span class=n>textures</span><span class=o>.</span><span class=n>SetNumberOfTuples</span><span class=p>(</span><span class=mi>2</span> <span class=o>*</span> <span class=n>polydata</span><span class=o>.</span><span class=n>GetNumberOfPoints</span><span class=p>())</span>
-    <span class=n>textures</span><span class=o>.</span><span class=n>SetName</span><span class=p>(</span><span class=s2>&quot;Textures&quot;</span><span class=p>)</span>
+    <span class=n>textures</span><span class=o>.</span><span class=n>SetName</span><span class=p>(</span><span class=s2>"Textures"</span><span class=p>)</span>
 
     <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>x_res</span><span class=p>):</span>
         <span class=n>tc</span> <span class=o>=</span> <span class=p>[</span><span class=n>i</span> <span class=o>/</span> <span class=p>(</span><span class=n>x_res</span> <span class=o>-</span> <span class=mf>1.0</span><span class=p>),</span> <span class=mf>0.0</span><span class=p>]</span>
@@ -623,7 +623,7 @@ function registerListener(event, func) {
             <span class=n>textures</span><span class=o>.</span><span class=n>SetTuple</span><span class=p>(</span><span class=n>i</span> <span class=o>*</span> <span class=n>y_res</span> <span class=o>+</span> <span class=n>j</span><span class=p>,</span> <span class=n>tc</span><span class=p>)</span>
 
     <span class=n>polydata</span><span class=o>.</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>.</span><span class=n>SetScalars</span><span class=p>(</span><span class=n>elevation</span><span class=p>)</span>
-    <span class=n>polydata</span><span class=o>.</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>.</span><span class=n>GetScalars</span><span class=p>()</span><span class=o>.</span><span class=n>SetName</span><span class=p>(</span><span class=s2>&quot;Elevation&quot;</span><span class=p>)</span>
+    <span class=n>polydata</span><span class=o>.</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>.</span><span class=n>GetScalars</span><span class=p>()</span><span class=o>.</span><span class=n>SetName</span><span class=p>(</span><span class=s2>"Elevation"</span><span class=p>)</span>
     <span class=n>polydata</span><span class=o>.</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>.</span><span class=n>SetTCoords</span><span class=p>(</span><span class=n>textures</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>normals</span> <span class=o>=</span> <span class=n>vtkPolyDataNormals</span><span class=p>()</span>
@@ -775,37 +775,37 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_source</span><span class=p>(</span><span class=n>source</span><span class=p>):</span>
     <span class=n>surface</span> <span class=o>=</span> <span class=n>source</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span>
-    <span class=n>available_surfaces</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;bour&#39;</span><span class=p>,</span> <span class=s1>&#39;cube&#39;</span><span class=p>,</span> <span class=s1>&#39;enneper&#39;</span><span class=p>,</span> <span class=s1>&#39;hills&#39;</span><span class=p>,</span> <span class=s1>&#39;mobius&#39;</span><span class=p>,</span> <span class=s1>&#39;randomhills&#39;</span><span class=p>,</span> <span class=s1>&#39;sphere&#39;</span><span class=p>,</span> <span class=s1>&#39;torus&#39;</span><span class=p>]</span>
+    <span class=n>available_surfaces</span> <span class=o>=</span> <span class=p>[</span><span class=s1>'bour'</span><span class=p>,</span> <span class=s1>'cube'</span><span class=p>,</span> <span class=s1>'enneper'</span><span class=p>,</span> <span class=s1>'hills'</span><span class=p>,</span> <span class=s1>'mobius'</span><span class=p>,</span> <span class=s1>'randomhills'</span><span class=p>,</span> <span class=s1>'sphere'</span><span class=p>,</span> <span class=s1>'torus'</span><span class=p>]</span>
     <span class=k>if</span> <span class=n>surface</span> <span class=ow>not</span> <span class=ow>in</span> <span class=n>available_surfaces</span><span class=p>:</span>
         <span class=k>return</span> <span class=kc>None</span>
-    <span class=k>elif</span> <span class=n>surface</span> <span class=o>==</span> <span class=s1>&#39;bour&#39;</span><span class=p>:</span>
+    <span class=k>elif</span> <span class=n>surface</span> <span class=o>==</span> <span class=s1>'bour'</span><span class=p>:</span>
         <span class=k>return</span> <span class=n>get_bour</span><span class=p>()</span>
-    <span class=k>elif</span> <span class=n>surface</span> <span class=o>==</span> <span class=s1>&#39;cube&#39;</span><span class=p>:</span>
+    <span class=k>elif</span> <span class=n>surface</span> <span class=o>==</span> <span class=s1>'cube'</span><span class=p>:</span>
         <span class=k>return</span> <span class=n>get_cube</span><span class=p>()</span>
-    <span class=k>elif</span> <span class=n>surface</span> <span class=o>==</span> <span class=s1>&#39;enneper&#39;</span><span class=p>:</span>
+    <span class=k>elif</span> <span class=n>surface</span> <span class=o>==</span> <span class=s1>'enneper'</span><span class=p>:</span>
         <span class=k>return</span> <span class=n>get_enneper</span><span class=p>()</span>
-    <span class=k>elif</span> <span class=n>surface</span> <span class=o>==</span> <span class=s1>&#39;hills&#39;</span><span class=p>:</span>
+    <span class=k>elif</span> <span class=n>surface</span> <span class=o>==</span> <span class=s1>'hills'</span><span class=p>:</span>
         <span class=k>return</span> <span class=n>get_hills</span><span class=p>()</span>
-    <span class=k>elif</span> <span class=n>surface</span> <span class=o>==</span> <span class=s1>&#39;mobius&#39;</span><span class=p>:</span>
+    <span class=k>elif</span> <span class=n>surface</span> <span class=o>==</span> <span class=s1>'mobius'</span><span class=p>:</span>
         <span class=k>return</span> <span class=n>get_mobius</span><span class=p>()</span>
-    <span class=k>elif</span> <span class=n>surface</span> <span class=o>==</span> <span class=s1>&#39;randomhills&#39;</span><span class=p>:</span>
+    <span class=k>elif</span> <span class=n>surface</span> <span class=o>==</span> <span class=s1>'randomhills'</span><span class=p>:</span>
         <span class=k>return</span> <span class=n>get_random_hills</span><span class=p>()</span>
-    <span class=k>elif</span> <span class=n>surface</span> <span class=o>==</span> <span class=s1>&#39;sphere&#39;</span><span class=p>:</span>
+    <span class=k>elif</span> <span class=n>surface</span> <span class=o>==</span> <span class=s1>'sphere'</span><span class=p>:</span>
         <span class=k>return</span> <span class=n>get_sphere</span><span class=p>()</span>
-    <span class=k>elif</span> <span class=n>surface</span> <span class=o>==</span> <span class=s1>&#39;torus&#39;</span><span class=p>:</span>
+    <span class=k>elif</span> <span class=n>surface</span> <span class=o>==</span> <span class=s1>'torus'</span><span class=p>:</span>
         <span class=k>return</span> <span class=n>get_torus</span><span class=p>()</span>
     <span class=k>return</span> <span class=kc>None</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_frequencies</span><span class=p>(</span><span class=n>bands</span><span class=p>,</span> <span class=n>src</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Count the number of scalars in each band.</span>
 <span class=sd>    The scalars used are the active scalars in the polydata.</span>
 
 <span class=sd>    :param: bands - The bands.</span>
 <span class=hll><span class=sd>    :param: src - The vtkPolyData source.</span>
 </span><span class=sd>    :return: The frequencies of the scalars in each band.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=n>freq</span> <span class=o>=</span> <span class=nb>dict</span><span class=p>()</span>
     <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=nb>len</span><span class=p>(</span><span class=n>bands</span><span class=p>)):</span>
         <span class=n>freq</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>=</span> <span class=mi>0</span>
@@ -820,13 +820,13 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>adjust_ranges</span><span class=p>(</span><span class=n>bands</span><span class=p>,</span> <span class=n>freq</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    The bands and frequencies are adjusted so that the first and last</span>
 <span class=sd>     frequencies in the range are non-zero.</span>
 <span class=sd>    :param bands: The bands dictionary.</span>
 <span class=sd>    :param freq: The frequency dictionary.</span>
 <span class=sd>    :return: Adjusted bands and frequencies.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=c1># Get the indices of the first and last non-zero elements.</span>
     <span class=n>first</span> <span class=o>=</span> <span class=mi>0</span>
     <span class=k>for</span> <span class=n>k</span><span class=p>,</span> <span class=n>v</span> <span class=ow>in</span> <span class=n>freq</span><span class=o>.</span><span class=n>items</span><span class=p>():</span>
@@ -860,14 +860,14 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_bands</span><span class=p>(</span><span class=n>d_r</span><span class=p>,</span> <span class=n>number_of_bands</span><span class=p>,</span> <span class=n>precision</span><span class=o>=</span><span class=mi>2</span><span class=p>,</span> <span class=n>nearest_integer</span><span class=o>=</span><span class=kc>False</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Divide a range into bands</span>
 <span class=sd>    :param: d_r - [min, max] the range that is to be covered by the bands.</span>
 <span class=sd>    :param: number_of_bands - The number of bands, a positive integer.</span>
 <span class=sd>    :param: precision - The decimal precision of the bounds.</span>
 <span class=sd>    :param: nearest_integer - If True then [floor(min), ceil(max)] is used.</span>
 <span class=sd>    :return: A dictionary consisting of the band number and [min, midpoint, max] for each band.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=n>prec</span> <span class=o>=</span> <span class=nb>abs</span><span class=p>(</span><span class=n>precision</span><span class=p>)</span>
     <span class=k>if</span> <span class=n>prec</span> <span class=o>&gt;</span> <span class=mi>14</span><span class=p>:</span>
         <span class=n>prec</span> <span class=o>=</span> <span class=mi>14</span>
@@ -898,26 +898,26 @@ function registerListener(event, func) {
         <span class=n>prec</span> <span class=o>=</span> <span class=mi>14</span>
 
     <span class=k>if</span> <span class=nb>len</span><span class=p>(</span><span class=n>bands</span><span class=p>)</span> <span class=o>!=</span> <span class=nb>len</span><span class=p>(</span><span class=n>freq</span><span class=p>):</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Bands and Frequencies must be the same size.&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'Bands and Frequencies must be the same size.'</span><span class=p>)</span>
         <span class=k>return</span>
-    <span class=n>s</span> <span class=o>=</span> <span class=sa>f</span><span class=s1>&#39;Bands &amp; Frequencies:</span><span class=se>\n</span><span class=s1>&#39;</span>
+    <span class=n>s</span> <span class=o>=</span> <span class=sa>f</span><span class=s1>'Bands &amp; Frequencies:</span><span class=se>\n</span><span class=s1>'</span>
     <span class=n>total</span> <span class=o>=</span> <span class=mi>0</span>
     <span class=n>width</span> <span class=o>=</span> <span class=n>prec</span> <span class=o>+</span> <span class=mi>6</span>
     <span class=k>for</span> <span class=n>k</span><span class=p>,</span> <span class=n>v</span> <span class=ow>in</span> <span class=n>bands</span><span class=o>.</span><span class=n>items</span><span class=p>():</span>
         <span class=n>total</span> <span class=o>+=</span> <span class=n>freq</span><span class=p>[</span><span class=n>k</span><span class=p>]</span>
         <span class=k>for</span> <span class=n>j</span><span class=p>,</span> <span class=n>q</span> <span class=ow>in</span> <span class=nb>enumerate</span><span class=p>(</span><span class=n>v</span><span class=p>):</span>
             <span class=k>if</span> <span class=n>j</span> <span class=o>==</span> <span class=mi>0</span><span class=p>:</span>
-                <span class=n>s</span> <span class=o>+=</span> <span class=sa>f</span><span class=s1>&#39;</span><span class=si>{</span><span class=n>k</span><span class=si>:</span><span class=s1>4d</span><span class=si>}</span><span class=s1> [&#39;</span>
+                <span class=n>s</span> <span class=o>+=</span> <span class=sa>f</span><span class=s1>'</span><span class=si>{</span><span class=n>k</span><span class=si>:</span><span class=s1>4d</span><span class=si>}</span><span class=s1> ['</span>
             <span class=k>if</span> <span class=n>j</span> <span class=o>==</span> <span class=nb>len</span><span class=p>(</span><span class=n>v</span><span class=p>)</span> <span class=o>-</span> <span class=mi>1</span><span class=p>:</span>
-                <span class=n>s</span> <span class=o>+=</span> <span class=sa>f</span><span class=s1>&#39;</span><span class=si>{</span><span class=n>q</span><span class=si>:{</span><span class=n>width</span><span class=si>}</span><span class=s1>.</span><span class=si>{</span><span class=n>prec</span><span class=si>}</span><span class=s1>f</span><span class=si>}</span><span class=s1>]: </span><span class=si>{</span><span class=n>freq</span><span class=p>[</span><span class=n>k</span><span class=p>]</span><span class=si>:</span><span class=s1>8d</span><span class=si>}</span><span class=se>\n</span><span class=s1>&#39;</span>
+                <span class=n>s</span> <span class=o>+=</span> <span class=sa>f</span><span class=s1>'</span><span class=si>{</span><span class=n>q</span><span class=si>:{</span><span class=n>width</span><span class=si>}</span><span class=s1>.</span><span class=si>{</span><span class=n>prec</span><span class=si>}</span><span class=s1>f</span><span class=si>}</span><span class=s1>]: </span><span class=si>{</span><span class=n>freq</span><span class=p>[</span><span class=n>k</span><span class=p>]</span><span class=si>:</span><span class=s1>8d</span><span class=si>}</span><span class=se>\n</span><span class=s1>'</span>
             <span class=k>else</span><span class=p>:</span>
-                <span class=n>s</span> <span class=o>+=</span> <span class=sa>f</span><span class=s1>&#39;</span><span class=si>{</span><span class=n>q</span><span class=si>:{</span><span class=n>width</span><span class=si>}</span><span class=s1>.</span><span class=si>{</span><span class=n>prec</span><span class=si>}</span><span class=s1>f</span><span class=si>}</span><span class=s1>, &#39;</span>
+                <span class=n>s</span> <span class=o>+=</span> <span class=sa>f</span><span class=s1>'</span><span class=si>{</span><span class=n>q</span><span class=si>:{</span><span class=n>width</span><span class=si>}</span><span class=s1>.</span><span class=si>{</span><span class=n>prec</span><span class=si>}</span><span class=s1>f</span><span class=si>}</span><span class=s1>, '</span>
     <span class=n>width</span> <span class=o>=</span> <span class=mi>3</span> <span class=o>*</span> <span class=n>width</span> <span class=o>+</span> <span class=mi>13</span>
-    <span class=n>s</span> <span class=o>+=</span> <span class=sa>f</span><span class=s1>&#39;</span><span class=si>{</span><span class=s2>&quot;Total&quot;</span><span class=si>:{</span><span class=n>width</span><span class=si>}</span><span class=s1>s</span><span class=si>}{</span><span class=n>total</span><span class=si>:</span><span class=s1>8d</span><span class=si>}</span><span class=se>\n</span><span class=s1>&#39;</span>
+    <span class=n>s</span> <span class=o>+=</span> <span class=sa>f</span><span class=s1>'</span><span class=si>{</span><span class=s2>"Total"</span><span class=si>:{</span><span class=n>width</span><span class=si>}</span><span class=s1>s</span><span class=si>}{</span><span class=n>total</span><span class=si>:</span><span class=s1>8d</span><span class=si>}</span><span class=se>\n</span><span class=s1>'</span>
     <span class=nb>print</span><span class=p>(</span><span class=n>s</span><span class=p>)</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>sys</span>
 
     <span class=n>main</span><span class=p>(</span><span class=n>sys</span><span class=o>.</span><span class=n>argv</span><span class=p>)</span>

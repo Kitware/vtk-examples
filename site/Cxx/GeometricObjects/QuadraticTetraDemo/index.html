@@ -131,7 +131,7 @@ function registerListener(event, func) {
 </span><span class=hll><span class=w>                </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;&amp;</span><span class=w> </span><span class=n>interactor</span><span class=p>);</span>
 </span><span class=p>}</span><span class=w> </span><span class=c1>// namespace</span>
 
-<span class=kt>int</span><span class=w> </span><span class=n>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=p>[])</span>
+<span class=kt>int</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=p>[])</span>
 <span class=p>{</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span><span class=w> </span><span class=n>namedColors</span><span class=p>;</span>
 </span>
@@ -166,9 +166,9 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>actor</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>actor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>);</span>
 <span class=w>  </span><span class=n>actor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetDiffuseColor</span><span class=p>(</span>
-<span class=w>      </span><span class=n>namedColors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Tomato&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>      </span><span class=n>namedColors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Tomato"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=n>actor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetEdgeColor</span><span class=p>(</span>
-<span class=w>      </span><span class=n>namedColors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;IvoryBlack&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>      </span><span class=n>namedColors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"IvoryBlack"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=n>actor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>EdgeVisibilityOn</span><span class=p>();</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkSphereSource</span><span class=o>&gt;</span><span class=w> </span><span class=n>sphereSource</span><span class=p>;</span>
@@ -187,13 +187,13 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>glyph3DActor</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>glyph3DActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>glyph3DMapper</span><span class=p>);</span>
 <span class=w>  </span><span class=n>glyph3DActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
-<span class=w>      </span><span class=n>namedColors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Banana&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>      </span><span class=n>namedColors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Banana"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTextProperty</span><span class=o>&gt;</span><span class=w> </span><span class=n>textProperty</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>textProperty</span><span class=o>-&gt;</span><span class=n>SetFontSize</span><span class=p>(</span><span class=mi>24</span><span class=p>);</span>
 
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>stringstream</span><span class=w> </span><span class=n>ss</span><span class=p>;</span>
-<span class=w>  </span><span class=n>ss</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;# of Tetras: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>numTets</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>  </span><span class=n>ss</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"# of Tetras: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>numTets</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=hll><span class=w>  </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkTextMapper</span><span class=o>&gt;</span><span class=w> </span><span class=n>textMapper</span><span class=w> </span><span class=o>=</span>
 </span><span class=hll><span class=w>      </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkTextMapper</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
 </span><span class=w>  </span><span class=n>textMapper</span><span class=o>-&gt;</span><span class=n>SetInput</span><span class=p>(</span><span class=n>ss</span><span class=p>.</span><span class=n>str</span><span class=p>().</span><span class=n>c_str</span><span class=p>());</span>
@@ -206,7 +206,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=c1>// Visualize</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderer</span><span class=p>;</span>
 </span><span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderWindow</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;QuadraticTetraDemo&quot;</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"QuadraticTetraDemo"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>640</span><span class=p>,</span><span class=w> </span><span class=mi>512</span><span class=p>);</span>
 <span class=hll><span class=w>  </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span><span class=w> </span><span class=n>interactor</span><span class=w> </span><span class=o>=</span>
@@ -220,7 +220,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>glyph3DActor</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>textActor</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>namedColors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;SlateGray&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>namedColors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"SlateGray"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
 
@@ -239,7 +239,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>SliderCallbackChordError</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=hll><span class=w>  </span><span class=k>virtual</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=n>Execute</span><span class=p>(</span><span class=n>vtkObject</span><span class=o>*</span><span class=w> </span><span class=n>caller</span><span class=p>,</span><span class=w> </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>long</span><span class=p>,</span><span class=w> </span><span class=kt>void</span><span class=o>*</span><span class=p>)</span>
+<span class=hll><span class=w>  </span><span class=k>virtual</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>Execute</span><span class=p>(</span><span class=n>vtkObject</span><span class=o>*</span><span class=w> </span><span class=n>caller</span><span class=p>,</span><span class=w> </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>long</span><span class=p>,</span><span class=w> </span><span class=kt>void</span><span class=o>*</span><span class=p>)</span>
 </span><span class=w>  </span><span class=p>{</span>
 <span class=hll><span class=w>    </span><span class=n>vtkSliderWidget</span><span class=o>*</span><span class=w> </span><span class=n>sliderWidget</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>reinterpret_cast</span><span class=o>&lt;</span><span class=n>vtkSliderWidget</span><span class=o>*&gt;</span><span class=p>(</span><span class=n>caller</span><span class=p>);</span>
 </span><span class=hll><span class=w>    </span><span class=kt>double</span><span class=w> </span><span class=n>value</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>static_cast</span><span class=o>&lt;</span><span class=n>vtkSliderRepresentation2D</span><span class=o>*&gt;</span><span class=p>(</span>
@@ -262,7 +262,7 @@ function registerListener(event, func) {
 <span class=w>      </span><span class=o>++</span><span class=n>numTets</span><span class=p>;</span>
 <span class=w>    </span><span class=p>}</span>
 <span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>stringstream</span><span class=w> </span><span class=n>ss</span><span class=p>;</span>
-<span class=w>    </span><span class=n>ss</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;# of Tetras: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>numTets</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>ss</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"# of Tetras: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>numTets</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=n>TextMapper</span><span class=o>-&gt;</span><span class=n>SetInput</span><span class=p>(</span><span class=n>ss</span><span class=p>.</span><span class=n>str</span><span class=p>().</span><span class=n>c_str</span><span class=p>());</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=w>  </span><span class=n>SliderCallbackChordError</span><span class=p>()</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=n>Tessellator</span><span class=p>(</span><span class=mi>0</span><span class=p>),</span><span class=w> </span><span class=n>TextMapper</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
@@ -288,7 +288,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>sliderRepChordError</span><span class=o>-&gt;</span><span class=n>SetMinimumValue</span><span class=p>(</span><span class=mf>0.0</span><span class=p>);</span>
 <span class=w>  </span><span class=n>sliderRepChordError</span><span class=o>-&gt;</span><span class=n>SetMaximumValue</span><span class=p>(</span><span class=mf>0.07</span><span class=p>);</span>
 <span class=w>  </span><span class=n>sliderRepChordError</span><span class=o>-&gt;</span><span class=n>SetValue</span><span class=p>(</span><span class=n>tessellate</span><span class=o>-&gt;</span><span class=n>GetChordError</span><span class=p>());</span>
-<span class=w>  </span><span class=n>sliderRepChordError</span><span class=o>-&gt;</span><span class=n>SetTitleText</span><span class=p>(</span><span class=s>&quot;Chord error&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>sliderRepChordError</span><span class=o>-&gt;</span><span class=n>SetTitleText</span><span class=p>(</span><span class=s>"Chord error"</span><span class=p>);</span>
 
 <span class=w>  </span><span class=n>sliderRepChordError</span><span class=o>-&gt;</span><span class=n>GetPoint1Coordinate</span><span class=p>()</span>
 <span class=w>      </span><span class=o>-&gt;</span><span class=n>SetCoordinateSystemToNormalizedDisplay</span><span class=p>();</span>
@@ -367,11 +367,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;QuadraticTetraDemo: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"QuadraticTetraDemo: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>QuadraticTetraDemo</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>QuadraticTetraDemo.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>QuadraticTetraDemo</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

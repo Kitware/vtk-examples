@@ -96,18 +96,18 @@ vtkUnstructuredGrid that has 25655 cells
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_program_parameters</span><span class=p>():</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>argparse</span>
-<span class=hll>    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;Use a vtkTableBasedClipDataSet to clip a vtkUnstructuredGrid.&#39;</span>
-</span>    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;</span>
+<span class=hll>    <span class=n>description</span> <span class=o>=</span> <span class=s1>'Use a vtkTableBasedClipDataSet to clip a vtkUnstructuredGrid.'</span>
+</span>    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>'''</span>
 <span class=hll><span class=s1> Use a vtkTableBasedClipDataSet to clip a vtkUnstructuredGrid.</span>
 </span><span class=s1> The resulting output and clipped output are presented in yellow and red respectively.</span>
 <span class=hll><span class=s1> To illustrate the clipped interfaces, the example uses a vtkTransform to rotate each</span>
 </span><span class=s1>    output about their centers.</span>
 <span class=s1> Note: This clipping filter does retain the original cells if they are not clipped.</span>
 
-<span class=s1>   &#39;&#39;&#39;</span>
+<span class=s1>   '''</span>
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
                                      <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawDescriptionHelpFormatter</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;filename&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;treemesh.vtk&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'filename'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'treemesh.vtk'</span><span class=p>)</span>
     <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
     <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>filename</span>
 
@@ -125,7 +125,7 @@ vtkUnstructuredGrid that has 25655 cells
 
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span><span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>()</span>
-</span>    <span class=n>renderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Wheat&#39;</span><span class=p>))</span>
+</span>    <span class=n>renderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Wheat'</span><span class=p>))</span>
     <span class=n>renderer</span><span class=o>.</span><span class=n>UseHiddenLineRemovalOn</span><span class=p>()</span>
 
 <span class=hll>    <span class=n>renderWindow</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>()</span>
@@ -154,7 +154,7 @@ vtkUnstructuredGrid that has 25655 cells
 
 <span class=hll>    <span class=n>insideActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>insideActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>insideMapper</span><span class=p>)</span>
-    <span class=n>insideActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetDiffuseColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Banana&#39;</span><span class=p>))</span>
+    <span class=n>insideActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetDiffuseColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Banana'</span><span class=p>))</span>
     <span class=n>insideActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetAmbient</span><span class=p>(</span><span class=mf>0.3</span><span class=p>)</span>
     <span class=n>insideActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>EdgeVisibilityOn</span><span class=p>()</span>
 
@@ -164,7 +164,7 @@ vtkUnstructuredGrid that has 25655 cells
 
 <span class=hll>    <span class=n>clippedActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>clippedActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>clippedMapper</span><span class=p>)</span>
-    <span class=n>clippedActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetDiffuseColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Tomato&#39;</span><span class=p>))</span>
+    <span class=n>clippedActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetDiffuseColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Tomato'</span><span class=p>))</span>
     <span class=n>insideActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetAmbient</span><span class=p>(</span><span class=mf>0.3</span><span class=p>)</span>
     <span class=n>clippedActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>EdgeVisibilityOn</span><span class=p>()</span>
 
@@ -190,15 +190,15 @@ vtkUnstructuredGrid that has 25655 cells
     <span class=n>renderer</span><span class=o>.</span><span class=n>GetActiveCamera</span><span class=p>()</span><span class=o>.</span><span class=n>Dolly</span><span class=p>(</span><span class=mf>1.4</span><span class=p>)</span>
     <span class=n>renderer</span><span class=o>.</span><span class=n>ResetCameraClippingRange</span><span class=p>()</span>
     <span class=n>renderWindow</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
-    <span class=n>renderWindow</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;ClipUnstructuredGridWithPlane&#39;</span><span class=p>)</span>
+    <span class=n>renderWindow</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>'ClipUnstructuredGridWithPlane'</span><span class=p>)</span>
     <span class=n>renderWindow</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
 
     <span class=n>interactor</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
     <span class=c1># Generate a report</span>
     <span class=n>numberOfCells</span> <span class=o>=</span> <span class=n>clipper</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetNumberOfCells</span><span class=p>()</span>
-    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;------------------------&#39;</span><span class=p>)</span>
-    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;The inside dataset contains a </span><span class=se>\n</span><span class=s1>&#39;</span><span class=p>,</span> <span class=n>clipper</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetClassName</span><span class=p>(),</span> <span class=s1>&#39; that has &#39;</span><span class=p>,</span> <span class=n>numberOfCells</span><span class=p>,</span> <span class=s1>&#39; cells&#39;</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s1>'------------------------'</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s1>'The inside dataset contains a </span><span class=se>\n</span><span class=s1>'</span><span class=p>,</span> <span class=n>clipper</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetClassName</span><span class=p>(),</span> <span class=s1>' that has '</span><span class=p>,</span> <span class=n>numberOfCells</span><span class=p>,</span> <span class=s1>' cells'</span><span class=p>)</span>
     <span class=n>cellMap</span> <span class=o>=</span> <span class=nb>dict</span><span class=p>()</span>
     <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>numberOfCells</span><span class=p>):</span>
         <span class=n>cellMap</span><span class=o>.</span><span class=n>setdefault</span><span class=p>(</span><span class=n>clipper</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetCellType</span><span class=p>(</span><span class=n>i</span><span class=p>),</span> <span class=mi>0</span><span class=p>)</span>
@@ -206,20 +206,20 @@ vtkUnstructuredGrid that has 25655 cells
     <span class=c1># Sort by key and put into an OrderedDict.</span>
     <span class=c1># An OrderedDict remembers the order in which the keys have been inserted.</span>
     <span class=k>for</span> <span class=n>k</span><span class=p>,</span> <span class=n>v</span> <span class=ow>in</span> <span class=n>collections</span><span class=o>.</span><span class=n>OrderedDict</span><span class=p>(</span><span class=nb>sorted</span><span class=p>(</span><span class=n>cellMap</span><span class=o>.</span><span class=n>items</span><span class=p>()))</span><span class=o>.</span><span class=n>items</span><span class=p>():</span>
-<span class=hll>        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;</span><span class=se>\t</span><span class=s1>Cell type &#39;</span><span class=p>,</span> <span class=n>vtkCellTypes</span><span class=o>.</span><span class=n>GetClassNameFromTypeId</span><span class=p>(</span><span class=n>k</span><span class=p>),</span> <span class=s1>&#39; occurs &#39;</span><span class=p>,</span> <span class=n>v</span><span class=p>,</span> <span class=s1>&#39; times.&#39;</span><span class=p>)</span>
+<span class=hll>        <span class=nb>print</span><span class=p>(</span><span class=s1>'</span><span class=se>\t</span><span class=s1>Cell type '</span><span class=p>,</span> <span class=n>vtkCellTypes</span><span class=o>.</span><span class=n>GetClassNameFromTypeId</span><span class=p>(</span><span class=n>k</span><span class=p>),</span> <span class=s1>' occurs '</span><span class=p>,</span> <span class=n>v</span><span class=p>,</span> <span class=s1>' times.'</span><span class=p>)</span>
 </span>
     <span class=n>numberOfCells</span> <span class=o>=</span> <span class=n>clipper</span><span class=o>.</span><span class=n>GetClippedOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetNumberOfCells</span><span class=p>()</span>
-    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;------------------------&#39;</span><span class=p>)</span>
-    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;The clipped dataset contains a </span><span class=se>\n</span><span class=s1>&#39;</span><span class=p>,</span> <span class=n>clipper</span><span class=o>.</span><span class=n>GetClippedOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetClassName</span><span class=p>(),</span> <span class=s1>&#39; that has &#39;</span><span class=p>,</span> <span class=n>numberOfCells</span><span class=p>,</span>
-          <span class=s1>&#39; cells&#39;</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s1>'------------------------'</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s1>'The clipped dataset contains a </span><span class=se>\n</span><span class=s1>'</span><span class=p>,</span> <span class=n>clipper</span><span class=o>.</span><span class=n>GetClippedOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetClassName</span><span class=p>(),</span> <span class=s1>' that has '</span><span class=p>,</span> <span class=n>numberOfCells</span><span class=p>,</span>
+          <span class=s1>' cells'</span><span class=p>)</span>
     <span class=n>outsideCellMap</span> <span class=o>=</span> <span class=nb>dict</span><span class=p>()</span>
     <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>numberOfCells</span><span class=p>):</span>
         <span class=n>outsideCellMap</span><span class=o>.</span><span class=n>setdefault</span><span class=p>(</span><span class=n>clipper</span><span class=o>.</span><span class=n>GetClippedOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetCellType</span><span class=p>(</span><span class=n>i</span><span class=p>),</span> <span class=mi>0</span><span class=p>)</span>
         <span class=n>outsideCellMap</span><span class=p>[</span><span class=n>clipper</span><span class=o>.</span><span class=n>GetClippedOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetCellType</span><span class=p>(</span><span class=n>i</span><span class=p>)]</span> <span class=o>+=</span> <span class=mi>1</span>
     <span class=k>for</span> <span class=n>k</span><span class=p>,</span> <span class=n>v</span> <span class=ow>in</span> <span class=n>collections</span><span class=o>.</span><span class=n>OrderedDict</span><span class=p>(</span><span class=nb>sorted</span><span class=p>(</span><span class=n>outsideCellMap</span><span class=o>.</span><span class=n>items</span><span class=p>()))</span><span class=o>.</span><span class=n>items</span><span class=p>():</span>
-<span class=hll>        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;</span><span class=se>\t</span><span class=s1>Cell type &#39;</span><span class=p>,</span> <span class=n>vtkCellTypes</span><span class=o>.</span><span class=n>GetClassNameFromTypeId</span><span class=p>(</span><span class=n>k</span><span class=p>),</span> <span class=s1>&#39; occurs &#39;</span><span class=p>,</span> <span class=n>v</span><span class=p>,</span> <span class=s1>&#39; times.&#39;</span><span class=p>)</span>
+<span class=hll>        <span class=nb>print</span><span class=p>(</span><span class=s1>'</span><span class=se>\t</span><span class=s1>Cell type '</span><span class=p>,</span> <span class=n>vtkCellTypes</span><span class=o>.</span><span class=n>GetClassNameFromTypeId</span><span class=p>(</span><span class=n>k</span><span class=p>),</span> <span class=s1>' occurs '</span><span class=p>,</span> <span class=n>v</span><span class=p>,</span> <span class=s1>' times.'</span><span class=p>)</span>
 </span>
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

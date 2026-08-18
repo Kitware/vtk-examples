@@ -60,8 +60,8 @@ function registerListener(event, func) {
 <span class=k>using</span><span class=w> </span><span class=nn>Kitware.VTK</span><span class=p>;</span>
 
 <span class=k>void</span><span class=w> </span><span class=nf>ConvertFile</span><span class=p>()</span><span class=w> </span><span class=p>{</span>
-<span class=w>   </span><span class=kt>string</span><span class=w> </span><span class=n>inputFileName</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&quot;test.vtu&quot;</span><span class=p>;</span>
-<span class=w>   </span><span class=kt>string</span><span class=w> </span><span class=n>outputFileName</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&quot;test.ply&quot;</span><span class=p>;</span>
+<span class=w>   </span><span class=kt>string</span><span class=w> </span><span class=n>inputFileName</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>"test.vtu"</span><span class=p>;</span>
+<span class=w>   </span><span class=kt>string</span><span class=w> </span><span class=n>outputFileName</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>"test.ply"</span><span class=p>;</span>
 
 <span class=hll><span class=w>   </span><span class=n>vtkXMLPolyDataReader</span><span class=w> </span><span class=n>reader</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>vtkXMLPolyDataReader</span><span class=p>.</span><span class=n>New</span><span class=p>();</span>
 </span><span class=w>   </span><span class=n>reader</span><span class=p>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>inputFileName</span><span class=p>);</span>

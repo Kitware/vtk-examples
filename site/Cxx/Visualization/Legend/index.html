@@ -126,13 +126,13 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=c1>// Create an actor</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>actor</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>actor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>);</span>
-<span class=w>  </span><span class=n>actor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;MistyRose&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>actor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"MistyRose"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=w>  </span><span class=c1>// A renderer and render window</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderer</span><span class=p>;</span>
 </span><span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderWindow</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;Legend&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"Legend"</span><span class=p>);</span>
 
 <span class=w>  </span><span class=c1>// An interactor</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderWindowInteractor</span><span class=p>;</span>
@@ -145,11 +145,11 @@ function registerListener(event, func) {
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkCubeSource</span><span class=o>&gt;</span><span class=w> </span><span class=n>legendBox</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>legendBox</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
-<span class=w>  </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor</span><span class=p>(</span><span class=s>&quot;Tomato&quot;</span><span class=p>,</span><span class=w> </span><span class=n>color</span><span class=p>);</span>
-<span class=w>  </span><span class=n>legend</span><span class=o>-&gt;</span><span class=n>SetEntry</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=n>legendBox</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>(),</span><span class=w> </span><span class=s>&quot;Box&quot;</span><span class=p>,</span><span class=w> </span><span class=n>color</span><span class=p>);</span>
+<span class=w>  </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor</span><span class=p>(</span><span class=s>"Tomato"</span><span class=p>,</span><span class=w> </span><span class=n>color</span><span class=p>);</span>
+<span class=w>  </span><span class=n>legend</span><span class=o>-&gt;</span><span class=n>SetEntry</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=n>legendBox</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>(),</span><span class=w> </span><span class=s>"Box"</span><span class=p>,</span><span class=w> </span><span class=n>color</span><span class=p>);</span>
 
-<span class=w>  </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor</span><span class=p>(</span><span class=s>&quot;Banana&quot;</span><span class=p>,</span><span class=w> </span><span class=n>color</span><span class=p>);</span>
-<span class=w>  </span><span class=n>legend</span><span class=o>-&gt;</span><span class=n>SetEntry</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=n>sphereSource</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>(),</span><span class=w> </span><span class=s>&quot;Ball&quot;</span><span class=p>,</span><span class=w> </span><span class=n>color</span><span class=p>);</span>
+<span class=w>  </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor</span><span class=p>(</span><span class=s>"Banana"</span><span class=p>,</span><span class=w> </span><span class=n>color</span><span class=p>);</span>
+<span class=w>  </span><span class=n>legend</span><span class=o>-&gt;</span><span class=n>SetEntry</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=n>sphereSource</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>(),</span><span class=w> </span><span class=s>"Ball"</span><span class=p>,</span><span class=w> </span><span class=n>color</span><span class=p>);</span>
 
 <span class=w>  </span><span class=c1>// place legend in lower right</span>
 <span class=w>  </span><span class=n>legend</span><span class=o>-&gt;</span><span class=n>GetPositionCoordinate</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetCoordinateSystemToView</span><span class=p>();</span>
@@ -160,13 +160,13 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=n>legend</span><span class=o>-&gt;</span><span class=n>UseBackgroundOn</span><span class=p>();</span>
 <span class=w>  </span><span class=kt>double</span><span class=w> </span><span class=n>background</span><span class=p>[</span><span class=mi>4</span><span class=p>];</span>
-<span class=w>  </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor</span><span class=p>(</span><span class=s>&quot;SlateGray&quot;</span><span class=p>,</span><span class=w> </span><span class=n>background</span><span class=p>);</span>
+<span class=w>  </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor</span><span class=p>(</span><span class=s>"SlateGray"</span><span class=p>,</span><span class=w> </span><span class=n>background</span><span class=p>);</span>
 <span class=w>  </span><span class=n>legend</span><span class=o>-&gt;</span><span class=n>SetBackgroundColor</span><span class=p>(</span><span class=n>background</span><span class=p>);</span>
 
 <span class=w>  </span><span class=c1>// Add the actors to the scene</span>
 <span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>legend</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;DarkGreen&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"DarkGreen"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=w>  </span><span class=c1>// Render an image (lights and cameras are created automatically)</span>
 <span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
@@ -195,11 +195,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;Legend: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"Legend: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>Legend</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>Legend.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>Legend</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

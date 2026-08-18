@@ -81,7 +81,7 @@ function registerListener(event, func) {
 <span class=w>      </span><span class=p>{</span>
 <span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>lib</span><span class=p>.</span><span class=na>IsLoaded</span><span class=p>())</span><span class=w> </span>
 <span class=w>        </span><span class=p>{</span>
-<span class=w>          </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&quot; not loaded&quot;</span><span class=p>);</span>
+<span class=w>          </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>" not loaded"</span><span class=p>);</span>
 <span class=w>        </span><span class=p>}</span>
 <span class=w>      </span><span class=p>}</span>
 <span class=w>    </span><span class=p>}</span>
@@ -98,8 +98,8 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=c1>//Renderer Background2 Color</span>
 <span class=w>    </span><span class=kt>double</span><span class=w> </span><span class=n>Bgcolor2</span><span class=o>[]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=kt>double</span><span class=o>[</span><span class=mi>4</span><span class=o>]</span><span class=p>;</span>
 
-<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>&quot;White&quot;</span><span class=p>,</span><span class=w> </span><span class=n>Bgcolor</span><span class=p>);</span>
-<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>&quot;Black&quot;</span><span class=p>,</span><span class=w> </span><span class=n>Bgcolor2</span><span class=p>);</span>
+<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>"White"</span><span class=p>,</span><span class=w> </span><span class=n>Bgcolor</span><span class=p>);</span>
+<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>"Black"</span><span class=p>,</span><span class=w> </span><span class=n>Bgcolor2</span><span class=p>);</span>
 
 <span class=w>    </span><span class=c1>// Create a sphere for some geometry</span>
 <span class=hll><span class=w>    </span><span class=n>vtkSphereSource</span><span class=w> </span><span class=n>sphere</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkSphereSource</span><span class=p>();</span>
@@ -131,7 +131,7 @@ function registerListener(event, func) {
 
 <span class=hll><span class=w>    </span><span class=n>vtkScalarBarActor</span><span class=w> </span><span class=n>scalarBar</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkScalarBarActor</span><span class=p>();</span>
 </span><span class=w>    </span><span class=n>scalarBar</span><span class=p>.</span><span class=na>SetLookupTable</span><span class=p>(</span><span class=n>mapper</span><span class=p>.</span><span class=na>GetLookupTable</span><span class=p>());</span>
-<span class=w>    </span><span class=n>scalarBar</span><span class=p>.</span><span class=na>SetTitle</span><span class=p>(</span><span class=s>&quot;Title&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>scalarBar</span><span class=p>.</span><span class=na>SetTitle</span><span class=p>(</span><span class=s>"Title"</span><span class=p>);</span>
 <span class=w>    </span><span class=n>scalarBar</span><span class=p>.</span><span class=na>SetNumberOfLabels</span><span class=p>(</span><span class=mi>4</span><span class=p>);</span>
 
 <span class=w>    </span><span class=c1>// Create a lookup table to share between the mapper and the scalarbar</span>

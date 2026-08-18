@@ -110,7 +110,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=c1>// Create a rendering window and renderer.</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span><span class=w> </span><span class=n>ren</span><span class=p>;</span>
 </span><span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span><span class=w> </span><span class=n>renWin</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;TextActor&quot;</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"TextActor"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>ren</span><span class=p>);</span>
 
 <span class=w>  </span><span class=c1>// Create a render window interactor.</span>
@@ -119,19 +119,19 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=c1>// Create a text actor.</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTextActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>txt</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>txt</span><span class=o>-&gt;</span><span class=n>SetInput</span><span class=p>(</span><span class=s>&quot;Hello World!&quot;</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>txt</span><span class=o>-&gt;</span><span class=n>SetInput</span><span class=p>(</span><span class=s>"Hello World!"</span><span class=p>);</span>
 <span class=hll><span class=w>  </span><span class=n>vtkTextProperty</span><span class=o>*</span><span class=w> </span><span class=n>txtprop</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>txt</span><span class=o>-&gt;</span><span class=n>GetTextProperty</span><span class=p>();</span>
 </span><span class=w>  </span><span class=n>txtprop</span><span class=o>-&gt;</span><span class=n>SetFontFamilyToArial</span><span class=p>();</span>
 <span class=w>  </span><span class=n>txtprop</span><span class=o>-&gt;</span><span class=n>BoldOn</span><span class=p>();</span>
 <span class=w>  </span><span class=n>txtprop</span><span class=o>-&gt;</span><span class=n>SetFontSize</span><span class=p>(</span><span class=mi>36</span><span class=p>);</span>
 <span class=w>  </span><span class=n>txtprop</span><span class=o>-&gt;</span><span class=n>ShadowOn</span><span class=p>();</span>
 <span class=w>  </span><span class=n>txtprop</span><span class=o>-&gt;</span><span class=n>SetShadowOffset</span><span class=p>(</span><span class=mi>4</span><span class=p>,</span><span class=w> </span><span class=mi>4</span><span class=p>);</span>
-<span class=w>  </span><span class=n>txtprop</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Cornsilk&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>txtprop</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Cornsilk"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=n>txt</span><span class=o>-&gt;</span><span class=n>SetDisplayPosition</span><span class=p>(</span><span class=mi>20</span><span class=p>,</span><span class=w> </span><span class=mi>30</span><span class=p>);</span>
 
 <span class=w>  </span><span class=c1>// Assign actor to the renderer.</span>
 <span class=w>  </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>txt</span><span class=p>);</span>
-<span class=w>  </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;DarkGreen&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"DarkGreen"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=w>  </span><span class=c1>// Enable user interface interactor.</span>
 <span class=w>  </span><span class=n>iren</span><span class=o>-&gt;</span><span class=n>Initialize</span><span class=p>();</span>
@@ -156,11 +156,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;TextActor: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"TextActor: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>TextActor</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>TextActor.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>TextActor</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

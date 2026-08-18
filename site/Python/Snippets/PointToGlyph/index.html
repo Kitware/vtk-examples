@@ -64,7 +64,7 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>point_to_glyph</span><span class=p>(</span><span class=n>points</span><span class=p>,</span> <span class=n>scale</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Convert points to glyphs.</span>
 <span class=sd>    :param points: The points to glyph.</span>
 <span class=sd>    :param scale: The scale, used to determine the size of the</span>
@@ -72,7 +72,7 @@ function registerListener(event, func) {
 <span class=sd>                  fraction of the largest side of the bounding</span>
 <span class=sd>                  box surrounding the points. e.g. 0.05</span>
 <span class=sd>    :return: The actor.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 
     <span class=n>bounds</span> <span class=o>=</span> <span class=n>points</span><span class=o>.</span><span class=n>GetBounds</span><span class=p>()</span>
     <span class=n>max_len</span> <span class=o>=</span> <span class=mf>0.0</span>

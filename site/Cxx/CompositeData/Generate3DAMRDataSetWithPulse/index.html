@@ -131,7 +131,7 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=c1>// STEP 1: Get the AMR dataset</span>
 <span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>amrDataSet</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>GetAMRDataSet</span><span class=p>();</span>
-<span class=w>  </span><span class=n>AMRCommon</span><span class=o>::</span><span class=n>WriteAMRData</span><span class=p>(</span><span class=n>amrDataSet</span><span class=p>,</span><span class=w> </span><span class=s>&quot;Gaussian3D&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>AMRCommon</span><span class=o>::</span><span class=n>WriteAMRData</span><span class=p>(</span><span class=n>amrDataSet</span><span class=p>,</span><span class=w> </span><span class=s>"Gaussian3D"</span><span class=p>);</span>
 <span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>EXIT_SUCCESS</span><span class=p>;</span>
 <span class=p>}</span>
 <span class=k>namespace</span><span class=w> </span><span class=p>{</span>
@@ -150,7 +150,7 @@ function registerListener(event, func) {
 <span class=hll><span class=kt>void</span><span class=w> </span><span class=nf>AttachPulseToGrid</span><span class=p>(</span><span class=n>vtkUniformGrid</span><span class=o>*</span><span class=w> </span><span class=n>grid</span><span class=p>)</span>
 </span><span class=p>{</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkDoubleArray</span><span class=o>&gt;</span><span class=w> </span><span class=n>xyz</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>xyz</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>&quot;GaussianPulse&quot;</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>xyz</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>"GaussianPulse"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>xyz</span><span class=o>-&gt;</span><span class=n>SetNumberOfComponents</span><span class=p>(</span><span class=mi>1</span><span class=p>);</span>
 <span class=w>  </span><span class=n>xyz</span><span class=o>-&gt;</span><span class=n>SetNumberOfTuples</span><span class=p>(</span><span class=n>grid</span><span class=o>-&gt;</span><span class=n>GetNumberOfCells</span><span class=p>());</span>
 
@@ -265,7 +265,7 @@ function registerListener(event, func) {
 </span><span class=p>{</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkXMLImageDataWriter</span><span class=o>&gt;</span><span class=w> </span><span class=n>imgWriter</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>ostringstream</span><span class=w> </span><span class=n>oss</span><span class=p>;</span>
-<span class=w>  </span><span class=n>oss</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>prefix</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;.&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>imgWriter</span><span class=o>-&gt;</span><span class=n>GetDefaultFileExtension</span><span class=p>();</span>
+<span class=w>  </span><span class=n>oss</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>prefix</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"."</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>imgWriter</span><span class=o>-&gt;</span><span class=n>GetDefaultFileExtension</span><span class=p>();</span>
 <span class=w>  </span><span class=n>imgWriter</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>oss</span><span class=p>.</span><span class=n>str</span><span class=p>().</span><span class=n>c_str</span><span class=p>());</span>
 <span class=w>  </span><span class=n>imgWriter</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>g</span><span class=p>);</span>
 <span class=w>  </span><span class=n>imgWriter</span><span class=o>-&gt;</span><span class=n>Write</span><span class=p>();</span>
@@ -278,7 +278,7 @@ function registerListener(event, func) {
 </span><span class=p>{</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkCompositeDataWriter</span><span class=o>&gt;</span><span class=w> </span><span class=n>writer</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>ostringstream</span><span class=w> </span><span class=n>oss</span><span class=p>;</span>
-<span class=w>  </span><span class=n>oss</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>prefix</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;.vthb&quot;</span><span class=p>;</span>
+<span class=w>  </span><span class=n>oss</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>prefix</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>".vthb"</span><span class=p>;</span>
 <span class=w>  </span><span class=n>writer</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>oss</span><span class=p>.</span><span class=n>str</span><span class=p>().</span><span class=n>c_str</span><span class=p>());</span>
 <span class=w>  </span><span class=n>writer</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>amrData</span><span class=p>);</span>
 <span class=w>  </span><span class=n>writer</span><span class=o>-&gt;</span><span class=n>Write</span><span class=p>();</span>
@@ -292,9 +292,9 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkXMLUniformGridAMRReader</span><span class=o>&gt;</span><span class=w> </span><span class=n>myAMRReader</span><span class=p>;</span>
 </span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>ostringstream</span><span class=w> </span><span class=n>oss</span><span class=p>;</span>
-<span class=w>  </span><span class=n>oss</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>file</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;.vthb&quot;</span><span class=p>;</span>
+<span class=w>  </span><span class=n>oss</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>file</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>".vthb"</span><span class=p>;</span>
 
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Reading AMR Data from: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>oss</span><span class=p>.</span><span class=n>str</span><span class=p>()</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Reading AMR Data from: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>oss</span><span class=p>.</span><span class=n>str</span><span class=p>()</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 
 <span class=w>  </span><span class=n>myAMRReader</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>oss</span><span class=p>.</span><span class=n>str</span><span class=p>().</span><span class=n>c_str</span><span class=p>());</span>
 <span class=w>  </span><span class=n>myAMRReader</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
@@ -304,12 +304,12 @@ function registerListener(event, func) {
 <span class=c1>//------------------------------------------------------------------------------</span>
 <span class=c1>// Description:</span>
 <span class=c1>// Writes the given multi-block data to an XML file with the prescribed prefix</span>
-<span class=hll><span class=kt>void</span><span class=w> </span><span class=n>WriteMultiBlockData</span><span class=p>(</span><span class=n>vtkMultiBlockDataSet</span><span class=o>*</span><span class=w> </span><span class=n>mbds</span><span class=p>,</span><span class=w> </span><span class=k>const</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>&amp;</span><span class=w> </span><span class=n>prefix</span><span class=p>)</span>
+<span class=hll><span class=kt>void</span><span class=w> </span><span class=nf>WriteMultiBlockData</span><span class=p>(</span><span class=n>vtkMultiBlockDataSet</span><span class=o>*</span><span class=w> </span><span class=n>mbds</span><span class=p>,</span><span class=w> </span><span class=k>const</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>&amp;</span><span class=w> </span><span class=n>prefix</span><span class=p>)</span>
 </span><span class=p>{</span>
 <span class=w>  </span><span class=c1>// Sanity check</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkXMLMultiBlockDataWriter</span><span class=o>&gt;</span><span class=w> </span><span class=n>writer</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>ostringstream</span><span class=w> </span><span class=n>oss</span><span class=p>;</span>
-<span class=w>  </span><span class=n>oss</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>prefix</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;.&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>writer</span><span class=o>-&gt;</span><span class=n>GetDefaultFileExtension</span><span class=p>();</span>
+<span class=w>  </span><span class=n>oss</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>prefix</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"."</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>writer</span><span class=o>-&gt;</span><span class=n>GetDefaultFileExtension</span><span class=p>();</span>
 <span class=w>  </span><span class=n>writer</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>oss</span><span class=p>.</span><span class=n>str</span><span class=p>().</span><span class=n>c_str</span><span class=p>());</span>
 <span class=w>  </span><span class=n>writer</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>mbds</span><span class=p>);</span>
 <span class=w>  </span><span class=n>writer</span><span class=o>-&gt;</span><span class=n>Write</span><span class=p>();</span>
@@ -355,11 +355,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;Generate3DAMRDataSetWithPulse: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"Generate3DAMRDataSetWithPulse: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>Generate3DAMRDataSetWithPulse</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>Generate3DAMRDataSetWithPulse.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>Generate3DAMRDataSetWithPulse</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

@@ -95,7 +95,7 @@ function registerListener(event, func) {
                                       checkbox.addEventListener('change', (event) => {
                                         frame.contentWindow.postMessage("ToggleOutput", "https://vtk.org")
                                       })
-                        </script> <hr> <h3 id=description>Description<a class=headerlink href=#description title="Permanent link">&para;</a></h3> <p>This example demonstrates the usage and versatility of the <a href=https://www.vtk.org/doc/nightly/html/classvtkCameraOrientationWidget.html>vtkCameraOrientationWidget</a>, also, for comparison, a <a href=https://www.vtk.org/doc/nightly/html/classvtkOrientationMarkerWidget.html>vtkOrientationMarkerWidget</a> is provided.</p> <p>The ability to automatically change axes labels and colors depending upon the object being viewed is demonstrated. To do this, just load any one of the following files from the vtk-examples testing data.</p> <div class=codehilite><pre><span></span><code>&quot;Human.vtp&quot;, &quot;Torso.vtp&quot;, &quot;cow.vtp&quot;, &quot;cowHead.vtp&quot;, &quot;horse.vtp&quot;, &quot;Bunny.vtp&quot;
+                        </script> <hr> <h3 id=description>Description<a class=headerlink href=#description title="Permanent link">&para;</a></h3> <p>This example demonstrates the usage and versatility of the <a href=https://www.vtk.org/doc/nightly/html/classvtkCameraOrientationWidget.html>vtkCameraOrientationWidget</a>, also, for comparison, a <a href=https://www.vtk.org/doc/nightly/html/classvtkOrientationMarkerWidget.html>vtkOrientationMarkerWidget</a> is provided.</p> <p>The ability to automatically change axes labels and colors depending upon the object being viewed is demonstrated. To do this, just load any one of the following files from the vtk-examples testing data.</p> <div class=codehilite><pre><span></span><code>"Human.vtp", "Torso.vtp", "cow.vtp", "cowHead.vtp", "horse.vtp", "Bunny.vtp"
 </code></pre></div> <p>These files are found in <code>vtk-examples/src/Testing/Data</code>.</p> <p>If no file name is entered, a cone is rendered.</p> <p>The option <strong>-r</strong> will move the camera orientation marker to upper left and the orientation marker widget to upper right.</p> <p>The vtkCameraOrientationWidget has shafts and little spheres with text on them. The spheres always follow the camera.</p> <p>The widget representation's orientation is synchronized with the camera of the parent renderer.</p> <p>To look down on any particular axis, simply click on a handle.</p> <p>To rotate the camera and get a feel of the camera orientation, either move the mouse in the render window or click on a handle and move it around.</p> <p>Some history:</p> <ul> <li>The <a href=https://www.vtk.org/doc/nightly/html/classvtkCameraOrientationWidget.html>vtkCameraOrientationWidget</a> was introduced in the MR: <a href=https://gitlab.kitware.com/vtk/vtk/-/merge_requests/8156>!8156</a>, 18 July, 2021.</li> <li>Labelling of the vertices was introduced in the MR: <a href=https://gitlab.kitware.com/vtk/vtk/-/merge_requests/11665>!11665</a>, 16 November, 2024.</li> <li>Coloring of the vertices was introduced in the MR: <a href=https://gitlab.kitware.com/vtk/vtk/-/merge_requests/12489>!12489</a>, 01 October, 2025</li> </ul> <div class="admonition tip"> <p class=admonition-title>Other languages</p> <p>See (<a href=../../../Python/Widgets/CameraOrientationWidget>Python</a>), (<a href=../../../PythonicAPI/Widgets/CameraOrientationWidget>PythonicAPI</a>)</p> </div> <div class="admonition question"> <p class=admonition-title>Question</p> <p>If you have a question about this example, please use the <a href=https://discourse.vtk.org/ >VTK Discourse Forum</a></p> </div> <h3 id=code>Code<a class=headerlink href=#code title="Permanent link">&para;</a></h3> <p><strong>CameraOrientationWidget.cxx</strong></p> <div class=codehilite><pre><span></span><code><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkActor.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkAxesActor.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkBYUReader.h&gt;</span>
@@ -211,26 +211,26 @@ function registerListener(event, func) {
 
 <span class=p>}</span><span class=w> </span><span class=c1>// namespace</span>
 
-<span class=kt>int</span><span class=w> </span><span class=n>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>argv</span><span class=p>[])</span>
+<span class=kt>int</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>argv</span><span class=p>[])</span>
 <span class=p>{</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span><span class=w> </span><span class=n>colors</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=s>&quot;ParaViewBlueGrayBkg&quot;</span><span class=p>,</span>
+</span><span class=w>  </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=s>"ParaViewBlueGrayBkg"</span><span class=p>,</span>
 <span class=w>                   </span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>unsigned</span><span class=w> </span><span class=kt>char</span><span class=p>,</span><span class=w> </span><span class=mi>4</span><span class=o>&gt;</span><span class=p>{</span><span class=mi>84</span><span class=p>,</span><span class=w> </span><span class=mi>89</span><span class=p>,</span><span class=w> </span><span class=mi>109</span><span class=p>,</span><span class=w> </span><span class=mi>255</span><span class=p>}.</span><span class=n>data</span><span class=p>());</span>
-<span class=w>  </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=s>&quot;ParaViewWarmGrayBkg&quot;</span><span class=p>,</span>
+<span class=w>  </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=s>"ParaViewWarmGrayBkg"</span><span class=p>,</span>
 <span class=w>                   </span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>unsigned</span><span class=w> </span><span class=kt>char</span><span class=p>,</span><span class=w> </span><span class=mi>4</span><span class=o>&gt;</span><span class=p>{</span><span class=mi>98</span><span class=p>,</span><span class=w> </span><span class=mi>93</span><span class=p>,</span><span class=w> </span><span class=mi>90</span><span class=p>,</span><span class=w> </span><span class=mi>255</span><span class=p>}.</span><span class=n>data</span><span class=p>());</span>
 
-<span class=w>  </span><span class=n>CLI</span><span class=o>::</span><span class=n>App</span><span class=w> </span><span class=n>app</span><span class=p>{</span><span class=s>&quot;Demonstrates the use of the Camera Orientation Widget.&quot;</span><span class=p>};</span>
+<span class=w>  </span><span class=n>CLI</span><span class=o>::</span><span class=n>App</span><span class=w> </span><span class=n>app</span><span class=p>{</span><span class=s>"Demonstrates the use of the Camera Orientation Widget."</span><span class=p>};</span>
 
 <span class=w>  </span><span class=c1>// Define options.</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>fileName</span><span class=p>{</span><span class=s>&quot;&quot;</span><span class=p>};</span>
-<span class=w>  </span><span class=n>app</span><span class=p>.</span><span class=n>add_option</span><span class=p>(</span><span class=s>&quot;fileName&quot;</span><span class=p>,</span><span class=w> </span><span class=n>fileName</span><span class=p>,</span>
-<span class=hll><span class=w>                 </span><span class=s>&quot;A optional path to a file that contains vtkPolyData e.g. &quot;</span>
-</span><span class=w>                 </span><span class=s>&quot;Human.vtp&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>fileName</span><span class=p>{</span><span class=s>""</span><span class=p>};</span>
+<span class=w>  </span><span class=n>app</span><span class=p>.</span><span class=n>add_option</span><span class=p>(</span><span class=s>"fileName"</span><span class=p>,</span><span class=w> </span><span class=n>fileName</span><span class=p>,</span>
+<span class=hll><span class=w>                 </span><span class=s>"A optional path to a file that contains vtkPolyData e.g. "</span>
+</span><span class=w>                 </span><span class=s>"Human.vtp"</span><span class=p>);</span>
 <span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>reposition</span><span class=p>{</span><span class=nb>false</span><span class=p>};</span>
-<span class=w>  </span><span class=n>app</span><span class=p>.</span><span class=n>add_flag</span><span class=p>(</span><span class=s>&quot;-r, --reposition&quot;</span><span class=p>,</span><span class=w> </span><span class=n>reposition</span><span class=p>,</span>
-<span class=w>               </span><span class=s>&quot;Move the camera orientation widget to upper left&quot;</span>
-<span class=w>               </span><span class=s>&quot; and the orientation marker widget to upper right.&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>app</span><span class=p>.</span><span class=n>add_flag</span><span class=p>(</span><span class=s>"-r, --reposition"</span><span class=p>,</span><span class=w> </span><span class=n>reposition</span><span class=p>,</span>
+<span class=w>               </span><span class=s>"Move the camera orientation widget to upper left"</span>
+<span class=w>               </span><span class=s>" and the orientation marker widget to upper right."</span><span class=p>);</span>
 
 <span class=w>  </span><span class=n>CLI11_PARSE</span><span class=p>(</span><span class=n>app</span><span class=p>,</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=n>argv</span><span class=p>);</span>
 
@@ -239,7 +239,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>fs</span><span class=o>::</span><span class=n>is_regular_file</span><span class=p>(</span><span class=n>path</span><span class=p>))</span>
 <span class=w>    </span><span class=p>{</span>
-<span class=w>      </span><span class=n>std</span><span class=o>::</span><span class=n>cerr</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>fmt</span><span class=o>::</span><span class=n>format</span><span class=p>(</span><span class=s>&quot;Unable to find: {:s}&quot;</span><span class=p>,</span><span class=w> </span><span class=n>path</span><span class=p>.</span><span class=n>string</span><span class=p>())</span>
+<span class=w>      </span><span class=n>std</span><span class=o>::</span><span class=n>cerr</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>fmt</span><span class=o>::</span><span class=n>format</span><span class=p>(</span><span class=s>"Unable to find: {:s}"</span><span class=p>,</span><span class=w> </span><span class=n>path</span><span class=p>.</span><span class=n>string</span><span class=p>())</span>
 <span class=w>                </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>      </span><span class=k>return</span><span class=w> </span><span class=n>EXIT_FAILURE</span><span class=p>;</span>
 <span class=w>    </span><span class=p>}</span>
@@ -247,7 +247,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>polyData</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>ReadPolyData</span><span class=p>(</span><span class=n>path</span><span class=p>);</span>
 
 <span class=w>  </span><span class=c1>// Assign a category for the labels and colors.</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>category</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&quot;xyz&quot;</span><span class=p>;</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>category</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>"xyz"</span><span class=p>;</span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>fs</span><span class=o>::</span><span class=n>is_regular_file</span><span class=p>(</span><span class=n>path</span><span class=p>))</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=n>isIn</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>[](</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>a</span><span class=p>,</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>&gt;</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>v</span><span class=p>)</span><span class=w> </span><span class=p>{</span>
@@ -256,17 +256,17 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=p>};</span>
 <span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=n>pth</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>path</span><span class=p>.</span><span class=n>filename</span><span class=p>().</span><span class=n>string</span><span class=p>();</span>
 <span class=w>    </span><span class=k>typedef</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>&gt;</span><span class=w> </span><span class=n>Tvs</span><span class=p>;</span>
-<span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>isIn</span><span class=p>(</span><span class=n>pth</span><span class=p>,</span><span class=w> </span><span class=n>Tvs</span><span class=p>{</span><span class=s>&quot;Human.vtp&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;Torso.vtp&quot;</span><span class=p>}))</span>
+<span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>isIn</span><span class=p>(</span><span class=n>pth</span><span class=p>,</span><span class=w> </span><span class=n>Tvs</span><span class=p>{</span><span class=s>"Human.vtp"</span><span class=p>,</span><span class=w> </span><span class=s>"Torso.vtp"</span><span class=p>}))</span>
 <span class=w>    </span><span class=p>{</span>
-<span class=w>      </span><span class=n>category</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&quot;lrsiap&quot;</span><span class=p>;</span>
+<span class=w>      </span><span class=n>category</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>"lrsiap"</span><span class=p>;</span>
 <span class=w>    </span><span class=p>}</span>
-<span class=w>    </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>isIn</span><span class=p>(</span><span class=n>pth</span><span class=p>,</span><span class=w> </span><span class=n>Tvs</span><span class=p>{</span><span class=s>&quot;horse.vtp&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;Bunny.vtp&quot;</span><span class=p>}))</span>
+<span class=w>    </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>isIn</span><span class=p>(</span><span class=n>pth</span><span class=p>,</span><span class=w> </span><span class=n>Tvs</span><span class=p>{</span><span class=s>"horse.vtp"</span><span class=p>,</span><span class=w> </span><span class=s>"Bunny.vtp"</span><span class=p>}))</span>
 <span class=w>    </span><span class=p>{</span>
-<span class=w>      </span><span class=n>category</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&quot;padvlr&quot;</span><span class=p>;</span>
+<span class=w>      </span><span class=n>category</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>"padvlr"</span><span class=p>;</span>
 <span class=w>    </span><span class=p>}</span>
-<span class=w>    </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>isIn</span><span class=p>(</span><span class=n>pth</span><span class=p>,</span><span class=w> </span><span class=n>Tvs</span><span class=p>{</span><span class=s>&quot;cow.vtp&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;cowHead.vtp&quot;</span><span class=p>}))</span>
+<span class=w>    </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>isIn</span><span class=p>(</span><span class=n>pth</span><span class=p>,</span><span class=w> </span><span class=n>Tvs</span><span class=p>{</span><span class=s>"cow.vtp"</span><span class=p>,</span><span class=w> </span><span class=s>"cowHead.vtp"</span><span class=p>}))</span>
 <span class=w>    </span><span class=p>{</span>
-<span class=w>      </span><span class=n>category</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&quot;apdvrl&quot;</span><span class=p>;</span>
+<span class=w>      </span><span class=n>category</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>"apdvrl"</span><span class=p>;</span>
 <span class=w>    </span><span class=p>}</span>
 <span class=w>  </span><span class=p>}</span>
 
@@ -279,16 +279,16 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>path</span><span class=p>.</span><span class=n>empty</span><span class=p>())</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=n>pth</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>path</span><span class=p>.</span><span class=n>filename</span><span class=p>().</span><span class=n>string</span><span class=p>();</span>
-<span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>pth</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;Human.vtp&quot;</span><span class=p>)</span>
+<span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>pth</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>"Human.vtp"</span><span class=p>)</span>
 <span class=w>    </span><span class=p>{</span>
 <span class=w>      </span><span class=n>tran</span><span class=o>-&gt;</span><span class=n>RotateY</span><span class=p>(</span><span class=mi>180</span><span class=p>);</span>
 <span class=w>      </span><span class=n>tran</span><span class=o>-&gt;</span><span class=n>RotateX</span><span class=p>(</span><span class=mi>-90</span><span class=p>);</span>
 <span class=w>    </span><span class=p>}</span>
-<span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>pth</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;Torso.vtp&quot;</span><span class=p>)</span>
+<span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>pth</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>"Torso.vtp"</span><span class=p>)</span>
 <span class=w>    </span><span class=p>{</span>
 <span class=w>      </span><span class=n>tran</span><span class=o>-&gt;</span><span class=n>RotateX</span><span class=p>(</span><span class=mi>-90</span><span class=p>);</span>
 <span class=w>    </span><span class=p>}</span>
-<span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>pth</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;horse.vtp&quot;</span><span class=p>)</span>
+<span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>pth</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>"horse.vtp"</span><span class=p>)</span>
 <span class=w>    </span><span class=p>{</span>
 <span class=w>      </span><span class=n>tran</span><span class=o>-&gt;</span><span class=n>RotateX</span><span class=p>(</span><span class=mi>-90</span><span class=p>);</span>
 <span class=w>      </span><span class=n>tran</span><span class=o>-&gt;</span><span class=n>RotateZ</span><span class=p>(</span><span class=mi>90</span><span class=p>);</span>
@@ -302,7 +302,7 @@ function registerListener(event, func) {
 </span><span class=w>  </span><span class=n>mapper</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>tf</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>actor</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>actor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Tan&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+</span><span class=w>  </span><span class=n>actor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Tan"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=n>actor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span><span class=w> </span><span class=n>ren</span><span class=p>;</span>
@@ -317,7 +317,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=p>}</span>
 <span class=w>  </span><span class=k>else</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=n>winName</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>fmt</span><span class=o>::</span><span class=n>format</span><span class=p>(</span><span class=s>&quot;{:s} {:s}&quot;</span><span class=p>,</span><span class=w> </span><span class=n>appFn</span><span class=p>,</span><span class=w> </span><span class=n>path</span><span class=p>.</span><span class=n>filename</span><span class=p>().</span><span class=n>string</span><span class=p>());</span>
+<span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=n>winName</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>fmt</span><span class=o>::</span><span class=n>format</span><span class=p>(</span><span class=s>"{:s} {:s}"</span><span class=p>,</span><span class=w> </span><span class=n>appFn</span><span class=p>,</span><span class=w> </span><span class=n>path</span><span class=p>.</span><span class=n>filename</span><span class=p>().</span><span class=n>string</span><span class=p>());</span>
 <span class=w>    </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=n>winName</span><span class=p>.</span><span class=n>c_str</span><span class=p>());</span>
 <span class=w>  </span><span class=p>}</span>
 
@@ -326,7 +326,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>iRen</span><span class=o>-&gt;</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renWin</span><span class=p>);</span>
 
 <span class=w>  </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor</span><span class=p>);</span>
-<span class=w>  </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;ParaViewBLueGrayBkg&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>ren</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"ParaViewBLueGrayBkg"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>cow</span><span class=w> </span><span class=o>=</span>
 <span class=w>      </span><span class=n>MakeCameraOrientationWidget</span><span class=p>(</span><span class=n>ren</span><span class=p>,</span><span class=w> </span><span class=n>alc</span><span class=p>[</span><span class=n>category</span><span class=p>],</span><span class=w> </span><span class=n>colors</span><span class=p>,</span><span class=w> </span><span class=n>reposition</span><span class=p>);</span>
@@ -347,42 +347,42 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>fp</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>pth</span><span class=p>.</span><span class=n>c_str</span><span class=p>();</span>
 <span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>extension</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>path</span><span class=p>.</span><span class=n>extension</span><span class=p>().</span><span class=n>string</span><span class=p>();</span>
 <span class=hll><span class=w>  </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span><span class=w> </span><span class=n>polyData</span><span class=p>;</span>
-</span><span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;.ply&quot;</span><span class=p>)</span>
+</span><span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>".ply"</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPLYReader</span><span class=o>&gt;</span><span class=w> </span><span class=n>reader</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>fp</span><span class=p>);</span>
 <span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 <span class=w>    </span><span class=n>polyData</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>();</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;.vtp&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>".vtp"</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkXMLPolyDataReader</span><span class=o>&gt;</span><span class=w> </span><span class=n>reader</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>fp</span><span class=p>);</span>
 <span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 <span class=w>    </span><span class=n>polyData</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>();</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;.obj&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>".obj"</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkOBJReader</span><span class=o>&gt;</span><span class=w> </span><span class=n>reader</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>fp</span><span class=p>);</span>
 <span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 <span class=w>    </span><span class=n>polyData</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>();</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;.stl&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>".stl"</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkSTLReader</span><span class=o>&gt;</span><span class=w> </span><span class=n>reader</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>fp</span><span class=p>);</span>
 <span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 <span class=w>    </span><span class=n>polyData</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>();</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;.vtk&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>".vtk"</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataReader</span><span class=o>&gt;</span><span class=w> </span><span class=n>reader</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>fp</span><span class=p>);</span>
 <span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>Update</span><span class=p>();</span>
 <span class=w>    </span><span class=n>polyData</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>();</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;.g&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>".g"</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkBYUReader</span><span class=o>&gt;</span><span class=w> </span><span class=n>reader</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>reader</span><span class=o>-&gt;</span><span class=n>SetGeometryFileName</span><span class=p>(</span><span class=n>fp</span><span class=p>);</span>
@@ -410,37 +410,37 @@ function registerListener(event, func) {
 <span class=p>{</span>
 <span class=w>  </span><span class=n>TAxesParams</span><span class=w> </span><span class=n>axesLabels</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>{</span>
 <span class=w>      </span><span class=c1>// Labels are: Anterior, Posterior, Dorsal, Ventral, Left, Right</span>
-<span class=w>      </span><span class=p>{</span><span class=s>&quot;apdvlr&quot;</span><span class=p>,</span>
-<span class=w>       </span><span class=p>{{</span><span class=s>&quot;+X&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;A&quot;</span><span class=p>},</span>
-<span class=w>        </span><span class=p>{</span><span class=s>&quot;-X&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;P&quot;</span><span class=p>},</span>
-<span class=w>        </span><span class=p>{</span><span class=s>&quot;+Y&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;D&quot;</span><span class=p>},</span>
-<span class=w>        </span><span class=p>{</span><span class=s>&quot;-Y&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;V&quot;</span><span class=p>},</span>
-<span class=w>        </span><span class=p>{</span><span class=s>&quot;+Z&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;L&quot;</span><span class=p>},</span>
-<span class=w>        </span><span class=p>{</span><span class=s>&quot;-Z&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;R&quot;</span><span class=p>}}},</span>
-<span class=w>      </span><span class=p>{</span><span class=s>&quot;apdvrl&quot;</span><span class=p>,</span>
-<span class=w>       </span><span class=p>{{</span><span class=s>&quot;+X&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;A&quot;</span><span class=p>},</span>
-<span class=w>        </span><span class=p>{</span><span class=s>&quot;-X&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;P&quot;</span><span class=p>},</span>
-<span class=w>        </span><span class=p>{</span><span class=s>&quot;+Y&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;D&quot;</span><span class=p>},</span>
-<span class=w>        </span><span class=p>{</span><span class=s>&quot;-Y&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;V&quot;</span><span class=p>},</span>
-<span class=w>        </span><span class=p>{</span><span class=s>&quot;+Z&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;R&quot;</span><span class=p>},</span>
-<span class=w>        </span><span class=p>{</span><span class=s>&quot;-Z&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;L&quot;</span><span class=p>}}},</span>
-<span class=w>      </span><span class=p>{</span><span class=s>&quot;padvlr&quot;</span><span class=p>,</span>
-<span class=w>       </span><span class=p>{{</span><span class=s>&quot;+X&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;P&quot;</span><span class=p>},</span>
-<span class=w>        </span><span class=p>{</span><span class=s>&quot;-X&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;A&quot;</span><span class=p>},</span>
-<span class=w>        </span><span class=p>{</span><span class=s>&quot;+Y&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;D&quot;</span><span class=p>},</span>
-<span class=w>        </span><span class=p>{</span><span class=s>&quot;-Y&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;V&quot;</span><span class=p>},</span>
-<span class=w>        </span><span class=p>{</span><span class=s>&quot;+Z&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;L&quot;</span><span class=p>},</span>
-<span class=w>        </span><span class=p>{</span><span class=s>&quot;-Z&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;R&quot;</span><span class=p>}}},</span>
+<span class=w>      </span><span class=p>{</span><span class=s>"apdvlr"</span><span class=p>,</span>
+<span class=w>       </span><span class=p>{{</span><span class=s>"+X"</span><span class=p>,</span><span class=w> </span><span class=s>"A"</span><span class=p>},</span>
+<span class=w>        </span><span class=p>{</span><span class=s>"-X"</span><span class=p>,</span><span class=w> </span><span class=s>"P"</span><span class=p>},</span>
+<span class=w>        </span><span class=p>{</span><span class=s>"+Y"</span><span class=p>,</span><span class=w> </span><span class=s>"D"</span><span class=p>},</span>
+<span class=w>        </span><span class=p>{</span><span class=s>"-Y"</span><span class=p>,</span><span class=w> </span><span class=s>"V"</span><span class=p>},</span>
+<span class=w>        </span><span class=p>{</span><span class=s>"+Z"</span><span class=p>,</span><span class=w> </span><span class=s>"L"</span><span class=p>},</span>
+<span class=w>        </span><span class=p>{</span><span class=s>"-Z"</span><span class=p>,</span><span class=w> </span><span class=s>"R"</span><span class=p>}}},</span>
+<span class=w>      </span><span class=p>{</span><span class=s>"apdvrl"</span><span class=p>,</span>
+<span class=w>       </span><span class=p>{{</span><span class=s>"+X"</span><span class=p>,</span><span class=w> </span><span class=s>"A"</span><span class=p>},</span>
+<span class=w>        </span><span class=p>{</span><span class=s>"-X"</span><span class=p>,</span><span class=w> </span><span class=s>"P"</span><span class=p>},</span>
+<span class=w>        </span><span class=p>{</span><span class=s>"+Y"</span><span class=p>,</span><span class=w> </span><span class=s>"D"</span><span class=p>},</span>
+<span class=w>        </span><span class=p>{</span><span class=s>"-Y"</span><span class=p>,</span><span class=w> </span><span class=s>"V"</span><span class=p>},</span>
+<span class=w>        </span><span class=p>{</span><span class=s>"+Z"</span><span class=p>,</span><span class=w> </span><span class=s>"R"</span><span class=p>},</span>
+<span class=w>        </span><span class=p>{</span><span class=s>"-Z"</span><span class=p>,</span><span class=w> </span><span class=s>"L"</span><span class=p>}}},</span>
+<span class=w>      </span><span class=p>{</span><span class=s>"padvlr"</span><span class=p>,</span>
+<span class=w>       </span><span class=p>{{</span><span class=s>"+X"</span><span class=p>,</span><span class=w> </span><span class=s>"P"</span><span class=p>},</span>
+<span class=w>        </span><span class=p>{</span><span class=s>"-X"</span><span class=p>,</span><span class=w> </span><span class=s>"A"</span><span class=p>},</span>
+<span class=w>        </span><span class=p>{</span><span class=s>"+Y"</span><span class=p>,</span><span class=w> </span><span class=s>"D"</span><span class=p>},</span>
+<span class=w>        </span><span class=p>{</span><span class=s>"-Y"</span><span class=p>,</span><span class=w> </span><span class=s>"V"</span><span class=p>},</span>
+<span class=w>        </span><span class=p>{</span><span class=s>"+Z"</span><span class=p>,</span><span class=w> </span><span class=s>"L"</span><span class=p>},</span>
+<span class=w>        </span><span class=p>{</span><span class=s>"-Z"</span><span class=p>,</span><span class=w> </span><span class=s>"R"</span><span class=p>}}},</span>
 <span class=w>      </span><span class=c1>// Labels are: Left, Right, Superior, Inferior, Anterior, Posterior</span>
-<span class=w>      </span><span class=p>{</span><span class=s>&quot;lrsiap&quot;</span><span class=p>,</span>
-<span class=w>       </span><span class=p>{{</span><span class=s>&quot;+X&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;L&quot;</span><span class=p>},</span>
-<span class=w>        </span><span class=p>{</span><span class=s>&quot;-X&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;R&quot;</span><span class=p>},</span>
-<span class=w>        </span><span class=p>{</span><span class=s>&quot;+Y&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;S&quot;</span><span class=p>},</span>
-<span class=w>        </span><span class=p>{</span><span class=s>&quot;-Y&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;I&quot;</span><span class=p>},</span>
-<span class=w>        </span><span class=p>{</span><span class=s>&quot;+Z&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;A&quot;</span><span class=p>},</span>
-<span class=w>        </span><span class=p>{</span><span class=s>&quot;-Z&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;P&quot;</span><span class=p>}}},</span>
+<span class=w>      </span><span class=p>{</span><span class=s>"lrsiap"</span><span class=p>,</span>
+<span class=w>       </span><span class=p>{{</span><span class=s>"+X"</span><span class=p>,</span><span class=w> </span><span class=s>"L"</span><span class=p>},</span>
+<span class=w>        </span><span class=p>{</span><span class=s>"-X"</span><span class=p>,</span><span class=w> </span><span class=s>"R"</span><span class=p>},</span>
+<span class=w>        </span><span class=p>{</span><span class=s>"+Y"</span><span class=p>,</span><span class=w> </span><span class=s>"S"</span><span class=p>},</span>
+<span class=w>        </span><span class=p>{</span><span class=s>"-Y"</span><span class=p>,</span><span class=w> </span><span class=s>"I"</span><span class=p>},</span>
+<span class=w>        </span><span class=p>{</span><span class=s>"+Z"</span><span class=p>,</span><span class=w> </span><span class=s>"A"</span><span class=p>},</span>
+<span class=w>        </span><span class=p>{</span><span class=s>"-Z"</span><span class=p>,</span><span class=w> </span><span class=s>"P"</span><span class=p>}}},</span>
 <span class=w>      </span><span class=c1>// Default labels.</span>
-<span class=w>      </span><span class=p>{</span><span class=s>&quot;xyz&quot;</span><span class=p>,</span><span class=w> </span><span class=p>{}},</span>
+<span class=w>      </span><span class=p>{</span><span class=s>"xyz"</span><span class=p>,</span><span class=w> </span><span class=p>{}},</span>
 <span class=w>  </span><span class=p>};</span>
 <span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>axesLabels</span><span class=p>;</span>
 <span class=p>}</span>
@@ -448,36 +448,36 @@ function registerListener(event, func) {
 <span class=hll><span class=n>TAxesParams</span><span class=w> </span><span class=n>SetAxesColors</span><span class=p>(</span><span class=n>vtkNamedColors</span><span class=o>*</span><span class=w> </span><span class=n>colors</span><span class=p>)</span>
 </span><span class=p>{</span>
 <span class=w>  </span><span class=n>TAxesParams</span><span class=w> </span><span class=n>axesColors</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>{</span>
-<span class=w>      </span><span class=p>{</span><span class=s>&quot;apdvlr&quot;</span><span class=p>,</span>
-<span class=w>       </span><span class=p>{{</span><span class=s>&quot;+X&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;IndianRed&quot;</span><span class=p>},</span>
-<span class=w>        </span><span class=p>{</span><span class=s>&quot;-X&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;FireBrick&quot;</span><span class=p>},</span>
-<span class=w>        </span><span class=p>{</span><span class=s>&quot;+Y&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;LimeGreen&quot;</span><span class=p>},</span>
-<span class=w>        </span><span class=p>{</span><span class=s>&quot;-Y&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;DarkGreen&quot;</span><span class=p>},</span>
-<span class=w>        </span><span class=p>{</span><span class=s>&quot;+Z&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;Blue&quot;</span><span class=p>},</span>
-<span class=w>        </span><span class=p>{</span><span class=s>&quot;-Z&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;SteelBlue&quot;</span><span class=p>}}},</span>
-<span class=w>      </span><span class=p>{</span><span class=s>&quot;apdvrl&quot;</span><span class=p>,</span>
-<span class=w>       </span><span class=p>{{</span><span class=s>&quot;+X&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;IndianRed&quot;</span><span class=p>},</span>
-<span class=w>        </span><span class=p>{</span><span class=s>&quot;-X&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;FireBrick&quot;</span><span class=p>},</span>
-<span class=w>        </span><span class=p>{</span><span class=s>&quot;+Y&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;LimeGreen&quot;</span><span class=p>},</span>
-<span class=w>        </span><span class=p>{</span><span class=s>&quot;-Y&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;DarkGreen&quot;</span><span class=p>},</span>
-<span class=w>        </span><span class=p>{</span><span class=s>&quot;+Z&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;Blue&quot;</span><span class=p>},</span>
-<span class=w>        </span><span class=p>{</span><span class=s>&quot;-Z&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;SteelBlue&quot;</span><span class=p>}}},</span>
-<span class=w>      </span><span class=p>{</span><span class=s>&quot;padvlr&quot;</span><span class=p>,</span>
-<span class=w>       </span><span class=p>{{</span><span class=s>&quot;+X&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;IndianRed&quot;</span><span class=p>},</span>
-<span class=w>        </span><span class=p>{</span><span class=s>&quot;-X&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;FireBrick&quot;</span><span class=p>},</span>
-<span class=w>        </span><span class=p>{</span><span class=s>&quot;+Y&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;LimeGreen&quot;</span><span class=p>},</span>
-<span class=w>        </span><span class=p>{</span><span class=s>&quot;-Y&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;DarkGreen&quot;</span><span class=p>},</span>
-<span class=w>        </span><span class=p>{</span><span class=s>&quot;+Z&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;Blue&quot;</span><span class=p>},</span>
-<span class=w>        </span><span class=p>{</span><span class=s>&quot;-Z&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;SteelBlue&quot;</span><span class=p>}}},</span>
-<span class=w>      </span><span class=p>{</span><span class=s>&quot;lrsiap&quot;</span><span class=p>,</span>
-<span class=w>       </span><span class=p>{{</span><span class=s>&quot;+X&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;Blue&quot;</span><span class=p>},</span>
-<span class=w>        </span><span class=p>{</span><span class=s>&quot;-X&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;SteelBlue&quot;</span><span class=p>},</span>
-<span class=w>        </span><span class=p>{</span><span class=s>&quot;+Y&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;LimeGreen&quot;</span><span class=p>},</span>
-<span class=w>        </span><span class=p>{</span><span class=s>&quot;-Y&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;DarkGreen&quot;</span><span class=p>},</span>
-<span class=w>        </span><span class=p>{</span><span class=s>&quot;+Z&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;IndianRed&quot;</span><span class=p>},</span>
-<span class=w>        </span><span class=p>{</span><span class=s>&quot;-Z&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;FireBrick&quot;</span><span class=p>}}},</span>
+<span class=w>      </span><span class=p>{</span><span class=s>"apdvlr"</span><span class=p>,</span>
+<span class=w>       </span><span class=p>{{</span><span class=s>"+X"</span><span class=p>,</span><span class=w> </span><span class=s>"IndianRed"</span><span class=p>},</span>
+<span class=w>        </span><span class=p>{</span><span class=s>"-X"</span><span class=p>,</span><span class=w> </span><span class=s>"FireBrick"</span><span class=p>},</span>
+<span class=w>        </span><span class=p>{</span><span class=s>"+Y"</span><span class=p>,</span><span class=w> </span><span class=s>"LimeGreen"</span><span class=p>},</span>
+<span class=w>        </span><span class=p>{</span><span class=s>"-Y"</span><span class=p>,</span><span class=w> </span><span class=s>"DarkGreen"</span><span class=p>},</span>
+<span class=w>        </span><span class=p>{</span><span class=s>"+Z"</span><span class=p>,</span><span class=w> </span><span class=s>"Blue"</span><span class=p>},</span>
+<span class=w>        </span><span class=p>{</span><span class=s>"-Z"</span><span class=p>,</span><span class=w> </span><span class=s>"SteelBlue"</span><span class=p>}}},</span>
+<span class=w>      </span><span class=p>{</span><span class=s>"apdvrl"</span><span class=p>,</span>
+<span class=w>       </span><span class=p>{{</span><span class=s>"+X"</span><span class=p>,</span><span class=w> </span><span class=s>"IndianRed"</span><span class=p>},</span>
+<span class=w>        </span><span class=p>{</span><span class=s>"-X"</span><span class=p>,</span><span class=w> </span><span class=s>"FireBrick"</span><span class=p>},</span>
+<span class=w>        </span><span class=p>{</span><span class=s>"+Y"</span><span class=p>,</span><span class=w> </span><span class=s>"LimeGreen"</span><span class=p>},</span>
+<span class=w>        </span><span class=p>{</span><span class=s>"-Y"</span><span class=p>,</span><span class=w> </span><span class=s>"DarkGreen"</span><span class=p>},</span>
+<span class=w>        </span><span class=p>{</span><span class=s>"+Z"</span><span class=p>,</span><span class=w> </span><span class=s>"Blue"</span><span class=p>},</span>
+<span class=w>        </span><span class=p>{</span><span class=s>"-Z"</span><span class=p>,</span><span class=w> </span><span class=s>"SteelBlue"</span><span class=p>}}},</span>
+<span class=w>      </span><span class=p>{</span><span class=s>"padvlr"</span><span class=p>,</span>
+<span class=w>       </span><span class=p>{{</span><span class=s>"+X"</span><span class=p>,</span><span class=w> </span><span class=s>"IndianRed"</span><span class=p>},</span>
+<span class=w>        </span><span class=p>{</span><span class=s>"-X"</span><span class=p>,</span><span class=w> </span><span class=s>"FireBrick"</span><span class=p>},</span>
+<span class=w>        </span><span class=p>{</span><span class=s>"+Y"</span><span class=p>,</span><span class=w> </span><span class=s>"LimeGreen"</span><span class=p>},</span>
+<span class=w>        </span><span class=p>{</span><span class=s>"-Y"</span><span class=p>,</span><span class=w> </span><span class=s>"DarkGreen"</span><span class=p>},</span>
+<span class=w>        </span><span class=p>{</span><span class=s>"+Z"</span><span class=p>,</span><span class=w> </span><span class=s>"Blue"</span><span class=p>},</span>
+<span class=w>        </span><span class=p>{</span><span class=s>"-Z"</span><span class=p>,</span><span class=w> </span><span class=s>"SteelBlue"</span><span class=p>}}},</span>
+<span class=w>      </span><span class=p>{</span><span class=s>"lrsiap"</span><span class=p>,</span>
+<span class=w>       </span><span class=p>{{</span><span class=s>"+X"</span><span class=p>,</span><span class=w> </span><span class=s>"Blue"</span><span class=p>},</span>
+<span class=w>        </span><span class=p>{</span><span class=s>"-X"</span><span class=p>,</span><span class=w> </span><span class=s>"SteelBlue"</span><span class=p>},</span>
+<span class=w>        </span><span class=p>{</span><span class=s>"+Y"</span><span class=p>,</span><span class=w> </span><span class=s>"LimeGreen"</span><span class=p>},</span>
+<span class=w>        </span><span class=p>{</span><span class=s>"-Y"</span><span class=p>,</span><span class=w> </span><span class=s>"DarkGreen"</span><span class=p>},</span>
+<span class=w>        </span><span class=p>{</span><span class=s>"+Z"</span><span class=p>,</span><span class=w> </span><span class=s>"IndianRed"</span><span class=p>},</span>
+<span class=w>        </span><span class=p>{</span><span class=s>"-Z"</span><span class=p>,</span><span class=w> </span><span class=s>"FireBrick"</span><span class=p>}}},</span>
 <span class=w>      </span><span class=c1>// Default colors.</span>
-<span class=w>      </span><span class=p>{</span><span class=s>&quot;xyz&quot;</span><span class=p>,</span><span class=w> </span><span class=p>{}},</span>
+<span class=w>      </span><span class=p>{</span><span class=s>"xyz"</span><span class=p>,</span><span class=w> </span><span class=p>{}},</span>
 <span class=w>  </span><span class=p>};</span>
 <span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>axesColors</span><span class=p>;</span>
 <span class=p>}</span>
@@ -532,16 +532,16 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>alc</span><span class=p>.</span><span class=n>first</span><span class=p>.</span><span class=n>empty</span><span class=p>())</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>rep</span><span class=o>-&gt;</span><span class=n>SetXPlusLabelText</span><span class=p>(</span><span class=n>alc</span><span class=p>.</span><span class=n>first</span><span class=p>[</span><span class=s>&quot;+X&quot;</span><span class=p>]);</span>
-<span class=w>    </span><span class=n>rep</span><span class=o>-&gt;</span><span class=n>SetXMinusLabelText</span><span class=p>(</span><span class=n>alc</span><span class=p>.</span><span class=n>first</span><span class=p>[</span><span class=s>&quot;-X&quot;</span><span class=p>]);</span>
-<span class=w>    </span><span class=n>rep</span><span class=o>-&gt;</span><span class=n>SetYPlusLabelText</span><span class=p>(</span><span class=n>alc</span><span class=p>.</span><span class=n>first</span><span class=p>[</span><span class=s>&quot;+Y&quot;</span><span class=p>]);</span>
-<span class=w>    </span><span class=n>rep</span><span class=o>-&gt;</span><span class=n>SetYMinusLabelText</span><span class=p>(</span><span class=n>alc</span><span class=p>.</span><span class=n>first</span><span class=p>[</span><span class=s>&quot;-Y&quot;</span><span class=p>]);</span>
-<span class=w>    </span><span class=n>rep</span><span class=o>-&gt;</span><span class=n>SetZPlusLabelText</span><span class=p>(</span><span class=n>alc</span><span class=p>.</span><span class=n>first</span><span class=p>[</span><span class=s>&quot;+Z&quot;</span><span class=p>]);</span>
-<span class=w>    </span><span class=n>rep</span><span class=o>-&gt;</span><span class=n>SetZMinusLabelText</span><span class=p>(</span><span class=n>alc</span><span class=p>.</span><span class=n>first</span><span class=p>[</span><span class=s>&quot;-Z&quot;</span><span class=p>]);</span>
+<span class=w>    </span><span class=n>rep</span><span class=o>-&gt;</span><span class=n>SetXPlusLabelText</span><span class=p>(</span><span class=n>alc</span><span class=p>.</span><span class=n>first</span><span class=p>[</span><span class=s>"+X"</span><span class=p>]);</span>
+<span class=w>    </span><span class=n>rep</span><span class=o>-&gt;</span><span class=n>SetXMinusLabelText</span><span class=p>(</span><span class=n>alc</span><span class=p>.</span><span class=n>first</span><span class=p>[</span><span class=s>"-X"</span><span class=p>]);</span>
+<span class=w>    </span><span class=n>rep</span><span class=o>-&gt;</span><span class=n>SetYPlusLabelText</span><span class=p>(</span><span class=n>alc</span><span class=p>.</span><span class=n>first</span><span class=p>[</span><span class=s>"+Y"</span><span class=p>]);</span>
+<span class=w>    </span><span class=n>rep</span><span class=o>-&gt;</span><span class=n>SetYMinusLabelText</span><span class=p>(</span><span class=n>alc</span><span class=p>.</span><span class=n>first</span><span class=p>[</span><span class=s>"-Y"</span><span class=p>]);</span>
+<span class=w>    </span><span class=n>rep</span><span class=o>-&gt;</span><span class=n>SetZPlusLabelText</span><span class=p>(</span><span class=n>alc</span><span class=p>.</span><span class=n>first</span><span class=p>[</span><span class=s>"+Z"</span><span class=p>]);</span>
+<span class=w>    </span><span class=n>rep</span><span class=o>-&gt;</span><span class=n>SetZMinusLabelText</span><span class=p>(</span><span class=n>alc</span><span class=p>.</span><span class=n>first</span><span class=p>[</span><span class=s>"-Z"</span><span class=p>]);</span>
 
-<span class=w>    </span><span class=n>rep</span><span class=o>-&gt;</span><span class=n>SetXAxisColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>alc</span><span class=p>.</span><span class=n>second</span><span class=p>[</span><span class=s>&quot;+X&quot;</span><span class=p>]).</span><span class=n>GetData</span><span class=p>());</span>
-<span class=w>    </span><span class=n>rep</span><span class=o>-&gt;</span><span class=n>SetYAxisColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>alc</span><span class=p>.</span><span class=n>second</span><span class=p>[</span><span class=s>&quot;+Y&quot;</span><span class=p>]).</span><span class=n>GetData</span><span class=p>());</span>
-<span class=w>    </span><span class=n>rep</span><span class=o>-&gt;</span><span class=n>SetZAxisColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>alc</span><span class=p>.</span><span class=n>second</span><span class=p>[</span><span class=s>&quot;+Z&quot;</span><span class=p>]).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>    </span><span class=n>rep</span><span class=o>-&gt;</span><span class=n>SetXAxisColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>alc</span><span class=p>.</span><span class=n>second</span><span class=p>[</span><span class=s>"+X"</span><span class=p>]).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>    </span><span class=n>rep</span><span class=o>-&gt;</span><span class=n>SetYAxisColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>alc</span><span class=p>.</span><span class=n>second</span><span class=p>[</span><span class=s>"+Y"</span><span class=p>]).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>    </span><span class=n>rep</span><span class=o>-&gt;</span><span class=n>SetZAxisColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>alc</span><span class=p>.</span><span class=n>second</span><span class=p>[</span><span class=s>"+Z"</span><span class=p>]).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=p>}</span>
 
 <span class=w>  </span><span class=n>cow</span><span class=o>-&gt;</span><span class=n>SetRepresentation</span><span class=p>(</span><span class=n>rep</span><span class=p>);</span>
@@ -560,24 +560,24 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>axes</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 
-<span class=w>  </span><span class=n>axes</span><span class=o>-&gt;</span><span class=n>SetXAxisLabelText</span><span class=p>(</span><span class=n>alc</span><span class=p>.</span><span class=n>first</span><span class=p>[</span><span class=s>&quot;+X&quot;</span><span class=p>].</span><span class=n>c_str</span><span class=p>());</span>
-<span class=w>  </span><span class=n>axes</span><span class=o>-&gt;</span><span class=n>SetYAxisLabelText</span><span class=p>(</span><span class=n>alc</span><span class=p>.</span><span class=n>first</span><span class=p>[</span><span class=s>&quot;+Y&quot;</span><span class=p>].</span><span class=n>c_str</span><span class=p>());</span>
-<span class=w>  </span><span class=n>axes</span><span class=o>-&gt;</span><span class=n>SetZAxisLabelText</span><span class=p>(</span><span class=n>alc</span><span class=p>.</span><span class=n>first</span><span class=p>[</span><span class=s>&quot;+Z&quot;</span><span class=p>].</span><span class=n>c_str</span><span class=p>());</span>
+<span class=w>  </span><span class=n>axes</span><span class=o>-&gt;</span><span class=n>SetXAxisLabelText</span><span class=p>(</span><span class=n>alc</span><span class=p>.</span><span class=n>first</span><span class=p>[</span><span class=s>"+X"</span><span class=p>].</span><span class=n>c_str</span><span class=p>());</span>
+<span class=w>  </span><span class=n>axes</span><span class=o>-&gt;</span><span class=n>SetYAxisLabelText</span><span class=p>(</span><span class=n>alc</span><span class=p>.</span><span class=n>first</span><span class=p>[</span><span class=s>"+Y"</span><span class=p>].</span><span class=n>c_str</span><span class=p>());</span>
+<span class=w>  </span><span class=n>axes</span><span class=o>-&gt;</span><span class=n>SetZAxisLabelText</span><span class=p>(</span><span class=n>alc</span><span class=p>.</span><span class=n>first</span><span class=p>[</span><span class=s>"+Z"</span><span class=p>].</span><span class=n>c_str</span><span class=p>());</span>
 
 <span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>xShaftProp</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>axes</span><span class=o>-&gt;</span><span class=n>GetXAxisShaftProperty</span><span class=p>();</span>
-<span class=w>  </span><span class=n>xShaftProp</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>alc</span><span class=p>.</span><span class=n>second</span><span class=p>[</span><span class=s>&quot;+X&quot;</span><span class=p>]).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>xShaftProp</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>alc</span><span class=p>.</span><span class=n>second</span><span class=p>[</span><span class=s>"+X"</span><span class=p>]).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>xTipProp</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>axes</span><span class=o>-&gt;</span><span class=n>GetXAxisTipProperty</span><span class=p>();</span>
-<span class=w>  </span><span class=n>xTipProp</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>alc</span><span class=p>.</span><span class=n>second</span><span class=p>[</span><span class=s>&quot;+X&quot;</span><span class=p>]).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>xTipProp</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>alc</span><span class=p>.</span><span class=n>second</span><span class=p>[</span><span class=s>"+X"</span><span class=p>]).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>yShaftProp</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>axes</span><span class=o>-&gt;</span><span class=n>GetYAxisShaftProperty</span><span class=p>();</span>
-<span class=w>  </span><span class=n>yShaftProp</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>alc</span><span class=p>.</span><span class=n>second</span><span class=p>[</span><span class=s>&quot;+Y&quot;</span><span class=p>]).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>yShaftProp</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>alc</span><span class=p>.</span><span class=n>second</span><span class=p>[</span><span class=s>"+Y"</span><span class=p>]).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>yTipProp</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>axes</span><span class=o>-&gt;</span><span class=n>GetYAxisTipProperty</span><span class=p>();</span>
-<span class=w>  </span><span class=n>yTipProp</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>alc</span><span class=p>.</span><span class=n>second</span><span class=p>[</span><span class=s>&quot;+Y&quot;</span><span class=p>]).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>yTipProp</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>alc</span><span class=p>.</span><span class=n>second</span><span class=p>[</span><span class=s>"+Y"</span><span class=p>]).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>zShaftProp</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>axes</span><span class=o>-&gt;</span><span class=n>GetZAxisShaftProperty</span><span class=p>();</span>
-<span class=w>  </span><span class=n>zShaftProp</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>alc</span><span class=p>.</span><span class=n>second</span><span class=p>[</span><span class=s>&quot;+Z&quot;</span><span class=p>]).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>zShaftProp</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>alc</span><span class=p>.</span><span class=n>second</span><span class=p>[</span><span class=s>"+Z"</span><span class=p>]).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>zTipProp</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>axes</span><span class=o>-&gt;</span><span class=n>GetZAxisTipProperty</span><span class=p>();</span>
-<span class=w>  </span><span class=n>zTipProp</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>alc</span><span class=p>.</span><span class=n>second</span><span class=p>[</span><span class=s>&quot;+Z&quot;</span><span class=p>]).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>zTipProp</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>alc</span><span class=p>.</span><span class=n>second</span><span class=p>[</span><span class=s>"+Z"</span><span class=p>]).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>axes</span><span class=p>;</span>
 <span class=p>}</span>
 
@@ -596,7 +596,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=p>}</span>
 <span class=w>  </span><span class=k>else</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Lower left.&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Lower left."</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=c1>// Position lower left in the viewport.</span>
 <span class=w>    </span><span class=n>om</span><span class=o>-&gt;</span><span class=n>SetViewport</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mf>0.2</span><span class=p>,</span><span class=w> </span><span class=mf>0.2</span><span class=p>);</span>
 <span class=w>  </span><span class=p>}</span>
@@ -627,11 +627,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;CameraOrientationWidget: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"CameraOrientationWidget: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>CameraOrientationWidget</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>CameraOrientationWidget.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>CameraOrientationWidget</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

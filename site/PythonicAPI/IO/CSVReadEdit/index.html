@@ -96,28 +96,28 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_program_parameters</span><span class=p>():</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>argparse</span>
-    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;Edit data from a CSV file and visualise it.&#39;</span>
-    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;</span>
+    <span class=n>description</span> <span class=o>=</span> <span class=s1>'Edit data from a CSV file and visualise it.'</span>
+    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>'''</span>
 <span class=s1>    This program selects ECEF, Geographic or UTM coordinates from the input file and:</span>
 <span class=s1>       1) Visualises the resultant ECEF or UTM points and lines.</span>
 <span class=s1>       2) If ECEF or UTM is selected, optionally creates and saves a VTP file for further analysis.</span>
 <span class=s1>       3) Optionally saves the CSV file.</span>
 <span class=s1>    If Geographic coordinates are selected, only the resultant CSV file can be saved.</span>
-<span class=s1>    &#39;&#39;&#39;</span>
+<span class=s1>    '''</span>
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
                                      <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawTextHelpFormatter</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;file_name&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The CSV file containing the data.&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-c&#39;</span><span class=p>,</span> <span class=s1>&#39;--csv&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_true&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Save the resultant CSV file.&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-v&#39;</span><span class=p>,</span> <span class=s1>&#39;--vtp&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_true&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Save the .vtp file.&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-p&#39;</span><span class=p>,</span> <span class=s1>&#39;--path&#39;</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=s1>&#39;.&#39;</span><span class=p>,</span>
-                        <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The path to be appended to the .vtp and optional .csv file&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-s&#39;</span><span class=p>,</span> <span class=s1>&#39;--scale&#39;</span><span class=p>,</span> <span class=nb>type</span><span class=o>=</span><span class=nb>float</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mf>1.0</span><span class=p>,</span>
-                        <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Multiply the elevation by a scalar, default=1.0.&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'file_name'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'The CSV file containing the data.'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-c'</span><span class=p>,</span> <span class=s1>'--csv'</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>'store_true'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'Save the resultant CSV file.'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-v'</span><span class=p>,</span> <span class=s1>'--vtp'</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>'store_true'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'Save the .vtp file.'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-p'</span><span class=p>,</span> <span class=s1>'--path'</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=s1>'.'</span><span class=p>,</span>
+                        <span class=n>help</span><span class=o>=</span><span class=s1>'The path to be appended to the .vtp and optional .csv file'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-s'</span><span class=p>,</span> <span class=s1>'--scale'</span><span class=p>,</span> <span class=nb>type</span><span class=o>=</span><span class=nb>float</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mf>1.0</span><span class=p>,</span>
+                        <span class=n>help</span><span class=o>=</span><span class=s1>'Multiply the elevation by a scalar, default=1.0.'</span><span class=p>)</span>
 
     <span class=n>group</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>add_mutually_exclusive_group</span><span class=p>(</span><span class=n>required</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
-    <span class=n>group</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-e&#39;</span><span class=p>,</span> <span class=s1>&#39;--ecef&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_true&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Use ECEF coordinates.&#39;</span><span class=p>)</span>
-    <span class=n>group</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-u&#39;</span><span class=p>,</span> <span class=s1>&#39;--utm&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_true&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Use UTM coordinates.&#39;</span><span class=p>)</span>
-    <span class=n>group</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-g&#39;</span><span class=p>,</span> <span class=s1>&#39;--geo&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_true&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Use geographic coordinates (latitude/longitude).&#39;</span><span class=p>)</span>
+    <span class=n>group</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-e'</span><span class=p>,</span> <span class=s1>'--ecef'</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>'store_true'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'Use ECEF coordinates.'</span><span class=p>)</span>
+    <span class=n>group</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-u'</span><span class=p>,</span> <span class=s1>'--utm'</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>'store_true'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'Use UTM coordinates.'</span><span class=p>)</span>
+    <span class=n>group</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-g'</span><span class=p>,</span> <span class=s1>'--geo'</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>'store_true'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'Use geographic coordinates (latitude/longitude).'</span><span class=p>)</span>
 
     <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
     <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>file_name</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>csv</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>vtp</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>path</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>scale</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>ecef</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>utm</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>geo</span>
@@ -126,77 +126,77 @@ function registerListener(event, func) {
 <span class=k>def</span><span class=w> </span><span class=nf>main</span><span class=p>():</span>
     <span class=n>ifn</span><span class=p>,</span> <span class=n>csv</span><span class=p>,</span> <span class=n>vtp</span><span class=p>,</span> <span class=n>sp</span><span class=p>,</span> <span class=n>elev_scale</span><span class=p>,</span> <span class=n>ecef</span><span class=p>,</span> <span class=n>utm</span><span class=p>,</span> <span class=n>geo</span> <span class=o>=</span> <span class=n>get_program_parameters</span><span class=p>()</span>
     <span class=k>if</span> <span class=n>elev_scale</span> <span class=o>==</span> <span class=mf>0.0</span><span class=p>:</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;The elevation scale multiplier cannot be zero.&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'The elevation scale multiplier cannot be zero.'</span><span class=p>)</span>
         <span class=k>return</span>
     <span class=n>file_name</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>ifn</span><span class=p>)</span>
     <span class=k>if</span> <span class=ow>not</span> <span class=n>file_name</span><span class=o>.</span><span class=n>is_file</span><span class=p>():</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Unable to read:&#39;</span><span class=p>,</span> <span class=n>file_name</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'Unable to read:'</span><span class=p>,</span> <span class=n>file_name</span><span class=p>)</span>
         <span class=k>return</span>
     <span class=n>pth</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>sp</span><span class=p>)</span>
     <span class=k>if</span> <span class=ow>not</span> <span class=n>pth</span><span class=o>.</span><span class=n>is_dir</span><span class=p>():</span>
         <span class=k>if</span> <span class=n>pth</span><span class=o>.</span><span class=n>is_file</span><span class=p>():</span>
-            <span class=nb>print</span><span class=p>(</span><span class=n>sp</span><span class=p>,</span> <span class=s1>&#39; must be a path&#39;</span><span class=p>)</span>
+            <span class=nb>print</span><span class=p>(</span><span class=n>sp</span><span class=p>,</span> <span class=s1>' must be a path'</span><span class=p>)</span>
             <span class=k>return</span>
     <span class=n>pth</span><span class=o>.</span><span class=n>mkdir</span><span class=p>(</span><span class=n>parents</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>exist_ok</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
 
     <span class=c1># Build the output paths.</span>
-    <span class=n>csv_fn</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>pth</span> <span class=o>/</span> <span class=n>Path</span><span class=p>(</span><span class=n>ifn</span><span class=p>)</span><span class=o>.</span><span class=n>stem</span><span class=p>)</span><span class=o>.</span><span class=n>with_suffix</span><span class=p>(</span><span class=s1>&#39;.csv&#39;</span><span class=p>)</span>
-    <span class=n>vtp_fn</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>pth</span> <span class=o>/</span> <span class=n>Path</span><span class=p>(</span><span class=n>ifn</span><span class=p>)</span><span class=o>.</span><span class=n>stem</span><span class=p>)</span><span class=o>.</span><span class=n>with_suffix</span><span class=p>(</span><span class=s1>&#39;.vtp&#39;</span><span class=p>)</span>
+    <span class=n>csv_fn</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>pth</span> <span class=o>/</span> <span class=n>Path</span><span class=p>(</span><span class=n>ifn</span><span class=p>)</span><span class=o>.</span><span class=n>stem</span><span class=p>)</span><span class=o>.</span><span class=n>with_suffix</span><span class=p>(</span><span class=s1>'.csv'</span><span class=p>)</span>
+    <span class=n>vtp_fn</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>pth</span> <span class=o>/</span> <span class=n>Path</span><span class=p>(</span><span class=n>ifn</span><span class=p>)</span><span class=o>.</span><span class=n>stem</span><span class=p>)</span><span class=o>.</span><span class=n>with_suffix</span><span class=p>(</span><span class=s1>'.vtp'</span><span class=p>)</span>
     <span class=k>if</span> <span class=n>ecef</span><span class=p>:</span>
-        <span class=n>vtp_fn</span> <span class=o>=</span> <span class=n>vtp_fn</span><span class=o>.</span><span class=n>with_stem</span><span class=p>(</span><span class=n>vtp_fn</span><span class=o>.</span><span class=n>stem</span> <span class=o>+</span> <span class=s1>&#39;_ecef&#39;</span><span class=p>)</span>
+        <span class=n>vtp_fn</span> <span class=o>=</span> <span class=n>vtp_fn</span><span class=o>.</span><span class=n>with_stem</span><span class=p>(</span><span class=n>vtp_fn</span><span class=o>.</span><span class=n>stem</span> <span class=o>+</span> <span class=s1>'_ecef'</span><span class=p>)</span>
     <span class=k>if</span> <span class=n>utm</span><span class=p>:</span>
-        <span class=n>vtp_fn</span> <span class=o>=</span> <span class=n>vtp_fn</span><span class=o>.</span><span class=n>with_stem</span><span class=p>(</span><span class=n>vtp_fn</span><span class=o>.</span><span class=n>stem</span> <span class=o>+</span> <span class=s1>&#39;_utm&#39;</span><span class=p>)</span>
+        <span class=n>vtp_fn</span> <span class=o>=</span> <span class=n>vtp_fn</span><span class=o>.</span><span class=n>with_stem</span><span class=p>(</span><span class=n>vtp_fn</span><span class=o>.</span><span class=n>stem</span> <span class=o>+</span> <span class=s1>'_utm'</span><span class=p>)</span>
 
     <span class=c1># Create a DataFrame from the csv file.</span>
     <span class=n>df</span> <span class=o>=</span> <span class=n>pd</span><span class=o>.</span><span class=n>read_csv</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
 
-    <span class=c1># Use the column called &#39;Index&#39; as the index.</span>
+    <span class=c1># Use the column called 'Index' as the index.</span>
     <span class=c1># This ensures that we can trace back each row to the original data.</span>
-    <span class=n>df</span><span class=o>.</span><span class=n>set_index</span><span class=p>(</span><span class=s1>&#39;Index&#39;</span><span class=p>,</span> <span class=n>inplace</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+    <span class=n>df</span><span class=o>.</span><span class=n>set_index</span><span class=p>(</span><span class=s1>'Index'</span><span class=p>,</span> <span class=n>inplace</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
 
     <span class=c1># For ECEF coordinates, we want to look down from the zenith.</span>
     <span class=c1># So calculate the mid-point of the latitude.</span>
-    <span class=n>lat_details</span> <span class=o>=</span> <span class=n>df</span><span class=p>[</span><span class=s1>&#39;Latitude&#39;</span><span class=p>]</span><span class=o>.</span><span class=n>describe</span><span class=p>()</span>
-    <span class=n>lat_mid_pt</span> <span class=o>=</span> <span class=p>(</span><span class=n>lat_details</span><span class=p>[</span><span class=s1>&#39;max&#39;</span><span class=p>]</span> <span class=o>+</span> <span class=n>lat_details</span><span class=p>[</span><span class=s1>&#39;min&#39;</span><span class=p>])</span> <span class=o>/</span> <span class=mi>2</span>
+    <span class=n>lat_details</span> <span class=o>=</span> <span class=n>df</span><span class=p>[</span><span class=s1>'Latitude'</span><span class=p>]</span><span class=o>.</span><span class=n>describe</span><span class=p>()</span>
+    <span class=n>lat_mid_pt</span> <span class=o>=</span> <span class=p>(</span><span class=n>lat_details</span><span class=p>[</span><span class=s1>'max'</span><span class=p>]</span> <span class=o>+</span> <span class=n>lat_details</span><span class=p>[</span><span class=s1>'min'</span><span class=p>])</span> <span class=o>/</span> <span class=mi>2</span>
 
     <span class=c1># Copy what we want to the new DataFrame and drop any rows with missing values.</span>
     <span class=k>if</span> <span class=n>ecef</span><span class=p>:</span>
-        <span class=n>dfv</span> <span class=o>=</span> <span class=n>df</span><span class=p>[[</span><span class=s1>&#39;X(m)&#39;</span><span class=p>,</span> <span class=s1>&#39;Y(m)&#39;</span><span class=p>,</span> <span class=s1>&#39;Z(m)&#39;</span><span class=p>,</span> <span class=s1>&#39;Elevation(m)&#39;</span><span class=p>]]</span><span class=o>.</span><span class=n>dropna</span><span class=p>(</span>
-            <span class=n>subset</span><span class=o>=</span><span class=p>[</span><span class=s1>&#39;X(m)&#39;</span><span class=p>,</span> <span class=s1>&#39;Y(m)&#39;</span><span class=p>,</span> <span class=s1>&#39;Z(m)&#39;</span><span class=p>,</span> <span class=s1>&#39;Elevation(m)&#39;</span><span class=p>])</span>
+        <span class=n>dfv</span> <span class=o>=</span> <span class=n>df</span><span class=p>[[</span><span class=s1>'X(m)'</span><span class=p>,</span> <span class=s1>'Y(m)'</span><span class=p>,</span> <span class=s1>'Z(m)'</span><span class=p>,</span> <span class=s1>'Elevation(m)'</span><span class=p>]]</span><span class=o>.</span><span class=n>dropna</span><span class=p>(</span>
+            <span class=n>subset</span><span class=o>=</span><span class=p>[</span><span class=s1>'X(m)'</span><span class=p>,</span> <span class=s1>'Y(m)'</span><span class=p>,</span> <span class=s1>'Z(m)'</span><span class=p>,</span> <span class=s1>'Elevation(m)'</span><span class=p>])</span>
         <span class=k>if</span> <span class=n>csv</span><span class=p>:</span>
-            <span class=n>ecef_csv_fn</span> <span class=o>=</span> <span class=n>csv_fn</span><span class=o>.</span><span class=n>with_stem</span><span class=p>(</span><span class=n>csv_fn</span><span class=o>.</span><span class=n>stem</span> <span class=o>+</span> <span class=s1>&#39;_ecef&#39;</span><span class=p>)</span>
-            <span class=n>dfv</span><span class=o>.</span><span class=n>to_csv</span><span class=p>(</span><span class=n>ecef_csv_fn</span><span class=p>,</span> <span class=n>index</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>index_label</span><span class=o>=</span><span class=s1>&#39;Index&#39;</span><span class=p>,</span> <span class=n>header</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+            <span class=n>ecef_csv_fn</span> <span class=o>=</span> <span class=n>csv_fn</span><span class=o>.</span><span class=n>with_stem</span><span class=p>(</span><span class=n>csv_fn</span><span class=o>.</span><span class=n>stem</span> <span class=o>+</span> <span class=s1>'_ecef'</span><span class=p>)</span>
+            <span class=n>dfv</span><span class=o>.</span><span class=n>to_csv</span><span class=p>(</span><span class=n>ecef_csv_fn</span><span class=p>,</span> <span class=n>index</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>index_label</span><span class=o>=</span><span class=s1>'Index'</span><span class=p>,</span> <span class=n>header</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
 
     <span class=k>elif</span> <span class=n>utm</span><span class=p>:</span>
-        <span class=n>dfv</span> <span class=o>=</span> <span class=n>df</span><span class=p>[[</span><span class=s1>&#39;Zone&#39;</span><span class=p>,</span> <span class=s1>&#39;Easting(m)&#39;</span><span class=p>,</span> <span class=s1>&#39;Northing(m)&#39;</span><span class=p>,</span> <span class=s1>&#39;Elevation(m)&#39;</span><span class=p>]]</span><span class=o>.</span><span class=n>dropna</span><span class=p>(</span>
-            <span class=n>subset</span><span class=o>=</span><span class=p>[</span><span class=s1>&#39;Zone&#39;</span><span class=p>,</span> <span class=s1>&#39;Easting(m)&#39;</span><span class=p>,</span> <span class=s1>&#39;Northing(m)&#39;</span><span class=p>,</span> <span class=s1>&#39;Elevation(m)&#39;</span><span class=p>])</span>
+        <span class=n>dfv</span> <span class=o>=</span> <span class=n>df</span><span class=p>[[</span><span class=s1>'Zone'</span><span class=p>,</span> <span class=s1>'Easting(m)'</span><span class=p>,</span> <span class=s1>'Northing(m)'</span><span class=p>,</span> <span class=s1>'Elevation(m)'</span><span class=p>]]</span><span class=o>.</span><span class=n>dropna</span><span class=p>(</span>
+            <span class=n>subset</span><span class=o>=</span><span class=p>[</span><span class=s1>'Zone'</span><span class=p>,</span> <span class=s1>'Easting(m)'</span><span class=p>,</span> <span class=s1>'Northing(m)'</span><span class=p>,</span> <span class=s1>'Elevation(m)'</span><span class=p>])</span>
         <span class=k>if</span> <span class=n>csv</span><span class=p>:</span>
-            <span class=n>utm_csv_fn</span> <span class=o>=</span> <span class=n>csv_fn</span><span class=o>.</span><span class=n>with_stem</span><span class=p>(</span><span class=n>csv_fn</span><span class=o>.</span><span class=n>stem</span> <span class=o>+</span> <span class=s1>&#39;_utm&#39;</span><span class=p>)</span>
-            <span class=n>dfv</span><span class=o>.</span><span class=n>to_csv</span><span class=p>(</span><span class=n>utm_csv_fn</span><span class=p>,</span> <span class=n>index</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>index_label</span><span class=o>=</span><span class=s1>&#39;Index&#39;</span><span class=p>,</span> <span class=n>header</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+            <span class=n>utm_csv_fn</span> <span class=o>=</span> <span class=n>csv_fn</span><span class=o>.</span><span class=n>with_stem</span><span class=p>(</span><span class=n>csv_fn</span><span class=o>.</span><span class=n>stem</span> <span class=o>+</span> <span class=s1>'_utm'</span><span class=p>)</span>
+            <span class=n>dfv</span><span class=o>.</span><span class=n>to_csv</span><span class=p>(</span><span class=n>utm_csv_fn</span><span class=p>,</span> <span class=n>index</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>index_label</span><span class=o>=</span><span class=s1>'Index'</span><span class=p>,</span> <span class=n>header</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
     <span class=k>else</span><span class=p>:</span>
-        <span class=n>dfv</span> <span class=o>=</span> <span class=n>df</span><span class=p>[[</span><span class=s1>&#39;Longitude&#39;</span><span class=p>,</span> <span class=s1>&#39;Latitude&#39;</span><span class=p>,</span> <span class=s1>&#39;Elevation(m)&#39;</span><span class=p>]]</span><span class=o>.</span><span class=n>dropna</span><span class=p>(</span>
-            <span class=n>subset</span><span class=o>=</span><span class=p>[</span><span class=s1>&#39;Longitude&#39;</span><span class=p>,</span> <span class=s1>&#39;Latitude&#39;</span><span class=p>,</span> <span class=s1>&#39;Elevation(m)&#39;</span><span class=p>])</span>
-        <span class=n>geo_csv_fn</span> <span class=o>=</span> <span class=n>csv_fn</span><span class=o>.</span><span class=n>with_stem</span><span class=p>(</span><span class=n>csv_fn</span><span class=o>.</span><span class=n>stem</span> <span class=o>+</span> <span class=s1>&#39;_geo&#39;</span><span class=p>)</span>
-        <span class=n>dfv</span><span class=o>.</span><span class=n>to_csv</span><span class=p>(</span><span class=n>geo_csv_fn</span><span class=p>,</span> <span class=n>index</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>index_label</span><span class=o>=</span><span class=s1>&#39;Index&#39;</span><span class=p>,</span> <span class=n>header</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+        <span class=n>dfv</span> <span class=o>=</span> <span class=n>df</span><span class=p>[[</span><span class=s1>'Longitude'</span><span class=p>,</span> <span class=s1>'Latitude'</span><span class=p>,</span> <span class=s1>'Elevation(m)'</span><span class=p>]]</span><span class=o>.</span><span class=n>dropna</span><span class=p>(</span>
+            <span class=n>subset</span><span class=o>=</span><span class=p>[</span><span class=s1>'Longitude'</span><span class=p>,</span> <span class=s1>'Latitude'</span><span class=p>,</span> <span class=s1>'Elevation(m)'</span><span class=p>])</span>
+        <span class=n>geo_csv_fn</span> <span class=o>=</span> <span class=n>csv_fn</span><span class=o>.</span><span class=n>with_stem</span><span class=p>(</span><span class=n>csv_fn</span><span class=o>.</span><span class=n>stem</span> <span class=o>+</span> <span class=s1>'_geo'</span><span class=p>)</span>
+        <span class=n>dfv</span><span class=o>.</span><span class=n>to_csv</span><span class=p>(</span><span class=n>geo_csv_fn</span><span class=p>,</span> <span class=n>index</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>index_label</span><span class=o>=</span><span class=s1>'Index'</span><span class=p>,</span> <span class=n>header</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
 
     <span class=k>if</span> <span class=n>dfv</span><span class=o>.</span><span class=n>empty</span><span class=p>:</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;No data in the processed dataframe, please check:&#39;</span><span class=p>,</span> <span class=n>file_name</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'No data in the processed dataframe, please check:'</span><span class=p>,</span> <span class=n>file_name</span><span class=p>)</span>
         <span class=k>return</span>
 
     <span class=c1># This is used to color the elevation.</span>
-    <span class=n>dfv_elev</span> <span class=o>=</span> <span class=n>dfv</span><span class=p>[[</span><span class=s1>&#39;Elevation(m)&#39;</span><span class=p>]]</span><span class=o>.</span><span class=n>to_numpy</span><span class=p>()</span>
-    <span class=n>elev_range</span> <span class=o>=</span> <span class=p>(</span><span class=n>dfv</span><span class=p>[</span><span class=s1>&#39;Elevation(m)&#39;</span><span class=p>]</span><span class=o>.</span><span class=n>min</span><span class=p>(),</span> <span class=n>dfv</span><span class=p>[</span><span class=s1>&#39;Elevation(m)&#39;</span><span class=p>]</span><span class=o>.</span><span class=n>max</span><span class=p>())</span>
+    <span class=n>dfv_elev</span> <span class=o>=</span> <span class=n>dfv</span><span class=p>[[</span><span class=s1>'Elevation(m)'</span><span class=p>]]</span><span class=o>.</span><span class=n>to_numpy</span><span class=p>()</span>
+    <span class=n>elev_range</span> <span class=o>=</span> <span class=p>(</span><span class=n>dfv</span><span class=p>[</span><span class=s1>'Elevation(m)'</span><span class=p>]</span><span class=o>.</span><span class=n>min</span><span class=p>(),</span> <span class=n>dfv</span><span class=p>[</span><span class=s1>'Elevation(m)'</span><span class=p>]</span><span class=o>.</span><span class=n>max</span><span class=p>())</span>
     <span class=c1># The index.</span>
     <span class=n>dfv_index</span> <span class=o>=</span> <span class=n>dfv</span><span class=o>.</span><span class=n>index</span><span class=o>.</span><span class=n>to_numpy</span><span class=p>()</span>
 
     <span class=k>if</span> <span class=n>ecef</span><span class=p>:</span>
-        <span class=n>xyz</span> <span class=o>=</span> <span class=n>dfv</span><span class=p>[[</span><span class=s1>&#39;X(m)&#39;</span><span class=p>,</span> <span class=s1>&#39;Y(m)&#39;</span><span class=p>,</span> <span class=s1>&#39;Z(m)&#39;</span><span class=p>]]</span><span class=o>.</span><span class=n>to_numpy</span><span class=p>()</span>
+        <span class=n>xyz</span> <span class=o>=</span> <span class=n>dfv</span><span class=p>[[</span><span class=s1>'X(m)'</span><span class=p>,</span> <span class=s1>'Y(m)'</span><span class=p>,</span> <span class=s1>'Z(m)'</span><span class=p>]]</span><span class=o>.</span><span class=n>to_numpy</span><span class=p>()</span>
     <span class=k>elif</span> <span class=n>utm</span><span class=p>:</span>
         <span class=c1># Multiply the elevation by a scalar.</span>
-        <span class=n>dfv</span><span class=p>[</span><span class=s1>&#39;Elevation(m)&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=n>dfv</span><span class=p>[</span><span class=s1>&#39;Elevation(m)&#39;</span><span class=p>]</span> <span class=o>*</span> <span class=n>elev_scale</span>
-        <span class=n>xyz</span> <span class=o>=</span> <span class=n>dfv</span><span class=p>[[</span><span class=s1>&#39;Easting(m)&#39;</span><span class=p>,</span> <span class=s1>&#39;Northing(m)&#39;</span><span class=p>,</span> <span class=s1>&#39;Elevation(m)&#39;</span><span class=p>]]</span><span class=o>.</span><span class=n>to_numpy</span><span class=p>()</span>
+        <span class=n>dfv</span><span class=p>[</span><span class=s1>'Elevation(m)'</span><span class=p>]</span> <span class=o>=</span> <span class=n>dfv</span><span class=p>[</span><span class=s1>'Elevation(m)'</span><span class=p>]</span> <span class=o>*</span> <span class=n>elev_scale</span>
+        <span class=n>xyz</span> <span class=o>=</span> <span class=n>dfv</span><span class=p>[[</span><span class=s1>'Easting(m)'</span><span class=p>,</span> <span class=s1>'Northing(m)'</span><span class=p>,</span> <span class=s1>'Elevation(m)'</span><span class=p>]]</span><span class=o>.</span><span class=n>to_numpy</span><span class=p>()</span>
     <span class=k>else</span><span class=p>:</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Only ECEF or UTM coordinates can be visualised.&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'Only ECEF or UTM coordinates can be visualised.'</span><span class=p>)</span>
         <span class=k>return</span>
 
     <span class=c1># Create the poly data from the dataframe.</span>
@@ -205,26 +205,26 @@ function registerListener(event, func) {
 </span>
     <span class=c1># Set an index.</span>
     <span class=n>idx</span> <span class=o>=</span> <span class=n>numpy_support</span><span class=o>.</span><span class=n>numpy_to_vtk</span><span class=p>(</span><span class=n>dfv_index</span><span class=p>)</span>
-    <span class=n>idx</span><span class=o>.</span><span class=n>name</span> <span class=o>=</span> <span class=s1>&#39;Index&#39;</span>
+    <span class=n>idx</span><span class=o>.</span><span class=n>name</span> <span class=o>=</span> <span class=s1>'Index'</span>
     <span class=n>poly_data</span><span class=o>.</span><span class=n>point_data</span><span class=o>.</span><span class=n>AddArray</span><span class=p>(</span><span class=n>idx</span><span class=p>)</span>
 
     <span class=k>if</span> <span class=n>utm</span><span class=p>:</span>
-        <span class=n>dfv_zone</span> <span class=o>=</span> <span class=n>dfv</span><span class=p>[</span><span class=s1>&#39;Zone&#39;</span><span class=p>]</span><span class=o>.</span><span class=n>tolist</span><span class=p>()</span>
+        <span class=n>dfv_zone</span> <span class=o>=</span> <span class=n>dfv</span><span class=p>[</span><span class=s1>'Zone'</span><span class=p>]</span><span class=o>.</span><span class=n>tolist</span><span class=p>()</span>
 <span class=hll>        <span class=n>array</span> <span class=o>=</span> <span class=n>vtkStringArray</span><span class=p>()</span>
 </span>        <span class=k>for</span> <span class=n>zone</span> <span class=ow>in</span> <span class=n>dfv_zone</span><span class=p>:</span>
             <span class=n>array</span><span class=o>.</span><span class=n>InsertNextValue</span><span class=p>(</span><span class=n>zone</span><span class=p>)</span>
-        <span class=n>array</span><span class=o>.</span><span class=n>name</span> <span class=o>=</span> <span class=s1>&#39;Zone&#39;</span>
+        <span class=n>array</span><span class=o>.</span><span class=n>name</span> <span class=o>=</span> <span class=s1>'Zone'</span>
         <span class=n>poly_data</span><span class=o>.</span><span class=n>point_data</span><span class=o>.</span><span class=n>AddArray</span><span class=p>(</span><span class=n>array</span><span class=p>)</span>
 
     <span class=k>if</span> <span class=n>ecef</span><span class=p>:</span>
         <span class=c1># We need to add the elevation.</span>
-        <span class=n>elevation</span> <span class=o>=</span> <span class=n>numpy_support</span><span class=o>.</span><span class=n>numpy_to_vtk</span><span class=p>(</span><span class=n>dfv</span><span class=p>[[</span><span class=s1>&#39;Elevation(m)&#39;</span><span class=p>]]</span><span class=o>.</span><span class=n>to_numpy</span><span class=p>())</span>
-        <span class=n>elevation</span><span class=o>.</span><span class=n>name</span> <span class=o>=</span> <span class=s1>&#39;Elevation(m)&#39;</span>
+        <span class=n>elevation</span> <span class=o>=</span> <span class=n>numpy_support</span><span class=o>.</span><span class=n>numpy_to_vtk</span><span class=p>(</span><span class=n>dfv</span><span class=p>[[</span><span class=s1>'Elevation(m)'</span><span class=p>]]</span><span class=o>.</span><span class=n>to_numpy</span><span class=p>())</span>
+        <span class=n>elevation</span><span class=o>.</span><span class=n>name</span> <span class=o>=</span> <span class=s1>'Elevation(m)'</span>
         <span class=n>poly_data</span><span class=o>.</span><span class=n>point_data</span><span class=o>.</span><span class=n>AddArray</span><span class=p>(</span><span class=n>elevation</span><span class=p>)</span>
 
     <span class=c1># We use the unmodified elevation as the active scalars.</span>
     <span class=n>scal</span> <span class=o>=</span> <span class=n>numpy_support</span><span class=o>.</span><span class=n>numpy_to_vtk</span><span class=p>(</span><span class=n>dfv_elev</span><span class=p>)</span>
-    <span class=n>scal</span><span class=o>.</span><span class=n>name</span> <span class=o>=</span> <span class=s1>&#39;Elev&#39;</span>
+    <span class=n>scal</span><span class=o>.</span><span class=n>name</span> <span class=o>=</span> <span class=s1>'Elev'</span>
     <span class=n>poly_data</span><span class=o>.</span><span class=n>point_data</span><span class=o>.</span><span class=n>SetScalars</span><span class=p>(</span><span class=n>scal</span><span class=p>)</span>
     <span class=n>poly_data</span><span class=o>.</span><span class=n>point_data</span><span class=o>.</span><span class=n>SetActiveScalars</span><span class=p>(</span><span class=n>scal</span><span class=o>.</span><span class=n>name</span><span class=p>)</span>
 
@@ -283,7 +283,7 @@ function registerListener(event, func) {
 
     <span class=c1># Create a scalar bar.</span>
 <span class=hll>    <span class=n>scalar_bar</span> <span class=o>=</span> <span class=n>vtkScalarBarActor</span><span class=p>(</span><span class=n>lookup_table</span><span class=o>=</span><span class=n>mapper</span><span class=o>.</span><span class=n>lookup_table</span><span class=p>,</span>
-</span>                                   <span class=n>title</span><span class=o>=</span><span class=s1>&#39;Elevation&#39;</span><span class=p>,</span>
+</span>                                   <span class=n>title</span><span class=o>=</span><span class=s1>'Elevation'</span><span class=p>,</span>
                                    <span class=n>unconstrained_font_size</span><span class=o>=</span><span class=kc>False</span><span class=p>,</span>
                                    <span class=n>number_of_labels</span><span class=o>=</span><span class=mi>6</span><span class=p>,</span>
                                    <span class=n>vertical_title_separation</span><span class=o>=</span><span class=mi>50</span><span class=p>,</span>
@@ -293,13 +293,13 @@ function registerListener(event, func) {
                                    <span class=p>)</span>
     <span class=n>scalar_bar</span><span class=o>.</span><span class=n>bar_ratio</span> <span class=o>=</span> <span class=n>scalar_bar</span><span class=o>.</span><span class=n>bar_ratio</span> <span class=o>*</span> <span class=mf>0.5</span>
 
-<span class=hll>    <span class=n>ren</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;ParaViewWarmGrayBkg&#39;</span><span class=p>))</span>
+<span class=hll>    <span class=n>ren</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'ParaViewWarmGrayBkg'</span><span class=p>))</span>
 </span><span class=hll>    <span class=n>ren_win</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>size</span><span class=o>=</span><span class=p>(</span><span class=n>window_width</span><span class=p>,</span> <span class=n>window_height</span><span class=p>))</span>
 </span>    <span class=n>ren_win</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>ren</span><span class=p>)</span>
     <span class=k>if</span> <span class=n>ecef</span><span class=p>:</span>
-        <span class=n>ren_win</span><span class=o>.</span><span class=n>window_name</span> <span class=o>=</span> <span class=s1>&#39;CSVReadEdit ECEF&#39;</span>
+        <span class=n>ren_win</span><span class=o>.</span><span class=n>window_name</span> <span class=o>=</span> <span class=s1>'CSVReadEdit ECEF'</span>
     <span class=k>elif</span> <span class=n>utm</span><span class=p>:</span>
-        <span class=n>ren_win</span><span class=o>.</span><span class=n>window_name</span> <span class=o>=</span> <span class=s1>&#39;CSVReadEdit UTM&#39;</span>
+        <span class=n>ren_win</span><span class=o>.</span><span class=n>window_name</span> <span class=o>=</span> <span class=s1>'CSVReadEdit UTM'</span>
 <span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>iren</span><span class=o>.</span><span class=n>render_window</span> <span class=o>=</span> <span class=n>ren_win</span>
     <span class=c1># Since we import vtkmodules.vtkInteractionStyle we can do this</span>
@@ -310,21 +310,21 @@ function registerListener(event, func) {
     <span class=n>ren</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>scalar_bar</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>cow</span> <span class=o>=</span> <span class=n>vtkCameraOrientationWidget</span><span class=p>(</span><span class=n>parent_renderer</span><span class=o>=</span><span class=n>ren</span><span class=p>)</span>
-</span>    <span class=n>cow</span><span class=o>.</span><span class=n>representation</span><span class=o>.</span><span class=n>SetXPlusLabelText</span><span class=p>(</span><span class=s1>&#39;E&#39;</span><span class=p>)</span>
-    <span class=n>cow</span><span class=o>.</span><span class=n>representation</span><span class=o>.</span><span class=n>SetXMinusLabelText</span><span class=p>(</span><span class=s1>&#39;W&#39;</span><span class=p>)</span>
-    <span class=n>cow</span><span class=o>.</span><span class=n>representation</span><span class=o>.</span><span class=n>SetYPlusLabelText</span><span class=p>(</span><span class=s1>&#39;N&#39;</span><span class=p>)</span>
-    <span class=n>cow</span><span class=o>.</span><span class=n>representation</span><span class=o>.</span><span class=n>SetYMinusLabelText</span><span class=p>(</span><span class=s1>&#39;S&#39;</span><span class=p>)</span>
-    <span class=n>cow</span><span class=o>.</span><span class=n>representation</span><span class=o>.</span><span class=n>SetZPlusLabelText</span><span class=p>(</span><span class=s1>&#39;Z&#39;</span><span class=p>)</span>
-    <span class=n>cow</span><span class=o>.</span><span class=n>representation</span><span class=o>.</span><span class=n>SetZMinusLabelText</span><span class=p>(</span><span class=s1>&#39;-Z&#39;</span><span class=p>)</span>  <span class=c1># Cannot use Nadir as N is used for North, so use -Z.</span>
+</span>    <span class=n>cow</span><span class=o>.</span><span class=n>representation</span><span class=o>.</span><span class=n>SetXPlusLabelText</span><span class=p>(</span><span class=s1>'E'</span><span class=p>)</span>
+    <span class=n>cow</span><span class=o>.</span><span class=n>representation</span><span class=o>.</span><span class=n>SetXMinusLabelText</span><span class=p>(</span><span class=s1>'W'</span><span class=p>)</span>
+    <span class=n>cow</span><span class=o>.</span><span class=n>representation</span><span class=o>.</span><span class=n>SetYPlusLabelText</span><span class=p>(</span><span class=s1>'N'</span><span class=p>)</span>
+    <span class=n>cow</span><span class=o>.</span><span class=n>representation</span><span class=o>.</span><span class=n>SetYMinusLabelText</span><span class=p>(</span><span class=s1>'S'</span><span class=p>)</span>
+    <span class=n>cow</span><span class=o>.</span><span class=n>representation</span><span class=o>.</span><span class=n>SetZPlusLabelText</span><span class=p>(</span><span class=s1>'Z'</span><span class=p>)</span>
+    <span class=n>cow</span><span class=o>.</span><span class=n>representation</span><span class=o>.</span><span class=n>SetZMinusLabelText</span><span class=p>(</span><span class=s1>'-Z'</span><span class=p>)</span>  <span class=c1># Cannot use Nadir as N is used for North, so use -Z.</span>
     <span class=n>cow</span><span class=o>.</span><span class=n>On</span><span class=p>()</span>
 
 <span class=hll>    <span class=n>axes</span> <span class=o>=</span> <span class=n>vtkAxesActor</span><span class=p>()</span>
-</span>    <span class=n>axes</span><span class=o>.</span><span class=n>SetXAxisLabelText</span><span class=p>(</span><span class=s1>&#39;East&#39;</span><span class=p>)</span>
-    <span class=n>axes</span><span class=o>.</span><span class=n>SetYAxisLabelText</span><span class=p>(</span><span class=s1>&#39;North&#39;</span><span class=p>)</span>
-    <span class=n>axes</span><span class=o>.</span><span class=n>SetZAxisLabelText</span><span class=p>(</span><span class=s1>&#39;Zenith&#39;</span><span class=p>)</span>
+</span>    <span class=n>axes</span><span class=o>.</span><span class=n>SetXAxisLabelText</span><span class=p>(</span><span class=s1>'East'</span><span class=p>)</span>
+    <span class=n>axes</span><span class=o>.</span><span class=n>SetYAxisLabelText</span><span class=p>(</span><span class=s1>'North'</span><span class=p>)</span>
+    <span class=n>axes</span><span class=o>.</span><span class=n>SetZAxisLabelText</span><span class=p>(</span><span class=s1>'Zenith'</span><span class=p>)</span>
 
     <span class=n>rgba</span> <span class=o>=</span> <span class=p>[</span><span class=mf>0.0</span><span class=p>]</span> <span class=o>*</span> <span class=mi>4</span>
-    <span class=n>colors</span><span class=o>.</span><span class=n>GetColor</span><span class=p>(</span><span class=s2>&quot;Carrot&quot;</span><span class=p>,</span> <span class=n>rgba</span><span class=p>)</span>
+    <span class=n>colors</span><span class=o>.</span><span class=n>GetColor</span><span class=p>(</span><span class=s2>"Carrot"</span><span class=p>,</span> <span class=n>rgba</span><span class=p>)</span>
     <span class=n>rgb</span> <span class=o>=</span> <span class=nb>tuple</span><span class=p>(</span><span class=n>rgba</span><span class=p>[:</span><span class=mi>3</span><span class=p>])</span>
 <span class=hll>    <span class=n>widget</span> <span class=o>=</span> <span class=n>vtkOrientationMarkerWidget</span><span class=p>(</span><span class=n>orientation_marker</span><span class=o>=</span><span class=n>axes</span><span class=p>,</span>
 </span>                                        <span class=n>interactor</span><span class=o>=</span><span class=n>iren</span><span class=p>,</span> <span class=n>default_renderer</span><span class=o>=</span><span class=n>ren</span><span class=p>,</span>
@@ -338,7 +338,7 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_fast_ctf</span><span class=p>(</span><span class=n>discretize</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>reverse</span><span class=o>=</span><span class=kc>False</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Generate the color transfer function.</span>
 
 <span class=sd>    name: Fast, creator: Francesca Samsel, and Alan W. Scott</span>
@@ -348,7 +348,7 @@ function registerListener(event, func) {
 <span class=sd>    :param discretize: Selects whether the CTF is discretized or not.</span>
 <span class=sd>    :param reverse: Reverse the colors in the CTF.</span>
 <span class=sd>    :return: The color transfer function.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 
     <span class=c1># The points and RGB values.</span>
     <span class=n>pts_rgb</span> <span class=o>=</span> <span class=p>{</span>
@@ -379,7 +379,7 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>rescale</span><span class=p>(</span><span class=n>values</span><span class=p>,</span> <span class=n>new_min</span><span class=o>=</span><span class=mi>0</span><span class=p>,</span> <span class=n>new_max</span><span class=o>=</span><span class=mi>1</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Rescale the values.</span>
 
 <span class=sd>    See: https://stats.stackexchange.com/questions/25894/changing-the-scale-of-a-variable-to-0-100</span>
@@ -388,7 +388,7 @@ function registerListener(event, func) {
 <span class=sd>    :param new_min: The new minimum value.</span>
 <span class=sd>    :param new_max: The new maximum value.</span>
 <span class=sd>    :return: The rescaled values.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=n>res</span> <span class=o>=</span> <span class=nb>list</span><span class=p>()</span>
     <span class=n>old_min</span><span class=p>,</span> <span class=n>old_max</span> <span class=o>=</span> <span class=nb>min</span><span class=p>(</span><span class=n>values</span><span class=p>),</span> <span class=nb>max</span><span class=p>(</span><span class=n>values</span><span class=p>)</span>
     <span class=k>for</span> <span class=n>v</span> <span class=ow>in</span> <span class=n>values</span><span class=p>:</span>
@@ -399,14 +399,14 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>rescale_ctf</span><span class=p>(</span><span class=n>old_ctf</span><span class=p>,</span> <span class=n>new_min</span><span class=o>=</span><span class=mi>0</span><span class=p>,</span> <span class=n>new_max</span><span class=o>=</span><span class=mi>1</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Rescale the color transfer function.</span>
 
 <span class=sd>    :param old_ctf: The color transfer function to rescale.</span>
 <span class=sd>    :param new_min: The new minimum value.</span>
 <span class=sd>    :param new_max: The new maximum value.</span>
 <span class=sd>    :return: A new rescaled color transfer function.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=k>if</span> <span class=n>new_min</span> <span class=o>&gt;</span> <span class=n>new_max</span><span class=p>:</span>
         <span class=n>r0</span> <span class=o>=</span> <span class=n>new_max</span>
         <span class=n>r1</span> <span class=o>=</span> <span class=n>new_min</span>
@@ -481,6 +481,6 @@ function registerListener(event, func) {
         <span class=n>VTK_SCALAR_MODE_USE_FIELD_DATA</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>5</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

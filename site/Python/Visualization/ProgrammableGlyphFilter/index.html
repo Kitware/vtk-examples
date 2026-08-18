@@ -107,20 +107,20 @@ function registerListener(event, func) {
 </span>    <span class=n>mapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>glyph_filter</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
 <span class=hll>    <span class=n>actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>actor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>)</span>
-    <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Gold&#39;</span><span class=p>))</span>
+    <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Gold'</span><span class=p>))</span>
 
     <span class=c1># Create a renderer, render window, and interactor.</span>
 <span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>()</span>
 </span><span class=hll>    <span class=n>ren_win</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>()</span>
 </span>    <span class=n>ren_win</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>)</span>
-    <span class=n>ren_win</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;ProgrammableGlyphFilter&#39;</span><span class=p>)</span>
+    <span class=n>ren_win</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>'ProgrammableGlyphFilter'</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>iren</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>ren_win</span><span class=p>)</span>
 
     <span class=c1># Add the actor to the scene.</span>
     <span class=n>renderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor</span><span class=p>)</span>
-    <span class=n>renderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;SlateGray&#39;</span><span class=p>))</span>
+    <span class=n>renderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'SlateGray'</span><span class=p>))</span>
 
     <span class=c1># Render and interact.</span>
     <span class=n>ren_win</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
@@ -135,8 +135,8 @@ function registerListener(event, func) {
     <span class=k>def</span><span class=w> </span><span class=fm>__call__</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
         <span class=n>point_coords</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>glyph_filter</span><span class=o>.</span><span class=n>GetPoint</span><span class=p>()</span>
 
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Calling CalcGlyph for point &#39;</span><span class=p>,</span> <span class=bp>self</span><span class=o>.</span><span class=n>glyph_filter</span><span class=o>.</span><span class=n>GetPointId</span><span class=p>())</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Point coords are: &#39;</span><span class=p>,</span> <span class=n>point_coords</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=n>point_coords</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span> <span class=n>point_coords</span><span class=p>[</span><span class=mi>2</span><span class=p>])</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'Calling CalcGlyph for point '</span><span class=p>,</span> <span class=bp>self</span><span class=o>.</span><span class=n>glyph_filter</span><span class=o>.</span><span class=n>GetPointId</span><span class=p>())</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'Point coords are: '</span><span class=p>,</span> <span class=n>point_coords</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=n>point_coords</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span> <span class=n>point_coords</span><span class=p>[</span><span class=mi>2</span><span class=p>])</span>
         <span class=k>if</span> <span class=bp>self</span><span class=o>.</span><span class=n>glyph_filter</span><span class=o>.</span><span class=n>GetPointId</span><span class=p>()</span> <span class=o>==</span> <span class=mi>0</span><span class=p>:</span>
 <span class=hll>            <span class=n>cone_source</span> <span class=o>=</span> <span class=n>vtkConeSource</span><span class=p>()</span>
 </span>            <span class=n>cone_source</span><span class=o>.</span><span class=n>SetCenter</span><span class=p>(</span><span class=n>point_coords</span><span class=p>)</span>
@@ -151,7 +151,7 @@ function registerListener(event, func) {
             <span class=bp>self</span><span class=o>.</span><span class=n>glyph_filter</span><span class=o>.</span><span class=n>SetSourceConnection</span><span class=p>(</span><span class=n>sphere_source</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>sys</span>
 
     <span class=n>main</span><span class=p>(</span><span class=n>sys</span><span class=o>.</span><span class=n>argv</span><span class=p>)</span>

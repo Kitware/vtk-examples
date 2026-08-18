@@ -112,12 +112,12 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>not_selected</span> <span class=o>=</span> <span class=n>vtkUnstructuredGrid</span><span class=p>()</span>
 </span>    <span class=n>not_selected</span><span class=o>.</span><span class=n>ShallowCopy</span><span class=p>(</span><span class=n>extract_selection</span><span class=o>.</span><span class=n>update</span><span class=p>()</span><span class=o>.</span><span class=n>output</span><span class=p>)</span>
 
-    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;There are </span><span class=si>{</span><span class=n>point_source</span><span class=o>.</span><span class=n>output</span><span class=o>.</span><span class=n>number_of_points</span><span class=si>}</span><span class=s1> input points.&#39;</span><span class=p>)</span>
-    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;There are </span><span class=si>{</span><span class=n>selected</span><span class=o>.</span><span class=n>number_of_points</span><span class=si>}</span><span class=s1> points and </span><span class=si>{</span><span class=n>selected</span><span class=o>.</span><span class=n>number_of_cells</span><span class=si>}</span><span class=s1> cells in the selection.&#39;</span><span class=p>)</span>
-    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;There are </span><span class=si>{</span><span class=n>not_selected</span><span class=o>.</span><span class=n>number_of_points</span><span class=si>}</span><span class=s1> points&#39;</span>
-          <span class=sa>f</span><span class=s1>&#39; and </span><span class=si>{</span><span class=n>not_selected</span><span class=o>.</span><span class=n>number_of_cells</span><span class=si>}</span><span class=s1> cells NOT in the selection.&#39;</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'There are </span><span class=si>{</span><span class=n>point_source</span><span class=o>.</span><span class=n>output</span><span class=o>.</span><span class=n>number_of_points</span><span class=si>}</span><span class=s1> input points.'</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'There are </span><span class=si>{</span><span class=n>selected</span><span class=o>.</span><span class=n>number_of_points</span><span class=si>}</span><span class=s1> points and </span><span class=si>{</span><span class=n>selected</span><span class=o>.</span><span class=n>number_of_cells</span><span class=si>}</span><span class=s1> cells in the selection.'</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'There are </span><span class=si>{</span><span class=n>not_selected</span><span class=o>.</span><span class=n>number_of_points</span><span class=si>}</span><span class=s1> points'</span>
+          <span class=sa>f</span><span class=s1>' and </span><span class=si>{</span><span class=n>not_selected</span><span class=o>.</span><span class=n>number_of_cells</span><span class=si>}</span><span class=s1> cells NOT in the selection.'</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>point_property</span> <span class=o>=</span> <span class=n>vtkProperty</span><span class=p>(</span><span class=n>color</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;MidnightBlue&#39;</span><span class=p>),</span> <span class=n>point_size</span><span class=o>=</span><span class=mi>5</span><span class=p>)</span>
+<span class=hll>    <span class=n>point_property</span> <span class=o>=</span> <span class=n>vtkProperty</span><span class=p>(</span><span class=n>color</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'MidnightBlue'</span><span class=p>),</span> <span class=n>point_size</span><span class=o>=</span><span class=mi>5</span><span class=p>)</span>
 </span>
 <span class=hll>    <span class=n>input_mapper</span> <span class=o>=</span> <span class=n>vtkDataSetMapper</span><span class=p>()</span>
 </span>    <span class=n>point_source</span><span class=o>.</span><span class=n>output</span> <span class=o>&gt;&gt;</span> <span class=n>input_mapper</span>
@@ -132,7 +132,7 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>not_selected_actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>(</span><span class=n>mapper</span><span class=o>=</span><span class=n>not_selected_mapper</span><span class=p>,</span> <span class=nb>property</span><span class=o>=</span><span class=n>point_property</span><span class=p>)</span>
 </span>
     <span class=c1># There will be one render window.</span>
-<span class=hll>    <span class=n>render_window</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>size</span><span class=o>=</span><span class=p>(</span><span class=mi>900</span><span class=p>,</span> <span class=mi>300</span><span class=p>),</span> <span class=n>window_name</span><span class=o>=</span><span class=s1>&#39;ExtractSelectedIds&#39;</span><span class=p>)</span>
+<span class=hll>    <span class=n>render_window</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>size</span><span class=o>=</span><span class=p>(</span><span class=mi>900</span><span class=p>,</span> <span class=mi>300</span><span class=p>),</span> <span class=n>window_name</span><span class=o>=</span><span class=s1>'ExtractSelectedIds'</span><span class=p>)</span>
 </span>
     <span class=c1># And one interactor.</span>
 <span class=hll>    <span class=n>interactor</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
@@ -148,15 +148,15 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>camera</span> <span class=o>=</span> <span class=n>vtkCamera</span><span class=p>()</span>
 </span>
     <span class=c1># Setup the renderers</span>
-<span class=hll>    <span class=n>left_renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;BurlyWood&#39;</span><span class=p>),</span>
+<span class=hll>    <span class=n>left_renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'BurlyWood'</span><span class=p>),</span>
 </span>                                <span class=n>viewport</span><span class=o>=</span><span class=n>left_viewport</span><span class=p>,</span> <span class=n>active_camera</span><span class=o>=</span><span class=n>camera</span><span class=p>)</span>
     <span class=n>render_window</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>left_renderer</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>center_renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;orchid_dark&#39;</span><span class=p>),</span>
+<span class=hll>    <span class=n>center_renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'orchid_dark'</span><span class=p>),</span>
 </span>                                  <span class=n>viewport</span><span class=o>=</span><span class=n>center_viewport</span><span class=p>,</span> <span class=n>active_camera</span><span class=o>=</span><span class=n>camera</span><span class=p>)</span>
     <span class=n>render_window</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>center_renderer</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>right_renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;CornflowerBlue&#39;</span><span class=p>),</span>
+<span class=hll>    <span class=n>right_renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'CornflowerBlue'</span><span class=p>),</span>
 </span>                                 <span class=n>viewport</span><span class=o>=</span><span class=n>right_viewport</span><span class=p>,</span> <span class=n>active_camera</span><span class=o>=</span><span class=n>camera</span><span class=p>)</span>
     <span class=n>render_window</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>right_renderer</span><span class=p>)</span>
 
@@ -170,7 +170,7 @@ function registerListener(event, func) {
     <span class=n>interactor</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>sys</span>
 
     <span class=n>main</span><span class=p>(</span><span class=n>sys</span><span class=o>.</span><span class=n>argv</span><span class=p>)</span>

@@ -76,7 +76,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>vtkNativeLibrary</span><span class=p>.</span><span class=na>LoadAllNativeLibraries</span><span class=p>())</span><span class=w> </span><span class=p>{</span>
 <span class=w>      </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=n>vtkNativeLibrary</span><span class=w> </span><span class=n>lib</span><span class=w> </span><span class=p>:</span><span class=w> </span><span class=n>vtkNativeLibrary</span><span class=p>.</span><span class=na>values</span><span class=p>())</span><span class=w> </span><span class=p>{</span>
 <span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>lib</span><span class=p>.</span><span class=na>IsLoaded</span><span class=p>())</span><span class=w> </span><span class=p>{</span>
-<span class=w>          </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&quot; not loaded&quot;</span><span class=p>);</span>
+<span class=w>          </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>" not loaded"</span><span class=p>);</span>
 <span class=w>        </span><span class=p>}</span>
 <span class=w>      </span><span class=p>}</span>
 <span class=w>    </span><span class=p>}</span>
@@ -97,9 +97,9 @@ function registerListener(event, func) {
 
 
 <span class=w>    </span><span class=c1>//Change Color Name to Use your own Color for Change Actor Color</span>
-<span class=w>    </span><span class=n>Color</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>&quot;IndianRed&quot;</span><span class=p>,</span><span class=n>TextActorColor</span><span class=p>);</span>
+<span class=w>    </span><span class=n>Color</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>"IndianRed"</span><span class=p>,</span><span class=n>TextActorColor</span><span class=p>);</span>
 <span class=w>    </span><span class=c1>//Change Color Name to Use your own Color for Renderer Background</span>
-<span class=w>    </span><span class=n>Color</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>&quot;LightGrey&quot;</span><span class=p>,</span><span class=n>BgColor</span><span class=p>);</span>
+<span class=w>    </span><span class=n>Color</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>"LightGrey"</span><span class=p>,</span><span class=n>BgColor</span><span class=p>);</span>
 
 
 <span class=w>    </span><span class=c1>// Create the axes and the associated mapper and actor.</span>
@@ -115,7 +115,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=c1>// Create the 3D text and the associated mapper and follower (a type of actor).  </span>
 <span class=w>    </span><span class=c1>//Position the text so it is displayed over the origin of the axes.</span>
 <span class=hll><span class=w>    </span><span class=n>vtkVectorText</span><span class=w> </span><span class=n>aText</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkVectorText</span><span class=p>();</span>
-</span><span class=w>    </span><span class=n>aText</span><span class=p>.</span><span class=na>SetText</span><span class=p>(</span><span class=s>&quot;Origin&quot;</span><span class=p>);</span>
+</span><span class=w>    </span><span class=n>aText</span><span class=p>.</span><span class=na>SetText</span><span class=p>(</span><span class=s>"Origin"</span><span class=p>);</span>
 
 
 <span class=hll><span class=w>    </span><span class=n>vtkPolyDataMapper</span><span class=w> </span><span class=n>TextMapper</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkPolyDataMapper</span><span class=p>();</span>

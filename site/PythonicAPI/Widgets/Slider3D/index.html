@@ -95,13 +95,13 @@ function registerListener(event, func) {
 
 <span class=hll>    <span class=n>actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>(</span><span class=n>mapper</span><span class=o>=</span><span class=n>mapper</span><span class=p>)</span>
 </span>    <span class=n>actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>SetInterpolationToFlat</span><span class=p>()</span>
-    <span class=n>actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;MistyRose&#39;</span><span class=p>)</span>
-    <span class=n>actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>edge_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Tomato&#39;</span><span class=p>)</span>
+    <span class=n>actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'MistyRose'</span><span class=p>)</span>
+    <span class=n>actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>edge_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Tomato'</span><span class=p>)</span>
     <span class=n>actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>edge_visibility</span> <span class=o>=</span> <span class=kc>True</span>
 
     <span class=c1># A renderer and render window.</span>
-<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;SlateGray&#39;</span><span class=p>))</span>
-</span><span class=hll>    <span class=n>render_window</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>size</span><span class=o>=</span><span class=p>(</span><span class=mi>640</span><span class=p>,</span> <span class=mi>480</span><span class=p>),</span> <span class=n>window_name</span><span class=o>=</span><span class=s1>&#39;Slider3D&#39;</span><span class=p>)</span>
+<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'SlateGray'</span><span class=p>))</span>
+</span><span class=hll>    <span class=n>render_window</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>size</span><span class=o>=</span><span class=p>(</span><span class=mi>640</span><span class=p>,</span> <span class=mi>480</span><span class=p>),</span> <span class=n>window_name</span><span class=o>=</span><span class=s1>'Slider3D'</span><span class=p>)</span>
 </span>    <span class=n>render_window</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>)</span>
 
     <span class=c1># An interactor.</span>
@@ -119,7 +119,7 @@ function registerListener(event, func) {
     <span class=n>sp</span> <span class=o>=</span> <span class=n>make_slider_properties</span><span class=p>()</span>
 
     <span class=n>sp</span><span class=o>.</span><span class=n>Range</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>sphere_source</span><span class=o>.</span><span class=n>theta_resolution</span>
-    <span class=n>sp</span><span class=o>.</span><span class=n>Text</span><span class=o>.</span><span class=n>title</span> <span class=o>=</span> <span class=s1>&#39;Sphere Resolution&#39;</span>
+    <span class=n>sp</span><span class=o>.</span><span class=n>Text</span><span class=o>.</span><span class=n>title</span> <span class=o>=</span> <span class=s1>'Sphere Resolution'</span>
 
     <span class=n>widget</span> <span class=o>=</span> <span class=n>make_3d_slider_widget</span><span class=p>(</span><span class=n>sp</span><span class=p>,</span> <span class=n>render_window_interactor</span><span class=p>)</span>
     <span class=n>cb</span> <span class=o>=</span> <span class=n>SliderCallback</span><span class=p>(</span><span class=n>sphere_source</span><span class=p>)</span>
@@ -146,29 +146,29 @@ function registerListener(event, func) {
     <span class=n>sp</span><span class=o>.</span><span class=n>Dimensions</span><span class=o>.</span><span class=n>label_height</span> <span class=o>=</span> <span class=mf>0.055</span>
     <span class=c1># Set color properties:</span>
     <span class=c1># Change the color of the knob that slides.</span>
-    <span class=n>sp</span><span class=o>.</span><span class=n>Colors</span><span class=o>.</span><span class=n>slider_color</span> <span class=o>=</span> <span class=s1>&#39;Green&#39;</span>
+    <span class=n>sp</span><span class=o>.</span><span class=n>Colors</span><span class=o>.</span><span class=n>slider_color</span> <span class=o>=</span> <span class=s1>'Green'</span>
     <span class=c1># Change the color of the text indicating what the slider controls.</span>
-    <span class=n>sp</span><span class=o>.</span><span class=n>Colors</span><span class=o>.</span><span class=n>title_color</span> <span class=o>=</span> <span class=s1>&#39;AliceBlue&#39;</span>
+    <span class=n>sp</span><span class=o>.</span><span class=n>Colors</span><span class=o>.</span><span class=n>title_color</span> <span class=o>=</span> <span class=s1>'AliceBlue'</span>
     <span class=c1># Change the color of the text displaying the value.</span>
-    <span class=n>sp</span><span class=o>.</span><span class=n>Colors</span><span class=o>.</span><span class=n>label_color</span> <span class=o>=</span> <span class=s1>&#39;AliceBlue&#39;</span>
+    <span class=n>sp</span><span class=o>.</span><span class=n>Colors</span><span class=o>.</span><span class=n>label_color</span> <span class=o>=</span> <span class=s1>'AliceBlue'</span>
     <span class=c1># Change the color of the knob when the mouse is held on it.</span>
-    <span class=n>sp</span><span class=o>.</span><span class=n>Colors</span><span class=o>.</span><span class=n>selected_color</span> <span class=o>=</span> <span class=s1>&#39;DeepPink&#39;</span>
+    <span class=n>sp</span><span class=o>.</span><span class=n>Colors</span><span class=o>.</span><span class=n>selected_color</span> <span class=o>=</span> <span class=s1>'DeepPink'</span>
     <span class=c1># Change the color of the bar.</span>
-    <span class=n>sp</span><span class=o>.</span><span class=n>Colors</span><span class=o>.</span><span class=n>bar_color</span> <span class=o>=</span> <span class=s1>&#39;MistyRose&#39;</span>
+    <span class=n>sp</span><span class=o>.</span><span class=n>Colors</span><span class=o>.</span><span class=n>bar_color</span> <span class=o>=</span> <span class=s1>'MistyRose'</span>
     <span class=c1># Change the color of the ends of the bar.</span>
-    <span class=n>sp</span><span class=o>.</span><span class=n>Colors</span><span class=o>.</span><span class=n>bar_ends_color</span> <span class=o>=</span> <span class=s1>&#39;Yellow&#39;</span>
+    <span class=n>sp</span><span class=o>.</span><span class=n>Colors</span><span class=o>.</span><span class=n>bar_ends_color</span> <span class=o>=</span> <span class=s1>'Yellow'</span>
 
     <span class=k>return</span> <span class=n>sp</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>make_3d_slider_widget</span><span class=p>(</span><span class=n>properties</span><span class=p>,</span> <span class=n>interactor</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Make a 3D slider widget.</span>
 
 <span class=sd>    :param properties: The 3D slider properties.</span>
 <span class=sd>    :param interactor: The vtkInteractor.</span>
 <span class=sd>    :return: The slider widget.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
 <span class=hll>    <span class=n>slider_rep</span> <span class=o>=</span> <span class=n>vtkSliderRepresentation3D</span><span class=p>(</span><span class=n>minimum_value</span><span class=o>=</span><span class=n>properties</span><span class=o>.</span><span class=n>Range</span><span class=o>.</span><span class=n>minimum_value</span><span class=p>,</span>
@@ -220,12 +220,12 @@ function registerListener(event, func) {
 <span class=k>class</span><span class=w> </span><span class=nc>Slider3DProperties</span><span class=p>:</span>
     <span class=nd>@dataclass</span>
     <span class=k>class</span><span class=w> </span><span class=nc>Colors</span><span class=p>:</span>
-        <span class=n>title_color</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s1>&#39;White&#39;</span>
-        <span class=n>label_color</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s1>&#39;White&#39;</span>
-        <span class=n>slider_color</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s1>&#39;White&#39;</span>
-        <span class=n>selected_color</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s1>&#39;HotPink&#39;</span>
-        <span class=n>bar_color</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s1>&#39;White&#39;</span>
-        <span class=n>bar_ends_color</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s1>&#39;White&#39;</span>
+        <span class=n>title_color</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s1>'White'</span>
+        <span class=n>label_color</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s1>'White'</span>
+        <span class=n>slider_color</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s1>'White'</span>
+        <span class=n>selected_color</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s1>'HotPink'</span>
+        <span class=n>bar_color</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s1>'White'</span>
+        <span class=n>bar_ends_color</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s1>'White'</span>
 
     <span class=nd>@dataclass</span>
     <span class=k>class</span><span class=w> </span><span class=nc>Dimensions</span><span class=p>:</span>
@@ -251,14 +251,14 @@ function registerListener(event, func) {
 
     <span class=nd>@dataclass</span>
     <span class=k>class</span><span class=w> </span><span class=nc>Text</span><span class=p>:</span>
-        <span class=n>title</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s1>&#39;&#39;</span>
+        <span class=n>title</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s1>''</span>
 
 
 <span class=k>class</span><span class=w> </span><span class=nc>SliderCallback</span><span class=p>:</span>
 
     <span class=k>def</span><span class=w> </span><span class=fm>__init__</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>sphere_source</span><span class=p>):</span>
-<span class=w>        </span><span class=sd>&quot;&quot;&quot;</span>
-<span class=sd>        &quot;&quot;&quot;</span>
+<span class=w>        </span><span class=sd>"""</span>
+<span class=sd>        """</span>
         <span class=bp>self</span><span class=o>.</span><span class=n>sphere_source</span> <span class=o>=</span> <span class=n>sphere_source</span>
 
     <span class=k>def</span><span class=w> </span><span class=fm>__call__</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>caller</span><span class=p>,</span> <span class=n>ev</span><span class=p>):</span>
@@ -268,6 +268,6 @@ function registerListener(event, func) {
         <span class=bp>self</span><span class=o>.</span><span class=n>sphere_source</span><span class=o>.</span><span class=n>theta_resolution</span> <span class=o>=</span> <span class=n>value</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

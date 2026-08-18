@@ -83,11 +83,11 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>main</span><span class=p>():</span>
     <span class=k>def</span><span class=w> </span><span class=nf>NumberOfTriangles</span><span class=p>(</span><span class=n>pd</span><span class=p>):</span>
-<span class=w>        </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>        </span><span class=sd>"""</span>
 <span class=sd>        Count the number of triangles.</span>
 <span class=hll><span class=sd>        :param pd: vtkPolyData.</span>
 </span><span class=sd>        :return: The number of triangles.</span>
-<span class=sd>        &quot;&quot;&quot;</span>
+<span class=sd>        """</span>
         <span class=n>cells</span> <span class=o>=</span> <span class=n>pd</span><span class=o>.</span><span class=n>GetPolys</span><span class=p>()</span>
         <span class=n>numOfTriangles</span> <span class=o>=</span> <span class=mi>0</span>
 <span class=hll>        <span class=n>idList</span> <span class=o>=</span> <span class=n>vtkIdList</span><span class=p>()</span>
@@ -107,8 +107,8 @@ function registerListener(event, func) {
 </span>    <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>fileName</span><span class=p>)</span>
     <span class=n>reader</span><span class=o>.</span><span class=n>FlipNormalsOff</span><span class=p>()</span>
     <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
-    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Before Decimation.&#39;</span><span class=p>)</span>
-    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;There are: &#39;</span><span class=p>,</span> <span class=n>NumberOfTriangles</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()),</span> <span class=s1>&#39;triangles&#39;</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s1>'Before Decimation.'</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s1>'There are: '</span><span class=p>,</span> <span class=n>NumberOfTriangles</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()),</span> <span class=s1>'triangles'</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>deci</span> <span class=o>=</span> <span class=n>vtkDecimatePro</span><span class=p>()</span>
 </span>    <span class=n>deci</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>reader</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
@@ -120,22 +120,22 @@ function registerListener(event, func) {
     <span class=n>deci</span><span class=o>.</span><span class=n>AccumulateErrorOn</span><span class=p>()</span>
     <span class=c1># deci.SplittingOff()</span>
     <span class=n>deci</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
-    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;After Decimation.&#39;</span><span class=p>)</span>
-    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;There are: &#39;</span><span class=p>,</span> <span class=n>NumberOfTriangles</span><span class=p>(</span><span class=n>deci</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()),</span> <span class=s1>&#39;triangles&#39;</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s1>'After Decimation.'</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s1>'There are: '</span><span class=p>,</span> <span class=n>NumberOfTriangles</span><span class=p>(</span><span class=n>deci</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()),</span> <span class=s1>'triangles'</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>connect</span> <span class=o>=</span> <span class=n>vtkConnectivityFilter</span><span class=p>()</span>
 </span>    <span class=n>connect</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>deci</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>connect</span><span class=o>.</span><span class=n>SetExtractionModeToLargestRegion</span><span class=p>()</span>
     <span class=n>connect</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
-    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;After Connectivity.&#39;</span><span class=p>)</span>
-    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;There are: &#39;</span><span class=p>,</span> <span class=n>NumberOfTriangles</span><span class=p>(</span><span class=n>connect</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()),</span> <span class=s1>&#39;triangles&#39;</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s1>'After Connectivity.'</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s1>'There are: '</span><span class=p>,</span> <span class=n>NumberOfTriangles</span><span class=p>(</span><span class=n>connect</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()),</span> <span class=s1>'triangles'</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>isoMapper</span> <span class=o>=</span> <span class=n>vtkDataSetMapper</span><span class=p>()</span>
 </span>    <span class=n>isoMapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>connect</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
     <span class=n>isoMapper</span><span class=o>.</span><span class=n>ScalarVisibilityOff</span><span class=p>()</span>
 <span class=hll>    <span class=n>isoActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>isoActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>isoMapper</span><span class=p>)</span>
-    <span class=n>isoActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;raw_sienna&#39;</span><span class=p>))</span>
+    <span class=n>isoActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'raw_sienna'</span><span class=p>))</span>
 
     <span class=c1>#  Get an outline of the data set for context.</span>
 <span class=hll>    <span class=n>outline</span> <span class=o>=</span> <span class=n>vtkOutlineFilter</span><span class=p>()</span>
@@ -144,7 +144,7 @@ function registerListener(event, func) {
 </span>    <span class=n>outlineMapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>outline</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
 <span class=hll>    <span class=n>outlineActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>outlineActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>outlineMapper</span><span class=p>)</span>
-    <span class=n>outlineActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Black&#39;</span><span class=p>))</span>
+    <span class=n>outlineActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Black'</span><span class=p>))</span>
 
     <span class=c1>#  Create the Renderer, RenderWindow and RenderWindowInteractor.</span>
 <span class=hll>    <span class=n>ren</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>()</span>
@@ -159,9 +159,9 @@ function registerListener(event, func) {
     <span class=n>ren</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
     <span class=c1># renWin.SetSize(750, 750)</span>
     <span class=n>renWin</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>512</span><span class=p>,</span> <span class=mi>512</span><span class=p>)</span>
-    <span class=n>renWin</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;PineRootDecimation&#39;</span><span class=p>)</span>
+    <span class=n>renWin</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>'PineRootDecimation'</span><span class=p>)</span>
 
-    <span class=n>ren</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;SlateGray&#39;</span><span class=p>))</span>
+    <span class=n>ren</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'SlateGray'</span><span class=p>))</span>
 
     <span class=c1># render the image</span>
 
@@ -180,20 +180,20 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_program_parameters</span><span class=p>():</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>argparse</span>
-    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;Applying connectivity and decimation filters to remove noisy isosurfaces and reduce data size.&#39;</span>
-    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;</span>
+    <span class=n>description</span> <span class=o>=</span> <span class=s1>'Applying connectivity and decimation filters to remove noisy isosurfaces and reduce data size.'</span>
+    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>'''</span>
 <span class=s1>        Applying connectivity and decimation filters to remove noisy isosurfaces and reduce data size..</span>
 
 <span class=hll><span class=s1>This example demonstrates how to use the vtkConnectivityFilter and vtkDecimate.</span>
 </span>
-<span class=s1>   &#39;&#39;&#39;</span>
+<span class=s1>   '''</span>
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
                                      <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawDescriptionHelpFormatter</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;filename&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;pine_root.tri.&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'filename'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'pine_root.tri.'</span><span class=p>)</span>
     <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
     <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>filename</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

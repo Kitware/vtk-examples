@@ -89,7 +89,7 @@ function registerListener(event, func) {
 
 <span class=hll>    <span class=n>scales</span> <span class=o>=</span> <span class=n>vtkFloatArray</span><span class=p>()</span>
 </span>    <span class=n>scales</span><span class=o>.</span><span class=n>SetNumberOfComponents</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
-    <span class=n>scales</span><span class=o>.</span><span class=n>SetName</span><span class=p>(</span><span class=s1>&#39;Scales&#39;</span><span class=p>)</span>
+    <span class=n>scales</span><span class=o>.</span><span class=n>SetName</span><span class=p>(</span><span class=s1>'Scales'</span><span class=p>)</span>
     <span class=n>scales</span><span class=o>.</span><span class=n>InsertNextValue</span><span class=p>(</span><span class=mf>2.0</span><span class=p>)</span>
     <span class=n>scales</span><span class=o>.</span><span class=n>InsertNextValue</span><span class=p>(</span><span class=mf>5.0</span><span class=p>)</span>
 
@@ -99,12 +99,12 @@ function registerListener(event, func) {
     <span class=c1># Create the color array</span>
 <span class=hll>    <span class=n>vertexColors</span> <span class=o>=</span> <span class=n>vtkIntArray</span><span class=p>()</span>
 </span>    <span class=n>vertexColors</span><span class=o>.</span><span class=n>SetNumberOfComponents</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
-    <span class=n>vertexColors</span><span class=o>.</span><span class=n>SetName</span><span class=p>(</span><span class=s1>&#39;Color&#39;</span><span class=p>)</span>
+    <span class=n>vertexColors</span><span class=o>.</span><span class=n>SetName</span><span class=p>(</span><span class=s1>'Color'</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>lookupTable</span> <span class=o>=</span> <span class=n>vtkLookupTable</span><span class=p>()</span>
 </span>    <span class=n>lookupTable</span><span class=o>.</span><span class=n>SetNumberOfTableValues</span><span class=p>(</span><span class=mi>2</span><span class=p>)</span>
-    <span class=n>lookupTable</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>&#39;Yellow&#39;</span><span class=p>))</span>
-    <span class=n>lookupTable</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>&#39;Lime&#39;</span><span class=p>))</span>
+    <span class=n>lookupTable</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>'Yellow'</span><span class=p>))</span>
+    <span class=n>lookupTable</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>'Lime'</span><span class=p>))</span>
     <span class=n>lookupTable</span><span class=o>.</span><span class=n>Build</span><span class=p>()</span>
 
     <span class=n>vertexColors</span><span class=o>.</span><span class=n>InsertNextValue</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
@@ -125,20 +125,20 @@ function registerListener(event, func) {
     <span class=n>layout_view</span><span class=o>.</span><span class=n>AddRepresentationFromInput</span><span class=p>(</span><span class=n>g</span><span class=p>)</span>
     <span class=n>layout_view</span><span class=o>.</span><span class=n>ApplyViewTheme</span><span class=p>(</span><span class=n>theme</span><span class=p>)</span>
     <span class=n>layout_view</span><span class=o>.</span><span class=n>ScaledGlyphsOn</span><span class=p>()</span>
-    <span class=n>layout_view</span><span class=o>.</span><span class=n>SetScalingArrayName</span><span class=p>(</span><span class=s1>&#39;Scales&#39;</span><span class=p>)</span>
-    <span class=n>layout_view</span><span class=o>.</span><span class=n>SetVertexColorArrayName</span><span class=p>(</span><span class=s1>&#39;Color&#39;</span><span class=p>)</span>
+    <span class=n>layout_view</span><span class=o>.</span><span class=n>SetScalingArrayName</span><span class=p>(</span><span class=s1>'Scales'</span><span class=p>)</span>
+    <span class=n>layout_view</span><span class=o>.</span><span class=n>SetVertexColorArrayName</span><span class=p>(</span><span class=s1>'Color'</span><span class=p>)</span>
     <span class=n>layout_view</span><span class=o>.</span><span class=n>ColorVerticesOn</span><span class=p>()</span>
 <span class=hll>    <span class=n>rGraph</span> <span class=o>=</span> <span class=n>vtkRenderedGraphRepresentation</span><span class=p>()</span>
 </span><span class=hll>    <span class=n>gGlyph</span> <span class=o>=</span> <span class=n>vtkGraphToGlyphs</span><span class=p>()</span>
 </span>    <span class=n>rGraph</span><span class=o>.</span><span class=n>SafeDownCast</span><span class=p>(</span><span class=n>layout_view</span><span class=o>.</span><span class=n>GetRepresentation</span><span class=p>())</span><span class=o>.</span><span class=n>SetGlyphType</span><span class=p>(</span><span class=n>gGlyph</span><span class=o>.</span><span class=n>CIRCLE</span><span class=p>)</span>
-    <span class=n>layout_view</span><span class=o>.</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Navy&#39;</span><span class=p>))</span>
-    <span class=n>layout_view</span><span class=o>.</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>.</span><span class=n>SetBackground2</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;MidnightBlue&#39;</span><span class=p>))</span>
-    <span class=n>layout_view</span><span class=o>.</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;ScaleVertices&#39;</span><span class=p>)</span>
+    <span class=n>layout_view</span><span class=o>.</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Navy'</span><span class=p>))</span>
+    <span class=n>layout_view</span><span class=o>.</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>.</span><span class=n>SetBackground2</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'MidnightBlue'</span><span class=p>))</span>
+    <span class=n>layout_view</span><span class=o>.</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>'ScaleVertices'</span><span class=p>)</span>
     <span class=n>layout_view</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
     <span class=n>layout_view</span><span class=o>.</span><span class=n>ResetCamera</span><span class=p>()</span>
     <span class=n>layout_view</span><span class=o>.</span><span class=n>GetInteractor</span><span class=p>()</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

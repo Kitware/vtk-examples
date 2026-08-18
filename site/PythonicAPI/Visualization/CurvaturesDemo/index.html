@@ -110,14 +110,14 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_program_parameters</span><span class=p>():</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>argparse</span>
-    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;Display the Gaussian and Mean curvatures of two surfaces adjusting for edge effects.&#39;</span>
-    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;</span>
-<span class=s1>    &#39;&#39;&#39;</span>
+    <span class=n>description</span> <span class=o>=</span> <span class=s1>'Display the Gaussian and Mean curvatures of two surfaces adjusting for edge effects.'</span>
+    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>'''</span>
+<span class=s1>    '''</span>
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
                                      <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawDescriptionHelpFormatter</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-c&#39;</span><span class=p>,</span> <span class=s1>&#39;--continuous&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_true&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Build a continuous colormap.&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-r&#39;</span><span class=p>,</span> <span class=s1>&#39;--reverse&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_true&#39;</span><span class=p>,</span>
-                        <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Reverse the colormap.&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-c'</span><span class=p>,</span> <span class=s1>'--continuous'</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>'store_true'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'Build a continuous colormap.'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-r'</span><span class=p>,</span> <span class=s1>'--reverse'</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>'store_true'</span><span class=p>,</span>
+                        <span class=n>help</span><span class=o>=</span><span class=s1>'Reverse the colormap.'</span><span class=p>)</span>
 
     <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
     <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>continuous</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>reverse</span>
@@ -147,7 +147,7 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>tri</span> <span class=o>=</span> <span class=n>vtkTriangleFilter</span><span class=p>()</span>
 </span>
     <span class=c1># The quadric has nasty discontinuities from the way the edges are generated</span>
-    <span class=c1># so let&#39;s pass it though a CleanPolyDataFilter and merge any points which</span>
+    <span class=c1># so let's pass it though a CleanPolyDataFilter and merge any points which</span>
     <span class=c1># are coincident, or very close</span>
 <span class=hll>    <span class=n>cleaner</span> <span class=o>=</span> <span class=n>vtkCleanPolyData</span><span class=p>(</span><span class=n>tolerance</span><span class=o>=</span><span class=mf>0.005</span><span class=p>)</span>
 </span>
@@ -166,10 +166,10 @@ function registerListener(event, func) {
             <span class=n>cc</span><span class=o>.</span><span class=n>input_connection</span> <span class=o>=</span> <span class=n>rh_fn_src</span><span class=o>.</span><span class=n>output_port</span>
         <span class=k>if</span> <span class=n>i</span> <span class=o>%</span> <span class=mi>2</span> <span class=o>==</span> <span class=mi>0</span><span class=p>:</span>
             <span class=n>cc</span><span class=o>.</span><span class=n>SetCurvatureTypeToGaussian</span><span class=p>()</span>
-            <span class=n>curvature_name</span> <span class=o>=</span> <span class=s1>&#39;Gauss_Curvature&#39;</span>
+            <span class=n>curvature_name</span> <span class=o>=</span> <span class=s1>'Gauss_Curvature'</span>
         <span class=k>else</span><span class=p>:</span>
             <span class=n>cc</span><span class=o>.</span><span class=n>SetCurvatureTypeToMean</span><span class=p>()</span>
-            <span class=n>curvature_name</span> <span class=o>=</span> <span class=s1>&#39;Mean_Curvature&#39;</span>
+            <span class=n>curvature_name</span> <span class=o>=</span> <span class=s1>'Mean_Curvature'</span>
         <span class=n>cc</span><span class=o>.</span><span class=n>update</span><span class=p>()</span>
         <span class=n>adjust_edge_curvatures</span><span class=p>(</span><span class=n>cc</span><span class=o>.</span><span class=n>output</span><span class=p>,</span> <span class=n>curvature_name</span><span class=p>)</span>
         <span class=n>sources</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>cc</span><span class=o>.</span><span class=n>output</span><span class=p>)</span>
@@ -178,23 +178,23 @@ function registerListener(event, func) {
     <span class=c1># Create a common text property.</span>
     <span class=c1># Position the source name according to its length.</span>
     <span class=n>curvature_names</span> <span class=o>=</span> <span class=nb>list</span><span class=p>(</span><span class=n>curvatures</span><span class=o>.</span><span class=n>values</span><span class=p>())</span>
-    <span class=n>curvature_names</span><span class=p>[:]</span> <span class=o>=</span> <span class=p>[</span><span class=n>x</span><span class=o>.</span><span class=n>replace</span><span class=p>(</span><span class=s1>&#39;_&#39;</span><span class=p>,</span> <span class=s1>&#39;</span><span class=se>\n</span><span class=s1>&#39;</span><span class=p>)</span> <span class=k>for</span> <span class=n>x</span> <span class=ow>in</span> <span class=n>curvature_names</span><span class=p>]</span>
+    <span class=n>curvature_names</span><span class=p>[:]</span> <span class=o>=</span> <span class=p>[</span><span class=n>x</span><span class=o>.</span><span class=n>replace</span><span class=p>(</span><span class=s1>'_'</span><span class=p>,</span> <span class=s1>'</span><span class=se>\n</span><span class=s1>'</span><span class=p>)</span> <span class=k>for</span> <span class=n>x</span> <span class=ow>in</span> <span class=n>curvature_names</span><span class=p>]</span>
 
-    <span class=n>txt</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;Torus&#39;</span><span class=p>,</span> <span class=s1>&#39;Torus&#39;</span><span class=p>,</span> <span class=s1>&#39;Parametric Surface&#39;</span><span class=p>,</span> <span class=s1>&#39;Parametric Surface&#39;</span><span class=p>]</span>
+    <span class=n>txt</span> <span class=o>=</span> <span class=p>[</span><span class=s1>'Torus'</span><span class=p>,</span> <span class=s1>'Torus'</span><span class=p>,</span> <span class=s1>'Parametric Surface'</span><span class=p>,</span> <span class=s1>'Parametric Surface'</span><span class=p>]</span>
     <span class=n>text_positions</span> <span class=o>=</span> <span class=n>get_text_positions</span><span class=p>(</span><span class=n>txt</span><span class=p>,</span>
                                         <span class=n>justification</span><span class=o>=</span><span class=n>TextProperty</span><span class=o>.</span><span class=n>Justification</span><span class=o>.</span><span class=n>VTK_TEXT_CENTERED</span><span class=p>,</span>
                                         <span class=n>vertical_justification</span><span class=o>=</span><span class=n>TextProperty</span><span class=o>.</span><span class=n>VerticalJustification</span><span class=o>.</span><span class=n>VTK_TEXT_TOP</span><span class=p>,</span>
                                         <span class=n>width</span><span class=o>=</span><span class=mf>0.5</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>text_property</span> <span class=o>=</span> <span class=n>vtkTextProperty</span><span class=p>(</span><span class=n>color</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;AliceBlue&#39;</span><span class=p>),</span> <span class=n>bold</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>italic</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>shadow</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span>
+<span class=hll>    <span class=n>text_property</span> <span class=o>=</span> <span class=n>vtkTextProperty</span><span class=p>(</span><span class=n>color</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'AliceBlue'</span><span class=p>),</span> <span class=n>bold</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>italic</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>shadow</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span>
 </span>                                    <span class=n>font_size</span><span class=o>=</span><span class=mi>12</span><span class=p>,</span>
-                                    <span class=c1># font_family_as_string=&#39;Courier&#39;,</span>
+                                    <span class=c1># font_family_as_string='Courier',</span>
                                     <span class=n>justification</span><span class=o>=</span><span class=n>TextProperty</span><span class=o>.</span><span class=n>Justification</span><span class=o>.</span><span class=n>VTK_TEXT_CENTERED</span><span class=p>,</span>
                                     <span class=n>vertical_justification</span><span class=o>=</span><span class=n>TextProperty</span><span class=o>.</span><span class=n>VerticalJustification</span><span class=o>.</span><span class=n>VTK_TEXT_TOP</span><span class=p>)</span>
-<span class=hll>    <span class=n>title_text_property</span> <span class=o>=</span> <span class=n>vtkTextProperty</span><span class=p>(</span><span class=n>color</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;AliceBlue&#39;</span><span class=p>),</span> <span class=n>bold</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>italic</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>shadow</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span>
+<span class=hll>    <span class=n>title_text_property</span> <span class=o>=</span> <span class=n>vtkTextProperty</span><span class=p>(</span><span class=n>color</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'AliceBlue'</span><span class=p>),</span> <span class=n>bold</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>italic</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>shadow</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span>
 </span>                                          <span class=n>font_size</span><span class=o>=</span><span class=mi>16</span><span class=p>,</span>
                                           <span class=n>justification</span><span class=o>=</span><span class=n>TextProperty</span><span class=o>.</span><span class=n>Justification</span><span class=o>.</span><span class=n>VTK_TEXT_LEFT</span><span class=p>)</span>
-<span class=hll>    <span class=n>label_text_property</span> <span class=o>=</span> <span class=n>vtkTextProperty</span><span class=p>(</span><span class=n>color</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;AliceBlue&#39;</span><span class=p>),</span> <span class=n>bold</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>italic</span><span class=o>=</span><span class=kc>False</span><span class=p>,</span> <span class=n>shadow</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span>
+<span class=hll>    <span class=n>label_text_property</span> <span class=o>=</span> <span class=n>vtkTextProperty</span><span class=p>(</span><span class=n>color</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'AliceBlue'</span><span class=p>),</span> <span class=n>bold</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>italic</span><span class=o>=</span><span class=kc>False</span><span class=p>,</span> <span class=n>shadow</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span>
 </span>                                          <span class=n>font_size</span><span class=o>=</span><span class=mi>12</span><span class=p>,</span>
                                           <span class=n>justification</span><span class=o>=</span><span class=n>TextProperty</span><span class=o>.</span><span class=n>Justification</span><span class=o>.</span><span class=n>VTK_TEXT_LEFT</span><span class=p>)</span>
 
@@ -207,7 +207,7 @@ function registerListener(event, func) {
     <span class=c1># Create the RenderWindow and interactor.</span>
 <span class=hll>    <span class=n>ren_win</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span>
 </span>        <span class=n>size</span><span class=o>=</span><span class=p>(</span><span class=n>window_width</span><span class=p>,</span> <span class=n>window_height</span><span class=p>),</span>
-        <span class=n>window_name</span><span class=o>=</span><span class=sa>f</span><span class=s1>&#39;</span><span class=si>{</span><span class=n>Path</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>])</span><span class=o>.</span><span class=n>stem</span><span class=si>:</span><span class=s1>s</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+        <span class=n>window_name</span><span class=o>=</span><span class=sa>f</span><span class=s1>'</span><span class=si>{</span><span class=n>Path</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>])</span><span class=o>.</span><span class=n>stem</span><span class=si>:</span><span class=s1>s</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
 <span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>iren</span><span class=o>.</span><span class=n>render_window</span> <span class=o>=</span> <span class=n>ren_win</span>
 <span class=hll>    <span class=n>style</span> <span class=o>=</span> <span class=n>vtkInteractorStyleTrackballCamera</span><span class=p>()</span>
@@ -226,7 +226,7 @@ function registerListener(event, func) {
 
     <span class=c1># Link the pipeline together.</span>
     <span class=k>for</span> <span class=n>idx</span><span class=p>,</span> <span class=n>source</span> <span class=ow>in</span> <span class=nb>enumerate</span><span class=p>(</span><span class=n>sources</span><span class=p>):</span>
-        <span class=n>curvature_name</span> <span class=o>=</span> <span class=n>curvatures</span><span class=p>[</span><span class=n>idx</span><span class=p>]</span><span class=o>.</span><span class=n>replace</span><span class=p>(</span><span class=s1>&#39;_&#39;</span><span class=p>,</span> <span class=s1>&#39;</span><span class=se>\n</span><span class=s1>&#39;</span><span class=p>)</span>
+        <span class=n>curvature_name</span> <span class=o>=</span> <span class=n>curvatures</span><span class=p>[</span><span class=n>idx</span><span class=p>]</span><span class=o>.</span><span class=n>replace</span><span class=p>(</span><span class=s1>'_'</span><span class=p>,</span> <span class=s1>'</span><span class=se>\n</span><span class=s1>'</span><span class=p>)</span>
 
         <span class=n>source</span><span class=o>.</span><span class=n>point_data</span><span class=o>.</span><span class=n>active_scalars</span> <span class=o>=</span> <span class=n>curvatures</span><span class=p>[</span><span class=n>idx</span><span class=p>]</span>
         <span class=n>scalar_range</span> <span class=o>=</span> <span class=n>source</span><span class=o>.</span><span class=n>point_data</span><span class=o>.</span><span class=n>GetScalars</span><span class=p>(</span><span class=n>curvatures</span><span class=p>[</span><span class=n>idx</span><span class=p>])</span><span class=o>.</span><span class=n>range</span>
@@ -255,20 +255,20 @@ function registerListener(event, func) {
 </span>        <span class=n>ren</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor</span><span class=p>)</span>
         <span class=n>renderers</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>ren</span><span class=p>)</span>
 
-        <span class=n>surface_name</span> <span class=o>=</span> <span class=n>curvature_name</span><span class=o>.</span><span class=n>replace</span><span class=p>(</span><span class=s1>&#39;</span><span class=se>\n</span><span class=s1>&#39;</span><span class=p>,</span> <span class=s1>&#39; &#39;</span><span class=p>)</span>
+        <span class=n>surface_name</span> <span class=o>=</span> <span class=n>curvature_name</span><span class=o>.</span><span class=n>replace</span><span class=p>(</span><span class=s1>'</span><span class=se>\n</span><span class=s1>'</span><span class=p>,</span> <span class=s1>' '</span><span class=p>)</span>
 <span class=hll>        <span class=n>text_actor</span> <span class=o>=</span> <span class=n>vtkTextActor</span><span class=p>(</span><span class=nb>input</span><span class=o>=</span><span class=n>txt</span><span class=p>[</span><span class=n>idx</span><span class=p>],</span> <span class=n>text_scale_mode</span><span class=o>=</span><span class=n>vtkTextActor</span><span class=o>.</span><span class=n>TEXT_SCALE_MODE_NONE</span><span class=p>,</span>
 </span>                                  <span class=n>text_property</span><span class=o>=</span><span class=n>title_text_property</span><span class=p>)</span>
         <span class=c1># Create the text representation. Used for positioning the text actor.</span>
 <span class=hll>        <span class=n>text_rep</span> <span class=o>=</span> <span class=n>vtkTextRepresentation</span><span class=p>(</span><span class=n>enforce_normalized_viewport_bounds</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
-</span>        <span class=n>text_rep</span><span class=o>.</span><span class=n>position_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>text_positions</span><span class=p>[</span><span class=n>txt</span><span class=p>[</span><span class=n>idx</span><span class=p>]][</span><span class=s1>&#39;p&#39;</span><span class=p>]</span>
-        <span class=n>text_rep</span><span class=o>.</span><span class=n>position2_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>text_positions</span><span class=p>[</span><span class=n>txt</span><span class=p>[</span><span class=n>idx</span><span class=p>]][</span><span class=s1>&#39;p2&#39;</span><span class=p>]</span>
+</span>        <span class=n>text_rep</span><span class=o>.</span><span class=n>position_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>text_positions</span><span class=p>[</span><span class=n>txt</span><span class=p>[</span><span class=n>idx</span><span class=p>]][</span><span class=s1>'p'</span><span class=p>]</span>
+        <span class=n>text_rep</span><span class=o>.</span><span class=n>position2_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>text_positions</span><span class=p>[</span><span class=n>txt</span><span class=p>[</span><span class=n>idx</span><span class=p>]][</span><span class=s1>'p2'</span><span class=p>]</span>
 
 <span class=hll>        <span class=n>text_widget</span> <span class=o>=</span> <span class=n>vtkTextWidget</span><span class=p>(</span><span class=n>representation</span><span class=o>=</span><span class=n>text_rep</span><span class=p>,</span> <span class=n>text_actor</span><span class=o>=</span><span class=n>text_actor</span><span class=p>,</span> <span class=n>interactor</span><span class=o>=</span><span class=n>iren</span><span class=p>,</span>
 </span>                                    <span class=n>default_renderer</span><span class=o>=</span><span class=n>ren</span><span class=p>,</span> <span class=n>current_renderer</span><span class=o>=</span><span class=n>ren</span><span class=p>,</span>
                                     <span class=n>selectable</span><span class=o>=</span><span class=kc>False</span><span class=p>)</span>
         <span class=n>text_widgets</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>text_widget</span><span class=p>)</span>
 
-        <span class=n>sb_properties</span><span class=p>[</span><span class=n>idx</span><span class=p>]</span><span class=o>.</span><span class=n>title_text</span> <span class=o>=</span> <span class=n>curvature_name</span> <span class=o>+</span> <span class=s1>&#39;</span><span class=se>\n</span><span class=s1>&#39;</span>
+        <span class=n>sb_properties</span><span class=p>[</span><span class=n>idx</span><span class=p>]</span><span class=o>.</span><span class=n>title_text</span> <span class=o>=</span> <span class=n>curvature_name</span> <span class=o>+</span> <span class=s1>'</span><span class=se>\n</span><span class=s1>'</span>
         <span class=n>sbw</span> <span class=o>=</span> <span class=n>make_scalar_bar_widget</span><span class=p>(</span><span class=n>sb_properties</span><span class=p>[</span><span class=n>idx</span><span class=p>],</span> <span class=n>title_text_property</span><span class=p>,</span>
                                      <span class=n>label_text_property</span><span class=p>,</span> <span class=n>ren</span><span class=p>,</span> <span class=n>iren</span><span class=p>)</span>
         <span class=n>sb_widgets</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>sbw</span><span class=p>)</span>
@@ -295,7 +295,7 @@ function registerListener(event, func) {
             <span class=n>renderers</span><span class=p>[</span><span class=n>idx</span><span class=p>]</span><span class=o>.</span><span class=n>SetViewport</span><span class=p>(</span><span class=n>viewport</span><span class=p>)</span>
             <span class=n>ren_win</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderers</span><span class=p>[</span><span class=n>idx</span><span class=p>])</span>
 
-            <span class=n>renderers</span><span class=p>[</span><span class=n>idx</span><span class=p>]</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;ParaViewBlueGrayBkg&#39;</span><span class=p>))</span>
+            <span class=n>renderers</span><span class=p>[</span><span class=n>idx</span><span class=p>]</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'ParaViewBlueGrayBkg'</span><span class=p>))</span>
 
     <span class=k>for</span> <span class=n>sbw</span> <span class=ow>in</span> <span class=n>sb_widgets</span><span class=p>:</span>
         <span class=n>sbw</span><span class=o>.</span><span class=n>On</span><span class=p>()</span>
@@ -314,7 +314,7 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_diverging_lut</span><span class=p>():</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    See: [Diverging Color Maps for Scientific Visualization](https://www.kennethmoreland.com/color-maps/)</span>
 <span class=sd>                       start point         midPoint            end point</span>
 <span class=sd>     cool to warm:     0.230, 0.299, 0.754 0.865, 0.865, 0.865 0.706, 0.016, 0.150</span>
@@ -324,7 +324,7 @@ function registerListener(event, func) {
 <span class=sd>     green to red:     0.085, 0.532, 0.201 0.865, 0.865, 0.865 0.758, 0.214, 0.233</span>
 
 <span class=sd>    :return:</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 <span class=hll>    <span class=n>ctf</span> <span class=o>=</span> <span class=n>vtkColorTransferFunction</span><span class=p>(</span><span class=n>color_space</span><span class=o>=</span><span class=n>ColorTransferFunction</span><span class=o>.</span><span class=n>ColorSpace</span><span class=o>.</span><span class=n>VTK_CTF_DIVERGING</span><span class=p>)</span>
 </span>    <span class=c1># Cool to warm.</span>
     <span class=n>ctf</span><span class=o>.</span><span class=n>AddRGBPoint</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.230</span><span class=p>,</span> <span class=mf>0.299</span><span class=p>,</span> <span class=mf>0.754</span><span class=p>)</span>
@@ -348,9 +348,9 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
     <span class=n>pts</span> <span class=o>=</span> <span class=nb>list</span><span class=p>()</span>
-    <span class=n>pts</span><span class=o>.</span><span class=n>append</span><span class=p>([</span><span class=mf>0.0</span><span class=p>]</span> <span class=o>+</span> <span class=nb>list</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;MidnightBlue&#39;</span><span class=p>)))</span>
-    <span class=n>pts</span><span class=o>.</span><span class=n>append</span><span class=p>([</span><span class=mf>0.5</span><span class=p>]</span> <span class=o>+</span> <span class=nb>list</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Gainsboro&#39;</span><span class=p>)))</span>
-    <span class=n>pts</span><span class=o>.</span><span class=n>append</span><span class=p>([</span><span class=mf>1.0</span><span class=p>]</span> <span class=o>+</span> <span class=nb>list</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;DarkOrange&#39;</span><span class=p>)))</span>
+    <span class=n>pts</span><span class=o>.</span><span class=n>append</span><span class=p>([</span><span class=mf>0.0</span><span class=p>]</span> <span class=o>+</span> <span class=nb>list</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'MidnightBlue'</span><span class=p>)))</span>
+    <span class=n>pts</span><span class=o>.</span><span class=n>append</span><span class=p>([</span><span class=mf>0.5</span><span class=p>]</span> <span class=o>+</span> <span class=nb>list</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Gainsboro'</span><span class=p>)))</span>
+    <span class=n>pts</span><span class=o>.</span><span class=n>append</span><span class=p>([</span><span class=mf>1.0</span><span class=p>]</span> <span class=o>+</span> <span class=nb>list</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'DarkOrange'</span><span class=p>)))</span>
 
 <span class=hll>    <span class=n>ctf</span> <span class=o>=</span> <span class=n>vtkColorTransferFunction</span><span class=p>(</span><span class=n>color_space</span><span class=o>=</span><span class=n>ColorTransferFunction</span><span class=o>.</span><span class=n>ColorSpace</span><span class=o>.</span><span class=n>VTK_CTF_DIVERGING</span><span class=p>)</span>
 </span>    <span class=k>for</span> <span class=n>pt</span> <span class=ow>in</span> <span class=n>pts</span><span class=p>:</span>
@@ -368,7 +368,7 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_fast_ctf</span><span class=p>(</span><span class=n>discretize</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>reverse</span><span class=o>=</span><span class=kc>False</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Generate the color transfer function.</span>
 
 <span class=sd>    name: Fast, creator: Francesca Samsel, and Alan W. Scott</span>
@@ -378,7 +378,7 @@ function registerListener(event, func) {
 <span class=sd>    :param discretize: Selects whether the CTF is discretized or not.</span>
 <span class=sd>    :param reverse: Reverse the colors in the CTF.</span>
 <span class=sd>    :return: The color transfer function.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 
     <span class=c1># The points and RGB values.</span>
     <span class=n>pts_rgb</span> <span class=o>=</span> <span class=p>{</span>
@@ -409,7 +409,7 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>rescale</span><span class=p>(</span><span class=n>values</span><span class=p>,</span> <span class=n>new_min</span><span class=o>=</span><span class=mi>0</span><span class=p>,</span> <span class=n>new_max</span><span class=o>=</span><span class=mi>1</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Rescale the values.</span>
 
 <span class=sd>    See: https://stats.stackexchange.com/questions/25894/changing-the-scale-of-a-variable-to-0-100</span>
@@ -418,7 +418,7 @@ function registerListener(event, func) {
 <span class=sd>    :param new_min: The new minimum value.</span>
 <span class=sd>    :param new_max: The new maximum value.</span>
 <span class=sd>    :return: The rescaled values.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=n>res</span> <span class=o>=</span> <span class=nb>list</span><span class=p>()</span>
     <span class=n>old_min</span><span class=p>,</span> <span class=n>old_max</span> <span class=o>=</span> <span class=nb>min</span><span class=p>(</span><span class=n>values</span><span class=p>),</span> <span class=nb>max</span><span class=p>(</span><span class=n>values</span><span class=p>)</span>
     <span class=k>for</span> <span class=n>v</span> <span class=ow>in</span> <span class=n>values</span><span class=p>:</span>
@@ -429,14 +429,14 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>rescale_ctf</span><span class=p>(</span><span class=n>old_ctf</span><span class=p>,</span> <span class=n>new_min</span><span class=o>=</span><span class=mi>0</span><span class=p>,</span> <span class=n>new_max</span><span class=o>=</span><span class=mi>1</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Rescale the color transfer function.</span>
 
 <span class=sd>    :param old_ctf: The color transfer function to rescale.</span>
 <span class=sd>    :param new_min: The new minimum value.</span>
 <span class=sd>    :param new_max: The new maximum value.</span>
 <span class=sd>    :return: A new rescaled color transfer function.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=k>if</span> <span class=n>new_min</span> <span class=o>&gt;</span> <span class=n>new_max</span><span class=p>:</span>
         <span class=n>r0</span> <span class=o>=</span> <span class=n>new_max</span>
         <span class=n>r1</span> <span class=o>=</span> <span class=n>new_min</span>
@@ -471,30 +471,30 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>adjust_edge_curvatures</span><span class=p>(</span><span class=n>source</span><span class=p>,</span> <span class=n>curvature_name</span><span class=p>,</span> <span class=n>epsilon</span><span class=o>=</span><span class=mf>1.0e-08</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    This function adjusts curvatures along the edges of the surface by replacing</span>
 <span class=sd>     the value with the average value of the curvatures of points in the neighborhood.</span>
 
 <span class=hll><span class=sd>    Remember to update the vtkCurvatures object before calling this.</span>
 </span>
 <span class=hll><span class=sd>    :param source: A vtkPolyData object corresponding to the vtkCurvatures object.</span>
-</span><span class=sd>    :param curvature_name: The name of the curvature, &#39;Gauss_Curvature&#39; or &#39;Mean_Curvature&#39;.</span>
+</span><span class=sd>    :param curvature_name: The name of the curvature, 'Gauss_Curvature' or 'Mean_Curvature'.</span>
 <span class=sd>    :param epsilon: Absolute curvature values less than this will be set to zero.</span>
 <span class=hll><span class=sd>    :return: The vtkPolyData object with the adjusted edge curvatures.</span>
-</span><span class=sd>    &quot;&quot;&quot;</span>
+</span><span class=sd>    """</span>
 
     <span class=k>def</span><span class=w> </span><span class=nf>point_neighbourhood</span><span class=p>(</span><span class=n>pt_id</span><span class=p>):</span>
-<span class=w>        </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>        </span><span class=sd>"""</span>
 <span class=sd>        Find the ids of the neighbors of pt_id.</span>
 
 <span class=sd>        :param pt_id: The point id.</span>
 <span class=sd>        :return: The neighbour ids.</span>
-<span class=sd>        &quot;&quot;&quot;</span>
-<span class=w>        </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=sd>        """</span>
+<span class=w>        </span><span class=sd>"""</span>
 <span class=sd>        Extract the topological neighbors for point pId. In two steps:</span>
 <span class=sd>        1) source.GetPointCells(pt_id, cell_ids)</span>
 <span class=sd>        2) source.GetCellPoints(cell_id, cell_point_ids) for all cell_id in cell_ids</span>
-<span class=sd>        &quot;&quot;&quot;</span>
+<span class=sd>        """</span>
 <span class=hll>        <span class=n>cell_ids</span> <span class=o>=</span> <span class=n>vtkIdList</span><span class=p>()</span>
 </span>        <span class=n>source</span><span class=o>.</span><span class=n>GetPointCells</span><span class=p>(</span><span class=n>pt_id</span><span class=p>,</span> <span class=n>cell_ids</span><span class=p>)</span>
         <span class=n>neighbour</span> <span class=o>=</span> <span class=nb>set</span><span class=p>()</span>
@@ -507,13 +507,13 @@ function registerListener(event, func) {
         <span class=k>return</span> <span class=n>neighbour</span>
 
     <span class=k>def</span><span class=w> </span><span class=nf>compute_distance</span><span class=p>(</span><span class=n>pt_id_a</span><span class=p>,</span> <span class=n>pt_id_b</span><span class=p>):</span>
-<span class=w>        </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>        </span><span class=sd>"""</span>
 <span class=sd>        Compute the distance between two points given their ids.</span>
 
 <span class=sd>        :param pt_id_a:</span>
 <span class=sd>        :param pt_id_b:</span>
 <span class=sd>        :return:</span>
-<span class=sd>        &quot;&quot;&quot;</span>
+<span class=sd>        """</span>
         <span class=n>pt_a</span> <span class=o>=</span> <span class=n>np</span><span class=o>.</span><span class=n>array</span><span class=p>(</span><span class=n>source</span><span class=o>.</span><span class=n>GetPoint</span><span class=p>(</span><span class=n>pt_id_a</span><span class=p>))</span>
         <span class=n>pt_b</span> <span class=o>=</span> <span class=n>np</span><span class=o>.</span><span class=n>array</span><span class=p>(</span><span class=n>source</span><span class=o>.</span><span class=n>GetPoint</span><span class=p>(</span><span class=n>pt_id_b</span><span class=p>))</span>
         <span class=k>return</span> <span class=n>np</span><span class=o>.</span><span class=n>linalg</span><span class=o>.</span><span class=n>norm</span><span class=p>(</span><span class=n>pt_a</span> <span class=o>-</span> <span class=n>pt_b</span><span class=p>)</span>
@@ -524,7 +524,7 @@ function registerListener(event, func) {
     <span class=n>curvatures</span> <span class=o>=</span> <span class=n>np_source</span><span class=o>.</span><span class=n>PointData</span><span class=p>[</span><span class=n>curvature_name</span><span class=p>]</span>
 
     <span class=c1>#  Get the boundary point IDs.</span>
-    <span class=n>array_name</span> <span class=o>=</span> <span class=s1>&#39;ids&#39;</span>
+    <span class=n>array_name</span> <span class=o>=</span> <span class=s1>'ids'</span>
 <span class=hll>    <span class=n>id_filter</span> <span class=o>=</span> <span class=n>vtkGenerateIds</span><span class=p>(</span><span class=n>input_data</span><span class=o>=</span><span class=n>source</span><span class=p>,</span> <span class=n>point_ids</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>cell_ids</span><span class=o>=</span><span class=kc>False</span><span class=p>,</span>
 </span>                               <span class=n>point_ids_array_name</span><span class=o>=</span><span class=n>array_name</span><span class=p>,</span> <span class=n>cell_ids_array_name</span><span class=o>=</span><span class=n>array_name</span><span class=p>)</span>
 
@@ -580,23 +580,23 @@ function registerListener(event, func) {
 
 
 <span class=k>class</span><span class=w> </span><span class=nc>ScalarBarProperties</span><span class=p>:</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    The properties needed for scalar bars.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 <span class=hll>    <span class=n>named_colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
     <span class=n>lut</span> <span class=o>=</span> <span class=kc>None</span>
     <span class=c1># These are in pixels</span>
-    <span class=n>maximum_dimensions</span> <span class=o>=</span> <span class=p>{</span><span class=s1>&#39;width&#39;</span><span class=p>:</span> <span class=mi>100</span><span class=p>,</span> <span class=s1>&#39;height&#39;</span><span class=p>:</span> <span class=mi>260</span><span class=p>}</span>
-    <span class=n>title_text</span> <span class=o>=</span> <span class=s1>&#39;&#39;</span><span class=p>,</span>
+    <span class=n>maximum_dimensions</span> <span class=o>=</span> <span class=p>{</span><span class=s1>'width'</span><span class=p>:</span> <span class=mi>100</span><span class=p>,</span> <span class=s1>'height'</span><span class=p>:</span> <span class=mi>260</span><span class=p>}</span>
+    <span class=n>title_text</span> <span class=o>=</span> <span class=s1>''</span><span class=p>,</span>
     <span class=n>number_of_labels</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>5</span>
-    <span class=n>label_format</span> <span class=o>=</span> <span class=s1>&#39;</span><span class=si>{:0.2f}</span><span class=s1>&#39;</span>
+    <span class=n>label_format</span> <span class=o>=</span> <span class=s1>'</span><span class=si>{:0.2f}</span><span class=s1>'</span>
     <span class=c1># Orientation vertical=True, horizontal=False.</span>
     <span class=n>orientation</span><span class=p>:</span> <span class=nb>bool</span> <span class=o>=</span> <span class=kc>True</span>
     <span class=c1># Horizontal and vertical positioning.</span>
-    <span class=c1># These are the default positions, don&#39;t change these.</span>
-    <span class=n>default_v</span> <span class=o>=</span> <span class=p>{</span><span class=s1>&#39;p&#39;</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.85</span><span class=p>,</span> <span class=mf>0.2</span><span class=p>),</span> <span class=s1>&#39;p2&#39;</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.1</span><span class=p>,</span> <span class=mf>0.7</span><span class=p>)}</span>
-    <span class=n>default_h</span> <span class=o>=</span> <span class=p>{</span><span class=s1>&#39;p&#39;</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.125</span><span class=p>,</span> <span class=mf>0.05</span><span class=p>),</span> <span class=s1>&#39;p2&#39;</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.75</span><span class=p>,</span> <span class=mf>0.1</span><span class=p>)}</span>
+    <span class=c1># These are the default positions, don't change these.</span>
+    <span class=n>default_v</span> <span class=o>=</span> <span class=p>{</span><span class=s1>'p'</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.85</span><span class=p>,</span> <span class=mf>0.2</span><span class=p>),</span> <span class=s1>'p2'</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.1</span><span class=p>,</span> <span class=mf>0.7</span><span class=p>)}</span>
+    <span class=n>default_h</span> <span class=o>=</span> <span class=p>{</span><span class=s1>'p'</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.125</span><span class=p>,</span> <span class=mf>0.05</span><span class=p>),</span> <span class=s1>'p2'</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.75</span><span class=p>,</span> <span class=mf>0.1</span><span class=p>)}</span>
     <span class=c1># Modify these as needed.</span>
     <span class=n>position_v</span> <span class=o>=</span> <span class=n>copy</span><span class=o>.</span><span class=n>deepcopy</span><span class=p>(</span><span class=n>default_v</span><span class=p>)</span>
     <span class=n>position_h</span> <span class=o>=</span> <span class=n>copy</span><span class=o>.</span><span class=n>deepcopy</span><span class=p>(</span><span class=n>default_h</span><span class=p>)</span>
@@ -604,7 +604,7 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>make_scalar_bar_widget</span><span class=p>(</span><span class=n>scalar_bar_properties</span><span class=p>,</span> <span class=n>title_text_property</span><span class=p>,</span> <span class=n>label_text_property</span><span class=p>,</span> <span class=n>renderer</span><span class=p>,</span>
                            <span class=n>interactor</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Make a scalar bar widget.</span>
 
 <span class=sd>    :param scalar_bar_properties: The lookup table, title name, maximum dimensions in pixels and position.</span>
@@ -613,7 +613,7 @@ function registerListener(event, func) {
 <span class=sd>    :param renderer: The default renderer.</span>
 <span class=sd>    :param interactor: The vtkInteractor.</span>
 <span class=sd>    :return: The scalar bar widget.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 <span class=hll>    <span class=n>sb_actor</span> <span class=o>=</span> <span class=n>vtkScalarBarActor</span><span class=p>(</span><span class=n>lookup_table</span><span class=o>=</span><span class=n>scalar_bar_properties</span><span class=o>.</span><span class=n>lut</span><span class=p>,</span> <span class=n>title</span><span class=o>=</span><span class=n>scalar_bar_properties</span><span class=o>.</span><span class=n>title_text</span><span class=p>,</span>
 </span>                                 <span class=n>unconstrained_font_size</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span>
                                  <span class=n>number_of_labels</span><span class=o>=</span><span class=n>scalar_bar_properties</span><span class=o>.</span><span class=n>number_of_labels</span><span class=p>,</span>
@@ -628,11 +628,11 @@ function registerListener(event, func) {
     <span class=n>sb_rep</span><span class=o>.</span><span class=n>position_coordinate</span><span class=o>.</span><span class=n>SetCoordinateSystemToNormalizedViewport</span><span class=p>()</span>
     <span class=n>sb_rep</span><span class=o>.</span><span class=n>position2_coordinate</span><span class=o>.</span><span class=n>SetCoordinateSystemToNormalizedViewport</span><span class=p>()</span>
     <span class=k>if</span> <span class=n>scalar_bar_properties</span><span class=o>.</span><span class=n>orientation</span><span class=p>:</span>
-        <span class=n>sb_rep</span><span class=o>.</span><span class=n>position_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>scalar_bar_properties</span><span class=o>.</span><span class=n>position_v</span><span class=p>[</span><span class=s1>&#39;p&#39;</span><span class=p>]</span>
-        <span class=n>sb_rep</span><span class=o>.</span><span class=n>position2_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>scalar_bar_properties</span><span class=o>.</span><span class=n>position_v</span><span class=p>[</span><span class=s1>&#39;p2&#39;</span><span class=p>]</span>
+        <span class=n>sb_rep</span><span class=o>.</span><span class=n>position_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>scalar_bar_properties</span><span class=o>.</span><span class=n>position_v</span><span class=p>[</span><span class=s1>'p'</span><span class=p>]</span>
+        <span class=n>sb_rep</span><span class=o>.</span><span class=n>position2_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>scalar_bar_properties</span><span class=o>.</span><span class=n>position_v</span><span class=p>[</span><span class=s1>'p2'</span><span class=p>]</span>
     <span class=k>else</span><span class=p>:</span>
-        <span class=n>sb_rep</span><span class=o>.</span><span class=n>position_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>scalar_bar_properties</span><span class=o>.</span><span class=n>position_h</span><span class=p>[</span><span class=s1>&#39;p&#39;</span><span class=p>]</span>
-        <span class=n>sb_rep</span><span class=o>.</span><span class=n>position2_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>scalar_bar_properties</span><span class=o>.</span><span class=n>position_h</span><span class=p>[</span><span class=s1>&#39;p2&#39;</span><span class=p>]</span>
+        <span class=n>sb_rep</span><span class=o>.</span><span class=n>position_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>scalar_bar_properties</span><span class=o>.</span><span class=n>position_h</span><span class=p>[</span><span class=s1>'p'</span><span class=p>]</span>
+        <span class=n>sb_rep</span><span class=o>.</span><span class=n>position2_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>scalar_bar_properties</span><span class=o>.</span><span class=n>position_h</span><span class=p>[</span><span class=s1>'p2'</span><span class=p>]</span>
 
 <span class=hll>    <span class=n>widget</span> <span class=o>=</span> <span class=n>vtkScalarBarWidget</span><span class=p>(</span><span class=n>representation</span><span class=o>=</span><span class=n>sb_rep</span><span class=p>,</span> <span class=n>scalar_bar_actor</span><span class=o>=</span><span class=n>sb_actor</span><span class=p>,</span> <span class=n>default_renderer</span><span class=o>=</span><span class=n>renderer</span><span class=p>,</span>
 </span>                                <span class=n>interactor</span><span class=o>=</span><span class=n>interactor</span><span class=p>,</span> <span class=n>enabled</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
@@ -641,12 +641,12 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>position_sbw_h</span><span class=p>(</span><span class=n>num_bands</span><span class=p>,</span> <span class=n>max_bands</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Position the vertical scalar bar widget.</span>
 <span class=sd>    :param: num_bands - the number of bands in the scalar bar.</span>
 <span class=sd>    :param: max_bands - the maximum number of bands.</span>
 <span class=sd>    :return: The scalar bar position.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 
     <span class=n>max_bands</span> <span class=o>=</span> <span class=nb>abs</span><span class=p>(</span><span class=n>max_bands</span><span class=p>)</span>
     <span class=n>num_bands</span> <span class=o>=</span> <span class=nb>abs</span><span class=p>(</span><span class=n>num_bands</span><span class=p>)</span>
@@ -659,7 +659,7 @@ function registerListener(event, func) {
     <span class=c1># Width and height of the scalar bar.</span>
     <span class=n>dxy</span> <span class=o>=</span> <span class=p>[</span><span class=mf>0.75</span><span class=p>,</span> <span class=mf>0.1</span><span class=p>]</span>
     <span class=k>if</span> <span class=n>num_bands</span> <span class=o>&gt;=</span> <span class=n>max_bands</span><span class=p>:</span>
-        <span class=k>return</span> <span class=p>{</span><span class=s1>&#39;p&#39;</span><span class=p>:</span> <span class=nb>tuple</span><span class=p>(</span><span class=n>xy0</span><span class=p>),</span> <span class=s1>&#39;p2&#39;</span><span class=p>:</span> <span class=nb>tuple</span><span class=p>(</span><span class=n>dxy</span><span class=p>)}</span>
+        <span class=k>return</span> <span class=p>{</span><span class=s1>'p'</span><span class=p>:</span> <span class=nb>tuple</span><span class=p>(</span><span class=n>xy0</span><span class=p>),</span> <span class=s1>'p2'</span><span class=p>:</span> <span class=nb>tuple</span><span class=p>(</span><span class=n>dxy</span><span class=p>)}</span>
 
     <span class=n>dx</span> <span class=o>=</span> <span class=n>dxy</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>-</span> <span class=n>xy0</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>*</span> <span class=n>num_bands</span> <span class=o>/</span> <span class=n>max_bands</span>
     <span class=n>dxy</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>=</span> <span class=n>dxy</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>*</span> <span class=n>num_bands</span> <span class=o>/</span> <span class=n>max_bands</span>
@@ -667,16 +667,16 @@ function registerListener(event, func) {
         <span class=n>xy0</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>=</span> <span class=mf>0.5</span> <span class=o>-</span> <span class=n>dx</span> <span class=o>*</span> <span class=n>num_bands</span> <span class=o>/</span> <span class=p>(</span><span class=n>max_bands</span> <span class=o>*</span> <span class=mi>2</span><span class=p>)</span>
     <span class=k>else</span><span class=p>:</span>
         <span class=n>xy0</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>=</span> <span class=mf>0.5</span> <span class=o>-</span> <span class=n>dx</span> <span class=o>*</span> <span class=p>(</span><span class=n>num_bands</span> <span class=o>+</span> <span class=mi>1</span><span class=p>)</span> <span class=o>/</span> <span class=p>(</span><span class=n>max_bands</span> <span class=o>*</span> <span class=mi>2</span><span class=p>)</span>
-    <span class=k>return</span> <span class=p>{</span><span class=s1>&#39;p&#39;</span><span class=p>:</span> <span class=nb>tuple</span><span class=p>(</span><span class=n>xy0</span><span class=p>),</span> <span class=s1>&#39;p2&#39;</span><span class=p>:</span> <span class=nb>tuple</span><span class=p>(</span><span class=n>dxy</span><span class=p>)}</span>
+    <span class=k>return</span> <span class=p>{</span><span class=s1>'p'</span><span class=p>:</span> <span class=nb>tuple</span><span class=p>(</span><span class=n>xy0</span><span class=p>),</span> <span class=s1>'p2'</span><span class=p>:</span> <span class=nb>tuple</span><span class=p>(</span><span class=n>dxy</span><span class=p>)}</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>position_sbw_v</span><span class=p>(</span><span class=n>num_bands</span><span class=p>,</span> <span class=n>max_bands</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Position the vertical scalar bar widget.</span>
 <span class=sd>    :param: num_bands - the number of bands in the scalar bar.</span>
 <span class=sd>    :param: max_bands - the maximum number of bands.</span>
 <span class=sd>    :return: The scalar bar position.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 
     <span class=n>max_bands</span> <span class=o>=</span> <span class=nb>abs</span><span class=p>(</span><span class=n>max_bands</span><span class=p>)</span>
     <span class=n>num_bands</span> <span class=o>=</span> <span class=nb>abs</span><span class=p>(</span><span class=n>num_bands</span><span class=p>)</span>
@@ -689,7 +689,7 @@ function registerListener(event, func) {
     <span class=c1># Width and height of the scalar bar.</span>
     <span class=n>dxy</span> <span class=o>=</span> <span class=p>[</span><span class=mf>0.08</span><span class=p>,</span> <span class=mf>0.5</span><span class=p>]</span>
     <span class=k>if</span> <span class=n>num_bands</span> <span class=o>&gt;=</span> <span class=n>max_bands</span><span class=p>:</span>
-        <span class=k>return</span> <span class=p>{</span><span class=s1>&#39;p&#39;</span><span class=p>:</span> <span class=nb>tuple</span><span class=p>(</span><span class=n>xy0</span><span class=p>),</span> <span class=s1>&#39;p2&#39;</span><span class=p>:</span> <span class=nb>tuple</span><span class=p>(</span><span class=n>dxy</span><span class=p>)}</span>
+        <span class=k>return</span> <span class=p>{</span><span class=s1>'p'</span><span class=p>:</span> <span class=nb>tuple</span><span class=p>(</span><span class=n>xy0</span><span class=p>),</span> <span class=s1>'p2'</span><span class=p>:</span> <span class=nb>tuple</span><span class=p>(</span><span class=n>dxy</span><span class=p>)}</span>
 
     <span class=n>dy</span> <span class=o>=</span> <span class=n>dxy</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>-</span> <span class=n>xy0</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>*</span> <span class=n>num_bands</span> <span class=o>/</span> <span class=n>max_bands</span>
     <span class=n>dxy</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>=</span> <span class=n>dxy</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>*</span> <span class=n>num_bands</span> <span class=o>/</span> <span class=n>max_bands</span>
@@ -697,11 +697,11 @@ function registerListener(event, func) {
         <span class=n>xy0</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>=</span> <span class=mf>0.5</span> <span class=o>-</span> <span class=n>dy</span> <span class=o>*</span> <span class=n>num_bands</span> <span class=o>/</span> <span class=p>(</span><span class=n>max_bands</span> <span class=o>*</span> <span class=mi>2</span><span class=p>)</span>
     <span class=k>else</span><span class=p>:</span>
         <span class=n>xy0</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>=</span> <span class=mf>0.5</span> <span class=o>-</span> <span class=n>dy</span> <span class=o>*</span> <span class=p>(</span><span class=n>num_bands</span> <span class=o>+</span> <span class=mi>1</span><span class=p>)</span> <span class=o>/</span> <span class=p>(</span><span class=n>max_bands</span> <span class=o>*</span> <span class=mi>2</span><span class=p>)</span>
-    <span class=k>return</span> <span class=p>{</span><span class=s1>&#39;p&#39;</span><span class=p>:</span> <span class=nb>tuple</span><span class=p>(</span><span class=n>xy0</span><span class=p>),</span> <span class=s1>&#39;p2&#39;</span><span class=p>:</span> <span class=nb>tuple</span><span class=p>(</span><span class=n>dxy</span><span class=p>)}</span>
+    <span class=k>return</span> <span class=p>{</span><span class=s1>'p'</span><span class=p>:</span> <span class=nb>tuple</span><span class=p>(</span><span class=n>xy0</span><span class=p>),</span> <span class=s1>'p2'</span><span class=p>:</span> <span class=nb>tuple</span><span class=p>(</span><span class=n>dxy</span><span class=p>)}</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_text_positions</span><span class=p>(</span><span class=n>names</span><span class=p>,</span> <span class=n>justification</span><span class=o>=</span><span class=mi>0</span><span class=p>,</span> <span class=n>vertical_justification</span><span class=o>=</span><span class=mi>0</span><span class=p>,</span> <span class=n>width</span><span class=o>=</span><span class=mf>0.96</span><span class=p>,</span> <span class=n>height</span><span class=o>=</span><span class=mf>0.1</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Get viewport positioning information for a list of names.</span>
 
 <span class=sd>    :param names: The list of names.</span>
@@ -710,7 +710,7 @@ function registerListener(event, func) {
 <span class=sd>    :param width: Width of the bounding_box of the text in screen coordinates.</span>
 <span class=sd>    :param height: Height of the bounding_box of the text in screen coordinates.</span>
 <span class=sd>    :return: A dictionary of positioning information.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=c1># The gap between the left or right edge of the screen and the text.</span>
     <span class=n>dx</span> <span class=o>=</span> <span class=mf>0.02</span>
     <span class=n>width</span> <span class=o>=</span> <span class=nb>abs</span><span class=p>(</span><span class=n>width</span><span class=p>)</span>
@@ -755,9 +755,9 @@ function registerListener(event, func) {
 
         <span class=c1># For debugging!</span>
         <span class=c1># print(</span>
-        <span class=c1>#     f&#39;{k:16s}: (x0, y0) = ({x0:3.2f}, {y0:3.2f}), (x1, y1) = ({x0 + delta_sz:3.2f}, {y0 + dy:3.2f})&#39;</span>
-        <span class=c1>#     f&#39;, width={delta_sz:3.2f}, height={dy:3.2f}&#39;)</span>
-        <span class=n>text_positions</span><span class=p>[</span><span class=n>k</span><span class=p>]</span> <span class=o>=</span> <span class=p>{</span><span class=s1>&#39;p&#39;</span><span class=p>:</span> <span class=p>[</span><span class=n>x0</span><span class=p>,</span> <span class=n>y0</span><span class=p>,</span> <span class=mi>0</span><span class=p>],</span> <span class=s1>&#39;p2&#39;</span><span class=p>:</span> <span class=p>[</span><span class=n>delta_sz</span><span class=p>,</span> <span class=n>dy</span><span class=p>,</span> <span class=mi>0</span><span class=p>]}</span>
+        <span class=c1>#     f'{k:16s}: (x0, y0) = ({x0:3.2f}, {y0:3.2f}), (x1, y1) = ({x0 + delta_sz:3.2f}, {y0 + dy:3.2f})'</span>
+        <span class=c1>#     f', width={delta_sz:3.2f}, height={dy:3.2f}')</span>
+        <span class=n>text_positions</span><span class=p>[</span><span class=n>k</span><span class=p>]</span> <span class=o>=</span> <span class=p>{</span><span class=s1>'p'</span><span class=p>:</span> <span class=p>[</span><span class=n>x0</span><span class=p>,</span> <span class=n>y0</span><span class=p>,</span> <span class=mi>0</span><span class=p>],</span> <span class=s1>'p2'</span><span class=p>:</span> <span class=p>[</span><span class=n>delta_sz</span><span class=p>,</span> <span class=n>dy</span><span class=p>,</span> <span class=mi>0</span><span class=p>]}</span>
 
     <span class=k>return</span> <span class=n>text_positions</span>
 
@@ -818,7 +818,7 @@ function registerListener(event, func) {
         <span class=n>VTK_TEXT_TOP</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>2</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>sys</span>
 
     <span class=n>main</span><span class=p>(</span><span class=n>sys</span><span class=o>.</span><span class=n>argv</span><span class=p>)</span>

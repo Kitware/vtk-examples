@@ -98,92 +98,92 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_program_parameters</span><span class=p>(</span><span class=n>argv</span><span class=p>):</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>argparse</span>
-    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;View surfaces of a segmented frog dataset using preprocessed VTK tissue files.&#39;</span>
-    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;</span>
+    <span class=n>description</span> <span class=o>=</span> <span class=s1>'View surfaces of a segmented frog dataset using preprocessed VTK tissue files.'</span>
+    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>'''</span>
 <span class=s1>Sliders are provided to control the opacity of the displayed tissues.</span>
 <span class=s1>Up to fifteen different surfaces may be viewed.</span>
 
 <span class=s1>Note:</span>
 <span class=s1>   If you want to use brainbin (the brain with no gaussian smoothing),</span>
 <span class=s1>    instead of brain, then request it with -t brainbin</span>
-<span class=s1>    &#39;&#39;&#39;</span>
+<span class=s1>    '''</span>
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
                                      <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawDescriptionHelpFormatter</span><span class=p>)</span>
 
     <span class=n>group</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>add_mutually_exclusive_group</span><span class=p>()</span>
-    <span class=n>group</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-a&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_const&#39;</span><span class=p>,</span> <span class=n>dest</span><span class=o>=</span><span class=s1>&#39;view&#39;</span><span class=p>,</span> <span class=n>const</span><span class=o>=</span><span class=s1>&#39;a&#39;</span><span class=p>,</span>
-                       <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The view corresponds to Fig 12-9a in the VTK Textbook&#39;</span><span class=p>)</span>
-    <span class=n>group</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-b&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_const&#39;</span><span class=p>,</span> <span class=n>dest</span><span class=o>=</span><span class=s1>&#39;view&#39;</span><span class=p>,</span> <span class=n>const</span><span class=o>=</span><span class=s1>&#39;b&#39;</span><span class=p>,</span>
-                       <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The view corresponds to Fig 12-9b in the VTK Textbook&#39;</span><span class=p>)</span>
-    <span class=n>group</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-c&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_const&#39;</span><span class=p>,</span> <span class=n>dest</span><span class=o>=</span><span class=s1>&#39;view&#39;</span><span class=p>,</span> <span class=n>const</span><span class=o>=</span><span class=s1>&#39;c&#39;</span><span class=p>,</span>
-                       <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The view corresponds to Fig 12-9c in the VTK Textbook&#39;</span><span class=p>)</span>
-    <span class=n>group</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-d&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_const&#39;</span><span class=p>,</span> <span class=n>dest</span><span class=o>=</span><span class=s1>&#39;view&#39;</span><span class=p>,</span> <span class=n>const</span><span class=o>=</span><span class=s1>&#39;d&#39;</span><span class=p>,</span>
-                       <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The view corresponds to Fig 12-9d in the VTK Textbook&#39;</span><span class=p>)</span>
-    <span class=n>group</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-l&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_const&#39;</span><span class=p>,</span> <span class=n>dest</span><span class=o>=</span><span class=s1>&#39;view&#39;</span><span class=p>,</span> <span class=n>const</span><span class=o>=</span><span class=s1>&#39;l&#39;</span><span class=p>,</span>
-                       <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The view corresponds to looking down on the anterior surface&#39;</span><span class=p>)</span>
-    <span class=n>group</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-p&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_const&#39;</span><span class=p>,</span> <span class=n>dest</span><span class=o>=</span><span class=s1>&#39;view&#39;</span><span class=p>,</span> <span class=n>const</span><span class=o>=</span><span class=s1>&#39;p&#39;</span><span class=p>,</span>
-                       <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The view corresponds to looking down on the posterior surface (the default)&#39;</span><span class=p>)</span>
+    <span class=n>group</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-a'</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>'store_const'</span><span class=p>,</span> <span class=n>dest</span><span class=o>=</span><span class=s1>'view'</span><span class=p>,</span> <span class=n>const</span><span class=o>=</span><span class=s1>'a'</span><span class=p>,</span>
+                       <span class=n>help</span><span class=o>=</span><span class=s1>'The view corresponds to Fig 12-9a in the VTK Textbook'</span><span class=p>)</span>
+    <span class=n>group</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-b'</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>'store_const'</span><span class=p>,</span> <span class=n>dest</span><span class=o>=</span><span class=s1>'view'</span><span class=p>,</span> <span class=n>const</span><span class=o>=</span><span class=s1>'b'</span><span class=p>,</span>
+                       <span class=n>help</span><span class=o>=</span><span class=s1>'The view corresponds to Fig 12-9b in the VTK Textbook'</span><span class=p>)</span>
+    <span class=n>group</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-c'</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>'store_const'</span><span class=p>,</span> <span class=n>dest</span><span class=o>=</span><span class=s1>'view'</span><span class=p>,</span> <span class=n>const</span><span class=o>=</span><span class=s1>'c'</span><span class=p>,</span>
+                       <span class=n>help</span><span class=o>=</span><span class=s1>'The view corresponds to Fig 12-9c in the VTK Textbook'</span><span class=p>)</span>
+    <span class=n>group</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-d'</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>'store_const'</span><span class=p>,</span> <span class=n>dest</span><span class=o>=</span><span class=s1>'view'</span><span class=p>,</span> <span class=n>const</span><span class=o>=</span><span class=s1>'d'</span><span class=p>,</span>
+                       <span class=n>help</span><span class=o>=</span><span class=s1>'The view corresponds to Fig 12-9d in the VTK Textbook'</span><span class=p>)</span>
+    <span class=n>group</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-l'</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>'store_const'</span><span class=p>,</span> <span class=n>dest</span><span class=o>=</span><span class=s1>'view'</span><span class=p>,</span> <span class=n>const</span><span class=o>=</span><span class=s1>'l'</span><span class=p>,</span>
+                       <span class=n>help</span><span class=o>=</span><span class=s1>'The view corresponds to looking down on the anterior surface'</span><span class=p>)</span>
+    <span class=n>group</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-p'</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>'store_const'</span><span class=p>,</span> <span class=n>dest</span><span class=o>=</span><span class=s1>'view'</span><span class=p>,</span> <span class=n>const</span><span class=o>=</span><span class=s1>'p'</span><span class=p>,</span>
+                       <span class=n>help</span><span class=o>=</span><span class=s1>'The view corresponds to looking down on the posterior surface (the default)'</span><span class=p>)</span>
     <span class=n>parser</span><span class=o>.</span><span class=n>set_defaults</span><span class=p>(</span><span class=nb>type</span><span class=o>=</span><span class=kc>None</span><span class=p>)</span>
 
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;file_name&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The path to the JSON file e.g. Frog_vtk.json.&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-n&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_true&#39;</span><span class=p>,</span> <span class=n>dest</span><span class=o>=</span><span class=s1>&#39;omit_sliders&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;No sliders.&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-t&#39;</span><span class=p>,</span> <span class=n>nargs</span><span class=o>=</span><span class=s1>&#39;+&#39;</span><span class=p>,</span> <span class=n>dest</span><span class=o>=</span><span class=s1>&#39;tissues&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;append&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Select one or more tissues.&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'file_name'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'The path to the JSON file e.g. Frog_vtk.json.'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-n'</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>'store_true'</span><span class=p>,</span> <span class=n>dest</span><span class=o>=</span><span class=s1>'omit_sliders'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'No sliders.'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-t'</span><span class=p>,</span> <span class=n>nargs</span><span class=o>=</span><span class=s1>'+'</span><span class=p>,</span> <span class=n>dest</span><span class=o>=</span><span class=s1>'tissues'</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>'append'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'Select one or more tissues.'</span><span class=p>)</span>
     <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
     <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>file_name</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>view</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>omit_sliders</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>tissues</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=n>fn</span><span class=p>,</span> <span class=n>select_figure</span><span class=p>,</span> <span class=n>no_sliders</span><span class=p>,</span> <span class=n>chosen_tissues</span><span class=p>):</span>
     <span class=k>if</span> <span class=ow>not</span> <span class=n>select_figure</span><span class=p>:</span>
-        <span class=n>select_figure</span> <span class=o>=</span> <span class=s1>&#39;p&#39;</span>
+        <span class=n>select_figure</span> <span class=o>=</span> <span class=s1>'p'</span>
 
     <span class=n>fn_path</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>fn</span><span class=p>)</span>
     <span class=k>if</span> <span class=ow>not</span> <span class=n>fn_path</span><span class=o>.</span><span class=n>suffix</span><span class=p>:</span>
-        <span class=n>fn_path</span> <span class=o>=</span> <span class=n>fn_path</span><span class=o>.</span><span class=n>with_suffix</span><span class=p>(</span><span class=s2>&quot;.json&quot;</span><span class=p>)</span>
+        <span class=n>fn_path</span> <span class=o>=</span> <span class=n>fn_path</span><span class=o>.</span><span class=n>with_suffix</span><span class=p>(</span><span class=s2>".json"</span><span class=p>)</span>
     <span class=k>if</span> <span class=ow>not</span> <span class=n>fn_path</span><span class=o>.</span><span class=n>is_file</span><span class=p>():</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Unable to find: &#39;</span><span class=p>,</span> <span class=n>fn_path</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'Unable to find: '</span><span class=p>,</span> <span class=n>fn_path</span><span class=p>)</span>
     <span class=n>parsed_ok</span><span class=p>,</span> <span class=n>parameters</span> <span class=o>=</span> <span class=n>parse_json</span><span class=p>(</span><span class=n>fn_path</span><span class=p>)</span>
     <span class=k>if</span> <span class=ow>not</span> <span class=n>parsed_ok</span><span class=p>:</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Unable to parse the JSON file.&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'Unable to parse the JSON file.'</span><span class=p>)</span>
         <span class=k>return</span>
 
-    <span class=n>color_lut</span> <span class=o>=</span> <span class=n>create_tissue_lut</span><span class=p>(</span><span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;indices&#39;</span><span class=p>],</span> <span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;colors&#39;</span><span class=p>])</span>
+    <span class=n>color_lut</span> <span class=o>=</span> <span class=n>create_tissue_lut</span><span class=p>(</span><span class=n>parameters</span><span class=p>[</span><span class=s1>'indices'</span><span class=p>],</span> <span class=n>parameters</span><span class=p>[</span><span class=s1>'colors'</span><span class=p>])</span>
 
-    <span class=n>tissues</span> <span class=o>=</span> <span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;names&#39;</span><span class=p>]</span>
+    <span class=n>tissues</span> <span class=o>=</span> <span class=n>parameters</span><span class=p>[</span><span class=s1>'names'</span><span class=p>]</span>
     <span class=k>if</span> <span class=n>select_figure</span><span class=p>:</span>
-        <span class=k>if</span> <span class=n>select_figure</span> <span class=o>==</span> <span class=s1>&#39;b&#39;</span><span class=p>:</span>
+        <span class=k>if</span> <span class=n>select_figure</span> <span class=o>==</span> <span class=s1>'b'</span><span class=p>:</span>
             <span class=c1># No skin.</span>
-            <span class=n>tissues</span> <span class=o>=</span> <span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;fig12-9b&#39;</span><span class=p>]</span>
-        <span class=k>if</span> <span class=n>select_figure</span> <span class=ow>in</span> <span class=p>[</span><span class=s1>&#39;c&#39;</span><span class=p>,</span> <span class=s1>&#39;d&#39;</span><span class=p>]:</span>
+            <span class=n>tissues</span> <span class=o>=</span> <span class=n>parameters</span><span class=p>[</span><span class=s1>'fig12-9b'</span><span class=p>]</span>
+        <span class=k>if</span> <span class=n>select_figure</span> <span class=ow>in</span> <span class=p>[</span><span class=s1>'c'</span><span class=p>,</span> <span class=s1>'d'</span><span class=p>]:</span>
             <span class=c1># No skin, blood and skeleton.</span>
-            <span class=n>tissues</span> <span class=o>=</span> <span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;fig12-9cd&#39;</span><span class=p>]</span>
+            <span class=n>tissues</span> <span class=o>=</span> <span class=n>parameters</span><span class=p>[</span><span class=s1>'fig12-9cd'</span><span class=p>]</span>
 
     <span class=k>if</span> <span class=n>chosen_tissues</span><span class=p>:</span>
         <span class=n>chosen_tissues</span> <span class=o>=</span> <span class=p>[</span><span class=n>x</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span> <span class=k>for</span> <span class=n>x</span> <span class=ow>in</span> <span class=n>chosen_tissues</span><span class=p>[</span><span class=mi>0</span><span class=p>]]</span>
         <span class=n>res</span> <span class=o>=</span> <span class=nb>list</span><span class=p>()</span>
         <span class=n>has_brainbin</span> <span class=o>=</span> <span class=kc>False</span>
-        <span class=k>if</span> <span class=s1>&#39;brainbin&#39;</span> <span class=ow>in</span> <span class=n>chosen_tissues</span><span class=p>:</span>
-            <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Using brainbin instead of brain.&#39;</span><span class=p>)</span>
-            <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;brainbin&#39;</span><span class=p>)</span>
-            <span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;indices&#39;</span><span class=p>]</span><span class=o>.</span><span class=n>pop</span><span class=p>(</span><span class=s1>&#39;brain&#39;</span><span class=p>,</span> <span class=kc>None</span><span class=p>)</span>
-            <span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;indices&#39;</span><span class=p>][</span><span class=s1>&#39;brainbin&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=mi>2</span>
-            <span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;colors&#39;</span><span class=p>]</span><span class=o>.</span><span class=n>pop</span><span class=p>(</span><span class=s1>&#39;brain&#39;</span><span class=p>,</span> <span class=kc>None</span><span class=p>)</span>
-            <span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;colors&#39;</span><span class=p>][</span><span class=s1>&#39;brainbin&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=s1>&#39;beige&#39;</span>
+        <span class=k>if</span> <span class=s1>'brainbin'</span> <span class=ow>in</span> <span class=n>chosen_tissues</span><span class=p>:</span>
+            <span class=nb>print</span><span class=p>(</span><span class=s1>'Using brainbin instead of brain.'</span><span class=p>)</span>
+            <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>'brainbin'</span><span class=p>)</span>
+            <span class=n>parameters</span><span class=p>[</span><span class=s1>'indices'</span><span class=p>]</span><span class=o>.</span><span class=n>pop</span><span class=p>(</span><span class=s1>'brain'</span><span class=p>,</span> <span class=kc>None</span><span class=p>)</span>
+            <span class=n>parameters</span><span class=p>[</span><span class=s1>'indices'</span><span class=p>][</span><span class=s1>'brainbin'</span><span class=p>]</span> <span class=o>=</span> <span class=mi>2</span>
+            <span class=n>parameters</span><span class=p>[</span><span class=s1>'colors'</span><span class=p>]</span><span class=o>.</span><span class=n>pop</span><span class=p>(</span><span class=s1>'brain'</span><span class=p>,</span> <span class=kc>None</span><span class=p>)</span>
+            <span class=n>parameters</span><span class=p>[</span><span class=s1>'colors'</span><span class=p>][</span><span class=s1>'brainbin'</span><span class=p>]</span> <span class=o>=</span> <span class=s1>'beige'</span>
             <span class=n>has_brainbin</span> <span class=o>=</span> <span class=kc>True</span>
         <span class=k>for</span> <span class=n>ct</span> <span class=ow>in</span> <span class=n>chosen_tissues</span><span class=p>:</span>
-            <span class=k>if</span> <span class=n>has_brainbin</span> <span class=ow>and</span> <span class=n>ct</span> <span class=ow>in</span> <span class=p>[</span><span class=s1>&#39;brain&#39;</span><span class=p>,</span> <span class=s1>&#39;brainbin&#39;</span><span class=p>]:</span>
+            <span class=k>if</span> <span class=n>has_brainbin</span> <span class=ow>and</span> <span class=n>ct</span> <span class=ow>in</span> <span class=p>[</span><span class=s1>'brain'</span><span class=p>,</span> <span class=s1>'brainbin'</span><span class=p>]:</span>
                 <span class=k>continue</span>
             <span class=k>if</span> <span class=n>ct</span> <span class=ow>in</span> <span class=n>tissues</span><span class=p>:</span>
                 <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>ct</span><span class=p>)</span>
             <span class=k>else</span><span class=p>:</span>
-                <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;Tissue: </span><span class=si>{</span><span class=n>ct</span><span class=si>}</span><span class=s1> is not available.&#39;</span><span class=p>)</span>
-                <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;Available tissues are: </span><span class=si>{</span><span class=s2>&quot;, &quot;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>tissues</span><span class=p>)</span><span class=si>}</span><span class=s1> and brainbin&#39;</span><span class=p>)</span>
+                <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'Tissue: </span><span class=si>{</span><span class=n>ct</span><span class=si>}</span><span class=s1> is not available.'</span><span class=p>)</span>
+                <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'Available tissues are: </span><span class=si>{</span><span class=s2>", "</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>tissues</span><span class=p>)</span><span class=si>}</span><span class=s1> and brainbin'</span><span class=p>)</span>
                 <span class=k>return</span>
-        <span class=k>if</span> <span class=nb>len</span><span class=p>(</span><span class=n>res</span><span class=p>)</span> <span class=o>==</span> <span class=mi>1</span> <span class=ow>and</span> <span class=s1>&#39;skin&#39;</span> <span class=ow>in</span> <span class=n>res</span><span class=p>:</span>
-            <span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;opacity&#39;</span><span class=p>][</span><span class=s1>&#39;skin&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=mf>1.0</span>
+        <span class=k>if</span> <span class=nb>len</span><span class=p>(</span><span class=n>res</span><span class=p>)</span> <span class=o>==</span> <span class=mi>1</span> <span class=ow>and</span> <span class=s1>'skin'</span> <span class=ow>in</span> <span class=n>res</span><span class=p>:</span>
+            <span class=n>parameters</span><span class=p>[</span><span class=s1>'opacity'</span><span class=p>][</span><span class=s1>'skin'</span><span class=p>]</span> <span class=o>=</span> <span class=mf>1.0</span>
         <span class=n>tissues</span> <span class=o>=</span> <span class=n>res</span>
 
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
-</span>    <span class=n>colors</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=s2>&quot;ParaViewBkg&quot;</span><span class=p>,</span> <span class=p>[</span><span class=mi>82</span><span class=p>,</span> <span class=mi>87</span><span class=p>,</span> <span class=mi>110</span><span class=p>,</span> <span class=mi>255</span><span class=p>])</span>
+</span>    <span class=n>colors</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=s2>"ParaViewBkg"</span><span class=p>,</span> <span class=p>[</span><span class=mi>82</span><span class=p>,</span> <span class=mi>87</span><span class=p>,</span> <span class=mi>110</span><span class=p>,</span> <span class=mi>255</span><span class=p>])</span>
 
     <span class=c1># Setup render window, renderers, and interactor.</span>
 <span class=hll>    <span class=n>ren</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>()</span>
@@ -206,20 +206,20 @@ function registerListener(event, func) {
 
     <span class=n>slider_count</span> <span class=o>=</span> <span class=mi>0</span>
 
-    <span class=n>color_size</span> <span class=o>=</span> <span class=nb>len</span><span class=p>(</span><span class=nb>max</span><span class=p>(</span><span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;colors&#39;</span><span class=p>]</span><span class=o>.</span><span class=n>values</span><span class=p>(),</span> <span class=n>key</span><span class=o>=</span><span class=nb>len</span><span class=p>))</span>
-    <span class=n>name_size</span> <span class=o>=</span> <span class=nb>len</span><span class=p>(</span><span class=nb>max</span><span class=p>(</span><span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;names&#39;</span><span class=p>],</span> <span class=n>key</span><span class=o>=</span><span class=nb>len</span><span class=p>))</span>
+    <span class=n>color_size</span> <span class=o>=</span> <span class=nb>len</span><span class=p>(</span><span class=nb>max</span><span class=p>(</span><span class=n>parameters</span><span class=p>[</span><span class=s1>'colors'</span><span class=p>]</span><span class=o>.</span><span class=n>values</span><span class=p>(),</span> <span class=n>key</span><span class=o>=</span><span class=nb>len</span><span class=p>))</span>
+    <span class=n>name_size</span> <span class=o>=</span> <span class=nb>len</span><span class=p>(</span><span class=nb>max</span><span class=p>(</span><span class=n>parameters</span><span class=p>[</span><span class=s1>'names'</span><span class=p>],</span> <span class=n>key</span><span class=o>=</span><span class=nb>len</span><span class=p>))</span>
     <span class=n>int_size</span> <span class=o>=</span> <span class=mi>2</span>
-    <span class=n>line</span> <span class=o>=</span> <span class=s1>&#39;-&#39;</span> <span class=o>*</span> <span class=p>(</span><span class=mi>7</span> <span class=o>+</span> <span class=n>name_size</span> <span class=o>+</span> <span class=n>color_size</span><span class=p>)</span>
+    <span class=n>line</span> <span class=o>=</span> <span class=s1>'-'</span> <span class=o>*</span> <span class=p>(</span><span class=mi>7</span> <span class=o>+</span> <span class=n>name_size</span> <span class=o>+</span> <span class=n>color_size</span><span class=p>)</span>
     <span class=n>res</span> <span class=o>=</span> <span class=p>[</span><span class=n>line</span><span class=p>,</span>
-           <span class=sa>f</span><span class=s1>&#39;</span><span class=si>{</span><span class=s2>&quot;Tissue&quot;</span><span class=si>:</span><span class=s1>&lt;</span><span class=si>{</span><span class=n>name_size</span><span class=si>}</span><span class=s1>s</span><span class=si>}{</span><span class=s2>&quot; Label &quot;</span><span class=si>}{</span><span class=s2>&quot;Color&quot;</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>,</span>
+           <span class=sa>f</span><span class=s1>'</span><span class=si>{</span><span class=s2>"Tissue"</span><span class=si>:</span><span class=s1>&lt;</span><span class=si>{</span><span class=n>name_size</span><span class=si>}</span><span class=s1>s</span><span class=si>}{</span><span class=s2>" Label "</span><span class=si>}{</span><span class=s2>"Color"</span><span class=si>}</span><span class=s1>'</span><span class=p>,</span>
            <span class=n>line</span><span class=p>]</span>
 
     <span class=k>for</span> <span class=n>tissue</span> <span class=ow>in</span> <span class=n>tissues</span><span class=p>:</span>
 <span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkPolyDataReader</span><span class=p>()</span>
-</span>        <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;vtk_files&#39;</span><span class=p>][</span><span class=n>tissue</span><span class=p>])</span>
+</span>        <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>parameters</span><span class=p>[</span><span class=s1>'vtk_files'</span><span class=p>][</span><span class=n>tissue</span><span class=p>])</span>
         <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
 
-        <span class=n>trans</span> <span class=o>=</span> <span class=n>SliceOrder</span><span class=p>()</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;orientation&#39;</span><span class=p>][</span><span class=n>tissue</span><span class=p>])</span>
+        <span class=n>trans</span> <span class=o>=</span> <span class=n>SliceOrder</span><span class=p>()</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=n>parameters</span><span class=p>[</span><span class=s1>'orientation'</span><span class=p>][</span><span class=n>tissue</span><span class=p>])</span>
         <span class=n>trans</span><span class=o>.</span><span class=n>Scale</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>)</span>
 
 <span class=hll>        <span class=n>tf</span> <span class=o>=</span> <span class=n>vtkTransformPolyDataFilter</span><span class=p>()</span>
@@ -237,8 +237,8 @@ function registerListener(event, func) {
 <span class=hll>        <span class=n>actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>        <span class=n>actor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>)</span>
 
-        <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetOpacity</span><span class=p>(</span><span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;opacity&#39;</span><span class=p>][</span><span class=n>tissue</span><span class=p>])</span>
-        <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetDiffuseColor</span><span class=p>(</span><span class=n>color_lut</span><span class=o>.</span><span class=n>GetTableValue</span><span class=p>(</span><span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;indices&#39;</span><span class=p>][</span><span class=n>tissue</span><span class=p>])[:</span><span class=mi>3</span><span class=p>])</span>
+        <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetOpacity</span><span class=p>(</span><span class=n>parameters</span><span class=p>[</span><span class=s1>'opacity'</span><span class=p>][</span><span class=n>tissue</span><span class=p>])</span>
+        <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetDiffuseColor</span><span class=p>(</span><span class=n>color_lut</span><span class=o>.</span><span class=n>GetTableValue</span><span class=p>(</span><span class=n>parameters</span><span class=p>[</span><span class=s1>'indices'</span><span class=p>][</span><span class=n>tissue</span><span class=p>])[:</span><span class=mi>3</span><span class=p>])</span>
         <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetSpecular</span><span class=p>(</span><span class=mf>0.2</span><span class=p>)</span>
         <span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetSpecularPower</span><span class=p>(</span><span class=mi>10</span><span class=p>)</span>
 
@@ -246,7 +246,7 @@ function registerListener(event, func) {
 
         <span class=k>if</span> <span class=ow>not</span> <span class=n>no_sliders</span><span class=p>:</span>
             <span class=n>slider_properties</span> <span class=o>=</span> <span class=n>SliderProperties</span><span class=p>()</span>
-            <span class=n>slider_properties</span><span class=o>.</span><span class=n>value_initial</span> <span class=o>=</span> <span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;opacity&#39;</span><span class=p>][</span><span class=n>tissue</span><span class=p>]</span>
+            <span class=n>slider_properties</span><span class=o>.</span><span class=n>value_initial</span> <span class=o>=</span> <span class=n>parameters</span><span class=p>[</span><span class=s1>'opacity'</span><span class=p>][</span><span class=n>tissue</span><span class=p>]</span>
             <span class=n>slider_properties</span><span class=o>.</span><span class=n>title</span> <span class=o>=</span> <span class=n>tissue</span>
 
             <span class=c1># Screen coordinates.</span>
@@ -259,7 +259,7 @@ function registerListener(event, func) {
                 <span class=n>slider_properties</span><span class=o>.</span><span class=n>p2</span> <span class=o>=</span> <span class=p>[</span><span class=n>right_pos_x1</span><span class=p>,</span> <span class=n>right_pos_y</span><span class=p>]</span>
                 <span class=n>right_pos_y</span> <span class=o>+=</span> <span class=n>right_step_size</span>
 
-            <span class=n>slider_widget</span> <span class=o>=</span> <span class=n>make_slider_widget</span><span class=p>(</span><span class=n>slider_properties</span><span class=p>,</span> <span class=n>color_lut</span><span class=p>,</span> <span class=n>parameters</span><span class=p>[</span><span class=s1>&#39;indices&#39;</span><span class=p>][</span><span class=n>tissue</span><span class=p>])</span>
+            <span class=n>slider_widget</span> <span class=o>=</span> <span class=n>make_slider_widget</span><span class=p>(</span><span class=n>slider_properties</span><span class=p>,</span> <span class=n>color_lut</span><span class=p>,</span> <span class=n>parameters</span><span class=p>[</span><span class=s1>'indices'</span><span class=p>][</span><span class=n>tissue</span><span class=p>])</span>
             <span class=n>slider_widget</span><span class=o>.</span><span class=n>SetInteractor</span><span class=p>(</span><span class=n>iren</span><span class=p>)</span>
             <span class=n>slider_widget</span><span class=o>.</span><span class=n>SetAnimationModeToAnimate</span><span class=p>()</span>
             <span class=n>slider_widget</span><span class=o>.</span><span class=n>EnabledOn</span><span class=p>()</span>
@@ -270,57 +270,57 @@ function registerListener(event, func) {
             <span class=n>slider_count</span> <span class=o>+=</span> <span class=mi>1</span>
 
         <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span>
-            <span class=sa>f</span><span class=s1>&#39;</span><span class=si>{</span><span class=n>tissue</span><span class=si>:</span><span class=s1>&lt;</span><span class=si>{</span><span class=n>name_size</span><span class=si>}</span><span class=s1>s</span><span class=si>}</span><span class=s1> </span><span class=si>{</span><span class=n>parameters</span><span class=p>[</span><span class=s2>&quot;indices&quot;</span><span class=p>][</span><span class=n>tissue</span><span class=p>]</span><span class=si>:{</span><span class=n>int_size</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=mi>3</span><span class=si>}</span><span class=s1>d</span><span class=si>}</span><span class=s1>&#39;</span>
-            <span class=sa>f</span><span class=s1>&#39; </span><span class=si>{</span><span class=n>parameters</span><span class=p>[</span><span class=s2>&quot;colors&quot;</span><span class=p>][</span><span class=n>tissue</span><span class=p>]</span><span class=si>:</span><span class=s1>&lt;</span><span class=si>{</span><span class=n>color_size</span><span class=si>}</span><span class=s1>s</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+            <span class=sa>f</span><span class=s1>'</span><span class=si>{</span><span class=n>tissue</span><span class=si>:</span><span class=s1>&lt;</span><span class=si>{</span><span class=n>name_size</span><span class=si>}</span><span class=s1>s</span><span class=si>}</span><span class=s1> </span><span class=si>{</span><span class=n>parameters</span><span class=p>[</span><span class=s2>"indices"</span><span class=p>][</span><span class=n>tissue</span><span class=p>]</span><span class=si>:{</span><span class=n>int_size</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=mi>3</span><span class=si>}</span><span class=s1>d</span><span class=si>}</span><span class=s1>'</span>
+            <span class=sa>f</span><span class=s1>' </span><span class=si>{</span><span class=n>parameters</span><span class=p>[</span><span class=s2>"colors"</span><span class=p>][</span><span class=n>tissue</span><span class=p>]</span><span class=si>:</span><span class=s1>&lt;</span><span class=si>{</span><span class=n>color_size</span><span class=si>}</span><span class=s1>s</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
 
     <span class=n>res</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>line</span><span class=p>)</span>
-    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;</span><span class=se>\n</span><span class=s1>&#39;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>res</span><span class=p>))</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s1>'</span><span class=se>\n</span><span class=s1>'</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>res</span><span class=p>))</span>
 
     <span class=k>if</span> <span class=n>no_sliders</span><span class=p>:</span>
         <span class=n>ren_win</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>1024</span><span class=p>,</span> <span class=mi>1024</span><span class=p>)</span>
     <span class=k>else</span><span class=p>:</span>
         <span class=n>ren_win</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>1024</span> <span class=o>+</span> <span class=mi>400</span><span class=p>,</span> <span class=mi>1024</span><span class=p>)</span>
-    <span class=n>ren_win</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;FroggieView&#39;</span><span class=p>)</span>
+    <span class=n>ren_win</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>'FroggieView'</span><span class=p>)</span>
 
-    <span class=n>ren</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;ParaViewBkg&#39;</span><span class=p>))</span>
+    <span class=n>ren</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'ParaViewBkg'</span><span class=p>))</span>
 
     <span class=c1>#  Final view.</span>
     <span class=n>camera</span> <span class=o>=</span> <span class=n>ren</span><span class=o>.</span><span class=n>GetActiveCamera</span><span class=p>()</span>
     <span class=c1># Superior Anterior Left</span>
-    <span class=n>labels</span> <span class=o>=</span> <span class=s1>&#39;sal&#39;</span>
-    <span class=k>if</span> <span class=n>select_figure</span> <span class=o>==</span> <span class=s1>&#39;a&#39;</span><span class=p>:</span>
+    <span class=n>labels</span> <span class=o>=</span> <span class=s1>'sal'</span>
+    <span class=k>if</span> <span class=n>select_figure</span> <span class=o>==</span> <span class=s1>'a'</span><span class=p>:</span>
         <span class=c1># Fig 12-9a in the VTK Textbook</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>SetPosition</span><span class=p>(</span><span class=mf>495.722368</span><span class=p>,</span> <span class=o>-</span><span class=mf>447.474954</span><span class=p>,</span> <span class=o>-</span><span class=mf>646.308030</span><span class=p>)</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>SetFocalPoint</span><span class=p>(</span><span class=mf>137.612066</span><span class=p>,</span> <span class=o>-</span><span class=mf>40.962376</span><span class=p>,</span> <span class=o>-</span><span class=mf>195.171023</span><span class=p>)</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>SetViewUp</span><span class=p>(</span><span class=o>-</span><span class=mf>0.323882</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.816232</span><span class=p>,</span> <span class=mf>0.478398</span><span class=p>)</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>SetDistance</span><span class=p>(</span><span class=mf>704.996499</span><span class=p>)</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>SetClippingRange</span><span class=p>(</span><span class=mf>319.797039</span><span class=p>,</span> <span class=mf>1809.449285</span><span class=p>)</span>
-    <span class=k>elif</span> <span class=n>select_figure</span> <span class=o>==</span> <span class=s1>&#39;b&#39;</span><span class=p>:</span>
+    <span class=k>elif</span> <span class=n>select_figure</span> <span class=o>==</span> <span class=s1>'b'</span><span class=p>:</span>
         <span class=c1># Fig 12-9b in the VTK Textbook</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>SetPosition</span><span class=p>(</span><span class=mf>478.683494</span><span class=p>,</span> <span class=o>-</span><span class=mf>420.477744</span><span class=p>,</span> <span class=o>-</span><span class=mf>643.112038</span><span class=p>)</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>SetFocalPoint</span><span class=p>(</span><span class=mf>135.624874</span><span class=p>,</span> <span class=o>-</span><span class=mf>36.478435</span><span class=p>,</span> <span class=o>-</span><span class=mf>210.614440</span><span class=p>)</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>SetViewUp</span><span class=p>(</span><span class=o>-</span><span class=mf>0.320495</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.820148</span><span class=p>,</span> <span class=mf>0.473962</span><span class=p>)</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>SetDistance</span><span class=p>(</span><span class=mf>672.457328</span><span class=p>)</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>SetClippingRange</span><span class=p>(</span><span class=mf>307.326771</span><span class=p>,</span> <span class=mf>1765.990822</span><span class=p>)</span>
-    <span class=k>elif</span> <span class=n>select_figure</span> <span class=o>==</span> <span class=s1>&#39;c&#39;</span><span class=p>:</span>
+    <span class=k>elif</span> <span class=n>select_figure</span> <span class=o>==</span> <span class=s1>'c'</span><span class=p>:</span>
         <span class=c1># Fig 12-9c in the VTK Textbook</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>SetPosition</span><span class=p>(</span><span class=mf>201.363313</span><span class=p>,</span> <span class=o>-</span><span class=mf>147.260834</span><span class=p>,</span> <span class=o>-</span><span class=mf>229.885066</span><span class=p>)</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>SetFocalPoint</span><span class=p>(</span><span class=mf>140.626206</span><span class=p>,</span> <span class=o>-</span><span class=mf>75.857216</span><span class=p>,</span> <span class=o>-</span><span class=mf>162.352531</span><span class=p>)</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>SetViewUp</span><span class=p>(</span><span class=o>-</span><span class=mf>0.425438</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.786048</span><span class=p>,</span> <span class=mf>0.448477</span><span class=p>)</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>SetDistance</span><span class=p>(</span><span class=mf>115.534047</span><span class=p>)</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>SetClippingRange</span><span class=p>(</span><span class=mf>7.109870</span><span class=p>,</span> <span class=mf>854.091718</span><span class=p>)</span>
-    <span class=k>elif</span> <span class=n>select_figure</span> <span class=o>==</span> <span class=s1>&#39;d&#39;</span><span class=p>:</span>
+    <span class=k>elif</span> <span class=n>select_figure</span> <span class=o>==</span> <span class=s1>'d'</span><span class=p>:</span>
         <span class=c1># Fig 12-9d in the VTK Textbook</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>SetPosition</span><span class=p>(</span><span class=mf>115.361727</span><span class=p>,</span> <span class=o>-</span><span class=mf>484.656410</span><span class=p>,</span> <span class=o>-</span><span class=mf>6.193827</span><span class=p>)</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>SetFocalPoint</span><span class=p>(</span><span class=mf>49.126343</span><span class=p>,</span> <span class=mf>98.501094</span><span class=p>,</span> <span class=mf>1.323317</span><span class=p>)</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>SetViewUp</span><span class=p>(</span><span class=o>-</span><span class=mf>0.649127</span><span class=p>,</span> <span class=o>-</span><span class=mf>0.083475</span><span class=p>,</span> <span class=mf>0.756086</span><span class=p>)</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>SetDistance</span><span class=p>(</span><span class=mf>586.955116</span><span class=p>)</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>SetClippingRange</span><span class=p>(</span><span class=mf>360.549218</span><span class=p>,</span> <span class=mf>866.876230</span><span class=p>)</span>
-    <span class=k>elif</span> <span class=n>select_figure</span> <span class=o>==</span> <span class=s1>&#39;l&#39;</span><span class=p>:</span>
+    <span class=k>elif</span> <span class=n>select_figure</span> <span class=o>==</span> <span class=s1>'l'</span><span class=p>:</span>
         <span class=c1># Orient so that we look down on the anterior surface and</span>
         <span class=c1>#   the superior surface faces the top of the screen.</span>
         <span class=c1>#  Left Superior Anterior</span>
-        <span class=n>labels</span> <span class=o>=</span> <span class=s1>&#39;lsa&#39;</span>
+        <span class=n>labels</span> <span class=o>=</span> <span class=s1>'lsa'</span>
 <span class=hll>        <span class=n>transform</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>        <span class=n>transform</span><span class=o>.</span><span class=n>SetMatrix</span><span class=p>(</span><span class=n>camera</span><span class=o>.</span><span class=n>GetModelTransformMatrix</span><span class=p>())</span>
         <span class=n>transform</span><span class=o>.</span><span class=n>RotateY</span><span class=p>(</span><span class=mi>90</span><span class=p>)</span>
@@ -332,7 +332,7 @@ function registerListener(event, func) {
         <span class=c1># Orient so that we look down on the posterior surface and</span>
         <span class=c1>#   the superior surface faces the top of the screen.</span>
         <span class=c1># Right Superior Posterior</span>
-        <span class=n>labels</span> <span class=o>=</span> <span class=s1>&#39;rsp&#39;</span>
+        <span class=n>labels</span> <span class=o>=</span> <span class=s1>'rsp'</span>
 <span class=hll>        <span class=n>transform</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>        <span class=n>transform</span><span class=o>.</span><span class=n>SetMatrix</span><span class=p>(</span><span class=n>camera</span><span class=o>.</span><span class=n>GetModelTransformMatrix</span><span class=p>())</span>
         <span class=n>transform</span><span class=o>.</span><span class=n>RotateY</span><span class=p>(</span><span class=o>-</span><span class=mi>90</span><span class=p>)</span>
@@ -364,40 +364,40 @@ function registerListener(event, func) {
     <span class=n>ren_win</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
 
     <span class=n>slider_toggle</span> <span class=o>=</span> <span class=n>SliderToggleCallback</span><span class=p>(</span><span class=n>sliders</span><span class=p>)</span>
-    <span class=n>iren</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=s1>&#39;KeyPressEvent&#39;</span><span class=p>,</span> <span class=n>slider_toggle</span><span class=p>)</span>
+    <span class=n>iren</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=s1>'KeyPressEvent'</span><span class=p>,</span> <span class=n>slider_toggle</span><span class=p>)</span>
 
     <span class=n>iren</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>parse_json</span><span class=p>(</span><span class=n>fn_path</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Parse the JSON file selecting the components that we want.</span>
 
 <span class=sd>    We also check that the file paths are valid.</span>
 
 <span class=sd>    :param fn_path: The path the JSON file.</span>
 <span class=sd>    :return: A dictionary of the parameters that we require.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=k>with</span> <span class=nb>open</span><span class=p>(</span><span class=n>fn_path</span><span class=p>)</span> <span class=k>as</span> <span class=n>data_file</span><span class=p>:</span>
         <span class=n>json_data</span> <span class=o>=</span> <span class=n>json</span><span class=o>.</span><span class=n>load</span><span class=p>(</span><span class=n>data_file</span><span class=p>)</span>
     <span class=n>paths_ok</span> <span class=o>=</span> <span class=kc>True</span>
     <span class=n>parameters</span> <span class=o>=</span> <span class=nb>dict</span><span class=p>()</span>
     <span class=k>for</span> <span class=n>k</span><span class=p>,</span> <span class=n>v</span> <span class=ow>in</span> <span class=n>json_data</span><span class=o>.</span><span class=n>items</span><span class=p>():</span>
-        <span class=k>if</span> <span class=n>k</span> <span class=o>==</span> <span class=s1>&#39;files&#39;</span><span class=p>:</span>
-            <span class=k>if</span> <span class=s1>&#39;root&#39;</span> <span class=ow>in</span> <span class=n>v</span><span class=p>:</span>
-                <span class=n>root</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>v</span><span class=p>[</span><span class=s1>&#39;root&#39;</span><span class=p>])</span>
+        <span class=k>if</span> <span class=n>k</span> <span class=o>==</span> <span class=s1>'files'</span><span class=p>:</span>
+            <span class=k>if</span> <span class=s1>'root'</span> <span class=ow>in</span> <span class=n>v</span><span class=p>:</span>
+                <span class=n>root</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>v</span><span class=p>[</span><span class=s1>'root'</span><span class=p>])</span>
                 <span class=k>if</span> <span class=ow>not</span> <span class=n>root</span><span class=o>.</span><span class=n>exists</span><span class=p>():</span>
-                    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;Bad path: </span><span class=si>{</span><span class=n>root</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+                    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'Bad path: </span><span class=si>{</span><span class=n>root</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
                     <span class=n>paths_ok</span> <span class=o>=</span> <span class=kc>False</span>
                 <span class=k>else</span><span class=p>:</span>
-                    <span class=k>if</span> <span class=s1>&#39;vtk_files&#39;</span> <span class=ow>not</span> <span class=ow>in</span> <span class=n>v</span><span class=p>:</span>
-                        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Expected vtk files.&#39;</span><span class=p>)</span>
+                    <span class=k>if</span> <span class=s1>'vtk_files'</span> <span class=ow>not</span> <span class=ow>in</span> <span class=n>v</span><span class=p>:</span>
+                        <span class=nb>print</span><span class=p>(</span><span class=s1>'Expected vtk files.'</span><span class=p>)</span>
                         <span class=n>paths_ok</span> <span class=o>=</span> <span class=kc>False</span>
                         <span class=k>continue</span>
                     <span class=k>for</span> <span class=n>kk</span> <span class=ow>in</span> <span class=n>v</span><span class=p>:</span>
-                        <span class=k>if</span> <span class=n>kk</span> <span class=o>==</span> <span class=s1>&#39;vtk_files&#39;</span><span class=p>:</span>
+                        <span class=k>if</span> <span class=n>kk</span> <span class=o>==</span> <span class=s1>'vtk_files'</span><span class=p>:</span>
                             <span class=k>if</span> <span class=nb>len</span><span class=p>(</span><span class=n>v</span><span class=p>[</span><span class=n>kk</span><span class=p>])</span> <span class=o>!=</span> <span class=mi>17</span><span class=p>:</span>
-                                <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;Expected seventeen file names.&#39;</span><span class=p>)</span>
+                                <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'Expected seventeen file names.'</span><span class=p>)</span>
                                 <span class=n>paths_ok</span> <span class=o>=</span> <span class=kc>False</span>
                             <span class=c1># The stem of the file path becomes the key.</span>
                             <span class=n>path_map</span> <span class=o>=</span> <span class=nb>dict</span><span class=p>()</span>
@@ -405,21 +405,21 @@ function registerListener(event, func) {
                                 <span class=n>path_map</span><span class=p>[</span><span class=n>p</span><span class=o>.</span><span class=n>stem</span><span class=p>]</span> <span class=o>=</span> <span class=n>p</span>
                                 <span class=k>if</span> <span class=ow>not</span> <span class=n>p</span><span class=o>.</span><span class=n>is_file</span><span class=p>():</span>
                                     <span class=n>paths_ok</span> <span class=o>=</span> <span class=kc>False</span>
-                                    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;Not a file </span><span class=si>{</span><span class=n>p</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+                                    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'Not a file </span><span class=si>{</span><span class=n>p</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
                             <span class=k>if</span> <span class=n>paths_ok</span><span class=p>:</span>
                                 <span class=n>parameters</span><span class=p>[</span><span class=n>kk</span><span class=p>]</span> <span class=o>=</span> <span class=n>path_map</span>
             <span class=k>else</span><span class=p>:</span>
                 <span class=n>paths_ok</span> <span class=o>=</span> <span class=kc>False</span>
-                <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Missing the key &quot;root&quot; and/or the key &quot;files&quot; for the files.&#39;</span><span class=p>)</span>
+                <span class=nb>print</span><span class=p>(</span><span class=s1>'Missing the key "root" and/or the key "files" for the files.'</span><span class=p>)</span>
         <span class=k>else</span><span class=p>:</span>
-            <span class=k>if</span> <span class=n>k</span> <span class=ow>in</span> <span class=p>[</span><span class=s1>&#39;tissues&#39;</span><span class=p>,</span> <span class=s1>&#39;figures&#39;</span><span class=p>]:</span>
+            <span class=k>if</span> <span class=n>k</span> <span class=ow>in</span> <span class=p>[</span><span class=s1>'tissues'</span><span class=p>,</span> <span class=s1>'figures'</span><span class=p>]:</span>
                 <span class=k>for</span> <span class=n>kk</span><span class=p>,</span> <span class=n>vv</span> <span class=ow>in</span> <span class=n>v</span><span class=o>.</span><span class=n>items</span><span class=p>():</span>
                     <span class=n>parameters</span><span class=p>[</span><span class=n>kk</span><span class=p>]</span> <span class=o>=</span> <span class=n>vv</span>
     <span class=k>return</span> <span class=n>paths_ok</span><span class=p>,</span> <span class=n>parameters</span>
 
 
 <span class=k>class</span><span class=w> </span><span class=nc>SliceOrder</span><span class=p>:</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    These transformations permute image and other geometric data to maintain proper</span>
 <span class=sd>     orientation regardless of the acquisition order. After applying these transforms with</span>
 <span class=hll><span class=sd>    vtkTransformFilter, a view up of 0, -1, 0 will result in the body part</span>
@@ -435,7 +435,7 @@ function registerListener(event, func) {
 <span class=sd>    pa - posterior to anterior (back to front)</span>
 <span class=sd>    lr - left to right</span>
 <span class=sd>    rl - right to left</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 
     <span class=k>def</span><span class=w> </span><span class=fm>__init__</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
 <span class=hll>        <span class=bp>self</span><span class=o>.</span><span class=n>si_mat</span> <span class=o>=</span> <span class=n>vtkMatrix4x4</span><span class=p>()</span>
@@ -466,12 +466,12 @@ function registerListener(event, func) {
         <span class=bp>self</span><span class=o>.</span><span class=n>rl_mat</span><span class=o>.</span><span class=n>SetElement</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
         <span class=bp>self</span><span class=o>.</span><span class=n>rl_mat</span><span class=o>.</span><span class=n>SetElement</span><span class=p>(</span><span class=mi>3</span><span class=p>,</span> <span class=mi>3</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
 
-<span class=w>        </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>        </span><span class=sd>"""</span>
 <span class=sd>        The previous transforms assume radiological views of the slices</span>
 <span class=sd>         (viewed from the feet).</span>
 <span class=sd>        Other modalities such as physical sectioning may view from the head.</span>
 <span class=sd>        The following transforms modify the original with a 180° rotation about y</span>
-<span class=sd>        &quot;&quot;&quot;</span>
+<span class=sd>        """</span>
 
 <span class=hll>        <span class=bp>self</span><span class=o>.</span><span class=n>hf_mat</span> <span class=o>=</span> <span class=n>vtkMatrix4x4</span><span class=p>()</span>
 </span>        <span class=bp>self</span><span class=o>.</span><span class=n>hf_mat</span><span class=o>.</span><span class=n>Zero</span><span class=p>()</span>
@@ -484,108 +484,108 @@ function registerListener(event, func) {
 
 <span class=hll>        <span class=n>si_trans</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>        <span class=n>si_trans</span><span class=o>.</span><span class=n>SetMatrix</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>si_mat</span><span class=p>)</span>
-        <span class=bp>self</span><span class=o>.</span><span class=n>transform</span><span class=p>[</span><span class=s1>&#39;si&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=n>si_trans</span>
+        <span class=bp>self</span><span class=o>.</span><span class=n>transform</span><span class=p>[</span><span class=s1>'si'</span><span class=p>]</span> <span class=o>=</span> <span class=n>si_trans</span>
 
 <span class=hll>        <span class=n>is_trans</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>        <span class=n>is_trans</span><span class=o>.</span><span class=n>SetMatrix</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>is_mat</span><span class=p>)</span>
-        <span class=bp>self</span><span class=o>.</span><span class=n>transform</span><span class=p>[</span><span class=s1>&#39;is&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=n>is_trans</span>
+        <span class=bp>self</span><span class=o>.</span><span class=n>transform</span><span class=p>[</span><span class=s1>'is'</span><span class=p>]</span> <span class=o>=</span> <span class=n>is_trans</span>
 
 <span class=hll>        <span class=n>ap_trans</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>        <span class=n>ap_trans</span><span class=o>.</span><span class=n>Scale</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
-        <span class=bp>self</span><span class=o>.</span><span class=n>transform</span><span class=p>[</span><span class=s1>&#39;ap&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=n>ap_trans</span>
+        <span class=bp>self</span><span class=o>.</span><span class=n>transform</span><span class=p>[</span><span class=s1>'ap'</span><span class=p>]</span> <span class=o>=</span> <span class=n>ap_trans</span>
 
 <span class=hll>        <span class=n>pa_trans</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>        <span class=n>pa_trans</span><span class=o>.</span><span class=n>Scale</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>)</span>
-        <span class=bp>self</span><span class=o>.</span><span class=n>transform</span><span class=p>[</span><span class=s1>&#39;pa&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=n>pa_trans</span>
+        <span class=bp>self</span><span class=o>.</span><span class=n>transform</span><span class=p>[</span><span class=s1>'pa'</span><span class=p>]</span> <span class=o>=</span> <span class=n>pa_trans</span>
 
 <span class=hll>        <span class=n>lr_trans</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>        <span class=n>lr_trans</span><span class=o>.</span><span class=n>SetMatrix</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>lr_mat</span><span class=p>)</span>
-        <span class=bp>self</span><span class=o>.</span><span class=n>transform</span><span class=p>[</span><span class=s1>&#39;lr&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=n>lr_trans</span>
+        <span class=bp>self</span><span class=o>.</span><span class=n>transform</span><span class=p>[</span><span class=s1>'lr'</span><span class=p>]</span> <span class=o>=</span> <span class=n>lr_trans</span>
 
 <span class=hll>        <span class=n>rl_trans</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>        <span class=n>rl_trans</span><span class=o>.</span><span class=n>SetMatrix</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>rl_mat</span><span class=p>)</span>
-        <span class=bp>self</span><span class=o>.</span><span class=n>transform</span><span class=p>[</span><span class=s1>&#39;rl&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=n>rl_trans</span>
+        <span class=bp>self</span><span class=o>.</span><span class=n>transform</span><span class=p>[</span><span class=s1>'rl'</span><span class=p>]</span> <span class=o>=</span> <span class=n>rl_trans</span>
 
 <span class=hll>        <span class=n>hf_trans</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>        <span class=n>hf_trans</span><span class=o>.</span><span class=n>SetMatrix</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>hf_mat</span><span class=p>)</span>
-        <span class=bp>self</span><span class=o>.</span><span class=n>transform</span><span class=p>[</span><span class=s1>&#39;hf&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=n>hf_trans</span>
+        <span class=bp>self</span><span class=o>.</span><span class=n>transform</span><span class=p>[</span><span class=s1>'hf'</span><span class=p>]</span> <span class=o>=</span> <span class=n>hf_trans</span>
 
 <span class=hll>        <span class=n>hf_si_trans</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>        <span class=n>hf_si_trans</span><span class=o>.</span><span class=n>SetMatrix</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>hf_mat</span><span class=p>)</span>
         <span class=n>hf_si_trans</span><span class=o>.</span><span class=n>Concatenate</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>si_mat</span><span class=p>)</span>
-        <span class=bp>self</span><span class=o>.</span><span class=n>transform</span><span class=p>[</span><span class=s1>&#39;hfsi&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=n>hf_si_trans</span>
+        <span class=bp>self</span><span class=o>.</span><span class=n>transform</span><span class=p>[</span><span class=s1>'hfsi'</span><span class=p>]</span> <span class=o>=</span> <span class=n>hf_si_trans</span>
 
 <span class=hll>        <span class=n>hf_is_trans</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>        <span class=n>hf_is_trans</span><span class=o>.</span><span class=n>SetMatrix</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>hf_mat</span><span class=p>)</span>
         <span class=n>hf_is_trans</span><span class=o>.</span><span class=n>Concatenate</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>is_mat</span><span class=p>)</span>
-        <span class=bp>self</span><span class=o>.</span><span class=n>transform</span><span class=p>[</span><span class=s1>&#39;hfis&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=n>hf_is_trans</span>
+        <span class=bp>self</span><span class=o>.</span><span class=n>transform</span><span class=p>[</span><span class=s1>'hfis'</span><span class=p>]</span> <span class=o>=</span> <span class=n>hf_is_trans</span>
 
 <span class=hll>        <span class=n>hf_ap_trans</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>        <span class=n>hf_ap_trans</span><span class=o>.</span><span class=n>SetMatrix</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>hf_mat</span><span class=p>)</span>
         <span class=n>hf_ap_trans</span><span class=o>.</span><span class=n>Scale</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
-        <span class=bp>self</span><span class=o>.</span><span class=n>transform</span><span class=p>[</span><span class=s1>&#39;hfap&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=n>hf_ap_trans</span>
+        <span class=bp>self</span><span class=o>.</span><span class=n>transform</span><span class=p>[</span><span class=s1>'hfap'</span><span class=p>]</span> <span class=o>=</span> <span class=n>hf_ap_trans</span>
 
 <span class=hll>        <span class=n>hf_pa_trans</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>        <span class=n>hf_pa_trans</span><span class=o>.</span><span class=n>SetMatrix</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>hf_mat</span><span class=p>)</span>
         <span class=n>hf_pa_trans</span><span class=o>.</span><span class=n>Scale</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>)</span>
-        <span class=bp>self</span><span class=o>.</span><span class=n>transform</span><span class=p>[</span><span class=s1>&#39;hfpa&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=n>hf_pa_trans</span>
+        <span class=bp>self</span><span class=o>.</span><span class=n>transform</span><span class=p>[</span><span class=s1>'hfpa'</span><span class=p>]</span> <span class=o>=</span> <span class=n>hf_pa_trans</span>
 
 <span class=hll>        <span class=n>hf_lr_trans</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>        <span class=n>hf_lr_trans</span><span class=o>.</span><span class=n>SetMatrix</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>hf_mat</span><span class=p>)</span>
         <span class=n>hf_lr_trans</span><span class=o>.</span><span class=n>Concatenate</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>lr_mat</span><span class=p>)</span>
-        <span class=bp>self</span><span class=o>.</span><span class=n>transform</span><span class=p>[</span><span class=s1>&#39;hflr&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=n>hf_lr_trans</span>
+        <span class=bp>self</span><span class=o>.</span><span class=n>transform</span><span class=p>[</span><span class=s1>'hflr'</span><span class=p>]</span> <span class=o>=</span> <span class=n>hf_lr_trans</span>
 
 <span class=hll>        <span class=n>hf_rl_trans</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>        <span class=n>hf_rl_trans</span><span class=o>.</span><span class=n>SetMatrix</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>hf_mat</span><span class=p>)</span>
         <span class=n>hf_rl_trans</span><span class=o>.</span><span class=n>Concatenate</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>rl_mat</span><span class=p>)</span>
-        <span class=bp>self</span><span class=o>.</span><span class=n>transform</span><span class=p>[</span><span class=s1>&#39;hfrl&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=n>hf_rl_trans</span>
+        <span class=bp>self</span><span class=o>.</span><span class=n>transform</span><span class=p>[</span><span class=s1>'hfrl'</span><span class=p>]</span> <span class=o>=</span> <span class=n>hf_rl_trans</span>
 
         <span class=c1># Identity</span>
-<span class=hll>        <span class=bp>self</span><span class=o>.</span><span class=n>transform</span><span class=p>[</span><span class=s1>&#39;I&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
+<span class=hll>        <span class=bp>self</span><span class=o>.</span><span class=n>transform</span><span class=p>[</span><span class=s1>'I'</span><span class=p>]</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>
         <span class=c1># Zero</span>
 <span class=hll>        <span class=n>z_trans</span> <span class=o>=</span> <span class=n>vtkTransform</span><span class=p>()</span>
 </span>        <span class=n>z_trans</span><span class=o>.</span><span class=n>Scale</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
-        <span class=bp>self</span><span class=o>.</span><span class=n>transform</span><span class=p>[</span><span class=s1>&#39;Z&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=n>z_trans</span>
+        <span class=bp>self</span><span class=o>.</span><span class=n>transform</span><span class=p>[</span><span class=s1>'Z'</span><span class=p>]</span> <span class=o>=</span> <span class=n>z_trans</span>
 
     <span class=k>def</span><span class=w> </span><span class=nf>print_transform</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>order</span><span class=p>):</span>
-<span class=w>        </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>        </span><span class=sd>"""</span>
 <span class=sd>        Print the homogenous matrix corresponding to the slice order.</span>
 <span class=sd>        :param order: The slice order.</span>
 <span class=sd>        :return:</span>
-<span class=sd>        &quot;&quot;&quot;</span>
+<span class=sd>        """</span>
         <span class=nb>print</span><span class=p>(</span><span class=n>order</span><span class=p>)</span>
         <span class=n>m</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>transform</span><span class=p>[</span><span class=n>order</span><span class=p>]</span><span class=o>.</span><span class=n>GetMatrix</span><span class=p>()</span>
         <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>4</span><span class=p>):</span>
             <span class=n>row</span> <span class=o>=</span> <span class=nb>list</span><span class=p>()</span>
             <span class=k>for</span> <span class=n>j</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>4</span><span class=p>):</span>
-                <span class=n>row</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;</span><span class=si>{</span><span class=n>m</span><span class=o>.</span><span class=n>GetElement</span><span class=p>(</span><span class=n>i</span><span class=p>,</span><span class=w> </span><span class=n>j</span><span class=p>)</span><span class=si>:</span><span class=s1>6.2g</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
-            <span class=nb>print</span><span class=p>(</span><span class=s1>&#39; &#39;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>row</span><span class=p>))</span>
+                <span class=n>row</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=sa>f</span><span class=s1>'</span><span class=si>{</span><span class=n>m</span><span class=o>.</span><span class=n>GetElement</span><span class=p>(</span><span class=n>i</span><span class=p>,</span><span class=w> </span><span class=n>j</span><span class=p>)</span><span class=si>:</span><span class=s1>6.2g</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
+            <span class=nb>print</span><span class=p>(</span><span class=s1>' '</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>row</span><span class=p>))</span>
 
     <span class=k>def</span><span class=w> </span><span class=nf>print_all_transforms</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
-<span class=w>        </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>        </span><span class=sd>"""</span>
 <span class=sd>        Print all the homogenous matrices corresponding to the slice orders.</span>
 <span class=sd>        :return:</span>
-<span class=sd>        &quot;&quot;&quot;</span>
+<span class=sd>        """</span>
         <span class=k>for</span> <span class=n>k</span> <span class=ow>in</span> <span class=bp>self</span><span class=o>.</span><span class=n>transform</span><span class=o>.</span><span class=n>keys</span><span class=p>():</span>
             <span class=bp>self</span><span class=o>.</span><span class=n>print_transform</span><span class=p>(</span><span class=n>k</span><span class=p>)</span>
 
     <span class=k>def</span><span class=w> </span><span class=nf>get</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>order</span><span class=p>):</span>
-<span class=w>        </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>        </span><span class=sd>"""</span>
 <span class=hll><span class=sd>        Returns the vtkTransform corresponding to the slice order.</span>
 </span>
 <span class=sd>        :param order: The slice order.</span>
 <span class=hll><span class=sd>        :return: The vtkTransform to use.</span>
-</span><span class=sd>        &quot;&quot;&quot;</span>
+</span><span class=sd>        """</span>
         <span class=k>if</span> <span class=n>order</span> <span class=ow>in</span> <span class=bp>self</span><span class=o>.</span><span class=n>transform</span><span class=o>.</span><span class=n>keys</span><span class=p>():</span>
             <span class=k>return</span> <span class=bp>self</span><span class=o>.</span><span class=n>transform</span><span class=p>[</span><span class=n>order</span><span class=p>]</span>
         <span class=k>else</span><span class=p>:</span>
-            <span class=n>s</span> <span class=o>=</span> <span class=s1>&#39;No such transform &quot;</span><span class=si>{:s}</span><span class=s1>&quot; exists.&#39;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>order</span><span class=p>)</span>
+            <span class=n>s</span> <span class=o>=</span> <span class=s1>'No such transform "</span><span class=si>{:s}</span><span class=s1>" exists.'</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>order</span><span class=p>)</span>
             <span class=k>raise</span> <span class=ne>Exception</span><span class=p>(</span><span class=n>s</span><span class=p>)</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>create_tissue_lut</span><span class=p>(</span><span class=n>indices</span><span class=p>,</span> <span class=n>colors</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Create the lookup table for the frog tissues.</span>
 
 <span class=sd>    Each table value corresponds the color of one of the frog tissues.</span>
@@ -593,7 +593,7 @@ function registerListener(event, func) {
 <span class=sd>    :param indices: The tissue name and index.</span>
 <span class=sd>    :param colors: The tissue name and color.</span>
 <span class=sd>    :return: The lookup table.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 <span class=hll>    <span class=n>lut</span> <span class=o>=</span> <span class=n>vtkLookupTable</span><span class=p>()</span>
 </span>    <span class=n>lut</span><span class=o>.</span><span class=n>SetNumberOfColors</span><span class=p>(</span><span class=nb>len</span><span class=p>(</span><span class=n>colors</span><span class=p>))</span>
     <span class=n>lut</span><span class=o>.</span><span class=n>SetTableRange</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=nb>len</span><span class=p>(</span><span class=n>colors</span><span class=p>)</span> <span class=o>-</span> <span class=mi>1</span><span class=p>)</span>
@@ -608,11 +608,11 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>make_axes_actor</span><span class=p>(</span><span class=n>scale</span><span class=p>,</span> <span class=n>xyz_labels</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    :param scale: Sets the scale and direction of the axes.</span>
 <span class=sd>    :param xyz_labels: Labels for the axes.</span>
 <span class=sd>    :return: The axes actor.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 <span class=hll>    <span class=n>axes</span> <span class=o>=</span> <span class=n>vtkAxesActor</span><span class=p>()</span>
 </span>    <span class=n>axes</span><span class=o>.</span><span class=n>SetScale</span><span class=p>(</span><span class=n>scale</span><span class=p>)</span>
     <span class=n>axes</span><span class=o>.</span><span class=n>SetShaftTypeToCylinder</span><span class=p>()</span>
@@ -633,11 +633,11 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>make_annotated_cube_actor</span><span class=p>(</span><span class=n>cube_labels</span><span class=p>,</span> <span class=n>colors</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    :param cube_labels: The labels for the cube faces.</span>
 <span class=sd>    :param colors: Used to determine the cube color.</span>
 <span class=sd>    :return: The annotated cube actor.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=c1># A cube with labeled faces.</span>
 <span class=hll>    <span class=n>cube</span> <span class=o>=</span> <span class=n>vtkAnnotatedCubeActor</span><span class=p>()</span>
 </span>    <span class=n>cube</span><span class=o>.</span><span class=n>SetXPlusFaceText</span><span class=p>(</span><span class=n>cube_labels</span><span class=p>[</span><span class=mi>0</span><span class=p>])</span>
@@ -647,44 +647,44 @@ function registerListener(event, func) {
     <span class=n>cube</span><span class=o>.</span><span class=n>SetZPlusFaceText</span><span class=p>(</span><span class=n>cube_labels</span><span class=p>[</span><span class=mi>4</span><span class=p>])</span>
     <span class=n>cube</span><span class=o>.</span><span class=n>SetZMinusFaceText</span><span class=p>(</span><span class=n>cube_labels</span><span class=p>[</span><span class=mi>5</span><span class=p>])</span>
     <span class=n>cube</span><span class=o>.</span><span class=n>SetFaceTextScale</span><span class=p>(</span><span class=mf>0.5</span><span class=p>)</span>
-    <span class=n>cube</span><span class=o>.</span><span class=n>GetCubeProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Gainsboro&#39;</span><span class=p>))</span>
+    <span class=n>cube</span><span class=o>.</span><span class=n>GetCubeProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Gainsboro'</span><span class=p>))</span>
 
-    <span class=n>cube</span><span class=o>.</span><span class=n>GetTextEdgesProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;LightSlateGray&#39;</span><span class=p>))</span>
+    <span class=n>cube</span><span class=o>.</span><span class=n>GetTextEdgesProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'LightSlateGray'</span><span class=p>))</span>
 
     <span class=c1># Change the vector text colors.</span>
-    <span class=n>cube</span><span class=o>.</span><span class=n>GetXPlusFaceProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Tomato&#39;</span><span class=p>))</span>
-    <span class=n>cube</span><span class=o>.</span><span class=n>GetXMinusFaceProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Tomato&#39;</span><span class=p>))</span>
-    <span class=n>cube</span><span class=o>.</span><span class=n>GetYPlusFaceProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;DeepSkyBlue&#39;</span><span class=p>))</span>
-    <span class=n>cube</span><span class=o>.</span><span class=n>GetYMinusFaceProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;DeepSkyBlue&#39;</span><span class=p>))</span>
-    <span class=n>cube</span><span class=o>.</span><span class=n>GetZPlusFaceProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;SeaGreen&#39;</span><span class=p>))</span>
-    <span class=n>cube</span><span class=o>.</span><span class=n>GetZMinusFaceProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;SeaGreen&#39;</span><span class=p>))</span>
+    <span class=n>cube</span><span class=o>.</span><span class=n>GetXPlusFaceProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Tomato'</span><span class=p>))</span>
+    <span class=n>cube</span><span class=o>.</span><span class=n>GetXMinusFaceProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Tomato'</span><span class=p>))</span>
+    <span class=n>cube</span><span class=o>.</span><span class=n>GetYPlusFaceProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'DeepSkyBlue'</span><span class=p>))</span>
+    <span class=n>cube</span><span class=o>.</span><span class=n>GetYMinusFaceProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'DeepSkyBlue'</span><span class=p>))</span>
+    <span class=n>cube</span><span class=o>.</span><span class=n>GetZPlusFaceProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'SeaGreen'</span><span class=p>))</span>
+    <span class=n>cube</span><span class=o>.</span><span class=n>GetZMinusFaceProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'SeaGreen'</span><span class=p>))</span>
     <span class=k>return</span> <span class=n>cube</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>make_cube_actor</span><span class=p>(</span><span class=n>label_selector</span><span class=p>,</span> <span class=n>colors</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    :param label_selector: The selector used to define labels for the axes and cube.</span>
 <span class=sd>    :param colors: Used to set the colors of the cube faces.</span>
 <span class=sd>    :return: The combined axes and annotated cube prop.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
-    <span class=k>if</span> <span class=n>label_selector</span> <span class=o>==</span> <span class=s1>&#39;sal&#39;</span><span class=p>:</span>
-        <span class=c1># xyz_labels = [&#39;S&#39;, &#39;A&#39;, &#39;L&#39;]</span>
-        <span class=n>xyz_labels</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;+X&#39;</span><span class=p>,</span> <span class=s1>&#39;+Y&#39;</span><span class=p>,</span> <span class=s1>&#39;+Z&#39;</span><span class=p>]</span>
-        <span class=n>cube_labels</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;S&#39;</span><span class=p>,</span> <span class=s1>&#39;I&#39;</span><span class=p>,</span> <span class=s1>&#39;A&#39;</span><span class=p>,</span> <span class=s1>&#39;P&#39;</span><span class=p>,</span> <span class=s1>&#39;L&#39;</span><span class=p>,</span> <span class=s1>&#39;R&#39;</span><span class=p>]</span>
+<span class=sd>    """</span>
+    <span class=k>if</span> <span class=n>label_selector</span> <span class=o>==</span> <span class=s1>'sal'</span><span class=p>:</span>
+        <span class=c1># xyz_labels = ['S', 'A', 'L']</span>
+        <span class=n>xyz_labels</span> <span class=o>=</span> <span class=p>[</span><span class=s1>'+X'</span><span class=p>,</span> <span class=s1>'+Y'</span><span class=p>,</span> <span class=s1>'+Z'</span><span class=p>]</span>
+        <span class=n>cube_labels</span> <span class=o>=</span> <span class=p>[</span><span class=s1>'S'</span><span class=p>,</span> <span class=s1>'I'</span><span class=p>,</span> <span class=s1>'A'</span><span class=p>,</span> <span class=s1>'P'</span><span class=p>,</span> <span class=s1>'L'</span><span class=p>,</span> <span class=s1>'R'</span><span class=p>]</span>
         <span class=n>scale</span> <span class=o>=</span> <span class=p>[</span><span class=mf>1.5</span><span class=p>,</span> <span class=mf>1.5</span><span class=p>,</span> <span class=mf>1.5</span><span class=p>]</span>
-    <span class=k>elif</span> <span class=n>label_selector</span> <span class=o>==</span> <span class=s1>&#39;rsp&#39;</span><span class=p>:</span>
-        <span class=c1># xyz_labels = [&#39;R&#39;, &#39;S&#39;, &#39;P&#39;]</span>
-        <span class=n>xyz_labels</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;+X&#39;</span><span class=p>,</span> <span class=s1>&#39;+Y&#39;</span><span class=p>,</span> <span class=s1>&#39;+Z&#39;</span><span class=p>]</span>
-        <span class=n>cube_labels</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;R&#39;</span><span class=p>,</span> <span class=s1>&#39;L&#39;</span><span class=p>,</span> <span class=s1>&#39;S&#39;</span><span class=p>,</span> <span class=s1>&#39;I&#39;</span><span class=p>,</span> <span class=s1>&#39;P&#39;</span><span class=p>,</span> <span class=s1>&#39;A&#39;</span><span class=p>]</span>
+    <span class=k>elif</span> <span class=n>label_selector</span> <span class=o>==</span> <span class=s1>'rsp'</span><span class=p>:</span>
+        <span class=c1># xyz_labels = ['R', 'S', 'P']</span>
+        <span class=n>xyz_labels</span> <span class=o>=</span> <span class=p>[</span><span class=s1>'+X'</span><span class=p>,</span> <span class=s1>'+Y'</span><span class=p>,</span> <span class=s1>'+Z'</span><span class=p>]</span>
+        <span class=n>cube_labels</span> <span class=o>=</span> <span class=p>[</span><span class=s1>'R'</span><span class=p>,</span> <span class=s1>'L'</span><span class=p>,</span> <span class=s1>'S'</span><span class=p>,</span> <span class=s1>'I'</span><span class=p>,</span> <span class=s1>'P'</span><span class=p>,</span> <span class=s1>'A'</span><span class=p>]</span>
         <span class=n>scale</span> <span class=o>=</span> <span class=p>[</span><span class=mf>1.5</span><span class=p>,</span> <span class=mf>1.5</span><span class=p>,</span> <span class=mf>1.5</span><span class=p>]</span>
-    <span class=k>elif</span> <span class=n>label_selector</span> <span class=o>==</span> <span class=s1>&#39;lsa&#39;</span><span class=p>:</span>
-        <span class=c1># xyz_labels = [&#39;R&#39;, &#39;S&#39;, &#39;P&#39;]</span>
-        <span class=n>xyz_labels</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;+X&#39;</span><span class=p>,</span> <span class=s1>&#39;+Y&#39;</span><span class=p>,</span> <span class=s1>&#39;+Z&#39;</span><span class=p>]</span>
-        <span class=n>cube_labels</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;L&#39;</span><span class=p>,</span> <span class=s1>&#39;R&#39;</span><span class=p>,</span> <span class=s1>&#39;S&#39;</span><span class=p>,</span> <span class=s1>&#39;I&#39;</span><span class=p>,</span> <span class=s1>&#39;A&#39;</span><span class=p>,</span> <span class=s1>&#39;P&#39;</span><span class=p>]</span>
+    <span class=k>elif</span> <span class=n>label_selector</span> <span class=o>==</span> <span class=s1>'lsa'</span><span class=p>:</span>
+        <span class=c1># xyz_labels = ['R', 'S', 'P']</span>
+        <span class=n>xyz_labels</span> <span class=o>=</span> <span class=p>[</span><span class=s1>'+X'</span><span class=p>,</span> <span class=s1>'+Y'</span><span class=p>,</span> <span class=s1>'+Z'</span><span class=p>]</span>
+        <span class=n>cube_labels</span> <span class=o>=</span> <span class=p>[</span><span class=s1>'L'</span><span class=p>,</span> <span class=s1>'R'</span><span class=p>,</span> <span class=s1>'S'</span><span class=p>,</span> <span class=s1>'I'</span><span class=p>,</span> <span class=s1>'A'</span><span class=p>,</span> <span class=s1>'P'</span><span class=p>]</span>
         <span class=n>scale</span> <span class=o>=</span> <span class=p>[</span><span class=mf>1.5</span><span class=p>,</span> <span class=mf>1.5</span><span class=p>,</span> <span class=mf>1.5</span><span class=p>]</span>
     <span class=k>else</span><span class=p>:</span>
-        <span class=n>xyz_labels</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;+X&#39;</span><span class=p>,</span> <span class=s1>&#39;+Y&#39;</span><span class=p>,</span> <span class=s1>&#39;+Z&#39;</span><span class=p>]</span>
-        <span class=n>cube_labels</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;+X&#39;</span><span class=p>,</span> <span class=s1>&#39;-X&#39;</span><span class=p>,</span> <span class=s1>&#39;+Y&#39;</span><span class=p>,</span> <span class=s1>&#39;-Y&#39;</span><span class=p>,</span> <span class=s1>&#39;+Z&#39;</span><span class=p>,</span> <span class=s1>&#39;-Z&#39;</span><span class=p>]</span>
+        <span class=n>xyz_labels</span> <span class=o>=</span> <span class=p>[</span><span class=s1>'+X'</span><span class=p>,</span> <span class=s1>'+Y'</span><span class=p>,</span> <span class=s1>'+Z'</span><span class=p>]</span>
+        <span class=n>cube_labels</span> <span class=o>=</span> <span class=p>[</span><span class=s1>'+X'</span><span class=p>,</span> <span class=s1>'-X'</span><span class=p>,</span> <span class=s1>'+Y'</span><span class=p>,</span> <span class=s1>'-Y'</span><span class=p>,</span> <span class=s1>'+Z'</span><span class=p>,</span> <span class=s1>'-Z'</span><span class=p>]</span>
         <span class=n>scale</span> <span class=o>=</span> <span class=p>[</span><span class=mf>1.5</span><span class=p>,</span> <span class=mf>1.5</span><span class=p>,</span> <span class=mf>1.5</span><span class=p>]</span>
 
     <span class=c1># We are combining a vtkAxesActor and a vtkAnnotatedCubeActor</span>
@@ -717,24 +717,24 @@ function registerListener(event, func) {
 
     <span class=n>title</span> <span class=o>=</span> <span class=kc>None</span>
 
-    <span class=n>title_color</span> <span class=o>=</span> <span class=s1>&#39;Black&#39;</span>
-    <span class=n>label_color</span> <span class=o>=</span> <span class=s1>&#39;Black&#39;</span>
-    <span class=n>value_color</span> <span class=o>=</span> <span class=s1>&#39;DarkSlateGray&#39;</span>
-    <span class=n>slider_color</span> <span class=o>=</span> <span class=s1>&#39;BurlyWood&#39;</span>
-    <span class=n>selected_color</span> <span class=o>=</span> <span class=s1>&#39;Lime&#39;</span>
-    <span class=n>bar_color</span> <span class=o>=</span> <span class=s1>&#39;Black&#39;</span>
-    <span class=n>bar_ends_color</span> <span class=o>=</span> <span class=s1>&#39;Indigo&#39;</span>
+    <span class=n>title_color</span> <span class=o>=</span> <span class=s1>'Black'</span>
+    <span class=n>label_color</span> <span class=o>=</span> <span class=s1>'Black'</span>
+    <span class=n>value_color</span> <span class=o>=</span> <span class=s1>'DarkSlateGray'</span>
+    <span class=n>slider_color</span> <span class=o>=</span> <span class=s1>'BurlyWood'</span>
+    <span class=n>selected_color</span> <span class=o>=</span> <span class=s1>'Lime'</span>
+    <span class=n>bar_color</span> <span class=o>=</span> <span class=s1>'Black'</span>
+    <span class=n>bar_ends_color</span> <span class=o>=</span> <span class=s1>'Indigo'</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>make_slider_widget</span><span class=p>(</span><span class=n>properties</span><span class=p>,</span> <span class=n>lut</span><span class=p>,</span> <span class=n>idx</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Make the slider widget.</span>
 
 <span class=sd>    :param properties: The slider properties.</span>
 <span class=sd>    :param lut: The color lookup table.</span>
 <span class=sd>    :param idx: The tissue index.</span>
 <span class=sd>    :return: The slider widget.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 <span class=hll>    <span class=n>slider</span> <span class=o>=</span> <span class=n>vtkSliderRepresentation2D</span><span class=p>()</span>
 </span>
     <span class=n>slider</span><span class=o>.</span><span class=n>SetMinimumValue</span><span class=p>(</span><span class=n>properties</span><span class=o>.</span><span class=n>value_minimum</span><span class=p>)</span>
@@ -797,7 +797,7 @@ function registerListener(event, func) {
         <span class=bp>self</span><span class=o>.</span><span class=n>sliders</span> <span class=o>=</span> <span class=n>sliders</span>
 
     <span class=k>def</span><span class=w> </span><span class=fm>__call__</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>caller</span><span class=p>,</span> <span class=n>ev</span><span class=p>):</span>
-        <span class=k>if</span> <span class=n>caller</span><span class=o>.</span><span class=n>GetKeyCode</span><span class=p>()</span> <span class=o>==</span> <span class=s2>&quot;n&quot;</span><span class=p>:</span>
+        <span class=k>if</span> <span class=n>caller</span><span class=o>.</span><span class=n>GetKeyCode</span><span class=p>()</span> <span class=o>==</span> <span class=s2>"n"</span><span class=p>:</span>
             <span class=k>for</span> <span class=n>k</span><span class=p>,</span> <span class=n>v</span> <span class=ow>in</span> <span class=bp>self</span><span class=o>.</span><span class=n>sliders</span><span class=o>.</span><span class=n>items</span><span class=p>():</span>
                 <span class=k>if</span> <span class=n>v</span><span class=o>.</span><span class=n>GetEnabled</span><span class=p>():</span>
                     <span class=n>v</span><span class=o>.</span><span class=n>Off</span><span class=p>()</span>
@@ -805,7 +805,7 @@ function registerListener(event, func) {
                     <span class=n>v</span><span class=o>.</span><span class=n>On</span><span class=p>()</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>sys</span>
 
     <span class=n>data_folder</span><span class=p>,</span> <span class=n>view</span><span class=p>,</span> <span class=n>omit_sliders</span><span class=p>,</span> <span class=n>selected_tissues</span> <span class=o>=</span> <span class=n>get_program_parameters</span><span class=p>(</span><span class=n>sys</span><span class=o>.</span><span class=n>argv</span><span class=p>)</span>

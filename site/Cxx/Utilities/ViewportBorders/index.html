@@ -157,19 +157,19 @@ function registerListener(event, func) {
 
 <span class=kt>int</span><span class=w> </span><span class=n>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>argv</span><span class=p>[])</span>
 <span class=p>{</span>
-<span class=w>  </span><span class=n>CLI</span><span class=o>::</span><span class=n>App</span><span class=w> </span><span class=n>app</span><span class=p>{</span><span class=s>&quot;Draws a border around each viewport.&quot;</span><span class=p>};</span>
+<span class=w>  </span><span class=n>CLI</span><span class=o>::</span><span class=n>App</span><span class=w> </span><span class=n>app</span><span class=p>{</span><span class=s>"Draws a border around each viewport."</span><span class=p>};</span>
 
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>&gt;</span><span class=w> </span><span class=n>filenames</span><span class=p>;</span>
-<span class=w>  </span><span class=n>app</span><span class=p>.</span><span class=n>add_option</span><span class=p>(</span><span class=s>&quot;fileName&quot;</span><span class=p>,</span><span class=w> </span><span class=n>filenames</span><span class=p>,</span><span class=w> </span><span class=s>&quot;List of files&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=n>app</span><span class=p>.</span><span class=n>add_option</span><span class=p>(</span><span class=s>"fileName"</span><span class=p>,</span><span class=w> </span><span class=n>filenames</span><span class=p>,</span><span class=w> </span><span class=s>"List of files"</span><span class=p>)</span>
 <span class=w>      </span><span class=o>-&gt;</span><span class=n>check</span><span class=p>(</span><span class=n>CLI</span><span class=o>::</span><span class=n>ExistingFile</span><span class=p>);</span>
 
 <span class=w>  </span><span class=n>CLI11_PARSE</span><span class=p>(</span><span class=n>app</span><span class=p>,</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=n>argv</span><span class=p>);</span>
 
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>filenames</span><span class=p>.</span><span class=n>empty</span><span class=p>())</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;No filenames have been specified.</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>                 </span><span class=s>&quot;Try: src/Testing/Data/v.vtk src/Testing/Data/t.vtk&quot;</span>
-<span class=w>                 </span><span class=s>&quot; src/Testing/Data/k.vtk&quot;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"No filenames have been specified.</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>                 </span><span class=s>"Try: src/Testing/Data/v.vtk src/Testing/Data/t.vtk"</span>
+<span class=w>                 </span><span class=s>" src/Testing/Data/k.vtk"</span>
 <span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>EXIT_FAILURE</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
@@ -180,7 +180,7 @@ function registerListener(event, func) {
 </span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderWindow</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>300</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=k>static_cast</span><span class=o>&lt;</span><span class=kt>int</span><span class=o>&gt;</span><span class=p>(</span><span class=n>numberOfFiles</span><span class=p>),</span><span class=w> </span><span class=mi>300</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;ViewportBorders&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"ViewportBorders"</span><span class=p>);</span>
 
 <span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>borderWidth</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>4</span><span class=p>;</span>
 
@@ -195,11 +195,11 @@ function registerListener(event, func) {
 
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>actor</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>actor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>);</span>
-<span class=w>    </span><span class=n>actor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Silver&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>    </span><span class=n>actor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Silver"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderer</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor</span><span class=p>);</span>
-<span class=w>    </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;SlateGray&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>    </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"SlateGray"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=w>    </span><span class=kt>double</span><span class=w> </span><span class=n>viewport</span><span class=p>[</span><span class=mi>4</span><span class=p>];</span>
 <span class=w>    </span><span class=n>viewport</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>size</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=n>i</span><span class=p>;</span>
@@ -210,13 +210,13 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>i</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>numberOfFiles</span><span class=w> </span><span class=o>-</span><span class=w> </span><span class=mi>1</span><span class=p>)</span>
 <span class=w>    </span><span class=p>{</span>
 <span class=w>      </span><span class=k>auto</span><span class=w> </span><span class=n>borderActor</span><span class=w> </span><span class=o>=</span>
-<span class=w>          </span><span class=n>DrawViewportBorder</span><span class=p>(</span><span class=n>viewportBorderSpecifier</span><span class=p>.</span><span class=n>tlb</span><span class=p>,</span><span class=w> </span><span class=s>&quot;Gold&quot;</span><span class=p>,</span><span class=w> </span><span class=n>borderWidth</span><span class=p>);</span>
+<span class=w>          </span><span class=n>DrawViewportBorder</span><span class=p>(</span><span class=n>viewportBorderSpecifier</span><span class=p>.</span><span class=n>tlb</span><span class=p>,</span><span class=w> </span><span class=s>"Gold"</span><span class=p>,</span><span class=w> </span><span class=n>borderWidth</span><span class=p>);</span>
 <span class=w>      </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>borderActor</span><span class=p>);</span>
 <span class=w>    </span><span class=p>}</span>
 <span class=w>    </span><span class=k>else</span>
 <span class=w>    </span><span class=p>{</span>
 <span class=w>      </span><span class=k>auto</span><span class=w> </span><span class=n>borderActor</span><span class=w> </span><span class=o>=</span>
-<span class=w>          </span><span class=n>DrawViewportBorder</span><span class=p>(</span><span class=n>viewportBorderSpecifier</span><span class=p>.</span><span class=n>tlbr</span><span class=p>,</span><span class=w> </span><span class=s>&quot;Gold&quot;</span><span class=p>,</span><span class=w> </span><span class=n>borderWidth</span><span class=p>);</span>
+<span class=w>          </span><span class=n>DrawViewportBorder</span><span class=p>(</span><span class=n>viewportBorderSpecifier</span><span class=p>.</span><span class=n>tlbr</span><span class=p>,</span><span class=w> </span><span class=s>"Gold"</span><span class=p>,</span><span class=w> </span><span class=n>borderWidth</span><span class=p>);</span>
 <span class=w>      </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>borderActor</span><span class=p>);</span>
 <span class=w>    </span><span class=p>}</span>
 <span class=w>    </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>);</span>
@@ -328,11 +328,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>NOT</span><span class=w> </span><span class=n>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=n>message</span><span class=p>(</span><span class=n>FATAL_ERROR</span><span class=w> </span><span class=s>&quot;ViewportBorders: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=n>message</span><span class=p>(</span><span class=n>FATAL_ERROR</span><span class=w> </span><span class=s>"ViewportBorders: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=n>endif</span><span class=p>()</span>
 
-<span class=cp># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=n>set</span><span class=p>(</span><span class=n>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s>&quot;ON&quot;</span><span class=w> </span><span class=n>CACHE</span><span class=w> </span><span class=n>BOOL</span><span class=w> </span><span class=s>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=cp># Prevent a "command line is too long" failure in Windows.</span>
+<span class=n>set</span><span class=p>(</span><span class=n>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s>"ON"</span><span class=w> </span><span class=n>CACHE</span><span class=w> </span><span class=n>BOOL</span><span class=w> </span><span class=s>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=n>add_executable</span><span class=p>(</span><span class=n>ViewportBorders</span><span class=w> </span><span class=n>MACOSX_BUNDLE</span><span class=w> </span><span class=n>ViewportBorders</span><span class=p>.</span><span class=n>cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=n>target_link_libraries</span><span class=p>(</span><span class=n>ViewportBorders</span><span class=w> </span><span class=n>PRIVATE</span><span class=w> </span><span class=n>$</span><span class=p>{</span><span class=n>VTK_LIBRARIES</span><span class=p>}</span>
 <span class=p>)</span>

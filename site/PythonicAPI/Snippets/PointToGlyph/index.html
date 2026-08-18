@@ -64,7 +64,7 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>point_to_glyph</span><span class=p>(</span><span class=n>points</span><span class=p>,</span> <span class=n>scale</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Convert points to glyphs.</span>
 <span class=sd>    :param points: The points to glyph.</span>
 <span class=sd>    :param scale: The scale, used to determine the size of the</span>
@@ -72,7 +72,7 @@ function registerListener(event, func) {
 <span class=sd>                  fraction of the largest side of the bounding</span>
 <span class=sd>                  box surrounding the points. e.g. 0.05</span>
 <span class=sd>    :return: The actor.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 
     <span class=n>bounds</span> <span class=o>=</span> <span class=n>points</span><span class=o>.</span><span class=n>bounds</span>
     <span class=n>max_len</span> <span class=o>=</span> <span class=mf>0.0</span>
@@ -93,7 +93,7 @@ function registerListener(event, func) {
     <span class=n>some_filter</span><span class=o>.</span><span class=n>update</span><span class=p>()</span>
     <span class=c1># Map the points to spheres</span>
     <span class=n>sphere_actor</span> <span class=o>=</span> <span class=n>point_to_glyph</span><span class=p>(</span><span class=n>some_filter</span><span class=o>.</span><span class=n>output</span><span class=o>.</span><span class=n>points</span><span class=p>,</span> <span class=mf>0.05</span><span class=p>)</span>
-    <span class=n>sphere_actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Violet&#39;</span><span class=p>)</span>
+    <span class=n>sphere_actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Violet'</span><span class=p>)</span>
     <span class=c1># Add the actor to the renderer.</span>
     <span class=n>ren</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>sphere_actor</span><span class=p>)</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

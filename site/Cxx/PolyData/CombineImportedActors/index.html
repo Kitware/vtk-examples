@@ -126,10 +126,10 @@ function registerListener(event, func) {
 <span class=cp>#define USE_IMPORTER_UPDATE</span>
 <span class=cp>#endif</span>
 
-<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;algorithm&gt;</span><span class=c1> // For transform()</span>
-<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;cctype&gt;</span><span class=c1>    // For to_lower</span>
+<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;algorithm&gt;</span><span class=w> </span><span class=c1>// For transform()</span>
+<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;cctype&gt;</span><span class=w>    </span><span class=c1>// For to_lower</span>
 <span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;iostream&gt;</span>
-<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;string&gt;</span><span class=c1> // For find_last_of()</span>
+<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;string&gt;</span><span class=w> </span><span class=c1>// For find_last_of()</span>
 
 <span class=kt>int</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>argv</span><span class=p>[])</span>
 <span class=p>{</span>
@@ -138,22 +138,22 @@ function registerListener(event, func) {
 </span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>argc</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=mi>2</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cerr</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Need a file e.g. iflamingo.3ds&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cerr</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Need a file e.g. iflamingo.3ds"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>EXIT_FAILURE</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>fileName</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>];</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>extension</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&quot;&quot;</span><span class=p>;</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>extension</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>""</span><span class=p>;</span>
 <span class=w>  </span><span class=c1>// int filePrefixArgOffset = 0; // Depends on importer.</span>
 
-<span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>fileName</span><span class=p>.</span><span class=n>find_last_of</span><span class=p>(</span><span class=s>&quot;.&quot;</span><span class=p>)</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>::</span><span class=n>npos</span><span class=p>)</span>
+<span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>fileName</span><span class=p>.</span><span class=n>find_last_of</span><span class=p>(</span><span class=s>"."</span><span class=p>)</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>::</span><span class=n>npos</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>extension</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>fileName</span><span class=p>.</span><span class=n>substr</span><span class=p>(</span><span class=n>fileName</span><span class=p>.</span><span class=n>find_last_of</span><span class=p>(</span><span class=s>&quot;.&quot;</span><span class=p>)</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=mi>1</span><span class=p>);</span>
+<span class=w>    </span><span class=n>extension</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>fileName</span><span class=p>.</span><span class=n>substr</span><span class=p>(</span><span class=n>fileName</span><span class=p>.</span><span class=n>find_last_of</span><span class=p>(</span><span class=s>"."</span><span class=p>)</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=mi>1</span><span class=p>);</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=w>  </span><span class=c1>// Make the extension lowercase.</span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>transform</span><span class=p>(</span><span class=n>extension</span><span class=p>.</span><span class=n>begin</span><span class=p>(),</span><span class=w> </span><span class=n>extension</span><span class=p>.</span><span class=n>end</span><span class=p>(),</span><span class=w> </span><span class=n>extension</span><span class=p>.</span><span class=n>begin</span><span class=p>(),</span>
 <span class=w>                 </span><span class=o>::</span><span class=n>tolower</span><span class=p>);</span>
-<span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;wrl&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>"wrl"</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkVRMLImporter</span><span class=o>&gt;</span><span class=w> </span><span class=n>importer</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>importer</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>]);</span>
@@ -167,7 +167,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=n>importRenderer</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>importer</span><span class=o>-&gt;</span><span class=n>GetRenderer</span><span class=p>();</span>
 <span class=w>    </span><span class=c1>// filePrefixArgOffset = 2;</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;3ds&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>"3ds"</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtk3DSImporter</span><span class=o>&gt;</span><span class=w> </span><span class=n>importer</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>importer</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>]);</span>
@@ -181,7 +181,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=n>importRenderer</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>importer</span><span class=o>-&gt;</span><span class=n>GetRenderer</span><span class=p>();</span>
 <span class=w>    </span><span class=c1>// filePrefixArgOffset = 2;</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;gltf&quot;</span><span class=w> </span><span class=o>||</span><span class=w> </span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;glb&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>"gltf"</span><span class=w> </span><span class=o>||</span><span class=w> </span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>"glb"</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkGLTFImporter</span><span class=o>&gt;</span><span class=w> </span><span class=n>importer</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>importer</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>]);</span>
@@ -195,7 +195,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=n>importRenderer</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>importer</span><span class=o>-&gt;</span><span class=n>GetRenderer</span><span class=p>();</span>
 <span class=w>    </span><span class=c1>// filePrefixArgOffset = 2;</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;obj&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>extension</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>"obj"</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkOBJImporter</span><span class=o>&gt;</span><span class=w> </span><span class=n>importer</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>importer</span><span class=o>-&gt;</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>]);</span>
@@ -264,15 +264,15 @@ function registerListener(event, func) {
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>actor</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>actor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>);</span>
-<span class=w>  </span><span class=n>actor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetDiffuseColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Banana&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>actor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetDiffuseColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Banana"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderWindow</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>640</span><span class=p>,</span><span class=w> </span><span class=mi>480</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;CombineImportedActors&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"CombineImportedActors"</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderer</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>UseHiddenLineRemovalOn</span><span class=p>();</span>
-<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;SlateGray&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"SlateGray"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=c1>// renderer-&gt;SetActiveCamera(importRenderer-&gt;GetActiveCamera());</span>
 <span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor</span><span class=p>);</span>
@@ -311,11 +311,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;CombineImportedActors: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"CombineImportedActors: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>CombineImportedActors</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>CombineImportedActors.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>CombineImportedActors</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

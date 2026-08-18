@@ -94,7 +94,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkMyCallback</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=hll><span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=n>Execute</span><span class=p>(</span><span class=n>vtkObject</span><span class=o>*</span><span class=w> </span><span class=n>caller</span><span class=p>,</span><span class=w> </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>long</span><span class=p>,</span><span class=w> </span><span class=kt>void</span><span class=o>*</span><span class=p>)</span><span class=w> </span><span class=k>override</span>
+<span class=hll><span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=nf>Execute</span><span class=p>(</span><span class=n>vtkObject</span><span class=o>*</span><span class=w> </span><span class=n>caller</span><span class=p>,</span><span class=w> </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>long</span><span class=p>,</span><span class=w> </span><span class=kt>void</span><span class=o>*</span><span class=p>)</span><span class=w> </span><span class=k>override</span>
 </span><span class=w>  </span><span class=p>{</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransform</span><span class=o>&gt;</span><span class=w> </span><span class=n>t</span><span class=p>;</span>
 </span><span class=hll><span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=n>widget</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>reinterpret_cast</span><span class=o>&lt;</span><span class=n>vtkBoxWidget</span><span class=o>*&gt;</span><span class=p>(</span><span class=n>caller</span><span class=p>);</span>
@@ -110,7 +110,7 @@ function registerListener(event, func) {
 </span>
 <span class=w>  </span><span class=c1>//</span>
 <span class=w>  </span><span class=c1>// Next we create an instance of vtkConeSource and set some of its</span>
-<span class=w>  </span><span class=c1>// properties. The instance of vtkConeSource &quot;cone&quot; is part of a</span>
+<span class=w>  </span><span class=c1>// properties. The instance of vtkConeSource "cone" is part of a</span>
 <span class=w>  </span><span class=c1>// visualization pipeline (it is a source process object); it produces data</span>
 <span class=w>  </span><span class=c1>// (output type is vtkPolyData) which other filters may process.</span>
 <span class=w>  </span><span class=c1>//</span>
@@ -131,14 +131,14 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=c1>//</span>
 <span class=w>  </span><span class=c1>// Create an actor to represent the cone. The actor orchestrates rendering</span>
-<span class=w>  </span><span class=c1>// of the mapper&#39;s graphics primitives. An actor also refers to properties</span>
+<span class=w>  </span><span class=c1>// of the mapper's graphics primitives. An actor also refers to properties</span>
 <span class=w>  </span><span class=c1>// via a vtkProperty instance, and includes an internal transformation</span>
-<span class=w>  </span><span class=c1>// matrix. We set this actor&#39;s mapper to be coneMapper which we created</span>
+<span class=w>  </span><span class=c1>// matrix. We set this actor's mapper to be coneMapper which we created</span>
 <span class=w>  </span><span class=c1>// above.</span>
 <span class=w>  </span><span class=c1>//</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>coneActor</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>coneActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>coneMapper</span><span class=p>);</span>
-<span class=w>  </span><span class=n>coneActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Bisque&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>coneActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Bisque"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=w>  </span><span class=c1>//</span>
 <span class=w>  </span><span class=c1>// Create the Renderer and assign actors to it. A renderer is like a</span>
@@ -148,7 +148,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=c1>//</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span><span class=w> </span><span class=n>ren1</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>ren1</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>coneActor</span><span class=p>);</span>
-<span class=w>  </span><span class=n>ren1</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;MidnightBlue&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>ren1</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"MidnightBlue"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=w>  </span><span class=c1>//</span>
 <span class=w>  </span><span class=c1>// Finally we create the render window which will show up on the screen.</span>
@@ -158,7 +158,7 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span><span class=w> </span><span class=n>renWin</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>ren1</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>300</span><span class=p>,</span><span class=w> </span><span class=mi>300</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;Tutorial_Step6&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"Tutorial_Step6"</span><span class=p>);</span>
 
 <span class=w>  </span><span class=c1>//</span>
 <span class=w>  </span><span class=c1>// The vtkRenderWindowInteractor class watches for events (e.g., keypress,</span>
@@ -192,7 +192,7 @@ function registerListener(event, func) {
 </span><span class=w>  </span><span class=n>boxWidget</span><span class=o>-&gt;</span><span class=n>SetInteractor</span><span class=p>(</span><span class=n>iren</span><span class=p>);</span>
 <span class=w>  </span><span class=n>boxWidget</span><span class=o>-&gt;</span><span class=n>SetPlaceFactor</span><span class=p>(</span><span class=mf>1.25</span><span class=p>);</span>
 <span class=w>  </span><span class=n>boxWidget</span><span class=o>-&gt;</span><span class=n>GetOutlineProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
-<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Gold&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Gold"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=w>  </span><span class=c1>//</span>
 <span class=w>  </span><span class=c1>// Place the interactor initially. The input to a 3D widget is used to</span>
@@ -205,7 +205,7 @@ function registerListener(event, func) {
 </span><span class=hll><span class=w>  </span><span class=n>boxWidget</span><span class=o>-&gt;</span><span class=n>AddObserver</span><span class=p>(</span><span class=n>vtkCommand</span><span class=o>::</span><span class=n>InteractionEvent</span><span class=p>,</span><span class=w> </span><span class=n>callback</span><span class=p>);</span>
 </span>
 <span class=w>  </span><span class=c1>//</span>
-<span class=w>  </span><span class=c1>// Normally the user presses the &quot;i&quot; key to bring a 3D widget to life. Here</span>
+<span class=w>  </span><span class=c1>// Normally the user presses the "i" key to bring a 3D widget to life. Here</span>
 <span class=w>  </span><span class=c1>// we will manually enable it so it appears with the cone.</span>
 <span class=w>  </span><span class=c1>//</span>
 <span class=w>  </span><span class=n>boxWidget</span><span class=o>-&gt;</span><span class=n>On</span><span class=p>();</span>
@@ -237,11 +237,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;Tutorial_Step6: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"Tutorial_Step6: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>Tutorial_Step6</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>Tutorial_Step6.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>Tutorial_Step6</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

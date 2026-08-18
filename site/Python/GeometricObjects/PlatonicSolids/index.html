@@ -97,7 +97,7 @@ function registerListener(event, func) {
 
     <span class=c1># Create the render window and interactor.</span>
 <span class=hll>    <span class=n>ren_win</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>()</span>
-</span>    <span class=n>ren_win</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;PlatonicSolids&#39;</span><span class=p>)</span>
+</span>    <span class=n>ren_win</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>'PlatonicSolids'</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>iren</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>ren_win</span><span class=p>)</span>
@@ -151,13 +151,13 @@ function registerListener(event, func) {
                 <span class=c1># Add a renderer even if there is no actor.</span>
                 <span class=c1># This makes the render window background all the same color.</span>
 <span class=hll>                <span class=n>ren</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>()</span>
-</span>                <span class=n>ren</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;SlateGray&#39;</span><span class=p>))</span>
+</span>                <span class=n>ren</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'SlateGray'</span><span class=p>))</span>
                 <span class=n>ren</span><span class=o>.</span><span class=n>SetViewport</span><span class=p>(</span><span class=n>viewport</span><span class=p>)</span>
                 <span class=n>ren_win</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>ren</span><span class=p>)</span>
                 <span class=k>continue</span>
 
             <span class=n>renderers</span><span class=p>[</span><span class=n>index</span><span class=p>]</span><span class=o>.</span><span class=n>SetViewport</span><span class=p>(</span><span class=n>viewport</span><span class=p>)</span>
-            <span class=n>renderers</span><span class=p>[</span><span class=n>index</span><span class=p>]</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;SlateGray&#39;</span><span class=p>))</span>
+            <span class=n>renderers</span><span class=p>[</span><span class=n>index</span><span class=p>]</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'SlateGray'</span><span class=p>))</span>
             <span class=n>renderers</span><span class=p>[</span><span class=n>index</span><span class=p>]</span><span class=o>.</span><span class=n>ResetCamera</span><span class=p>()</span>
             <span class=n>renderers</span><span class=p>[</span><span class=n>index</span><span class=p>]</span><span class=o>.</span><span class=n>GetActiveCamera</span><span class=p>()</span><span class=o>.</span><span class=n>Azimuth</span><span class=p>(</span><span class=n>name_orientation</span><span class=p>[</span><span class=n>index</span><span class=p>]</span><span class=o>.</span><span class=n>azimuth</span><span class=p>)</span>
             <span class=n>renderers</span><span class=p>[</span><span class=n>index</span><span class=p>]</span><span class=o>.</span><span class=n>GetActiveCamera</span><span class=p>()</span><span class=o>.</span><span class=n>Elevation</span><span class=p>(</span><span class=n>name_orientation</span><span class=p>[</span><span class=n>index</span><span class=p>]</span><span class=o>.</span><span class=n>elevation</span><span class=p>)</span>
@@ -170,27 +170,27 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_name_orientation</span><span class=p>():</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Get the platonic solid names and initial orientations.</span>
 
 <span class=sd>    :return: The solids and their initial orientations.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 
     <span class=c1># [[name, azimuth, elevation, zoom] ...]</span>
-    <span class=n>res</span> <span class=o>=</span> <span class=p>[[</span><span class=s1>&#39;Tetrahedron&#39;</span><span class=p>,</span> <span class=mf>45.0</span><span class=p>,</span> <span class=mf>30.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>],</span>
-           <span class=p>[</span><span class=s1>&#39;Cube&#39;</span><span class=p>,</span> <span class=o>-</span><span class=mf>60.0</span><span class=p>,</span> <span class=mf>45.0</span><span class=p>,</span> <span class=mf>0.8</span><span class=p>],</span>
-           <span class=p>[</span><span class=s1>&#39;Octahedron&#39;</span><span class=p>,</span> <span class=o>-</span><span class=mf>15.0</span><span class=p>,</span> <span class=mf>10.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>],</span>
-           <span class=p>[</span><span class=s1>&#39;Icosahedron&#39;</span><span class=p>,</span> <span class=mf>4.5</span><span class=p>,</span> <span class=mf>18.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>],</span>
-           <span class=p>[</span><span class=s1>&#39;Dodecahedron&#39;</span><span class=p>,</span> <span class=mf>171.0</span><span class=p>,</span> <span class=mf>22.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>]]</span>
+    <span class=n>res</span> <span class=o>=</span> <span class=p>[[</span><span class=s1>'Tetrahedron'</span><span class=p>,</span> <span class=mf>45.0</span><span class=p>,</span> <span class=mf>30.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>],</span>
+           <span class=p>[</span><span class=s1>'Cube'</span><span class=p>,</span> <span class=o>-</span><span class=mf>60.0</span><span class=p>,</span> <span class=mf>45.0</span><span class=p>,</span> <span class=mf>0.8</span><span class=p>],</span>
+           <span class=p>[</span><span class=s1>'Octahedron'</span><span class=p>,</span> <span class=o>-</span><span class=mf>15.0</span><span class=p>,</span> <span class=mf>10.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>],</span>
+           <span class=p>[</span><span class=s1>'Icosahedron'</span><span class=p>,</span> <span class=mf>4.5</span><span class=p>,</span> <span class=mf>18.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>],</span>
+           <span class=p>[</span><span class=s1>'Dodecahedron'</span><span class=p>,</span> <span class=mf>171.0</span><span class=p>,</span> <span class=mf>22.0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>]]</span>
 
-    <span class=n>platonic_solids</span> <span class=o>=</span> <span class=n>namedtuple</span><span class=p>(</span><span class=s1>&#39;platonic_solids&#39;</span><span class=p>,</span> <span class=p>(</span><span class=s1>&#39;name&#39;</span><span class=p>,</span> <span class=s1>&#39;azimuth&#39;</span><span class=p>,</span> <span class=s1>&#39;elevation&#39;</span><span class=p>,</span> <span class=s1>&#39;zoom&#39;</span><span class=p>))</span>
+    <span class=n>platonic_solids</span> <span class=o>=</span> <span class=n>namedtuple</span><span class=p>(</span><span class=s1>'platonic_solids'</span><span class=p>,</span> <span class=p>(</span><span class=s1>'name'</span><span class=p>,</span> <span class=s1>'azimuth'</span><span class=p>,</span> <span class=s1>'elevation'</span><span class=p>,</span> <span class=s1>'zoom'</span><span class=p>))</span>
     <span class=c1># Convert res to a list of named tuples.</span>
     <span class=n>res</span> <span class=o>=</span> <span class=p>[</span><span class=n>platonic_solids</span><span class=p>(</span><span class=o>*</span><span class=n>row</span><span class=p>)</span> <span class=k>for</span> <span class=n>row</span> <span class=ow>in</span> <span class=n>res</span><span class=p>]</span>
     <span class=k>return</span> <span class=n>res</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_platonic_lut</span><span class=p>():</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Get a specialised lookup table for the platonic solids.</span>
 
 <span class=hll><span class=sd>    Since each face of a vtkPlatonicSolidSource has a different</span>
@@ -200,7 +200,7 @@ function registerListener(event, func) {
 <span class=sd>    are colored distinctly.</span>
 
 <span class=sd>    :return: The lookup table.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 <span class=hll>    <span class=n>lut</span> <span class=o>=</span> <span class=n>vtkLookupTable</span><span class=p>()</span>
 </span>    <span class=n>lut</span><span class=o>.</span><span class=n>SetNumberOfTableValues</span><span class=p>(</span><span class=mi>20</span><span class=p>)</span>
     <span class=n>lut</span><span class=o>.</span><span class=n>SetTableRange</span><span class=p>(</span><span class=mf>0.0</span><span class=p>,</span> <span class=mf>19.0</span><span class=p>)</span>
@@ -228,6 +228,6 @@ function registerListener(event, func) {
     <span class=k>return</span> <span class=n>lut</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

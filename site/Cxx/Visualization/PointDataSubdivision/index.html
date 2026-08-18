@@ -264,32 +264,32 @@ function registerListener(event, func) {
 <span class=cm> * The user can control the object to use, normal generation, type of shading</span>
 <span class=cm> * and number of points to use for the normals.</span>
 <span class=cm> */</span>
-<span class=kt>int</span><span class=w> </span><span class=n>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>argv</span><span class=p>[])</span>
+<span class=kt>int</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>argv</span><span class=p>[])</span>
 <span class=p>{</span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>argc</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=mi>1</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cerr</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Missing parameters.&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cerr</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Usage: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span>
-<span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;sourcetouse: (parametric_torus; parametric_ellipsoid; boy; &quot;</span>
-<span class=w>                 </span><span class=s>&quot;sphere; mobius; cone; random_hills; superquadric)&quot;</span>
-<span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;[displayNormals]&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;[gouraudInterpolation]&quot;</span>
-<span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;[glyphPoints]&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cerr</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Missing parameters."</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cerr</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Usage: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span>
+<span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"sourcetouse: (parametric_torus; parametric_ellipsoid; boy; "</span>
+<span class=w>                 </span><span class=s>"sphere; mobius; cone; random_hills; superquadric)"</span>
+<span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"[displayNormals]"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"[gouraudInterpolation]"</span>
+<span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"[glyphPoints]"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>EXIT_FAILURE</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=p>,</span><span class=w> </span><span class=kt>int</span><span class=o>&gt;</span><span class=w> </span><span class=n>availableSurfaces</span><span class=p>{{</span><span class=s>&quot;parametric_torus&quot;</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>},</span>
-<span class=w>                                               </span><span class=p>{</span><span class=s>&quot;parametric_ellipsoid&quot;</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>},</span>
-<span class=w>                                               </span><span class=p>{</span><span class=s>&quot;boy&quot;</span><span class=p>,</span><span class=w> </span><span class=mi>2</span><span class=p>},</span>
-<span class=w>                                               </span><span class=p>{</span><span class=s>&quot;sphere&quot;</span><span class=p>,</span><span class=w> </span><span class=mi>3</span><span class=p>},</span>
-<span class=w>                                               </span><span class=p>{</span><span class=s>&quot;mobius&quot;</span><span class=p>,</span><span class=w> </span><span class=mi>4</span><span class=p>},</span>
-<span class=w>                                               </span><span class=p>{</span><span class=s>&quot;cone&quot;</span><span class=p>,</span><span class=w> </span><span class=mi>5</span><span class=p>},</span>
-<span class=w>                                               </span><span class=p>{</span><span class=s>&quot;random_hills&quot;</span><span class=p>,</span><span class=w> </span><span class=mi>6</span><span class=p>},</span>
-<span class=w>                                               </span><span class=p>{</span><span class=s>&quot;superquadric&quot;</span><span class=p>,</span><span class=w> </span><span class=mi>7</span><span class=p>}};</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>map</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=p>,</span><span class=w> </span><span class=kt>int</span><span class=o>&gt;</span><span class=w> </span><span class=n>availableSurfaces</span><span class=p>{{</span><span class=s>"parametric_torus"</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>},</span>
+<span class=w>                                               </span><span class=p>{</span><span class=s>"parametric_ellipsoid"</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>},</span>
+<span class=w>                                               </span><span class=p>{</span><span class=s>"boy"</span><span class=p>,</span><span class=w> </span><span class=mi>2</span><span class=p>},</span>
+<span class=w>                                               </span><span class=p>{</span><span class=s>"sphere"</span><span class=p>,</span><span class=w> </span><span class=mi>3</span><span class=p>},</span>
+<span class=w>                                               </span><span class=p>{</span><span class=s>"mobius"</span><span class=p>,</span><span class=w> </span><span class=mi>4</span><span class=p>},</span>
+<span class=w>                                               </span><span class=p>{</span><span class=s>"cone"</span><span class=p>,</span><span class=w> </span><span class=mi>5</span><span class=p>},</span>
+<span class=w>                                               </span><span class=p>{</span><span class=s>"random_hills"</span><span class=p>,</span><span class=w> </span><span class=mi>6</span><span class=p>},</span>
+<span class=w>                                               </span><span class=p>{</span><span class=s>"superquadric"</span><span class=p>,</span><span class=w> </span><span class=mi>7</span><span class=p>}};</span>
 
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>desiredSurface</span><span class=p>{</span><span class=s>&quot;parametric_torus&quot;</span><span class=p>};</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>desiredSurface</span><span class=p>{</span><span class=s>"parametric_torus"</span><span class=p>};</span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>argc</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=mi>2</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Using parametric_torus as the surface.&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Using parametric_torus as the surface."</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=w>  </span><span class=k>else</span>
 <span class=w>  </span><span class=p>{</span>
@@ -299,10 +299,10 @@ function registerListener(event, func) {
 <span class=w>                   </span><span class=p>[](</span><span class=kt>char</span><span class=w> </span><span class=n>c</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w> </span><span class=k>return</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>tolower</span><span class=p>(</span><span class=n>c</span><span class=p>);</span><span class=w> </span><span class=p>});</span>
 <span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>availableSurfaces</span><span class=p>.</span><span class=n>find</span><span class=p>(</span><span class=n>desiredSurface</span><span class=p>)</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=n>availableSurfaces</span><span class=p>.</span><span class=n>end</span><span class=p>())</span>
 <span class=w>    </span><span class=p>{</span>
-<span class=w>      </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;The requested surface: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span>
-<span class=w>                </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; not found, reverting to using parametric_torus.&quot;</span>
+<span class=w>      </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"The requested surface: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span>
+<span class=w>                </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" not found, reverting to using parametric_torus."</span>
 <span class=w>                </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
-<span class=w>      </span><span class=n>desiredSurface</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&quot;parametric_torus&quot;</span><span class=p>;</span>
+<span class=w>      </span><span class=n>desiredSurface</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>"parametric_torus"</span><span class=p>;</span>
 <span class=w>    </span><span class=p>}</span>
 <span class=w>  </span><span class=p>}</span>
 
@@ -369,7 +369,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>dims</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>std</span><span class=o>::</span><span class=n>abs</span><span class=p>(</span><span class=n>bounds</span><span class=p>[</span><span class=mi>5</span><span class=p>]</span><span class=w> </span><span class=o>-</span><span class=w> </span><span class=n>bounds</span><span class=p>[</span><span class=mi>4</span><span class=p>]));</span>
 <span class=w>  </span><span class=kt>double</span><span class=w> </span><span class=n>scaleFactor</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=o>*</span><span class=n>std</span><span class=o>::</span><span class=n>min_element</span><span class=p>(</span><span class=n>dims</span><span class=p>.</span><span class=n>begin</span><span class=p>(),</span><span class=w> </span><span class=n>dims</span><span class=p>.</span><span class=n>end</span><span class=p>())</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=mf>0.2</span><span class=p>;</span>
 
-<span class=w>  </span><span class=n>polyData</span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetScalars</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>&quot;Elevation&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>polyData</span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetScalars</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>"Elevation"</span><span class=p>);</span>
 <span class=w>  </span><span class=kt>double</span><span class=o>*</span><span class=w> </span><span class=n>scalarRange</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>polyData</span><span class=o>-&gt;</span><span class=n>GetScalarRange</span><span class=p>();</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkButterflySubdivisionFilter</span><span class=o>&gt;</span><span class=w> </span><span class=n>butterfly</span><span class=p>;</span>
@@ -389,7 +389,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>actors</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>MakeSurfaceActor</span><span class=p>(</span><span class=n>linear</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>(),</span><span class=w> </span><span class=n>scalarRange</span><span class=p>,</span><span class=w> </span><span class=n>lut</span><span class=p>));</span>
 <span class=w>  </span><span class=n>actors</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>MakeSurfaceActor</span><span class=p>(</span><span class=n>polyData</span><span class=p>,</span><span class=w> </span><span class=n>scalarRange</span><span class=p>,</span><span class=w> </span><span class=n>lut</span><span class=p>));</span>
 
-<span class=w>  </span><span class=c1>// Let&#39;s visualise the normals.</span>
+<span class=w>  </span><span class=c1>// Let's visualise the normals.</span>
 <span class=hll><span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;&gt;</span><span class=w> </span><span class=n>glyphActors</span><span class=p>;</span>
 </span><span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>displayNormals</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
@@ -402,9 +402,9 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=p>}</span>
 
 <span class=hll><span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkActor2D</span><span class=o>&gt;&gt;</span><span class=w> </span><span class=n>labelActors</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>labelActors</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>MakeLabel</span><span class=p>(</span><span class=s>&quot;Butterfly Subdivision&quot;</span><span class=p>,</span><span class=w> </span><span class=n>minRenWinDim</span><span class=p>));</span>
-<span class=w>  </span><span class=n>labelActors</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>MakeLabel</span><span class=p>(</span><span class=s>&quot;Linear Subdivision&quot;</span><span class=p>,</span><span class=w> </span><span class=n>minRenWinDim</span><span class=p>));</span>
-<span class=w>  </span><span class=n>labelActors</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>MakeLabel</span><span class=p>(</span><span class=s>&quot;Original&quot;</span><span class=p>,</span><span class=w> </span><span class=n>minRenWinDim</span><span class=p>));</span>
+</span><span class=w>  </span><span class=n>labelActors</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>MakeLabel</span><span class=p>(</span><span class=s>"Butterfly Subdivision"</span><span class=p>,</span><span class=w> </span><span class=n>minRenWinDim</span><span class=p>));</span>
+<span class=w>  </span><span class=n>labelActors</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>MakeLabel</span><span class=p>(</span><span class=s>"Linear Subdivision"</span><span class=p>,</span><span class=w> </span><span class=n>minRenWinDim</span><span class=p>));</span>
+<span class=w>  </span><span class=n>labelActors</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>MakeLabel</span><span class=p>(</span><span class=s>"Original"</span><span class=p>,</span><span class=w> </span><span class=n>minRenWinDim</span><span class=p>));</span>
 
 <span class=hll><span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;&gt;</span><span class=w> </span><span class=n>ren</span><span class=p>;</span>
 </span><span class=hll><span class=w>  </span><span class=n>ren</span><span class=p>.</span><span class=n>push_back</span><span class=p>(</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>());</span>
@@ -433,7 +433,7 @@ function registerListener(event, func) {
 
 <span class=w>    </span><span class=n>ren</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actors</span><span class=p>[</span><span class=n>i</span><span class=p>]);</span>
 <span class=w>    </span><span class=n>ren</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>labelActors</span><span class=p>[</span><span class=n>i</span><span class=p>]);</span>
-<span class=w>    </span><span class=n>ren</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>nc</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;SlateGray&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>    </span><span class=n>ren</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>nc</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"SlateGray"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>    </span><span class=n>ren</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>SetActiveCamera</span><span class=p>(</span><span class=n>camera</span><span class=p>);</span>
 <span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>displayNormals</span><span class=p>)</span>
 <span class=w>    </span><span class=p>{</span>
@@ -464,7 +464,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
 <span class=w>  </span><span class=n>ren</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>ResetCamera</span><span class=p>();</span>
 <span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
-<span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;PointDataSubdivision&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"PointDataSubdivision"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
 
 <span class=w>  </span><span class=n>iren</span><span class=o>-&gt;</span><span class=n>Start</span><span class=p>();</span>
@@ -586,7 +586,7 @@ function registerListener(event, func) {
 </span><span class=w>  </span><span class=n>tri</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>source</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 
 <span class=w>  </span><span class=c1>// The quadric has nasty discontinuities from the way the edges are</span>
-<span class=w>  </span><span class=c1>// generated so let&#39;s pass it though a CleanPolyDataFilter and merge any</span>
+<span class=w>  </span><span class=c1>// generated so let's pass it though a CleanPolyDataFilter and merge any</span>
 <span class=w>  </span><span class=c1>// points which are coincident, or very close.</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkCleanPolyData</span><span class=o>&gt;</span><span class=w> </span><span class=n>cleaner</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>cleaner</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>tri</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
@@ -635,7 +635,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=c1>// for (unsigned int i = 0; i &lt; 62; ++i)</span>
 <span class=w>  </span><span class=c1>//{</span>
 <span class=w>  </span><span class=c1>//  colorSeries-&gt;SetColorScheme(i);</span>
-<span class=w>  </span><span class=c1>//  std::cout &lt;&lt; &quot;Colour scheme: &quot; &lt;&lt; colorSeries-&gt;GetColorScheme() &lt;&lt; &quot;: &quot; &lt;&lt;</span>
+<span class=w>  </span><span class=c1>//  std::cout &lt;&lt; "Colour scheme: " &lt;&lt; colorSeries-&gt;GetColorScheme() &lt;&lt; ": " &lt;&lt;</span>
 <span class=w>  </span><span class=c1>//  colorSeries-&gt;GetColorSchemeName();</span>
 <span class=w>  </span><span class=c1>//}</span>
 
@@ -725,7 +725,7 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor2D</span><span class=o>&gt;</span><span class=w> </span><span class=n>actor</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>actor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>);</span>
 <span class=w>  </span><span class=n>actor</span><span class=o>-&gt;</span><span class=n>SetPosition</span><span class=p>(</span><span class=n>renWinSize</span><span class=w> </span><span class=o>/</span><span class=w> </span><span class=mf>2.0</span><span class=p>,</span><span class=w> </span><span class=n>renWinSize</span><span class=w> </span><span class=o>/</span><span class=w> </span><span class=mi>20</span><span class=p>);</span>
-<span class=w>  </span><span class=n>actor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Gold&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>actor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Gold"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>actor</span><span class=p>;</span>
 <span class=p>}</span>
 
@@ -733,9 +733,9 @@ function registerListener(event, func) {
 </span><span class=p>{</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkAxesActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>axes</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>axes</span><span class=o>-&gt;</span><span class=n>SetShaftTypeToCylinder</span><span class=p>();</span>
-<span class=w>  </span><span class=n>axes</span><span class=o>-&gt;</span><span class=n>SetXAxisLabelText</span><span class=p>(</span><span class=s>&quot;X&quot;</span><span class=p>);</span>
-<span class=w>  </span><span class=n>axes</span><span class=o>-&gt;</span><span class=n>SetYAxisLabelText</span><span class=p>(</span><span class=s>&quot;Y&quot;</span><span class=p>);</span>
-<span class=w>  </span><span class=n>axes</span><span class=o>-&gt;</span><span class=n>SetZAxisLabelText</span><span class=p>(</span><span class=s>&quot;Z&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>axes</span><span class=o>-&gt;</span><span class=n>SetXAxisLabelText</span><span class=p>(</span><span class=s>"X"</span><span class=p>);</span>
+<span class=w>  </span><span class=n>axes</span><span class=o>-&gt;</span><span class=n>SetYAxisLabelText</span><span class=p>(</span><span class=s>"Y"</span><span class=p>);</span>
+<span class=w>  </span><span class=n>axes</span><span class=o>-&gt;</span><span class=n>SetZAxisLabelText</span><span class=p>(</span><span class=s>"Z"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>axes</span><span class=o>-&gt;</span><span class=n>SetTotalLength</span><span class=p>(</span><span class=mf>1.0</span><span class=p>,</span><span class=w> </span><span class=mf>1.0</span><span class=p>,</span><span class=w> </span><span class=mf>1.0</span><span class=p>);</span>
 <span class=w>  </span><span class=n>axes</span><span class=o>-&gt;</span><span class=n>SetCylinderRadius</span><span class=p>(</span><span class=mf>1.0</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=n>axes</span><span class=o>-&gt;</span><span class=n>GetCylinderRadius</span><span class=p>());</span>
 <span class=w>  </span><span class=n>axes</span><span class=o>-&gt;</span><span class=n>SetConeRadius</span><span class=p>(</span><span class=mf>1.75</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=n>axes</span><span class=o>-&gt;</span><span class=n>GetConeRadius</span><span class=p>());</span>
@@ -801,11 +801,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;PointDataSubdivision: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"PointDataSubdivision: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>PointDataSubdivision</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>PointDataSubdivision.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>PointDataSubdivision</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

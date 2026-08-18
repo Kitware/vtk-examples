@@ -79,7 +79,7 @@ function registerListener(event, func) {
 <span class=w>      </span><span class=p>{</span>
 <span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>lib</span><span class=p>.</span><span class=na>IsLoaded</span><span class=p>())</span><span class=w> </span>
 <span class=w>        </span><span class=p>{</span>
-<span class=w>          </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&quot; not loaded&quot;</span><span class=p>);</span>
+<span class=w>          </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>" not loaded"</span><span class=p>);</span>
 <span class=w>        </span><span class=p>}</span>
 <span class=w>      </span><span class=p>}</span>
 <span class=w>    </span><span class=p>}</span>
@@ -99,12 +99,12 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=c1>//MeshActorColor</span>
 <span class=w>    </span><span class=kt>double</span><span class=w> </span><span class=n>MeshActorColor</span><span class=o>[]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=kt>double</span><span class=o>[</span><span class=mi>4</span><span class=o>]</span><span class=p>;</span>
 
-<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>&quot;Coral&quot;</span><span class=p>,</span><span class=w> </span><span class=n>PointActorColor</span><span class=p>);</span>
-<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>&quot;DimGray&quot;</span><span class=p>,</span><span class=w> </span><span class=n>Bgcolor</span><span class=p>);</span>
-<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>&quot;Aquamarine&quot;</span><span class=p>,</span><span class=w> </span><span class=n>MeshActorColor</span><span class=p>);</span>
+<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>"Coral"</span><span class=p>,</span><span class=w> </span><span class=n>PointActorColor</span><span class=p>);</span>
+<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>"DimGray"</span><span class=p>,</span><span class=w> </span><span class=n>Bgcolor</span><span class=p>);</span>
+<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>"Aquamarine"</span><span class=p>,</span><span class=w> </span><span class=n>MeshActorColor</span><span class=p>);</span>
 
 <span class=w>    </span><span class=c1>//Create a set of heighs on a grid.</span>
-<span class=w>    </span><span class=c1>// This is often called a &quot;terrain map&quot;.</span>
+<span class=w>    </span><span class=c1>// This is often called a "terrain map".</span>
 
 <span class=hll><span class=w>    </span><span class=n>vtkPoints</span><span class=w> </span><span class=n>Points</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkPoints</span><span class=p>();</span><span class=w>  </span>
 </span>

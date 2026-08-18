@@ -125,7 +125,7 @@ function registerListener(event, func) {
 <span class=kt>int</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>argv</span><span class=p>[])</span>
 <span class=p>{</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span><span class=w> </span><span class=n>namedColors</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>namedColors</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=s>&quot;Bkg&quot;</span><span class=p>,</span><span class=w> </span><span class=mf>0.2</span><span class=p>,</span><span class=w> </span><span class=mf>0.3</span><span class=p>,</span><span class=w> </span><span class=mf>0.6</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>namedColors</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=s>"Bkg"</span><span class=p>,</span><span class=w> </span><span class=mf>0.2</span><span class=p>,</span><span class=w> </span><span class=mf>0.3</span><span class=p>,</span><span class=w> </span><span class=mf>0.6</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageData</span><span class=o>&gt;</span><span class=w> </span><span class=n>originalImage</span><span class=p>;</span>
 </span><span class=hll><span class=w>  </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageData</span><span class=o>&gt;</span><span class=w> </span><span class=n>image</span><span class=p>;</span>
@@ -137,9 +137,9 @@ function registerListener(event, func) {
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span><span class=w> </span><span class=n>colors</span><span class=p>;</span>
 </span>
 <span class=hll><span class=w>    </span><span class=n>vtkColor3ub</span><span class=w> </span><span class=n>color1</span><span class=p>;</span>
-</span><span class=w>    </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor</span><span class=p>(</span><span class=s>&quot;Gray&quot;</span><span class=p>,</span><span class=w> </span><span class=n>color1</span><span class=p>);</span>
+</span><span class=w>    </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor</span><span class=p>(</span><span class=s>"Gray"</span><span class=p>,</span><span class=w> </span><span class=n>color1</span><span class=p>);</span>
 <span class=hll><span class=w>    </span><span class=n>vtkColor3ub</span><span class=w> </span><span class=n>color2</span><span class=p>;</span>
-</span><span class=w>    </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor</span><span class=p>(</span><span class=s>&quot;Snow&quot;</span><span class=p>,</span><span class=w> </span><span class=n>color2</span><span class=p>);</span>
+</span><span class=w>    </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor</span><span class=p>(</span><span class=s>"Snow"</span><span class=p>,</span><span class=w> </span><span class=n>color2</span><span class=p>);</span>
 
 <span class=w>    </span><span class=c1>// Create an image.</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageCanvasSource2D</span><span class=o>&gt;</span><span class=w> </span><span class=n>imageSource</span><span class=p>;</span>
@@ -242,7 +242,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=c1>// gradient, but Glyph3D needs normals or vectors.</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkDoubleArray</span><span class=o>&gt;</span><span class=w> </span><span class=n>zeroes</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>zeroes</span><span class=o>-&gt;</span><span class=n>SetNumberOfComponents</span><span class=p>(</span><span class=mi>1</span><span class=p>);</span>
-<span class=w>  </span><span class=n>zeroes</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>&quot;Zero&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>zeroes</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>"Zero"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>zeroes</span><span class=o>-&gt;</span><span class=n>SetNumberOfTuples</span><span class=p>(</span><span class=n>gradientFilter</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span>
 <span class=w>                                </span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>()</span>
 <span class=w>                                </span><span class=o>-&gt;</span><span class=n>GetScalars</span><span class=p>()</span>
@@ -259,7 +259,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>scalarsToVectors</span><span class=o>-&gt;</span><span class=n>SetOutputAttributeDataToPointData</span><span class=p>();</span>
 <span class=w>  </span><span class=n>scalarsToVectors</span><span class=o>-&gt;</span><span class=n>SetVectorComponent</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=n>scalarName</span><span class=p>.</span><span class=n>c_str</span><span class=p>(),</span><span class=w> </span><span class=mi>0</span><span class=p>);</span>
 <span class=w>  </span><span class=n>scalarsToVectors</span><span class=o>-&gt;</span><span class=n>SetVectorComponent</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=n>scalarName</span><span class=p>.</span><span class=n>c_str</span><span class=p>(),</span><span class=w> </span><span class=mi>1</span><span class=p>);</span>
-<span class=w>  </span><span class=n>scalarsToVectors</span><span class=o>-&gt;</span><span class=n>SetVectorComponent</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span><span class=w> </span><span class=s>&quot;Zero&quot;</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>);</span>
+<span class=w>  </span><span class=n>scalarsToVectors</span><span class=o>-&gt;</span><span class=n>SetVectorComponent</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span><span class=w> </span><span class=s>"Zero"</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>);</span>
 
 <span class=w>  </span><span class=c1>// Select a small percentage of the gradients.</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkMaskPoints</span><span class=o>&gt;</span><span class=w> </span><span class=n>maskPoints</span><span class=p>;</span>
@@ -290,26 +290,26 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>vectorGradientActor</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>vectorGradientActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>vectorGradientMapper</span><span class=p>);</span>
 <span class=w>  </span><span class=n>vectorGradientActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
-<span class=w>      </span><span class=n>namedColors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Tomato&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>      </span><span class=n>namedColors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Tomato"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=w>  </span><span class=c1>// Create a renderer, render window, and interactor.</span>
 <span class=w>  </span><span class=c1>// vtkNew&lt;vtkCamera&gt; sharedCamera;</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span><span class=w> </span><span class=n>originalRenderer</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>originalRenderer</span><span class=o>-&gt;</span><span class=n>SetViewport</span><span class=p>(</span><span class=n>originalViewport</span><span class=p>);</span>
-<span class=w>  </span><span class=n>originalRenderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>namedColors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Bkg&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>originalRenderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>namedColors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Bkg"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span><span class=w> </span><span class=n>xGradientRenderer</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>xGradientRenderer</span><span class=o>-&gt;</span><span class=n>SetViewport</span><span class=p>(</span><span class=n>xGradientViewport</span><span class=p>);</span>
-<span class=w>  </span><span class=n>xGradientRenderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>namedColors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Bkg&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>xGradientRenderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>namedColors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Bkg"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span><span class=w> </span><span class=n>yGradientRenderer</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>yGradientRenderer</span><span class=o>-&gt;</span><span class=n>SetViewport</span><span class=p>(</span><span class=n>yGradientViewport</span><span class=p>);</span>
-<span class=w>  </span><span class=n>yGradientRenderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>namedColors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Bkg&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>yGradientRenderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>namedColors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Bkg"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span><span class=w> </span><span class=n>vectorGradientRenderer</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>vectorGradientRenderer</span><span class=o>-&gt;</span><span class=n>SetViewport</span><span class=p>(</span><span class=n>vectorGradientViewport</span><span class=p>);</span>
 <span class=w>  </span><span class=n>vectorGradientRenderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span>
-<span class=w>      </span><span class=n>namedColors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Bkg&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>      </span><span class=n>namedColors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Bkg"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderWindow</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>1000</span><span class=p>,</span><span class=w> </span><span class=mi>250</span><span class=p>);</span>
@@ -317,7 +317,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>xGradientRenderer</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>yGradientRenderer</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>vectorGradientRenderer</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;Gradient&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"Gradient"</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderWindowInteractor</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>renderWindowInteractor</span><span class=o>-&gt;</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renderWindow</span><span class=p>);</span>
@@ -374,11 +374,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;Gradient: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"Gradient: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>Gradient</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>Gradient.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>Gradient</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

@@ -68,40 +68,40 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>ReadPolyData</span><span class=p>(</span><span class=n>file_name</span><span class=p>):</span>
-    <span class=n>valid_suffixes</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;.g&#39;</span><span class=p>,</span> <span class=s1>&#39;.obj&#39;</span><span class=p>,</span> <span class=s1>&#39;.stl&#39;</span><span class=p>,</span> <span class=s1>&#39;.ply&#39;</span><span class=p>,</span> <span class=s1>&#39;.vtk&#39;</span><span class=p>,</span> <span class=s1>&#39;.vtp&#39;</span><span class=p>]</span>
+    <span class=n>valid_suffixes</span> <span class=o>=</span> <span class=p>[</span><span class=s1>'.g'</span><span class=p>,</span> <span class=s1>'.obj'</span><span class=p>,</span> <span class=s1>'.stl'</span><span class=p>,</span> <span class=s1>'.ply'</span><span class=p>,</span> <span class=s1>'.vtk'</span><span class=p>,</span> <span class=s1>'.vtp'</span><span class=p>]</span>
     <span class=n>path</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
     <span class=k>if</span> <span class=n>path</span><span class=o>.</span><span class=n>suffix</span><span class=p>:</span>
         <span class=n>ext</span> <span class=o>=</span> <span class=n>path</span><span class=o>.</span><span class=n>suffix</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span>
     <span class=k>if</span> <span class=n>path</span><span class=o>.</span><span class=n>suffix</span> <span class=ow>not</span> <span class=ow>in</span> <span class=n>valid_suffixes</span><span class=p>:</span>
-        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;No reader for this file suffix: </span><span class=si>{</span><span class=n>ext</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'No reader for this file suffix: </span><span class=si>{</span><span class=n>ext</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
         <span class=k>return</span> <span class=kc>None</span>
     <span class=k>else</span><span class=p>:</span>
-        <span class=k>if</span> <span class=n>ext</span> <span class=o>==</span> <span class=s2>&quot;.ply&quot;</span><span class=p>:</span>
+        <span class=k>if</span> <span class=n>ext</span> <span class=o>==</span> <span class=s2>".ply"</span><span class=p>:</span>
             <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkPLYReader</span><span class=p>()</span>
             <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
             <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
             <span class=n>poly_data</span> <span class=o>=</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span>
-        <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s2>&quot;.vtp&quot;</span><span class=p>:</span>
+        <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s2>".vtp"</span><span class=p>:</span>
             <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkXMLPolyDataReader</span><span class=p>()</span>
             <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
             <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
             <span class=n>poly_data</span> <span class=o>=</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span>
-        <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s2>&quot;.obj&quot;</span><span class=p>:</span>
+        <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s2>".obj"</span><span class=p>:</span>
             <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkOBJReader</span><span class=p>()</span>
             <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
             <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
             <span class=n>poly_data</span> <span class=o>=</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span>
-        <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s2>&quot;.stl&quot;</span><span class=p>:</span>
+        <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s2>".stl"</span><span class=p>:</span>
             <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkSTLReader</span><span class=p>()</span>
             <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
             <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
             <span class=n>poly_data</span> <span class=o>=</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span>
-        <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s2>&quot;.vtk&quot;</span><span class=p>:</span>
+        <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s2>".vtk"</span><span class=p>:</span>
             <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkPolyDataReader</span><span class=p>()</span>
             <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
             <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
             <span class=n>poly_data</span> <span class=o>=</span> <span class=n>reader</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span>
-        <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s2>&quot;.g&quot;</span><span class=p>:</span>
+        <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s2>".g"</span><span class=p>:</span>
             <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkBYUReader</span><span class=p>()</span>
             <span class=n>reader</span><span class=o>.</span><span class=n>SetGeometryFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
             <span class=n>reader</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>

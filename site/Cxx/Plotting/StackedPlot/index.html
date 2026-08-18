@@ -112,8 +112,8 @@ function registerListener(event, func) {
 </span>
 <span class=k>namespace</span><span class=w> </span><span class=p>{</span>
 <span class=c1>// Monthly checkout data.</span>
-<span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>month_labels</span><span class=p>[]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>{</span><span class=s>&quot;Jan&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;Feb&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;Mar&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;Apr&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;May&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;Jun&quot;</span><span class=p>,</span>
-<span class=w>                              </span><span class=s>&quot;Jul&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;Aug&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;Sep&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;Oct&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;Nov&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;Dec&quot;</span><span class=p>};</span>
+<span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>month_labels</span><span class=p>[]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>{</span><span class=s>"Jan"</span><span class=p>,</span><span class=w> </span><span class=s>"Feb"</span><span class=p>,</span><span class=w> </span><span class=s>"Mar"</span><span class=p>,</span><span class=w> </span><span class=s>"Apr"</span><span class=p>,</span><span class=w> </span><span class=s>"May"</span><span class=p>,</span><span class=w> </span><span class=s>"Jun"</span><span class=p>,</span>
+<span class=w>                              </span><span class=s>"Jul"</span><span class=p>,</span><span class=w> </span><span class=s>"Aug"</span><span class=p>,</span><span class=w> </span><span class=s>"Sep"</span><span class=p>,</span><span class=w> </span><span class=s>"Oct"</span><span class=p>,</span><span class=w> </span><span class=s>"Nov"</span><span class=p>,</span><span class=w> </span><span class=s>"Dec"</span><span class=p>};</span>
 <span class=k>constexpr</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>book</span><span class=p>[]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>{</span><span class=mi>5675</span><span class=p>,</span><span class=w> </span><span class=mi>5902</span><span class=p>,</span><span class=w> </span><span class=mi>6388</span><span class=p>,</span><span class=w> </span><span class=mi>5990</span><span class=p>,</span><span class=w> </span><span class=mi>5575</span><span class=p>,</span><span class=w> </span><span class=mi>7393</span><span class=p>,</span>
 <span class=w>                        </span><span class=mi>9878</span><span class=p>,</span><span class=w> </span><span class=mi>8082</span><span class=p>,</span><span class=w> </span><span class=mi>6417</span><span class=p>,</span><span class=w> </span><span class=mi>5946</span><span class=p>,</span><span class=w> </span><span class=mi>5526</span><span class=p>,</span><span class=w> </span><span class=mi>5166</span><span class=p>};</span>
 <span class=k>constexpr</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>new_popular</span><span class=p>[]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>{</span><span class=mi>701</span><span class=p>,</span><span class=w> </span><span class=mi>687</span><span class=p>,</span><span class=w> </span><span class=mi>736</span><span class=p>,</span><span class=w> </span><span class=mi>696</span><span class=p>,</span><span class=w> </span><span class=mi>750</span><span class=p>,</span><span class=w> </span><span class=mi>814</span><span class=p>,</span>
@@ -127,7 +127,7 @@ function registerListener(event, func) {
 <span class=p>}</span><span class=w> </span><span class=c1>// namespace</span>
 
 <span class=c1>//----------------------------------------------------------------------------</span>
-<span class=kt>int</span><span class=w> </span><span class=n>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=p>[])</span>
+<span class=kt>int</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=p>[])</span>
 <span class=p>{</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span><span class=w> </span><span class=n>colors</span><span class=p>;</span>
 </span>
@@ -148,27 +148,27 @@ function registerListener(event, func) {
 </span><span class=w>  </span><span class=n>arrXTickPositions</span><span class=o>-&gt;</span><span class=n>SetNumberOfValues</span><span class=p>(</span><span class=mi>12</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkIntArray</span><span class=o>&gt;</span><span class=w> </span><span class=n>arrMonth</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>arrMonth</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>&quot;Month&quot;</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>arrMonth</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>"Month"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>table</span><span class=o>-&gt;</span><span class=n>AddColumn</span><span class=p>(</span><span class=n>arrMonth</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkIntArray</span><span class=o>&gt;</span><span class=w> </span><span class=n>arrBook</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>arrBook</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>&quot;Books&quot;</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>arrBook</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>"Books"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>table</span><span class=o>-&gt;</span><span class=n>AddColumn</span><span class=p>(</span><span class=n>arrBook</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkIntArray</span><span class=o>&gt;</span><span class=w> </span><span class=n>arrNewPopularBook</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>arrNewPopularBook</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>&quot;New / Popular&quot;</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>arrNewPopularBook</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>"New / Popular"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>table</span><span class=o>-&gt;</span><span class=n>AddColumn</span><span class=p>(</span><span class=n>arrNewPopularBook</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkIntArray</span><span class=o>&gt;</span><span class=w> </span><span class=n>arrPeriodical</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>arrPeriodical</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>&quot;Periodical&quot;</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>arrPeriodical</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>"Periodical"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>table</span><span class=o>-&gt;</span><span class=n>AddColumn</span><span class=p>(</span><span class=n>arrPeriodical</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkIntArray</span><span class=o>&gt;</span><span class=w> </span><span class=n>arrAudiobook</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>arrAudiobook</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>&quot;Audiobook&quot;</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>arrAudiobook</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>"Audiobook"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>table</span><span class=o>-&gt;</span><span class=n>AddColumn</span><span class=p>(</span><span class=n>arrAudiobook</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkIntArray</span><span class=o>&gt;</span><span class=w> </span><span class=n>arrVideo</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>arrVideo</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>&quot;Video&quot;</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>arrVideo</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>"Video"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>table</span><span class=o>-&gt;</span><span class=n>AddColumn</span><span class=p>(</span><span class=n>arrVideo</span><span class=p>);</span>
 
 <span class=w>  </span><span class=n>table</span><span class=o>-&gt;</span><span class=n>SetNumberOfRows</span><span class=p>(</span><span class=mi>12</span><span class=p>);</span>
@@ -190,11 +190,11 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=n>chart</span><span class=o>-&gt;</span><span class=n>GetAxis</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span><span class=o>-&gt;</span><span class=n>SetRange</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>11</span><span class=p>);</span>
 <span class=hll><span class=w>  </span><span class=n>chart</span><span class=o>-&gt;</span><span class=n>GetAxis</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span><span class=o>-&gt;</span><span class=n>SetBehavior</span><span class=p>(</span><span class=n>vtkAxis</span><span class=o>::</span><span class=n>FIXED</span><span class=p>);</span>
-</span><span class=w>  </span><span class=n>chart</span><span class=o>-&gt;</span><span class=n>GetAxis</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span><span class=o>-&gt;</span><span class=n>SetTitle</span><span class=p>(</span><span class=s>&quot;Month&quot;</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>chart</span><span class=o>-&gt;</span><span class=n>GetAxis</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span><span class=o>-&gt;</span><span class=n>SetTitle</span><span class=p>(</span><span class=s>"Month"</span><span class=p>);</span>
 
 <span class=w>  </span><span class=n>chart</span><span class=o>-&gt;</span><span class=n>SetShowLegend</span><span class=p>(</span><span class=nb>true</span><span class=p>);</span>
 
-<span class=w>  </span><span class=n>chart</span><span class=o>-&gt;</span><span class=n>GetAxis</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span><span class=o>-&gt;</span><span class=n>SetTitle</span><span class=p>(</span><span class=s>&quot;Checkouts&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>chart</span><span class=o>-&gt;</span><span class=n>GetAxis</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span><span class=o>-&gt;</span><span class=n>SetTitle</span><span class=p>(</span><span class=s>"Checkouts"</span><span class=p>);</span>
 
 <span class=w>  </span><span class=c1>// Add multiple line plots, setting the colors etc.</span>
 <span class=hll><span class=w>  </span><span class=n>vtkPlotStacked</span><span class=o>*</span><span class=w> </span><span class=n>stack</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span>
@@ -203,11 +203,11 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>stack</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>dynamic_cast</span><span class=o>&lt;</span><span class=n>vtkPlotStacked</span><span class=o>*&gt;</span><span class=p>(</span><span class=n>chart</span><span class=o>-&gt;</span><span class=n>AddPlot</span><span class=p>(</span><span class=n>vtkChart</span><span class=o>::</span><span class=n>STACKED</span><span class=p>));</span>
 </span><span class=w>  </span><span class=n>stack</span><span class=o>-&gt;</span><span class=n>SetUseIndexForXSeries</span><span class=p>(</span><span class=nb>true</span><span class=p>);</span>
 <span class=w>  </span><span class=n>stack</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>table</span><span class=p>);</span>
-<span class=w>  </span><span class=n>stack</span><span class=o>-&gt;</span><span class=n>SetInputArray</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=s>&quot;Books&quot;</span><span class=p>);</span>
-<span class=w>  </span><span class=n>stack</span><span class=o>-&gt;</span><span class=n>SetInputArray</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span><span class=w> </span><span class=s>&quot;New / Popular&quot;</span><span class=p>);</span>
-<span class=w>  </span><span class=n>stack</span><span class=o>-&gt;</span><span class=n>SetInputArray</span><span class=p>(</span><span class=mi>3</span><span class=p>,</span><span class=w> </span><span class=s>&quot;Periodical&quot;</span><span class=p>);</span>
-<span class=w>  </span><span class=n>stack</span><span class=o>-&gt;</span><span class=n>SetInputArray</span><span class=p>(</span><span class=mi>4</span><span class=p>,</span><span class=w> </span><span class=s>&quot;Audiobook&quot;</span><span class=p>);</span>
-<span class=w>  </span><span class=n>stack</span><span class=o>-&gt;</span><span class=n>SetInputArray</span><span class=p>(</span><span class=mi>5</span><span class=p>,</span><span class=w> </span><span class=s>&quot;Video&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>stack</span><span class=o>-&gt;</span><span class=n>SetInputArray</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=s>"Books"</span><span class=p>);</span>
+<span class=w>  </span><span class=n>stack</span><span class=o>-&gt;</span><span class=n>SetInputArray</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span><span class=w> </span><span class=s>"New / Popular"</span><span class=p>);</span>
+<span class=w>  </span><span class=n>stack</span><span class=o>-&gt;</span><span class=n>SetInputArray</span><span class=p>(</span><span class=mi>3</span><span class=p>,</span><span class=w> </span><span class=s>"Periodical"</span><span class=p>);</span>
+<span class=w>  </span><span class=n>stack</span><span class=o>-&gt;</span><span class=n>SetInputArray</span><span class=p>(</span><span class=mi>4</span><span class=p>,</span><span class=w> </span><span class=s>"Audiobook"</span><span class=p>);</span>
+<span class=w>  </span><span class=n>stack</span><span class=o>-&gt;</span><span class=n>SetInputArray</span><span class=p>(</span><span class=mi>5</span><span class=p>,</span><span class=w> </span><span class=s>"Video"</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkColorSeries</span><span class=o>&gt;</span><span class=w> </span><span class=n>colorSeries</span><span class=p>;</span>
 </span><span class=hll><span class=w>  </span><span class=n>colorSeries</span><span class=o>-&gt;</span><span class=n>SetColorScheme</span><span class=p>(</span><span class=n>vtkColorSeries</span><span class=o>::</span><span class=n>WILD_FLOWER</span><span class=p>);</span>
@@ -215,9 +215,9 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=c1>// Finally render the scene and compare the image to a reference image.</span>
 <span class=w>  </span><span class=n>view</span><span class=o>-&gt;</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetMultiSamples</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span>
-<span class=w>  </span><span class=n>view</span><span class=o>-&gt;</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Cornsilk&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>view</span><span class=o>-&gt;</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Cornsilk"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=n>view</span><span class=o>-&gt;</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>600</span><span class=p>,</span><span class=w> </span><span class=mi>400</span><span class=p>);</span>
-<span class=w>  </span><span class=n>view</span><span class=o>-&gt;</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;StackedPlot&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>view</span><span class=o>-&gt;</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"StackedPlot"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>view</span><span class=o>-&gt;</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
 <span class=w>  </span><span class=n>view</span><span class=o>-&gt;</span><span class=n>GetInteractor</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>Initialize</span><span class=p>();</span>
 <span class=w>  </span><span class=n>view</span><span class=o>-&gt;</span><span class=n>GetInteractor</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>Start</span><span class=p>();</span>
@@ -243,11 +243,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;StackedPlot: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"StackedPlot: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>StackedPlot</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>StackedPlot.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>StackedPlot</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

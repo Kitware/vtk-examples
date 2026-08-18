@@ -90,7 +90,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>vtkNativeLibrary</span><span class=p>.</span><span class=na>LoadAllNativeLibraries</span><span class=p>())</span><span class=w> </span><span class=p>{</span>
 <span class=w>      </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=n>vtkNativeLibrary</span><span class=w> </span><span class=n>lib</span><span class=w> </span><span class=p>:</span><span class=w> </span><span class=n>vtkNativeLibrary</span><span class=p>.</span><span class=na>values</span><span class=p>())</span><span class=w> </span><span class=p>{</span>
 <span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>lib</span><span class=p>.</span><span class=na>IsLoaded</span><span class=p>())</span><span class=w> </span><span class=p>{</span>
-<span class=w>          </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&quot; not loaded&quot;</span><span class=p>);</span>
+<span class=w>          </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>" not loaded"</span><span class=p>);</span>
 <span class=w>        </span><span class=p>}</span>
 <span class=w>      </span><span class=p>}</span>
 <span class=w>    </span><span class=p>}</span>
@@ -115,13 +115,13 @@ function registerListener(event, func) {
 
 
 <span class=w>    </span><span class=c1>//Change Color Name to Use your own Color for Change StartActor Color</span>
-<span class=w>    </span><span class=n>Color</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>&quot;Red&quot;</span><span class=p>,</span><span class=n>StartActorColor</span><span class=p>);</span>
+<span class=w>    </span><span class=n>Color</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>"Red"</span><span class=p>,</span><span class=n>StartActorColor</span><span class=p>);</span>
 <span class=w>    </span><span class=c1>//Change Color Name to Use your own Color for Change StartActor Color</span>
-<span class=w>    </span><span class=n>Color</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>&quot;Lime&quot;</span><span class=p>,</span><span class=n>CylinderActorColor</span><span class=p>);</span>
+<span class=w>    </span><span class=n>Color</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>"Lime"</span><span class=p>,</span><span class=n>CylinderActorColor</span><span class=p>);</span>
 <span class=w>    </span><span class=c1>//Change Color Name to Use your own Color for Change StartActor Color</span>
-<span class=w>    </span><span class=n>Color</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>&quot;Blue&quot;</span><span class=p>,</span><span class=n>EndActorColor</span><span class=p>);</span>
+<span class=w>    </span><span class=n>Color</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>"Blue"</span><span class=p>,</span><span class=n>EndActorColor</span><span class=p>);</span>
 <span class=w>    </span><span class=c1>//Change Color Name to Use your own Color for Renderer Background</span>
-<span class=w>    </span><span class=n>Color</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>&quot;Ivory&quot;</span><span class=p>,</span><span class=n>BgColor</span><span class=p>);</span><span class=w> </span>
+<span class=w>    </span><span class=n>Color</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>"Ivory"</span><span class=p>,</span><span class=n>BgColor</span><span class=p>);</span><span class=w> </span>
 
 <span class=w>    </span><span class=c1>// Create a cylinder.</span>
 <span class=w>    </span><span class=c1>// Cylinder height vector is (0,1,0).</span>
@@ -228,7 +228,7 @@ function registerListener(event, func) {
 
 
 <span class=w>    </span><span class=c1>// Add Java UI components</span>
-<span class=w>    </span><span class=n>exitButton</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>JButton</span><span class=p>(</span><span class=s>&quot;Exit&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>exitButton</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>JButton</span><span class=p>(</span><span class=s>"Exit"</span><span class=p>);</span>
 <span class=w>    </span><span class=n>exitButton</span><span class=p>.</span><span class=na>addActionListener</span><span class=p>(</span><span class=k>this</span><span class=p>);</span>
 
 <span class=w>    </span><span class=n>add</span><span class=p>(</span><span class=n>renWin</span><span class=p>,</span><span class=w> </span><span class=n>BorderLayout</span><span class=p>.</span><span class=na>CENTER</span><span class=p>);</span>
@@ -245,7 +245,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=kd>public</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>s</span><span class=o>[]</span><span class=p>)</span><span class=w> </span><span class=p>{</span>
 <span class=w>    </span><span class=n>SwingUtilities</span><span class=p>.</span><span class=na>invokeLater</span><span class=p>(</span><span class=k>new</span><span class=w> </span><span class=n>Runnable</span><span class=p>()</span><span class=w> </span><span class=p>{</span>
 <span class=w>        </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>run</span><span class=p>()</span><span class=w> </span><span class=p>{</span>
-<span class=w>          </span><span class=n>JFrame</span><span class=w> </span><span class=n>frame</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>JFrame</span><span class=p>(</span><span class=s>&quot;Oriented Cylinder&quot;</span><span class=p>);</span>
+<span class=w>          </span><span class=n>JFrame</span><span class=w> </span><span class=n>frame</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>JFrame</span><span class=p>(</span><span class=s>"Oriented Cylinder"</span><span class=p>);</span>
 <span class=w>          </span><span class=n>frame</span><span class=p>.</span><span class=na>setDefaultCloseOperation</span><span class=p>(</span><span class=n>JFrame</span><span class=p>.</span><span class=na>EXIT_ON_CLOSE</span><span class=p>);</span>
 <span class=w>          </span><span class=n>frame</span><span class=p>.</span><span class=na>getContentPane</span><span class=p>().</span><span class=na>setLayout</span><span class=p>(</span><span class=k>new</span><span class=w> </span><span class=n>BorderLayout</span><span class=p>());</span>
 <span class=w>          </span><span class=n>frame</span><span class=p>.</span><span class=na>getContentPane</span><span class=p>().</span><span class=na>add</span><span class=p>(</span><span class=k>new</span><span class=w> </span><span class=n>OrientedCylinder</span><span class=p>(),</span><span class=w> </span><span class=n>BorderLayout</span><span class=p>.</span><span class=na>CENTER</span><span class=p>);</span>

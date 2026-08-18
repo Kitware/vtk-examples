@@ -70,8 +70,8 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_program_parameters</span><span class=p>():</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>argparse</span>
-    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;Get examples that use a particular VTK class for a given language.&#39;</span>
-    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;</span>
+    <span class=n>description</span> <span class=o>=</span> <span class=s1>'Get examples that use a particular VTK class for a given language.'</span>
+    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>'''</span>
 <span class=s1>The JSON file needed by this script is obtained from the gh-pages branch</span>
 <span class=s1> of the vtk-examples GitHub site.</span>
 <span class=s1>It is stored in your tempfile directory.</span>
@@ -80,54 +80,54 @@ function registerListener(event, func) {
 <span class=s1>specify -o on the command line.</span>
 
 <span class=s1>Here is the URL for an alternative site for testing:</span>
-<span class=s1>&quot;https://raw.githubusercontent.com/ajpmaclean/web-test/gh-pages/src/Coverage/vtk_vtk-examples_xref.json&quot;</span>
+<span class=s1>"https://raw.githubusercontent.com/ajpmaclean/web-test/gh-pages/src/Coverage/vtk_vtk-examples_xref.json"</span>
 
-<span class=s1>&#39;&#39;&#39;</span>
+<span class=s1>'''</span>
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
                                      <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawTextHelpFormatter</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;vtk_class&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The desired VTK class.&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;language&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The desired language, one of: CSharp, Cxx, Java, Python.&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-a&#39;</span><span class=p>,</span> <span class=s1>&#39;--all_values&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s2>&quot;store_true&quot;</span><span class=p>,</span>
-                        <span class=n>help</span><span class=o>=</span><span class=s1>&#39;All examples (Warning: Can be a very long list).&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-n&#39;</span><span class=p>,</span> <span class=s1>&#39;--number&#39;</span><span class=p>,</span> <span class=nb>type</span><span class=o>=</span><span class=nb>int</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mi>5</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The maximum number of examples.&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-m&#39;</span><span class=p>,</span> <span class=s1>&#39;--md&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_true&#39;</span><span class=p>,</span>
-                        <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Display links in markdown inline format e.g. [label](URL).&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-j&#39;</span><span class=p>,</span> <span class=s1>&#39;--json_xref_url&#39;</span><span class=p>,</span>
-                        <span class=n>default</span><span class=o>=</span><span class=s1>&#39;https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Coverage/vtk_vtk-examples_xref.json&#39;</span><span class=p>,</span>
-                        <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The URL for the JSON cross-reference file.&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-o&#39;</span><span class=p>,</span> <span class=s1>&#39;--overwrite&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s2>&quot;store_true&quot;</span><span class=p>,</span>
-                        <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Force an initial download of the JSON cross-reference file.&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'vtk_class'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'The desired VTK class.'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'language'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'The desired language, one of: CSharp, Cxx, Java, Python.'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-a'</span><span class=p>,</span> <span class=s1>'--all_values'</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s2>"store_true"</span><span class=p>,</span>
+                        <span class=n>help</span><span class=o>=</span><span class=s1>'All examples (Warning: Can be a very long list).'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-n'</span><span class=p>,</span> <span class=s1>'--number'</span><span class=p>,</span> <span class=nb>type</span><span class=o>=</span><span class=nb>int</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mi>5</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'The maximum number of examples.'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-m'</span><span class=p>,</span> <span class=s1>'--md'</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>'store_true'</span><span class=p>,</span>
+                        <span class=n>help</span><span class=o>=</span><span class=s1>'Display links in markdown inline format e.g. [label](URL).'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-j'</span><span class=p>,</span> <span class=s1>'--json_xref_url'</span><span class=p>,</span>
+                        <span class=n>default</span><span class=o>=</span><span class=s1>'https://raw.githubusercontent.com/Kitware/vtk-examples/gh-pages/src/Coverage/vtk_vtk-examples_xref.json'</span><span class=p>,</span>
+                        <span class=n>help</span><span class=o>=</span><span class=s1>'The URL for the JSON cross-reference file.'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-o'</span><span class=p>,</span> <span class=s1>'--overwrite'</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s2>"store_true"</span><span class=p>,</span>
+                        <span class=n>help</span><span class=o>=</span><span class=s1>'Force an initial download of the JSON cross-reference file.'</span><span class=p>)</span>
 
     <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
     <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>vtk_class</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>language</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>all_values</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>md</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>number</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>json_xref_url</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>overwrite</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>download_file</span><span class=p>(</span><span class=n>dl_path</span><span class=p>,</span> <span class=n>dl_url</span><span class=p>,</span> <span class=n>overwrite</span><span class=o>=</span><span class=kc>False</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Use the URL to get a file.</span>
 
 <span class=sd>    :param dl_path: The path to download the file to.</span>
 <span class=sd>    :param dl_url: The URL of the file.</span>
 <span class=sd>    :param overwrite: If true, do a download even if the file exists.</span>
 <span class=sd>    :return: The path to the file as a pathlib Path.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
-    <span class=n>file_name</span> <span class=o>=</span> <span class=n>dl_url</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=s1>&#39;/&#39;</span><span class=p>)[</span><span class=o>-</span><span class=mi>1</span><span class=p>]</span>
+<span class=sd>    """</span>
+    <span class=n>file_name</span> <span class=o>=</span> <span class=n>dl_url</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=s1>'/'</span><span class=p>)[</span><span class=o>-</span><span class=mi>1</span><span class=p>]</span>
 
     <span class=c1># Create necessary subdirectories in the dl_path</span>
-    <span class=c1># (if they don&#39;t exist).</span>
+    <span class=c1># (if they don't exist).</span>
     <span class=n>Path</span><span class=p>(</span><span class=n>dl_path</span><span class=p>)</span><span class=o>.</span><span class=n>mkdir</span><span class=p>(</span><span class=n>parents</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>exist_ok</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
-    <span class=c1># Download if it doesn&#39;t exist in the directory overriding if overwrite is True.</span>
+    <span class=c1># Download if it doesn't exist in the directory overriding if overwrite is True.</span>
     <span class=n>path</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>dl_path</span><span class=p>,</span> <span class=n>file_name</span><span class=p>)</span>
     <span class=k>if</span> <span class=ow>not</span> <span class=n>path</span><span class=o>.</span><span class=n>is_file</span><span class=p>()</span> <span class=ow>or</span> <span class=n>overwrite</span><span class=p>:</span>
         <span class=k>try</span><span class=p>:</span>
             <span class=n>urlretrieve</span><span class=p>(</span><span class=n>dl_url</span><span class=p>,</span> <span class=n>path</span><span class=p>)</span>
         <span class=k>except</span> <span class=n>HTTPError</span> <span class=k>as</span> <span class=n>e</span><span class=p>:</span>
-            <span class=k>raise</span> <span class=ne>RuntimeError</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;Failed to download </span><span class=si>{</span><span class=n>dl_url</span><span class=si>}</span><span class=s1>. </span><span class=si>{</span><span class=n>e</span><span class=o>.</span><span class=n>reason</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+            <span class=k>raise</span> <span class=ne>RuntimeError</span><span class=p>(</span><span class=sa>f</span><span class=s1>'Failed to download </span><span class=si>{</span><span class=n>dl_url</span><span class=si>}</span><span class=s1>. </span><span class=si>{</span><span class=n>e</span><span class=o>.</span><span class=n>reason</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
     <span class=k>return</span> <span class=n>path</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_examples</span><span class=p>(</span><span class=n>d</span><span class=p>,</span> <span class=n>vtk_class</span><span class=p>,</span> <span class=n>lang</span><span class=p>,</span> <span class=n>all_values</span><span class=o>=</span><span class=kc>False</span><span class=p>,</span> <span class=n>number</span><span class=o>=</span><span class=mi>5</span><span class=p>,</span> <span class=n>md_fmt</span><span class=o>=</span><span class=kc>False</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    For the VTK Class and language return the</span>
 <span class=sd>     total number of examples and a list of examples.</span>
 
@@ -138,7 +138,7 @@ function registerListener(event, func) {
 <span class=sd>    :param number: The number of values.</span>
 <span class=sd>    :param md_fmt: Use Markdown format with label and URL defined together.</span>
 <span class=sd>    :return: Total number of examples and a list of examples.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=k>try</span><span class=p>:</span>
         <span class=n>kv</span> <span class=o>=</span> <span class=n>d</span><span class=p>[</span><span class=n>vtk_class</span><span class=p>][</span><span class=n>lang</span><span class=p>]</span><span class=o>.</span><span class=n>items</span><span class=p>()</span>
     <span class=k>except</span> <span class=ne>KeyError</span><span class=p>:</span>
@@ -151,14 +151,14 @@ function registerListener(event, func) {
     <span class=k>else</span><span class=p>:</span>
         <span class=n>samples</span> <span class=o>=</span> <span class=n>kv</span>
     <span class=k>if</span> <span class=n>md_fmt</span><span class=p>:</span>
-        <span class=n>links</span> <span class=o>=</span> <span class=p>[</span><span class=sa>f</span><span class=s1>&#39;[</span><span class=si>{</span><span class=n>s</span><span class=o>.</span><span class=n>rsplit</span><span class=p>(</span><span class=s2>&quot;/&quot;</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>)[</span><span class=mi>1</span><span class=p>]</span><span class=si>}</span><span class=s1>](</span><span class=si>{</span><span class=n>s</span><span class=si>}</span><span class=s1>)&#39;</span> <span class=k>for</span> <span class=n>s</span> <span class=ow>in</span> <span class=nb>sorted</span><span class=p>(</span><span class=nb>map</span><span class=p>(</span><span class=n>itemgetter</span><span class=p>(</span><span class=mi>1</span><span class=p>),</span> <span class=n>samples</span><span class=p>))]</span>
+        <span class=n>links</span> <span class=o>=</span> <span class=p>[</span><span class=sa>f</span><span class=s1>'[</span><span class=si>{</span><span class=n>s</span><span class=o>.</span><span class=n>rsplit</span><span class=p>(</span><span class=s2>"/"</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>)[</span><span class=mi>1</span><span class=p>]</span><span class=si>}</span><span class=s1>](</span><span class=si>{</span><span class=n>s</span><span class=si>}</span><span class=s1>)'</span> <span class=k>for</span> <span class=n>s</span> <span class=ow>in</span> <span class=nb>sorted</span><span class=p>(</span><span class=nb>map</span><span class=p>(</span><span class=n>itemgetter</span><span class=p>(</span><span class=mi>1</span><span class=p>),</span> <span class=n>samples</span><span class=p>))]</span>
     <span class=k>else</span><span class=p>:</span>
         <span class=n>links</span> <span class=o>=</span> <span class=nb>sorted</span><span class=p>(</span><span class=nb>map</span><span class=p>(</span><span class=n>itemgetter</span><span class=p>(</span><span class=mi>1</span><span class=p>),</span> <span class=n>samples</span><span class=p>))</span>
     <span class=k>return</span> <span class=nb>len</span><span class=p>(</span><span class=n>links</span><span class=p>),</span> <span class=n>links</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_crossref_dict</span><span class=p>(</span><span class=n>ref_dir</span><span class=p>,</span> <span class=n>xref_url</span><span class=p>,</span> <span class=n>overwrite</span><span class=o>=</span><span class=kc>False</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Download and return the json cross-reference file.</span>
 
 <span class=sd>    This function ensures that the dictionary is recent.</span>
@@ -167,10 +167,10 @@ function registerListener(event, func) {
 <span class=sd>    :param xref_url: The URL for the JSON cross-reference file.</span>
 <span class=sd>    :param overwrite: If true, do a download even if the file exists.</span>
 <span class=sd>    :return: The dictionary cross-referencing vtk classes to examples.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=n>path</span> <span class=o>=</span> <span class=n>download_file</span><span class=p>(</span><span class=n>ref_dir</span><span class=p>,</span> <span class=n>xref_url</span><span class=p>,</span> <span class=n>overwrite</span><span class=o>=</span><span class=n>overwrite</span><span class=p>)</span>
     <span class=k>if</span> <span class=ow>not</span> <span class=n>path</span><span class=o>.</span><span class=n>is_file</span><span class=p>():</span>
-        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;The path: </span><span class=si>{</span><span class=nb>str</span><span class=p>(</span><span class=n>path</span><span class=p>)</span><span class=si>}</span><span class=s1> does not exist.&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'The path: </span><span class=si>{</span><span class=nb>str</span><span class=p>(</span><span class=n>path</span><span class=p>)</span><span class=si>}</span><span class=s1> does not exist.'</span><span class=p>)</span>
         <span class=k>return</span> <span class=kc>None</span>
     <span class=n>dt</span> <span class=o>=</span> <span class=n>datetime</span><span class=o>.</span><span class=n>today</span><span class=p>()</span><span class=o>.</span><span class=n>timestamp</span><span class=p>()</span> <span class=o>-</span> <span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>getmtime</span><span class=p>(</span><span class=n>path</span><span class=p>)</span>
     <span class=c1># Force a new download if the time difference is &gt; 10 minutes.</span>
@@ -183,34 +183,34 @@ function registerListener(event, func) {
 <span class=k>def</span><span class=w> </span><span class=nf>main</span><span class=p>():</span>
     <span class=n>vtk_class</span><span class=p>,</span> <span class=n>language</span><span class=p>,</span> <span class=n>all_values</span><span class=p>,</span> <span class=n>md</span><span class=p>,</span> <span class=n>number</span><span class=p>,</span> <span class=n>xref_url</span><span class=p>,</span> <span class=n>overwrite</span> <span class=o>=</span> <span class=n>get_program_parameters</span><span class=p>()</span>
     <span class=n>language</span> <span class=o>=</span> <span class=n>language</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span>
-    <span class=n>available_languages</span> <span class=o>=</span> <span class=p>{</span><span class=n>k</span><span class=o>.</span><span class=n>lower</span><span class=p>():</span> <span class=n>k</span> <span class=k>for</span> <span class=n>k</span> <span class=ow>in</span> <span class=p>[</span><span class=s1>&#39;CSharp&#39;</span><span class=p>,</span> <span class=s1>&#39;Cxx&#39;</span><span class=p>,</span> <span class=s1>&#39;Java&#39;</span><span class=p>,</span> <span class=s1>&#39;Python&#39;</span><span class=p>,</span> <span class=s1>&#39;PythonicAPI&#39;</span><span class=p>]}</span>
-    <span class=n>available_languages</span><span class=o>.</span><span class=n>update</span><span class=p>({</span><span class=s1>&#39;cpp&#39;</span><span class=p>:</span> <span class=s1>&#39;Cxx&#39;</span><span class=p>,</span> <span class=s1>&#39;c++&#39;</span><span class=p>:</span> <span class=s1>&#39;Cxx&#39;</span><span class=p>,</span> <span class=s1>&#39;c#&#39;</span><span class=p>:</span> <span class=s1>&#39;CSharp&#39;</span><span class=p>})</span>
+    <span class=n>available_languages</span> <span class=o>=</span> <span class=p>{</span><span class=n>k</span><span class=o>.</span><span class=n>lower</span><span class=p>():</span> <span class=n>k</span> <span class=k>for</span> <span class=n>k</span> <span class=ow>in</span> <span class=p>[</span><span class=s1>'CSharp'</span><span class=p>,</span> <span class=s1>'Cxx'</span><span class=p>,</span> <span class=s1>'Java'</span><span class=p>,</span> <span class=s1>'Python'</span><span class=p>,</span> <span class=s1>'PythonicAPI'</span><span class=p>]}</span>
+    <span class=n>available_languages</span><span class=o>.</span><span class=n>update</span><span class=p>({</span><span class=s1>'cpp'</span><span class=p>:</span> <span class=s1>'Cxx'</span><span class=p>,</span> <span class=s1>'c++'</span><span class=p>:</span> <span class=s1>'Cxx'</span><span class=p>,</span> <span class=s1>'c#'</span><span class=p>:</span> <span class=s1>'CSharp'</span><span class=p>})</span>
     <span class=k>if</span> <span class=n>language</span> <span class=ow>not</span> <span class=ow>in</span> <span class=n>available_languages</span><span class=p>:</span>
-        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;The language: </span><span class=si>{</span><span class=n>language</span><span class=si>}</span><span class=s1> is not available.&#39;</span><span class=p>)</span>
-        <span class=n>tmp</span> <span class=o>=</span> <span class=s1>&#39;, &#39;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=nb>sorted</span><span class=p>([</span><span class=n>lang</span> <span class=k>for</span> <span class=n>lang</span> <span class=ow>in</span> <span class=nb>set</span><span class=p>(</span><span class=n>available_languages</span><span class=o>.</span><span class=n>values</span><span class=p>())]))</span>
-        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;Choose one of these: </span><span class=si>{</span><span class=n>tmp</span><span class=si>}</span><span class=s1>.&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'The language: </span><span class=si>{</span><span class=n>language</span><span class=si>}</span><span class=s1> is not available.'</span><span class=p>)</span>
+        <span class=n>tmp</span> <span class=o>=</span> <span class=s1>', '</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=nb>sorted</span><span class=p>([</span><span class=n>lang</span> <span class=k>for</span> <span class=n>lang</span> <span class=ow>in</span> <span class=nb>set</span><span class=p>(</span><span class=n>available_languages</span><span class=o>.</span><span class=n>values</span><span class=p>())]))</span>
+        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'Choose one of these: </span><span class=si>{</span><span class=n>tmp</span><span class=si>}</span><span class=s1>.'</span><span class=p>)</span>
         <span class=k>return</span>
     <span class=k>else</span><span class=p>:</span>
         <span class=n>language</span> <span class=o>=</span> <span class=n>available_languages</span><span class=p>[</span><span class=n>language</span><span class=p>]</span>
     <span class=n>xref_dict</span> <span class=o>=</span> <span class=n>get_crossref_dict</span><span class=p>(</span><span class=n>tempfile</span><span class=o>.</span><span class=n>gettempdir</span><span class=p>(),</span> <span class=n>xref_url</span><span class=p>,</span> <span class=n>overwrite</span><span class=p>)</span>
     <span class=k>if</span> <span class=n>xref_dict</span> <span class=ow>is</span> <span class=kc>None</span><span class=p>:</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;The dictionary cross-referencing vtk classes to examples was not downloaded.&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'The dictionary cross-referencing vtk classes to examples was not downloaded.'</span><span class=p>)</span>
         <span class=k>return</span>
 
     <span class=n>total_number</span><span class=p>,</span> <span class=n>examples</span> <span class=o>=</span> <span class=n>get_examples</span><span class=p>(</span><span class=n>xref_dict</span><span class=p>,</span> <span class=n>vtk_class</span><span class=p>,</span> <span class=n>language</span><span class=p>,</span> <span class=n>all_values</span><span class=o>=</span><span class=n>all_values</span><span class=p>,</span> <span class=n>number</span><span class=o>=</span><span class=n>number</span><span class=p>,</span>
                                           <span class=n>md_fmt</span><span class=o>=</span><span class=n>md</span><span class=p>)</span>
     <span class=k>if</span> <span class=n>examples</span><span class=p>:</span>
         <span class=k>if</span> <span class=n>total_number</span> <span class=o>&lt;=</span> <span class=n>number</span> <span class=ow>or</span> <span class=n>all_values</span><span class=p>:</span>
-            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;VTK Class: </span><span class=si>{</span><span class=n>vtk_class</span><span class=si>}</span><span class=s1>, language: </span><span class=si>{</span><span class=n>language</span><span class=si>}</span><span class=se>\n</span><span class=s1>&#39;</span>
-                  <span class=sa>f</span><span class=s1>&#39;Number of example(s): </span><span class=si>{</span><span class=n>total_number</span><span class=si>}</span><span class=s1>.&#39;</span><span class=p>)</span>
+            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'VTK Class: </span><span class=si>{</span><span class=n>vtk_class</span><span class=si>}</span><span class=s1>, language: </span><span class=si>{</span><span class=n>language</span><span class=si>}</span><span class=se>\n</span><span class=s1>'</span>
+                  <span class=sa>f</span><span class=s1>'Number of example(s): </span><span class=si>{</span><span class=n>total_number</span><span class=si>}</span><span class=s1>.'</span><span class=p>)</span>
         <span class=k>else</span><span class=p>:</span>
-            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;VTK Class: </span><span class=si>{</span><span class=n>vtk_class</span><span class=si>}</span><span class=s1>, language: </span><span class=si>{</span><span class=n>language</span><span class=si>}</span><span class=se>\n</span><span class=s1>&#39;</span>
-                  <span class=sa>f</span><span class=s1>&#39;Number of example(s): </span><span class=si>{</span><span class=n>total_number</span><span class=si>}</span><span class=s1> with </span><span class=si>{</span><span class=n>number</span><span class=si>}</span><span class=s1> random sample(s) shown.&#39;</span><span class=p>)</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;</span><span class=se>\n</span><span class=s1>&#39;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>examples</span><span class=p>))</span>
+            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'VTK Class: </span><span class=si>{</span><span class=n>vtk_class</span><span class=si>}</span><span class=s1>, language: </span><span class=si>{</span><span class=n>language</span><span class=si>}</span><span class=se>\n</span><span class=s1>'</span>
+                  <span class=sa>f</span><span class=s1>'Number of example(s): </span><span class=si>{</span><span class=n>total_number</span><span class=si>}</span><span class=s1> with </span><span class=si>{</span><span class=n>number</span><span class=si>}</span><span class=s1> random sample(s) shown.'</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'</span><span class=se>\n</span><span class=s1>'</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>examples</span><span class=p>))</span>
     <span class=k>else</span><span class=p>:</span>
-        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;No examples for the VTK Class: </span><span class=si>{</span><span class=n>vtk_class</span><span class=si>}</span><span class=s1> and language: </span><span class=si>{</span><span class=n>language</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'No examples for the VTK Class: </span><span class=si>{</span><span class=n>vtk_class</span><span class=si>}</span><span class=s1> and language: </span><span class=si>{</span><span class=n>language</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

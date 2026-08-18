@@ -65,7 +65,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>vtkNativeLibrary</span><span class=p>.</span><span class=na>LoadAllNativeLibraries</span><span class=p>())</span><span class=w> </span><span class=p>{</span>
 <span class=w>      </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=n>vtkNativeLibrary</span><span class=w> </span><span class=n>lib</span><span class=w> </span><span class=p>:</span><span class=w> </span><span class=n>vtkNativeLibrary</span><span class=p>.</span><span class=na>values</span><span class=p>())</span><span class=w> </span><span class=p>{</span>
 <span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>lib</span><span class=p>.</span><span class=na>IsLoaded</span><span class=p>())</span><span class=w> </span><span class=p>{</span>
-<span class=w>          </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&quot; not loaded&quot;</span><span class=p>);</span>
+<span class=w>          </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>" not loaded"</span><span class=p>);</span>
 <span class=w>        </span><span class=p>}</span>
 <span class=w>      </span><span class=p>}</span>
 <span class=w>    </span><span class=p>}</span>
@@ -144,7 +144,7 @@ function registerListener(event, func) {
 </span><span class=w>    </span><span class=n>sliderRep</span><span class=p>.</span><span class=na>SetMinimumValue</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span>
 <span class=w>    </span><span class=n>sliderRep</span><span class=p>.</span><span class=na>SetMaximumValue</span><span class=p>(</span><span class=n>kdTree</span><span class=p>.</span><span class=na>GetLevel</span><span class=p>());</span>
 <span class=w>    </span><span class=n>sliderRep</span><span class=p>.</span><span class=na>SetValue</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span>
-<span class=w>    </span><span class=n>sliderRep</span><span class=p>.</span><span class=na>SetTitleText</span><span class=p>(</span><span class=s>&quot;Level&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>sliderRep</span><span class=p>.</span><span class=na>SetTitleText</span><span class=p>(</span><span class=s>"Level"</span><span class=p>);</span>
 <span class=w>    </span><span class=n>sliderRep</span><span class=p>.</span><span class=na>GetPoint1Coordinate</span><span class=p>().</span><span class=na>SetCoordinateSystemToNormalizedDisplay</span><span class=p>();</span>
 <span class=w>    </span><span class=n>sliderRep</span><span class=p>.</span><span class=na>GetPoint1Coordinate</span><span class=p>().</span><span class=na>SetValue</span><span class=p>(</span><span class=mf>.2</span><span class=p>,</span><span class=w> </span><span class=mf>.2</span><span class=p>);</span>
 <span class=w>    </span><span class=n>sliderRep</span><span class=p>.</span><span class=na>GetPoint2Coordinate</span><span class=p>().</span><span class=na>SetCoordinateSystemToNormalizedDisplay</span><span class=p>();</span>
@@ -165,7 +165,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=n>callback</span><span class=p>.</span><span class=na>Renderer</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>renderer</span><span class=p>;</span>
 <span class=w>    </span><span class=n>callback</span><span class=p>.</span><span class=na>SliderWidget</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>sliderWidget</span><span class=p>;</span>
 
-<span class=w>    </span><span class=n>sliderWidget</span><span class=p>.</span><span class=na>AddObserver</span><span class=p>(</span><span class=s>&quot;InteractionEvent&quot;</span><span class=p>,</span><span class=w> </span><span class=n>callback</span><span class=p>,</span><span class=w> </span><span class=s>&quot;Execute&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>sliderWidget</span><span class=p>.</span><span class=na>AddObserver</span><span class=p>(</span><span class=s>"InteractionEvent"</span><span class=p>,</span><span class=w> </span><span class=n>callback</span><span class=p>,</span><span class=w> </span><span class=s>"Execute"</span><span class=p>);</span>
 
 <span class=w>    </span><span class=n>renderWindowInteractor</span><span class=p>.</span><span class=na>Initialize</span><span class=p>();</span>
 <span class=w>    </span><span class=n>renderWindow</span><span class=p>.</span><span class=na>Render</span><span class=p>();</span>

@@ -138,7 +138,7 @@ function registerListener(event, func) {
 <span class=p>{</span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>argc</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=mi>3</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Usage: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; file.vtp wintersun.jpg&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Usage: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" file.vtp wintersun.jpg"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>EXIT_SUCCESS</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 
@@ -193,86 +193,86 @@ function registerListener(event, func) {
 <span class=cp>#if USE_SHADER_PROPERTIES</span>
 <span class=hll><span class=w>  </span><span class=n>vtkShaderProperty</span><span class=o>*</span><span class=w> </span><span class=n>sp</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>actor</span><span class=o>-&gt;</span><span class=n>GetShaderProperty</span><span class=p>();</span>
 </span><span class=w>  </span><span class=n>sp</span><span class=o>-&gt;</span><span class=n>AddVertexShaderReplacement</span><span class=p>(</span>
-<span class=w>      </span><span class=s>&quot;//VTK::PositionVC::Dec&quot;</span><span class=p>,</span><span class=w>  </span><span class=c1>// replace</span>
+<span class=w>      </span><span class=s>"//VTK::PositionVC::Dec"</span><span class=p>,</span><span class=w>  </span><span class=c1>// replace</span>
 <span class=w>      </span><span class=nb>true</span><span class=p>,</span><span class=w>                      </span><span class=c1>// before the standard replacements</span>
-<span class=w>      </span><span class=s>&quot;//VTK::PositionVC::Dec</span><span class=se>\n</span><span class=s>&quot;</span><span class=w> </span><span class=c1>// we still want the default</span>
-<span class=w>      </span><span class=s>&quot;out vec3 TexCoords;</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>,</span>
+<span class=w>      </span><span class=s>"//VTK::PositionVC::Dec</span><span class=se>\n</span><span class=s>"</span><span class=w> </span><span class=c1>// we still want the default</span>
+<span class=w>      </span><span class=s>"out vec3 TexCoords;</span><span class=se>\n</span><span class=s>"</span><span class=p>,</span>
 <span class=w>      </span><span class=nb>false</span><span class=w> </span><span class=c1>// only do it once</span>
 <span class=w>  </span><span class=p>);</span>
 <span class=cp>#else</span>
 <span class=w>  </span><span class=n>mapper</span><span class=o>-&gt;</span><span class=n>AddShaderReplacement</span><span class=p>(</span>
 <span class=hll><span class=w>      </span><span class=n>vtkShader</span><span class=o>::</span><span class=n>Vertex</span><span class=p>,</span>
-</span><span class=w>      </span><span class=s>&quot;//VTK::PositionVC::Dec&quot;</span><span class=p>,</span><span class=w>  </span><span class=c1>// replace</span>
+</span><span class=w>      </span><span class=s>"//VTK::PositionVC::Dec"</span><span class=p>,</span><span class=w>  </span><span class=c1>// replace</span>
 <span class=w>      </span><span class=nb>true</span><span class=p>,</span><span class=w>                      </span><span class=c1>// before the standard replacements</span>
-<span class=w>      </span><span class=s>&quot;//VTK::PositionVC::Dec</span><span class=se>\n</span><span class=s>&quot;</span><span class=w> </span><span class=c1>// we still want the default</span>
-<span class=w>      </span><span class=s>&quot;out vec3 TexCoords;</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>,</span>
+<span class=w>      </span><span class=s>"//VTK::PositionVC::Dec</span><span class=se>\n</span><span class=s>"</span><span class=w> </span><span class=c1>// we still want the default</span>
+<span class=w>      </span><span class=s>"out vec3 TexCoords;</span><span class=se>\n</span><span class=s>"</span><span class=p>,</span>
 <span class=w>      </span><span class=nb>false</span><span class=w> </span><span class=c1>// only do it once</span>
 <span class=w>  </span><span class=p>);</span>
 <span class=cp>#endif</span>
 <span class=cp>#if USE_SHADER_PROPERTIES</span>
 <span class=w>  </span><span class=n>sp</span><span class=o>-&gt;</span><span class=n>AddVertexShaderReplacement</span><span class=p>(</span>
-<span class=w>      </span><span class=s>&quot;//VTK::PositionVC::Impl&quot;</span><span class=p>,</span><span class=w>  </span><span class=c1>// replace</span>
+<span class=w>      </span><span class=s>"//VTK::PositionVC::Impl"</span><span class=p>,</span><span class=w>  </span><span class=c1>// replace</span>
 <span class=w>      </span><span class=nb>true</span><span class=p>,</span><span class=w>                       </span><span class=c1>// before the standard replacements</span>
-<span class=w>      </span><span class=s>&quot;//VTK::PositionVC::Impl</span><span class=se>\n</span><span class=s>&quot;</span><span class=w> </span><span class=c1>// we still want the default</span>
-<span class=w>      </span><span class=s>&quot;vec3 camPos = -MCVCMatrix[3].xyz * mat3(MCVCMatrix);</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;TexCoords.xyz = reflect(vertexMC.xyz - camPos, normalize(normalMC));</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>,</span>
+<span class=w>      </span><span class=s>"//VTK::PositionVC::Impl</span><span class=se>\n</span><span class=s>"</span><span class=w> </span><span class=c1>// we still want the default</span>
+<span class=w>      </span><span class=s>"vec3 camPos = -MCVCMatrix[3].xyz * mat3(MCVCMatrix);</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>      </span><span class=s>"TexCoords.xyz = reflect(vertexMC.xyz - camPos, normalize(normalMC));</span><span class=se>\n</span><span class=s>"</span><span class=p>,</span>
 <span class=w>      </span><span class=nb>false</span><span class=w> </span><span class=c1>// only do it once</span>
 <span class=w>  </span><span class=p>);</span>
 <span class=cp>#else</span>
 <span class=w>  </span><span class=n>mapper</span><span class=o>-&gt;</span><span class=n>AddShaderReplacement</span><span class=p>(</span>
 <span class=hll><span class=w>      </span><span class=n>vtkShader</span><span class=o>::</span><span class=n>Vertex</span><span class=p>,</span>
-</span><span class=w>      </span><span class=s>&quot;//VTK::PositionVC::Impl&quot;</span><span class=p>,</span><span class=w>  </span><span class=c1>// replace</span>
+</span><span class=w>      </span><span class=s>"//VTK::PositionVC::Impl"</span><span class=p>,</span><span class=w>  </span><span class=c1>// replace</span>
 <span class=w>      </span><span class=nb>true</span><span class=p>,</span><span class=w>                       </span><span class=c1>// before the standard replacements</span>
-<span class=w>      </span><span class=s>&quot;//VTK::PositionVC::Impl</span><span class=se>\n</span><span class=s>&quot;</span><span class=w> </span><span class=c1>// we still want the default</span>
-<span class=w>      </span><span class=s>&quot;vec3 camPos = -MCVCMatrix[3].xyz * mat3(MCVCMatrix);</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;TexCoords.xyz = reflect(vertexMC.xyz - camPos, normalize(normalMC));</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>,</span>
+<span class=w>      </span><span class=s>"//VTK::PositionVC::Impl</span><span class=se>\n</span><span class=s>"</span><span class=w> </span><span class=c1>// we still want the default</span>
+<span class=w>      </span><span class=s>"vec3 camPos = -MCVCMatrix[3].xyz * mat3(MCVCMatrix);</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>      </span><span class=s>"TexCoords.xyz = reflect(vertexMC.xyz - camPos, normalize(normalMC));</span><span class=se>\n</span><span class=s>"</span><span class=p>,</span>
 <span class=w>      </span><span class=nb>false</span><span class=w> </span><span class=c1>// only do it once</span>
 <span class=w>  </span><span class=p>);</span>
 <span class=cp>#endif</span>
 <span class=cp>#if USE_SHADER_PROPERTIES</span>
 <span class=w>  </span><span class=n>sp</span><span class=o>-&gt;</span><span class=n>AddFragmentShaderReplacement</span><span class=p>(</span>
-<span class=w>      </span><span class=s>&quot;//VTK::Light::Dec&quot;</span><span class=p>,</span><span class=w>  </span><span class=c1>// replace</span>
+<span class=w>      </span><span class=s>"//VTK::Light::Dec"</span><span class=p>,</span><span class=w>  </span><span class=c1>// replace</span>
 <span class=w>      </span><span class=nb>true</span><span class=p>,</span><span class=w>                 </span><span class=c1>// before the standard replacements</span>
-<span class=w>      </span><span class=s>&quot;//VTK::Light::Dec</span><span class=se>\n</span><span class=s>&quot;</span><span class=w> </span><span class=c1>// we still want the default</span>
-<span class=w>      </span><span class=s>&quot;in vec3 TexCoords;</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>,</span>
+<span class=w>      </span><span class=s>"//VTK::Light::Dec</span><span class=se>\n</span><span class=s>"</span><span class=w> </span><span class=c1>// we still want the default</span>
+<span class=w>      </span><span class=s>"in vec3 TexCoords;</span><span class=se>\n</span><span class=s>"</span><span class=p>,</span>
 <span class=w>      </span><span class=nb>false</span><span class=w> </span><span class=c1>// only do it once</span>
 <span class=w>  </span><span class=p>);</span>
 <span class=cp>#else</span>
 <span class=w>  </span><span class=n>mapper</span><span class=o>-&gt;</span><span class=n>AddShaderReplacement</span><span class=p>(</span>
 <span class=hll><span class=w>      </span><span class=n>vtkShader</span><span class=o>::</span><span class=n>Fragment</span><span class=p>,</span>
-</span><span class=w>      </span><span class=s>&quot;//VTK::Light::Dec&quot;</span><span class=p>,</span><span class=w>  </span><span class=c1>// replace</span>
+</span><span class=w>      </span><span class=s>"//VTK::Light::Dec"</span><span class=p>,</span><span class=w>  </span><span class=c1>// replace</span>
 <span class=w>      </span><span class=nb>true</span><span class=p>,</span><span class=w>                 </span><span class=c1>// before the standard replacements</span>
-<span class=w>      </span><span class=s>&quot;//VTK::Light::Dec</span><span class=se>\n</span><span class=s>&quot;</span><span class=w> </span><span class=c1>// we still want the default</span>
-<span class=w>      </span><span class=s>&quot;in vec3 TexCoords;</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>,</span>
+<span class=w>      </span><span class=s>"//VTK::Light::Dec</span><span class=se>\n</span><span class=s>"</span><span class=w> </span><span class=c1>// we still want the default</span>
+<span class=w>      </span><span class=s>"in vec3 TexCoords;</span><span class=se>\n</span><span class=s>"</span><span class=p>,</span>
 <span class=w>      </span><span class=nb>false</span><span class=w> </span><span class=c1>// only do it once</span>
 <span class=w>  </span><span class=p>);</span>
 <span class=cp>#endif</span>
 
 <span class=cp>#if USE_SHADER_PROPERTIES</span>
 <span class=w>  </span><span class=n>sp</span><span class=o>-&gt;</span><span class=n>AddFragmentShaderReplacement</span><span class=p>(</span>
-<span class=w>      </span><span class=s>&quot;//VTK::Light::Impl&quot;</span><span class=p>,</span><span class=w> </span><span class=c1>// replace</span>
+<span class=w>      </span><span class=s>"//VTK::Light::Impl"</span><span class=p>,</span><span class=w> </span><span class=c1>// replace</span>
 <span class=w>      </span><span class=nb>true</span><span class=p>,</span><span class=w>                 </span><span class=c1>// before the standard replacements</span>
-<span class=w>      </span><span class=s>&quot;//VTK::Light::Impl</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;  float phix = length(vec2(TexCoords.x, TexCoords.z));</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;  vec3 skyColor = texture(actortexture, vec2(0.5*atan(TexCoords.z, &quot;</span>
-<span class=w>      </span><span class=s>&quot;TexCoords.x)/3.1415927 + 0.5, atan(TexCoords.y,phix)/3.1415927 + &quot;</span>
-<span class=w>      </span><span class=s>&quot;0.5)).xyz;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;  gl_FragData[0] = vec4(ambientColor + diffuse + specular + &quot;</span>
-<span class=w>      </span><span class=s>&quot;specularColor*skyColor, opacity);</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>,</span><span class=w> </span><span class=c1>// we still want the default</span>
+<span class=w>      </span><span class=s>"//VTK::Light::Impl</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>      </span><span class=s>"  float phix = length(vec2(TexCoords.x, TexCoords.z));</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>      </span><span class=s>"  vec3 skyColor = texture(actortexture, vec2(0.5*atan(TexCoords.z, "</span>
+<span class=w>      </span><span class=s>"TexCoords.x)/3.1415927 + 0.5, atan(TexCoords.y,phix)/3.1415927 + "</span>
+<span class=w>      </span><span class=s>"0.5)).xyz;</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>      </span><span class=s>"  gl_FragData[0] = vec4(ambientColor + diffuse + specular + "</span>
+<span class=w>      </span><span class=s>"specularColor*skyColor, opacity);</span><span class=se>\n</span><span class=s>"</span><span class=p>,</span><span class=w> </span><span class=c1>// we still want the default</span>
 <span class=w>      </span><span class=nb>false</span><span class=w>                                  </span><span class=c1>// only do it once</span>
 <span class=w>  </span><span class=p>);</span>
 <span class=cp>#else</span>
 <span class=w>  </span><span class=n>mapper</span><span class=o>-&gt;</span><span class=n>AddShaderReplacement</span><span class=p>(</span>
 <span class=hll><span class=w>      </span><span class=n>vtkShader</span><span class=o>::</span><span class=n>Fragment</span><span class=p>,</span>
-</span><span class=w>      </span><span class=s>&quot;//VTK::Light::Impl&quot;</span><span class=p>,</span><span class=w> </span><span class=c1>// replace</span>
+</span><span class=w>      </span><span class=s>"//VTK::Light::Impl"</span><span class=p>,</span><span class=w> </span><span class=c1>// replace</span>
 <span class=w>      </span><span class=nb>true</span><span class=p>,</span><span class=w>                 </span><span class=c1>// before the standard replacements</span>
-<span class=w>      </span><span class=s>&quot;//VTK::Light::Impl</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;  float phix = length(vec2(TexCoords.x, TexCoords.z));</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;  vec3 skyColor = texture(actortexture, vec2(0.5*atan(TexCoords.z, &quot;</span>
-<span class=w>      </span><span class=s>&quot;TexCoords.x)/3.1415927 + 0.5, atan(TexCoords.y,phix)/3.1415927 + &quot;</span>
-<span class=w>      </span><span class=s>&quot;0.5)).xyz;</span><span class=se>\n</span><span class=s>&quot;</span>
-<span class=w>      </span><span class=s>&quot;  gl_FragData[0] = vec4(ambientColor + diffuse + specular + &quot;</span>
-<span class=w>      </span><span class=s>&quot;specularColor*skyColor, opacity);</span><span class=se>\n</span><span class=s>&quot;</span><span class=p>,</span><span class=w> </span><span class=c1>// we still want the default</span>
+<span class=w>      </span><span class=s>"//VTK::Light::Impl</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>      </span><span class=s>"  float phix = length(vec2(TexCoords.x, TexCoords.z));</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>      </span><span class=s>"  vec3 skyColor = texture(actortexture, vec2(0.5*atan(TexCoords.z, "</span>
+<span class=w>      </span><span class=s>"TexCoords.x)/3.1415927 + 0.5, atan(TexCoords.y,phix)/3.1415927 + "</span>
+<span class=w>      </span><span class=s>"0.5)).xyz;</span><span class=se>\n</span><span class=s>"</span>
+<span class=w>      </span><span class=s>"  gl_FragData[0] = vec4(ambientColor + diffuse + specular + "</span>
+<span class=w>      </span><span class=s>"specularColor*skyColor, opacity);</span><span class=se>\n</span><span class=s>"</span><span class=p>,</span><span class=w> </span><span class=c1>// we still want the default</span>
 <span class=w>      </span><span class=nb>false</span><span class=w>                                  </span><span class=c1>// only do it once</span>
 <span class=w>  </span><span class=p>);</span>
 <span class=cp>#endif</span>
@@ -292,7 +292,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>ResetCameraClippingRange</span><span class=p>();</span>
 
 <span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
-<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;SphereMap&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"SphereMap"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkInteractorStyleTrackballCamera</span><span class=o>&gt;</span><span class=w> </span><span class=n>style</span><span class=p>;</span>
@@ -320,11 +320,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;SphereMap: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"SphereMap: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>SphereMap</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>SphereMap.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>SphereMap</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

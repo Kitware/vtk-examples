@@ -84,23 +84,23 @@ function registerListener(event, func) {
         <span class=k>try</span><span class=p>:</span>
             <span class=n>x</span> <span class=o>=</span> <span class=nb>int</span><span class=p>(</span><span class=n>x</span><span class=p>)</span>
         <span class=k>except</span> <span class=ne>ValueError</span><span class=p>:</span>
-            <span class=k>raise</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentTypeError</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;This value: </span><span class=si>{</span><span class=n>x</span><span class=si>}</span><span class=s1> is not a integer literal&#39;</span><span class=p>)</span>
+            <span class=k>raise</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentTypeError</span><span class=p>(</span><span class=sa>f</span><span class=s1>'This value: </span><span class=si>{</span><span class=n>x</span><span class=si>}</span><span class=s1> is not a integer literal'</span><span class=p>)</span>
         <span class=k>if</span> <span class=n>x</span> <span class=o>&lt;</span> <span class=o>-</span><span class=mi>1</span> <span class=ow>or</span> <span class=n>x</span> <span class=o>&gt;</span> <span class=mi>10</span><span class=p>:</span>
-            <span class=k>raise</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentTypeError</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;The absolute value of </span><span class=si>{</span><span class=n>x</span><span class=si>}</span><span class=s1> must be in the range [-1...10]&#39;</span><span class=p>)</span>
+            <span class=k>raise</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentTypeError</span><span class=p>(</span><span class=sa>f</span><span class=s1>'The absolute value of </span><span class=si>{</span><span class=n>x</span><span class=si>}</span><span class=s1> must be in the range [-1...10]'</span><span class=p>)</span>
         <span class=k>return</span> <span class=n>x</span>
 
     <span class=kn>import</span><span class=w> </span><span class=nn>argparse</span>
-    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;ResizeImage.&#39;</span>
-    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;</span>
+    <span class=n>description</span> <span class=o>=</span> <span class=s1>'ResizeImage.'</span>
+    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>'''</span>
 <span class=s1>    Try: -f ../../../src/Testing/Data/Gourds2.jpg -sx 1280 -sy 1024 -w 5</span>
-<span class=s1>    &#39;&#39;&#39;</span>
+<span class=s1>    '''</span>
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
                                      <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawDescriptionHelpFormatter</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-f&#39;</span><span class=p>,</span> <span class=s1>&#39;--file_name&#39;</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The image file name to use e.g. Gourds2.jpg.&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-sx&#39;</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mi>200</span><span class=p>,</span> <span class=nb>type</span><span class=o>=</span><span class=nb>int</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Size in the X-direction&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-sy&#39;</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mi>200</span><span class=p>,</span> <span class=nb>type</span><span class=o>=</span><span class=nb>int</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Size in the Y-direction&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-w&#39;</span><span class=p>,</span> <span class=n>default</span><span class=o>=-</span><span class=mi>1</span><span class=p>,</span> <span class=nb>type</span><span class=o>=</span><span class=n>to_int_range</span><span class=p>,</span>
-                        <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The  sinc interpolator to use. -1 turns off interpolation.&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-f'</span><span class=p>,</span> <span class=s1>'--file_name'</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'The image file name to use e.g. Gourds2.jpg.'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-sx'</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mi>200</span><span class=p>,</span> <span class=nb>type</span><span class=o>=</span><span class=nb>int</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'Size in the X-direction'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-sy'</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mi>200</span><span class=p>,</span> <span class=nb>type</span><span class=o>=</span><span class=nb>int</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'Size in the Y-direction'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-w'</span><span class=p>,</span> <span class=n>default</span><span class=o>=-</span><span class=mi>1</span><span class=p>,</span> <span class=nb>type</span><span class=o>=</span><span class=n>to_int_range</span><span class=p>,</span>
+                        <span class=n>help</span><span class=o>=</span><span class=s1>'The  sinc interpolator to use. -1 turns off interpolation.'</span><span class=p>)</span>
     <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
     <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>file_name</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>sx</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>sy</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>w</span>
 
@@ -113,7 +113,7 @@ function registerListener(event, func) {
         <span class=n>fp</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>fn</span><span class=p>)</span>
         <span class=n>file_check</span> <span class=o>=</span> <span class=kc>True</span>
         <span class=k>if</span> <span class=ow>not</span> <span class=n>fp</span><span class=o>.</span><span class=n>is_file</span><span class=p>():</span>
-            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;Missing image file: </span><span class=si>{</span><span class=n>fp</span><span class=si>}</span><span class=s1>.&#39;</span><span class=p>)</span>
+            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'Missing image file: </span><span class=si>{</span><span class=n>fp</span><span class=si>}</span><span class=s1>.'</span><span class=p>)</span>
             <span class=n>file_check</span> <span class=o>=</span> <span class=kc>False</span>
         <span class=k>if</span> <span class=ow>not</span> <span class=n>file_check</span><span class=p>:</span>
             <span class=k>return</span>
@@ -128,9 +128,9 @@ function registerListener(event, func) {
 </span>        <span class=n>reader</span><span class=o>.</span><span class=n>file_name</span> <span class=o>=</span> <span class=n>fp</span>
         <span class=n>image_data</span> <span class=o>=</span> <span class=n>reader</span><span class=o>.</span><span class=n>update</span><span class=p>()</span><span class=o>.</span><span class=n>output</span>
     <span class=k>else</span><span class=p>:</span>
-        <span class=n>draw_color1</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s1>&#39;Gray&#39;</span><span class=p>)</span>
-        <span class=n>draw_color2</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s1>&#39;Aquamarine&#39;</span><span class=p>)</span>
-        <span class=n>draw_color3</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s1>&#39;Violet&#39;</span><span class=p>)</span>
+        <span class=n>draw_color1</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s1>'Gray'</span><span class=p>)</span>
+        <span class=n>draw_color2</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s1>'Aquamarine'</span><span class=p>)</span>
+        <span class=n>draw_color3</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3ub</span><span class=p>(</span><span class=s1>'Violet'</span><span class=p>)</span>
 
 <span class=hll>        <span class=n>canvas_source</span> <span class=o>=</span> <span class=n>vtkImageCanvasSource2D</span><span class=p>(</span><span class=n>extent</span><span class=o>=</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>100</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>100</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>),</span> <span class=n>number_of_scalar_components</span><span class=o>=</span><span class=mi>3</span><span class=p>)</span>
 </span>        <span class=n>canvas_source</span><span class=o>.</span><span class=n>draw_color</span> <span class=o>=</span> <span class=nb>tuple</span><span class=p>(</span><span class=n>draw_color1</span><span class=p>)</span>
@@ -149,13 +149,13 @@ function registerListener(event, func) {
 </span>                            <span class=n>interpolator</span><span class=o>=</span><span class=n>interpolator</span><span class=p>,</span> <span class=n>interpolate</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
     <span class=n>resize</span><span class=o>.</span><span class=n>update</span><span class=p>()</span>
 
-    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;Original dimensions: </span><span class=si>{</span><span class=n>image_data</span><span class=o>.</span><span class=n>dimensions</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
-    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;Resized dimensions:  </span><span class=si>{</span><span class=n>resize</span><span class=o>.</span><span class=n>output</span><span class=o>.</span><span class=n>dimensions</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'Original dimensions: </span><span class=si>{</span><span class=n>image_data</span><span class=o>.</span><span class=n>dimensions</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'Resized dimensions:  </span><span class=si>{</span><span class=n>resize</span><span class=o>.</span><span class=n>output</span><span class=o>.</span><span class=n>dimensions</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
     <span class=k>if</span> <span class=n>window_function</span> <span class=o>&lt;</span> <span class=mi>0</span><span class=p>:</span>
         <span class=n>resize</span><span class=o>.</span><span class=n>interpolate</span> <span class=o>=</span> <span class=kc>False</span>
-        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;Using nearest neighbor interpolation.&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'Using nearest neighbor interpolation.'</span><span class=p>)</span>
     <span class=k>else</span><span class=p>:</span>
-        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;Using window function : </span><span class=si>{</span><span class=n>interpolator</span><span class=o>.</span><span class=n>GetWindowFunctionAsString</span><span class=p>()</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'Using window function : </span><span class=si>{</span><span class=n>interpolator</span><span class=o>.</span><span class=n>GetWindowFunctionAsString</span><span class=p>()</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
 
     <span class=c1># Create an image actor to display the image</span>
 <span class=hll>    <span class=n>image_actor</span> <span class=o>=</span> <span class=n>vtkImageActor</span><span class=p>()</span>
@@ -163,7 +163,7 @@ function registerListener(event, func) {
     <span class=n>image_actor</span><span class=o>.</span><span class=n>InterpolateOff</span><span class=p>()</span>
 
     <span class=c1># Setup renderer</span>
-<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Burlywood&#39;</span><span class=p>))</span>
+<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Burlywood'</span><span class=p>))</span>
 </span>    <span class=n>renderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>image_actor</span><span class=p>)</span>
     <span class=n>renderer</span><span class=o>.</span><span class=n>ResetCamera</span><span class=p>()</span>
     <span class=k>if</span> <span class=n>fp</span><span class=p>:</span>
@@ -173,7 +173,7 @@ function registerListener(event, func) {
     <span class=n>renderer</span><span class=o>.</span><span class=n>ResetCameraClippingRange</span><span class=p>()</span>
 
     <span class=c1># Setup render window</span>
-<span class=hll>    <span class=n>render_window</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>size</span><span class=o>=</span><span class=p>(</span><span class=mi>1280</span><span class=p>,</span> <span class=mi>1024</span><span class=p>),</span> <span class=n>window_name</span><span class=o>=</span><span class=s1>&#39;ResizeImage&#39;</span><span class=p>)</span>
+<span class=hll>    <span class=n>render_window</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>size</span><span class=o>=</span><span class=p>(</span><span class=mi>1280</span><span class=p>,</span> <span class=mi>1024</span><span class=p>),</span> <span class=n>window_name</span><span class=o>=</span><span class=s1>'ResizeImage'</span><span class=p>)</span>
 </span>    <span class=n>render_window</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>)</span>
 
     <span class=c1># Setup render window interactor</span>
@@ -189,6 +189,6 @@ function registerListener(event, func) {
     <span class=n>render_window_interactor</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

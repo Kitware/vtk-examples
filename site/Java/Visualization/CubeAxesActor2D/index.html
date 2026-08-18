@@ -82,7 +82,7 @@ function registerListener(event, func) {
 <span class=w>      </span><span class=p>{</span>
 <span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>lib</span><span class=p>.</span><span class=na>IsLoaded</span><span class=p>())</span><span class=w> </span>
 <span class=w>        </span><span class=p>{</span>
-<span class=w>          </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&quot; not loaded&quot;</span><span class=p>);</span>
+<span class=w>          </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>" not loaded"</span><span class=p>);</span>
 <span class=w>        </span><span class=p>}</span>
 <span class=w>      </span><span class=p>}</span>
 <span class=w>    </span><span class=p>}</span>
@@ -101,9 +101,9 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=c1>//Renderer Background Color</span>
 <span class=w>    </span><span class=kt>double</span><span class=w> </span><span class=n>Bgcolor</span><span class=o>[]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=kt>double</span><span class=o>[</span><span class=mi>4</span><span class=o>]</span><span class=p>;</span>
 
-<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>&quot;Magenta&quot;</span><span class=p>,</span><span class=w> </span><span class=n>icosahedronActorColor</span><span class=p>);</span>
-<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>&quot;Black&quot;</span><span class=p>,</span><span class=w> </span><span class=n>outlineActorColor</span><span class=p>);</span>
-<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>&quot;DarkSlateBlue&quot;</span><span class=p>,</span><span class=w> </span><span class=n>Bgcolor</span><span class=p>);</span>
+<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>"Magenta"</span><span class=p>,</span><span class=w> </span><span class=n>icosahedronActorColor</span><span class=p>);</span>
+<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>"Black"</span><span class=p>,</span><span class=w> </span><span class=n>outlineActorColor</span><span class=p>);</span>
+<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>"DarkSlateBlue"</span><span class=p>,</span><span class=w> </span><span class=n>Bgcolor</span><span class=p>);</span>
 
 <span class=hll><span class=w>    </span><span class=n>vtkPlatonicSolidSource</span><span class=w> </span><span class=n>icosahedron</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkPlatonicSolidSource</span><span class=p>();</span>
 </span><span class=w>    </span><span class=n>icosahedron</span><span class=p>.</span><span class=na>SetSolidTypeToIcosahedron</span><span class=p>();</span>
@@ -146,7 +146,7 @@ function registerListener(event, func) {
 <span class=hll><span class=w>    </span><span class=n>vtkRenderWindow</span><span class=w> </span><span class=n>renWin</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkRenderWindow</span><span class=p>();</span>
 </span><span class=w>    </span><span class=n>renWin</span><span class=p>.</span><span class=na>AddRenderer</span><span class=p>(</span><span class=n>ren</span><span class=p>);</span>
 <span class=w>    </span><span class=n>renWin</span><span class=p>.</span><span class=na>AddRenderer</span><span class=p>(</span><span class=n>ren2</span><span class=p>);</span>
-<span class=w>    </span><span class=n>renWin</span><span class=p>.</span><span class=na>SetWindowName</span><span class=p>(</span><span class=s>&quot;VTK - Cube Axes&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>renWin</span><span class=p>.</span><span class=na>SetWindowName</span><span class=p>(</span><span class=s>"VTK - Cube Axes"</span><span class=p>);</span>
 <span class=w>    </span><span class=n>renWin</span><span class=p>.</span><span class=na>SetSize</span><span class=p>(</span><span class=mi>600</span><span class=p>,</span><span class=w> </span><span class=mi>300</span><span class=p>);</span>
 
 <span class=hll><span class=w>    </span><span class=n>vtkRenderWindowInteractor</span><span class=w> </span><span class=n>iren</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkRenderWindowInteractor</span><span class=p>();</span>
@@ -172,7 +172,7 @@ function registerListener(event, func) {
 <span class=hll><span class=w>    </span><span class=n>vtkCubeAxesActor2D</span><span class=w> </span><span class=n>axes</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkCubeAxesActor2D</span><span class=p>();</span>
 </span><span class=w>    </span><span class=n>axes</span><span class=p>.</span><span class=na>SetInputConnection</span><span class=p>(</span><span class=n>normals</span><span class=p>.</span><span class=na>GetOutputPort</span><span class=p>());</span>
 <span class=w>    </span><span class=n>axes</span><span class=p>.</span><span class=na>SetCamera</span><span class=p>(</span><span class=n>ren</span><span class=p>.</span><span class=na>GetActiveCamera</span><span class=p>());</span>
-<span class=w>    </span><span class=n>axes</span><span class=p>.</span><span class=na>SetLabelFormat</span><span class=p>(</span><span class=s>&quot;%6.4g&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>axes</span><span class=p>.</span><span class=na>SetLabelFormat</span><span class=p>(</span><span class=s>"%6.4g"</span><span class=p>);</span>
 <span class=w>    </span><span class=n>axes</span><span class=p>.</span><span class=na>SetFlyModeToOuterEdges</span><span class=p>();</span>
 <span class=w>    </span><span class=n>axes</span><span class=p>.</span><span class=na>SetAxisTitleTextProperty</span><span class=p>(</span><span class=n>tprop</span><span class=p>);</span>
 <span class=w>    </span><span class=n>axes</span><span class=p>.</span><span class=na>SetAxisLabelTextProperty</span><span class=p>(</span><span class=n>tprop</span><span class=p>);</span>
@@ -183,7 +183,7 @@ function registerListener(event, func) {
 <span class=hll><span class=w>    </span><span class=n>vtkCubeAxesActor2D</span><span class=w> </span><span class=n>axes2</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkCubeAxesActor2D</span><span class=p>();</span>
 </span><span class=w>    </span><span class=n>axes2</span><span class=p>.</span><span class=na>SetViewProp</span><span class=p>(</span><span class=n>icosahedron_actor</span><span class=p>);</span>
 <span class=w>    </span><span class=n>axes2</span><span class=p>.</span><span class=na>SetCamera</span><span class=p>(</span><span class=n>ren2</span><span class=p>.</span><span class=na>GetActiveCamera</span><span class=p>());</span>
-<span class=w>    </span><span class=n>axes2</span><span class=p>.</span><span class=na>SetLabelFormat</span><span class=p>(</span><span class=s>&quot;%6.4g&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>axes2</span><span class=p>.</span><span class=na>SetLabelFormat</span><span class=p>(</span><span class=s>"%6.4g"</span><span class=p>);</span>
 <span class=w>    </span><span class=n>axes2</span><span class=p>.</span><span class=na>SetFlyModeToClosestTriad</span><span class=p>();</span>
 <span class=w>    </span><span class=n>axes2</span><span class=p>.</span><span class=na>ScalingOff</span><span class=p>();</span>
 <span class=w>    </span><span class=n>axes2</span><span class=p>.</span><span class=na>SetAxisTitleTextProperty</span><span class=p>(</span><span class=n>tprop</span><span class=p>);</span>

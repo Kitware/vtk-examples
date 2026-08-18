@@ -128,7 +128,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=c1>// Create the edge weight array</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkDoubleArray</span><span class=o>&gt;</span><span class=w> </span><span class=n>weights</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>weights</span><span class=o>-&gt;</span><span class=n>SetNumberOfComponents</span><span class=p>(</span><span class=mi>1</span><span class=p>);</span>
-<span class=w>  </span><span class=n>weights</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>&quot;Weights&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>weights</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>"Weights"</span><span class=p>);</span>
 
 <span class=w>  </span><span class=c1>// Set the edge weights</span>
 <span class=w>  </span><span class=n>weights</span><span class=o>-&gt;</span><span class=n>InsertNextValue</span><span class=p>(</span><span class=mf>1.0</span><span class=p>);</span>
@@ -138,7 +138,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=c1>// Create an array for the vertex labels</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkIntArray</span><span class=o>&gt;</span><span class=w> </span><span class=n>vertexIDs</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>vertexIDs</span><span class=o>-&gt;</span><span class=n>SetNumberOfComponents</span><span class=p>(</span><span class=mi>1</span><span class=p>);</span>
-<span class=w>  </span><span class=n>vertexIDs</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>&quot;VertexIDs&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>vertexIDs</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>"VertexIDs"</span><span class=p>);</span>
 
 <span class=w>  </span><span class=c1>// Set the vertex labels</span>
 <span class=w>  </span><span class=n>vertexIDs</span><span class=o>-&gt;</span><span class=n>InsertNextValue</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span>
@@ -157,21 +157,21 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>graphLayoutView</span><span class=o>-&gt;</span><span class=n>SetLayoutStrategy</span><span class=p>(</span><span class=n>circularLayoutStrategy</span><span class=p>);</span>
 <span class=w>  </span><span class=n>graphLayoutView</span><span class=o>-&gt;</span><span class=n>SetVertexLabelVisibility</span><span class=p>(</span><span class=nb>true</span><span class=p>);</span>
 <span class=w>  </span><span class=n>graphLayoutView</span><span class=o>-&gt;</span><span class=n>SetEdgeLabelVisibility</span><span class=p>(</span><span class=nb>true</span><span class=p>);</span>
-<span class=w>  </span><span class=n>graphLayoutView</span><span class=o>-&gt;</span><span class=n>SetEdgeLabelArrayName</span><span class=p>(</span><span class=s>&quot;Weights&quot;</span><span class=p>);</span><span class=w>     </span><span class=c1>// default is &quot;labels&quot;</span>
-<span class=w>  </span><span class=n>graphLayoutView</span><span class=o>-&gt;</span><span class=n>SetVertexLabelArrayName</span><span class=p>(</span><span class=s>&quot;VertexIDs&quot;</span><span class=p>);</span><span class=w> </span><span class=c1>// default is &quot;labels&quot;</span>
+<span class=w>  </span><span class=n>graphLayoutView</span><span class=o>-&gt;</span><span class=n>SetEdgeLabelArrayName</span><span class=p>(</span><span class=s>"Weights"</span><span class=p>);</span><span class=w>     </span><span class=c1>// default is "labels"</span>
+<span class=w>  </span><span class=n>graphLayoutView</span><span class=o>-&gt;</span><span class=n>SetVertexLabelArrayName</span><span class=p>(</span><span class=s>"VertexIDs"</span><span class=p>);</span><span class=w> </span><span class=c1>// default is "labels"</span>
 <span class=hll><span class=w>  </span><span class=k>dynamic_cast</span><span class=o>&lt;</span><span class=n>vtkRenderedGraphRepresentation</span><span class=o>*&gt;</span><span class=p>(</span>
 </span><span class=w>      </span><span class=n>graphLayoutView</span><span class=o>-&gt;</span><span class=n>GetRepresentation</span><span class=p>())</span>
 <span class=w>      </span><span class=o>-&gt;</span><span class=n>GetVertexLabelTextProperty</span><span class=p>()</span>
-<span class=w>      </span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Yellow&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>      </span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Yellow"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=hll><span class=w>  </span><span class=k>dynamic_cast</span><span class=o>&lt;</span><span class=n>vtkRenderedGraphRepresentation</span><span class=o>*&gt;</span><span class=p>(</span>
 </span><span class=w>      </span><span class=n>graphLayoutView</span><span class=o>-&gt;</span><span class=n>GetRepresentation</span><span class=p>())</span>
 <span class=w>      </span><span class=o>-&gt;</span><span class=n>GetEdgeLabelTextProperty</span><span class=p>()</span>
-<span class=w>      </span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Lime&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>      </span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Lime"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=n>graphLayoutView</span><span class=o>-&gt;</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span>
-<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Navy&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Navy"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=n>graphLayoutView</span><span class=o>-&gt;</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetBackground2</span><span class=p>(</span>
-<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;MidnightBlue&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
-<span class=w>  </span><span class=n>graphLayoutView</span><span class=o>-&gt;</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;LabelVerticesAndEdges&quot;</span><span class=p>);</span>
+<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"MidnightBlue"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>graphLayoutView</span><span class=o>-&gt;</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"LabelVerticesAndEdges"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>graphLayoutView</span><span class=o>-&gt;</span><span class=n>ResetCamera</span><span class=p>();</span>
 <span class=w>  </span><span class=n>graphLayoutView</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
 <span class=w>  </span><span class=n>graphLayoutView</span><span class=o>-&gt;</span><span class=n>GetInteractor</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>Start</span><span class=p>();</span>
@@ -197,11 +197,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;LabelVerticesAndEdges: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"LabelVerticesAndEdges: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>LabelVerticesAndEdges</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>LabelVerticesAndEdges.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>LabelVerticesAndEdges</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

@@ -127,12 +127,12 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=p>{</span>
 <span class=w>  </span><span class=p>}</span>
 
-<span class=w>  </span><span class=k>static</span><span class=w> </span><span class=n>vtkBorderCallback2</span><span class=o>*</span><span class=w> </span><span class=n>New</span><span class=p>()</span>
+<span class=w>  </span><span class=k>static</span><span class=w> </span><span class=n>vtkBorderCallback2</span><span class=o>*</span><span class=w> </span><span class=nf>New</span><span class=p>()</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkBorderCallback2</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 
-<span class=hll><span class=w>  </span><span class=k>virtual</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=n>Execute</span><span class=p>(</span><span class=n>vtkObject</span><span class=o>*</span><span class=w> </span><span class=n>caller</span><span class=p>,</span><span class=w> </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>long</span><span class=p>,</span><span class=w> </span><span class=kt>void</span><span class=o>*</span><span class=p>)</span>
+<span class=hll><span class=w>  </span><span class=k>virtual</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>Execute</span><span class=p>(</span><span class=n>vtkObject</span><span class=o>*</span><span class=w> </span><span class=n>caller</span><span class=p>,</span><span class=w> </span><span class=kt>unsigned</span><span class=w> </span><span class=kt>long</span><span class=p>,</span><span class=w> </span><span class=kt>void</span><span class=o>*</span><span class=p>)</span>
 </span><span class=w>  </span><span class=p>{</span>
 
 <span class=hll><span class=w>    </span><span class=n>vtkBorderWidget</span><span class=o>*</span><span class=w> </span><span class=n>borderWidget</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>reinterpret_cast</span><span class=o>&lt;</span><span class=n>vtkBorderWidget</span><span class=o>*&gt;</span><span class=p>(</span><span class=n>caller</span><span class=p>);</span>
@@ -143,16 +143,16 @@ function registerListener(event, func) {
 </span><span class=w>            </span><span class=o>-&gt;</span><span class=n>GetPositionCoordinate</span><span class=p>();</span>
 <span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=n>lowerLeft</span><span class=w> </span><span class=o>=</span>
 <span class=w>        </span><span class=n>lowerLeftCoordinate</span><span class=o>-&gt;</span><span class=n>GetComputedWorldValue</span><span class=p>(</span><span class=k>this</span><span class=o>-&gt;</span><span class=n>LeftRenderer</span><span class=p>);</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Lower left coordinate: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>lowerLeft</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;, &quot;</span>
-<span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>lowerLeft</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;, &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>lowerLeft</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Lower left coordinate: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>lowerLeft</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>", "</span>
+<span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>lowerLeft</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>", "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>lowerLeft</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 
 <span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=n>upperRightCoordinate</span><span class=w> </span><span class=o>=</span>
 <span class=hll><span class=w>        </span><span class=k>static_cast</span><span class=o>&lt;</span><span class=n>vtkBorderRepresentation</span><span class=o>*&gt;</span><span class=p>(</span><span class=n>borderWidget</span><span class=o>-&gt;</span><span class=n>GetRepresentation</span><span class=p>())</span>
 </span><span class=w>            </span><span class=o>-&gt;</span><span class=n>GetPosition2Coordinate</span><span class=p>();</span>
 <span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=n>upperRight</span><span class=w> </span><span class=o>=</span>
 <span class=w>        </span><span class=n>upperRightCoordinate</span><span class=o>-&gt;</span><span class=n>GetComputedWorldValue</span><span class=p>(</span><span class=k>this</span><span class=o>-&gt;</span><span class=n>LeftRenderer</span><span class=p>);</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Upper right coordinate: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>upperRight</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;, &quot;</span>
-<span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>upperRight</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;, &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>upperRight</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Upper right coordinate: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>upperRight</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>", "</span>
+<span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>upperRight</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>", "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>upperRight</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 
 <span class=w>    </span><span class=k>const</span><span class=w> </span><span class=kt>double</span><span class=o>*</span><span class=w> </span><span class=n>bounds</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>ImageActor</span><span class=o>-&gt;</span><span class=n>GetBounds</span><span class=p>();</span>
 <span class=w>    </span><span class=kt>double</span><span class=w> </span><span class=n>xmin</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>bounds</span><span class=p>[</span><span class=mi>0</span><span class=p>];</span>
@@ -169,19 +169,19 @@ function registerListener(event, func) {
 </span><span class=w>    </span><span class=p>}</span>
 <span class=w>    </span><span class=k>else</span>
 <span class=w>    </span><span class=p>{</span>
-<span class=w>      </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;box is NOT inside image&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>      </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"box is NOT inside image"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=p>}</span>
 <span class=w>  </span><span class=p>}</span>
 
-<span class=hll><span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=n>SetLeftRenderer</span><span class=p>(</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderer</span><span class=p>)</span>
+<span class=hll><span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=nf>SetLeftRenderer</span><span class=p>(</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderer</span><span class=p>)</span>
 </span><span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>LeftRenderer</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>renderer</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=hll><span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=n>SetImageActor</span><span class=p>(</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>actor</span><span class=p>)</span>
+<span class=hll><span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=nf>SetImageActor</span><span class=p>(</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>actor</span><span class=p>)</span>
 </span><span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>ImageActor</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>actor</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=hll><span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=n>SetClipFilter</span><span class=p>(</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageClip</span><span class=o>&gt;</span><span class=w> </span><span class=n>clip</span><span class=p>)</span>
+<span class=hll><span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=nf>SetClipFilter</span><span class=p>(</span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkImageClip</span><span class=o>&gt;</span><span class=w> </span><span class=n>clip</span><span class=p>)</span>
 </span><span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>ClipFilter</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>clip</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
@@ -201,7 +201,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=c1>// Parse input arguments.</span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>argc</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=mi>2</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cerr</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Usage: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; Filename(.jpg) e.g. Gourds2.jpg&quot;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cerr</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Usage: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" Filename(.jpg) e.g. Gourds2.jpg"</span>
 <span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>EXIT_FAILURE</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
@@ -213,7 +213,7 @@ function registerListener(event, func) {
 </span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>jPEGReader</span><span class=o>-&gt;</span><span class=n>CanReadFile</span><span class=p>(</span><span class=n>inputFilename</span><span class=p>.</span><span class=n>c_str</span><span class=p>()))</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Error: cannot read &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>inputFilename</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Error: cannot read "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>inputFilename</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>EXIT_FAILURE</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 
@@ -223,8 +223,8 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=kt>int</span><span class=w> </span><span class=n>extent</span><span class=p>[</span><span class=mi>6</span><span class=p>];</span>
 <span class=w>  </span><span class=n>jPEGReader</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetExtent</span><span class=p>(</span><span class=n>extent</span><span class=p>);</span>
 <span class=w>  </span><span class=c1>// xmin, xmax, ymin, ymax</span>
-<span class=w>  </span><span class=c1>// std::cout &lt;&lt; &quot;extent: &quot; &lt;&lt; extent[0] &lt;&lt; &quot; &quot; &lt;&lt; extent[1] &lt;&lt; &quot; &quot; &lt;&lt;</span>
-<span class=w>  </span><span class=c1>// extent[2] &lt;&lt; &quot; &quot; &lt;&lt;  extent[3] &lt;&lt; &quot; &quot; &lt;&lt;  extent[4] &lt;&lt; &quot; &quot; &lt;&lt;</span>
+<span class=w>  </span><span class=c1>// std::cout &lt;&lt; "extent: " &lt;&lt; extent[0] &lt;&lt; " " &lt;&lt; extent[1] &lt;&lt; " " &lt;&lt;</span>
+<span class=w>  </span><span class=c1>// extent[2] &lt;&lt; " " &lt;&lt;  extent[3] &lt;&lt; " " &lt;&lt;  extent[4] &lt;&lt; " " &lt;&lt;</span>
 <span class=w>  </span><span class=c1>// extent[5] &lt;&lt; std::endl;</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>imageActor</span><span class=p>;</span>
@@ -241,7 +241,7 @@ function registerListener(event, func) {
 </span><span class=w>  </span><span class=n>borderWidget</span><span class=o>-&gt;</span><span class=n>SetInteractor</span><span class=p>(</span><span class=n>interactor</span><span class=p>);</span>
 <span class=hll><span class=w>  </span><span class=k>static_cast</span><span class=o>&lt;</span><span class=n>vtkBorderRepresentation</span><span class=o>*&gt;</span><span class=p>(</span><span class=n>borderWidget</span><span class=o>-&gt;</span><span class=n>GetRepresentation</span><span class=p>())</span>
 </span><span class=w>      </span><span class=o>-&gt;</span><span class=n>GetBorderProperty</span><span class=p>()</span>
-<span class=w>      </span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>color</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Lime&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>      </span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>color</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Lime"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=n>borderWidget</span><span class=o>-&gt;</span><span class=n>SelectableOff</span><span class=p>();</span>
 
 <span class=w>  </span><span class=n>interactor</span><span class=o>-&gt;</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renderWindow</span><span class=p>);</span>
@@ -255,12 +255,12 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span><span class=w> </span><span class=n>leftRenderer</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>leftRenderer</span><span class=p>);</span>
 <span class=w>  </span><span class=n>leftRenderer</span><span class=o>-&gt;</span><span class=n>SetViewport</span><span class=p>(</span><span class=n>leftViewport</span><span class=p>);</span>
-<span class=w>  </span><span class=n>leftRenderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>color</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;DarkSlateGray&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>leftRenderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>color</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"DarkSlateGray"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span><span class=w> </span><span class=n>rightRenderer</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>rightRenderer</span><span class=p>);</span>
 <span class=w>  </span><span class=n>rightRenderer</span><span class=o>-&gt;</span><span class=n>SetViewport</span><span class=p>(</span><span class=n>rightViewport</span><span class=p>);</span>
-<span class=w>  </span><span class=n>rightRenderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>color</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;DimGray&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>rightRenderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>color</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"DimGray"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=w>  </span><span class=n>leftRenderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>imageActor</span><span class=p>);</span>
 
@@ -286,7 +286,7 @@ function registerListener(event, func) {
 
 <span class=hll><span class=w>  </span><span class=n>borderWidget</span><span class=o>-&gt;</span><span class=n>AddObserver</span><span class=p>(</span><span class=n>vtkCommand</span><span class=o>::</span><span class=n>InteractionEvent</span><span class=p>,</span><span class=w> </span><span class=n>borderCallback</span><span class=p>);</span>
 </span>
-<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;ImageClip&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"ImageClip"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
 <span class=w>  </span><span class=n>borderWidget</span><span class=o>-&gt;</span><span class=n>On</span><span class=p>();</span>
 <span class=w>  </span><span class=n>interactor</span><span class=o>-&gt;</span><span class=n>Start</span><span class=p>();</span>
@@ -314,11 +314,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;ImageClip: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"ImageClip: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>ImageClip</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>ImageClip.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>ImageClip</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

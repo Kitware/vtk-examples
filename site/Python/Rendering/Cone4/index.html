@@ -82,7 +82,7 @@ function registerListener(event, func) {
 </span>
     <span class=c1>#</span>
     <span class=c1># Next we create an instance of vtkConeSource and set some of its</span>
-    <span class=c1># properties. The instance of vtkConeSource &#39;cone&#39; is part of a visualization</span>
+    <span class=c1># properties. The instance of vtkConeSource 'cone' is part of a visualization</span>
     <span class=c1># pipeline (it is a source process object); it produces data (output type is</span>
     <span class=c1># vtkPolyData) which other filters may process.</span>
     <span class=c1>#</span>
@@ -102,13 +102,13 @@ function registerListener(event, func) {
 </span>    <span class=n>coneMapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>cone</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
 
     <span class=c1>#</span>
-    <span class=c1># Create an actor to represent the first cone. The actor&#39;s properties are</span>
+    <span class=c1># Create an actor to represent the first cone. The actor's properties are</span>
     <span class=c1># modified to give it different surface properties. By default, an actor</span>
     <span class=c1># is create with a property so the GetProperty() method can be used.</span>
     <span class=c1>#</span>
 <span class=hll>    <span class=n>coneActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>coneActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>coneMapper</span><span class=p>)</span>
-    <span class=n>coneActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Peacock&#39;</span><span class=p>))</span>
+    <span class=n>coneActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Peacock'</span><span class=p>))</span>
     <span class=n>coneActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetDiffuse</span><span class=p>(</span><span class=mf>0.7</span><span class=p>)</span>
     <span class=n>coneActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetSpecular</span><span class=p>(</span><span class=mf>0.4</span><span class=p>)</span>
     <span class=n>coneActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetSpecularPower</span><span class=p>(</span><span class=mi>20</span><span class=p>)</span>
@@ -118,7 +118,7 @@ function registerListener(event, func) {
     <span class=c1># second actor.</span>
     <span class=c1>#</span>
 <span class=hll>    <span class=nb>property</span> <span class=o>=</span> <span class=n>vtkProperty</span><span class=p>()</span>
-</span>    <span class=nb>property</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Tomato&#39;</span><span class=p>))</span>
+</span>    <span class=nb>property</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Tomato'</span><span class=p>))</span>
     <span class=nb>property</span><span class=o>.</span><span class=n>SetDiffuse</span><span class=p>(</span><span class=mf>0.7</span><span class=p>)</span>
     <span class=nb>property</span><span class=o>.</span><span class=n>SetSpecular</span><span class=p>(</span><span class=mf>0.4</span><span class=p>)</span>
     <span class=nb>property</span><span class=o>.</span><span class=n>SetSpecularPower</span><span class=p>(</span><span class=mi>20</span><span class=p>)</span>
@@ -131,7 +131,7 @@ function registerListener(event, func) {
     <span class=c1># geometry, which may save lots of memory if the geometry is large.</span>
 <span class=hll>    <span class=n>coneActor2</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>coneActor2</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>coneMapper</span><span class=p>)</span>
-    <span class=c1># coneActor2.GetProperty().SetColor(colors.GetColor3d(&#39;Peacock&#39;))</span>
+    <span class=c1># coneActor2.GetProperty().SetColor(colors.GetColor3d('Peacock'))</span>
     <span class=n>coneActor2</span><span class=o>.</span><span class=n>SetProperty</span><span class=p>(</span><span class=nb>property</span><span class=p>)</span>
     <span class=n>coneActor2</span><span class=o>.</span><span class=n>SetPosition</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
 
@@ -143,7 +143,7 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>ren1</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>()</span>
 </span>    <span class=n>ren1</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>coneActor</span><span class=p>)</span>
     <span class=n>ren1</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>coneActor2</span><span class=p>)</span>
-    <span class=n>ren1</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;LightSlateGray&#39;</span><span class=p>))</span>
+    <span class=n>ren1</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'LightSlateGray'</span><span class=p>))</span>
 
     <span class=c1>#</span>
     <span class=c1># Finally we create the render window which will show up on the screen</span>
@@ -153,7 +153,7 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>renWin</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>()</span>
 </span>    <span class=n>renWin</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>ren1</span><span class=p>)</span>
     <span class=n>renWin</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>640</span><span class=p>,</span> <span class=mi>480</span><span class=p>)</span>
-    <span class=n>renWin</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;Cone4&#39;</span><span class=p>)</span>
+    <span class=n>renWin</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>'Cone4'</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>iren</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renWin</span><span class=p>)</span>
@@ -172,6 +172,6 @@ function registerListener(event, func) {
     <span class=n>iren</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

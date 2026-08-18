@@ -86,16 +86,16 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_program_parameters</span><span class=p>():</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>argparse</span>
-    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;Importing a 3ds file.&#39;</span>
-    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;</span>
-<span class=s1>   &#39;&#39;&#39;</span>
+    <span class=n>description</span> <span class=o>=</span> <span class=s1>'Importing a 3ds file.'</span>
+    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>'''</span>
+<span class=s1>   '''</span>
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
                                      <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawDescriptionHelpFormatter</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;in_fn&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;iflamingo.3ds.&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-o&#39;</span><span class=p>,</span> <span class=s1>&#39;--out_fn&#39;</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Output file name e.g. iflamingo.obj&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'in_fn'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'iflamingo.3ds.'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-o'</span><span class=p>,</span> <span class=s1>'--out_fn'</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'Output file name e.g. iflamingo.obj'</span><span class=p>)</span>
     <span class=c1># Optional additional input file and folder for the OBJ reader.</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-m&#39;</span><span class=p>,</span> <span class=s1>&#39;--mtl_fn&#39;</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Optional OBJ MTL file name e.g. iflamingo.obj&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-t&#39;</span><span class=p>,</span> <span class=s1>&#39;--texture_dir&#39;</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Optional OBJ texture folder.&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-m'</span><span class=p>,</span> <span class=s1>'--mtl_fn'</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'Optional OBJ MTL file name e.g. iflamingo.obj'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-t'</span><span class=p>,</span> <span class=s1>'--texture_dir'</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'Optional OBJ texture folder.'</span><span class=p>)</span>
 
     <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
     <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>in_fn</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>out_fn</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>mtl_fn</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>texture_dir</span>
@@ -104,32 +104,32 @@ function registerListener(event, func) {
 <span class=k>def</span><span class=w> </span><span class=nf>main</span><span class=p>():</span>
     <span class=n>ifn</span><span class=p>,</span> <span class=n>ofn</span><span class=p>,</span> <span class=n>mtl_fn</span><span class=p>,</span> <span class=n>texture_dir</span> <span class=o>=</span> <span class=n>get_program_parameters</span><span class=p>()</span>
 
-    <span class=n>input_suffixes</span> <span class=o>=</span> <span class=p>(</span><span class=s1>&#39;.3ds&#39;</span><span class=p>,</span> <span class=s1>&#39;.glb&#39;</span><span class=p>,</span> <span class=s1>&#39;.gltf&#39;</span><span class=p>,</span> <span class=s1>&#39;.obj&#39;</span><span class=p>,</span> <span class=s1>&#39;.wrl&#39;</span><span class=p>)</span>
-    <span class=n>output_suffixes</span> <span class=o>=</span> <span class=p>(</span><span class=s1>&#39;.glb&#39;</span><span class=p>,</span> <span class=s1>&#39;.gltf&#39;</span><span class=p>,</span> <span class=s1>&#39;.obj&#39;</span><span class=p>,</span> <span class=s1>&#39;.wrl&#39;</span><span class=p>,</span> <span class=s1>&#39;.x3d&#39;</span><span class=p>)</span>
+    <span class=n>input_suffixes</span> <span class=o>=</span> <span class=p>(</span><span class=s1>'.3ds'</span><span class=p>,</span> <span class=s1>'.glb'</span><span class=p>,</span> <span class=s1>'.gltf'</span><span class=p>,</span> <span class=s1>'.obj'</span><span class=p>,</span> <span class=s1>'.wrl'</span><span class=p>)</span>
+    <span class=n>output_suffixes</span> <span class=o>=</span> <span class=p>(</span><span class=s1>'.glb'</span><span class=p>,</span> <span class=s1>'.gltf'</span><span class=p>,</span> <span class=s1>'.obj'</span><span class=p>,</span> <span class=s1>'.wrl'</span><span class=p>,</span> <span class=s1>'.x3d'</span><span class=p>)</span>
 
     <span class=k>def</span><span class=w> </span><span class=nf>sorted_suffixes</span><span class=p>(</span><span class=n>suffixes</span><span class=p>):</span>
-        <span class=n>s</span> <span class=o>=</span> <span class=s1>&#39;, &#39;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=nb>sorted</span><span class=p>(</span><span class=nb>list</span><span class=p>(</span><span class=n>suffixes</span><span class=p>)))</span>
-        <span class=k>return</span> <span class=sa>f</span><span class=s1>&#39;</span><span class=si>{</span><span class=n>s</span><span class=si>}</span><span class=s1>&#39;</span>
+        <span class=n>s</span> <span class=o>=</span> <span class=s1>', '</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=nb>sorted</span><span class=p>(</span><span class=nb>list</span><span class=p>(</span><span class=n>suffixes</span><span class=p>)))</span>
+        <span class=k>return</span> <span class=sa>f</span><span class=s1>'</span><span class=si>{</span><span class=n>s</span><span class=si>}</span><span class=s1>'</span>
 
     <span class=c1># Check the files exist and have correct suffixes.</span>
     <span class=n>ifp</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>ifn</span><span class=p>)</span>
     <span class=k>if</span> <span class=ow>not</span> <span class=n>ifp</span><span class=o>.</span><span class=n>is_file</span><span class=p>():</span>
-        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;Nonexistent source: </span><span class=si>{</span><span class=n>ifp</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'Nonexistent source: </span><span class=si>{</span><span class=n>ifp</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
         <span class=k>return</span>
     <span class=k>if</span> <span class=ow>not</span> <span class=n>ifp</span><span class=o>.</span><span class=n>suffix</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span> <span class=ow>in</span> <span class=n>input_suffixes</span><span class=p>:</span>
-        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;Available input file suffixes are: </span><span class=si>{</span><span class=n>sorted_suffixes</span><span class=p>(</span><span class=n>input_suffixes</span><span class=p>)</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'Available input file suffixes are: </span><span class=si>{</span><span class=n>sorted_suffixes</span><span class=p>(</span><span class=n>input_suffixes</span><span class=p>)</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
         <span class=k>return</span>
 
     <span class=n>ofp</span> <span class=o>=</span> <span class=kc>None</span>
     <span class=k>if</span> <span class=n>ofn</span><span class=p>:</span>
         <span class=n>ofp</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>ofn</span><span class=p>)</span>
         <span class=k>if</span> <span class=ow>not</span> <span class=n>ofp</span><span class=o>.</span><span class=n>suffix</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span> <span class=ow>in</span> <span class=n>output_suffixes</span><span class=p>:</span>
-            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;Available output file suffixes are: </span><span class=si>{</span><span class=n>sorted_suffixes</span><span class=p>(</span><span class=n>output_suffixes</span><span class=p>)</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'Available output file suffixes are: </span><span class=si>{</span><span class=n>sorted_suffixes</span><span class=p>(</span><span class=n>output_suffixes</span><span class=p>)</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
             <span class=k>return</span>
         <span class=k>if</span> <span class=n>ofp</span><span class=o>.</span><span class=n>is_file</span><span class=p>():</span>
-            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;Destination must not exist: </span><span class=si>{</span><span class=n>ofp</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'Destination must not exist: </span><span class=si>{</span><span class=n>ofp</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
             <span class=k>return</span>
-        <span class=k>if</span> <span class=n>ofp</span><span class=o>.</span><span class=n>suffix</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span> <span class=o>==</span> <span class=s1>&#39;.obj&#39;</span><span class=p>:</span>
+        <span class=k>if</span> <span class=n>ofp</span><span class=o>.</span><span class=n>suffix</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span> <span class=o>==</span> <span class=s1>'.obj'</span><span class=p>:</span>
             <span class=c1># We may need to create the parent folder.</span>
             <span class=n>ofp</span><span class=o>.</span><span class=n>parent</span><span class=o>.</span><span class=n>mkdir</span><span class=p>(</span><span class=n>parents</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>exist_ok</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
 
@@ -137,23 +137,23 @@ function registerListener(event, func) {
     <span class=k>if</span> <span class=n>mtl_fn</span><span class=p>:</span>
         <span class=n>mtlp</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>mtl_fn</span><span class=p>)</span>
         <span class=k>if</span> <span class=ow>not</span> <span class=n>mtlp</span><span class=o>.</span><span class=n>is_file</span><span class=p>():</span>
-            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;Nonexistent MTL path: </span><span class=si>{</span><span class=n>mtlp</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'Nonexistent MTL path: </span><span class=si>{</span><span class=n>mtlp</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
             <span class=k>return</span>
-        <span class=k>if</span> <span class=ow>not</span> <span class=n>mtlp</span><span class=o>.</span><span class=n>suffix</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span> <span class=o>==</span> <span class=s1>&#39;.mtl&#39;</span><span class=p>:</span>
-            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;Bad mtl file suffix: </span><span class=si>{</span><span class=n>mtlp</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+        <span class=k>if</span> <span class=ow>not</span> <span class=n>mtlp</span><span class=o>.</span><span class=n>suffix</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span> <span class=o>==</span> <span class=s1>'.mtl'</span><span class=p>:</span>
+            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'Bad mtl file suffix: </span><span class=si>{</span><span class=n>mtlp</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
             <span class=k>return</span>
     <span class=n>texd</span> <span class=o>=</span> <span class=kc>None</span>
     <span class=k>if</span> <span class=n>texture_dir</span><span class=p>:</span>
         <span class=n>texd</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>texture_dir</span><span class=p>)</span>
         <span class=k>if</span> <span class=ow>not</span> <span class=n>texd</span><span class=o>.</span><span class=n>is_dir</span><span class=p>():</span>
-            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;Nonexistent directory: </span><span class=si>{</span><span class=n>texd</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'Nonexistent directory: </span><span class=si>{</span><span class=n>texd</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
             <span class=k>return</span>
 
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
-<span class=hll>    <span class=n>ren</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;SlateGray&#39;</span><span class=p>),</span> <span class=n>background2</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;LightSkyBlue&#39;</span><span class=p>),</span>
+<span class=hll>    <span class=n>ren</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'SlateGray'</span><span class=p>),</span> <span class=n>background2</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'LightSkyBlue'</span><span class=p>),</span>
 </span>                      <span class=n>gradient_background</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
-<span class=hll>    <span class=n>ren_win</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>size</span><span class=o>=</span><span class=p>(</span><span class=mi>640</span><span class=p>,</span> <span class=mi>480</span><span class=p>),</span> <span class=n>window_name</span><span class=o>=</span><span class=s1>&#39;ImportToExport&#39;</span><span class=p>)</span>
+<span class=hll>    <span class=n>ren_win</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>size</span><span class=o>=</span><span class=p>(</span><span class=mi>640</span><span class=p>,</span> <span class=mi>480</span><span class=p>),</span> <span class=n>window_name</span><span class=o>=</span><span class=s1>'ImportToExport'</span><span class=p>)</span>
 </span>    <span class=n>ren_win</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>ren</span><span class=p>)</span>
 <span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>iren</span><span class=o>.</span><span class=n>render_window</span> <span class=o>=</span> <span class=n>ren_win</span>
@@ -162,7 +162,7 @@ function registerListener(event, func) {
     <span class=n>importer</span> <span class=o>=</span> <span class=n>get_importer</span><span class=p>(</span><span class=n>ifp</span><span class=p>,</span> <span class=n>mtlp</span><span class=p>,</span> <span class=n>texd</span><span class=p>,</span> <span class=n>ren_win</span><span class=p>)</span>
 
     <span class=k>if</span> <span class=ow>not</span> <span class=n>importer</span><span class=p>:</span>
-        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;No suitable reader found for </span><span class=si>{</span><span class=n>ifp</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'No suitable reader found for </span><span class=si>{</span><span class=n>ifp</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
         <span class=k>return</span>
 
     <span class=n>importer</span><span class=o>.</span><span class=n>active_renderer</span> <span class=o>=</span> <span class=n>ren</span>
@@ -175,22 +175,22 @@ function registerListener(event, func) {
     <span class=n>actors</span><span class=o>.</span><span class=n>InitTraversal</span><span class=p>()</span>
     <span class=n>actors_sz</span> <span class=o>=</span> <span class=n>actors</span><span class=o>.</span><span class=n>number_of_items</span>
     <span class=k>if</span> <span class=n>actors_sz</span> <span class=o>==</span> <span class=mi>1</span><span class=p>:</span>
-        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;There is </span><span class=si>{</span><span class=n>actors_sz</span><span class=si>}</span><span class=s1> actors&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'There is </span><span class=si>{</span><span class=n>actors_sz</span><span class=si>}</span><span class=s1> actors'</span><span class=p>)</span>
     <span class=k>else</span><span class=p>:</span>
-        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;There are </span><span class=si>{</span><span class=n>actors_sz</span><span class=si>}</span><span class=s1> actors&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'There are </span><span class=si>{</span><span class=n>actors_sz</span><span class=si>}</span><span class=s1> actors'</span><span class=p>)</span>
 
     <span class=k>for</span> <span class=n>a</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>actors_sz</span><span class=p>):</span>
-        <span class=k>if</span> <span class=n>ifp</span><span class=o>.</span><span class=n>suffix</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span> <span class=o>==</span> <span class=s1>&#39;.obj&#39;</span><span class=p>:</span>
+        <span class=k>if</span> <span class=n>ifp</span><span class=o>.</span><span class=n>suffix</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span> <span class=o>==</span> <span class=s1>'.obj'</span><span class=p>:</span>
             <span class=c1># OBJImporter turns texture interpolation off.</span>
             <span class=n>actor</span> <span class=o>=</span> <span class=n>actors</span><span class=o>.</span><span class=n>next_actor</span>
             <span class=k>if</span> <span class=n>actor</span><span class=o>.</span><span class=n>texture</span><span class=p>:</span>
-                <span class=c1># print(&#39;Has texture&#39;)</span>
+                <span class=c1># print('Has texture')</span>
                 <span class=c1># print(importer.GetOutputDescription(a))</span>
                 <span class=n>actor</span><span class=o>.</span><span class=n>texture</span><span class=o>.</span><span class=n>interpolate</span> <span class=o>=</span> <span class=kc>True</span>
 
     <span class=n>name</span> <span class=o>=</span> <span class=n>ifp</span><span class=o>.</span><span class=n>name</span>
     <span class=n>camera</span> <span class=o>=</span> <span class=n>ren</span><span class=o>.</span><span class=n>active_camera</span>
-    <span class=k>if</span> <span class=n>name</span> <span class=o>==</span> <span class=s1>&#39;iflamingo.3ds&#39;</span><span class=p>:</span>
+    <span class=k>if</span> <span class=n>name</span> <span class=o>==</span> <span class=s1>'iflamingo.3ds'</span><span class=p>:</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>position</span> <span class=o>=</span> <span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>focal_point</span> <span class=o>=</span> <span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>view_up</span> <span class=o>=</span> <span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
@@ -198,12 +198,12 @@ function registerListener(event, func) {
         <span class=n>camera</span><span class=o>.</span><span class=n>Elevation</span><span class=p>(</span><span class=mi>30</span><span class=p>)</span>
         <span class=n>ren</span><span class=o>.</span><span class=n>ResetCamera</span><span class=p>()</span>
 
-    <span class=k>if</span> <span class=n>name</span> <span class=o>==</span> <span class=s1>&#39;FlightHelmet.gltf&#39;</span><span class=p>:</span>
+    <span class=k>if</span> <span class=n>name</span> <span class=o>==</span> <span class=s1>'FlightHelmet.gltf'</span><span class=p>:</span>
 <span class=hll>        <span class=n>head_light</span> <span class=o>=</span> <span class=n>vtkLight</span><span class=p>(</span><span class=n>switch</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
 </span>        <span class=n>head_light</span><span class=o>.</span><span class=n>SetLightTypeToHeadlight</span><span class=p>()</span>
         <span class=n>ren</span><span class=o>.</span><span class=n>AddLight</span><span class=p>(</span><span class=n>head_light</span><span class=p>)</span>
 
-    <span class=k>if</span> <span class=n>name</span> <span class=o>==</span> <span class=s1>&#39;trumpet.obj&#39;</span><span class=p>:</span>
+    <span class=k>if</span> <span class=n>name</span> <span class=o>==</span> <span class=s1>'trumpet.obj'</span><span class=p>:</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>Azimuth</span><span class=p>(</span><span class=mi>30</span><span class=p>)</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>Elevation</span><span class=p>(</span><span class=mi>30</span><span class=p>)</span>
         <span class=n>camera</span><span class=o>.</span><span class=n>Dolly</span><span class=p>(</span><span class=mf>1.5</span><span class=p>)</span>
@@ -221,16 +221,16 @@ function registerListener(event, func) {
 <span class=k>def</span><span class=w> </span><span class=nf>get_importer</span><span class=p>(</span><span class=n>ifp</span><span class=p>,</span> <span class=n>mtlp</span><span class=p>,</span> <span class=n>texd</span><span class=p>,</span> <span class=n>ren_win</span><span class=p>):</span>
     <span class=n>importer</span> <span class=o>=</span> <span class=kc>None</span>
 
-    <span class=k>if</span> <span class=n>ifp</span><span class=o>.</span><span class=n>suffix</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span> <span class=o>==</span> <span class=s1>&#39;.wrl&#39;</span><span class=p>:</span>
+    <span class=k>if</span> <span class=n>ifp</span><span class=o>.</span><span class=n>suffix</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span> <span class=o>==</span> <span class=s1>'.wrl'</span><span class=p>:</span>
 <span class=hll>        <span class=n>importer</span> <span class=o>=</span> <span class=n>vtkVRMLImporter</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=n>ifp</span><span class=p>,</span> <span class=n>render_window</span><span class=o>=</span><span class=n>ren_win</span><span class=p>)</span>
 </span>
-    <span class=k>if</span> <span class=n>ifp</span><span class=o>.</span><span class=n>suffix</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span> <span class=o>==</span> <span class=s1>&#39;.3ds&#39;</span><span class=p>:</span>
+    <span class=k>if</span> <span class=n>ifp</span><span class=o>.</span><span class=n>suffix</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span> <span class=o>==</span> <span class=s1>'.3ds'</span><span class=p>:</span>
 <span class=hll>        <span class=n>importer</span> <span class=o>=</span> <span class=n>vtk3DSImporter</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=n>ifp</span><span class=p>,</span> <span class=n>render_window</span><span class=o>=</span><span class=n>ren_win</span><span class=p>,</span> <span class=n>compute_normals</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
 </span>
-    <span class=k>if</span> <span class=n>ifp</span><span class=o>.</span><span class=n>suffix</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span> <span class=ow>in</span> <span class=p>(</span><span class=s1>&#39;.gltf&#39;</span><span class=p>,</span> <span class=s1>&#39;.glb&#39;</span><span class=p>):</span>
+    <span class=k>if</span> <span class=n>ifp</span><span class=o>.</span><span class=n>suffix</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span> <span class=ow>in</span> <span class=p>(</span><span class=s1>'.gltf'</span><span class=p>,</span> <span class=s1>'.glb'</span><span class=p>):</span>
 <span class=hll>        <span class=n>importer</span> <span class=o>=</span> <span class=n>vtkGLTFImporter</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=n>ifp</span><span class=p>,</span> <span class=n>render_window</span><span class=o>=</span><span class=n>ren_win</span><span class=p>)</span>
 </span>
-    <span class=k>if</span> <span class=n>ifp</span><span class=o>.</span><span class=n>suffix</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span> <span class=o>==</span> <span class=s1>&#39;.obj&#39;</span><span class=p>:</span>
+    <span class=k>if</span> <span class=n>ifp</span><span class=o>.</span><span class=n>suffix</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span> <span class=o>==</span> <span class=s1>'.obj'</span><span class=p>:</span>
 <span class=hll>        <span class=n>importer</span> <span class=o>=</span> <span class=n>vtkOBJImporter</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=n>ifp</span><span class=p>,</span> <span class=n>render_window</span><span class=o>=</span><span class=n>ren_win</span><span class=p>)</span>
 </span>        <span class=k>if</span> <span class=n>mtlp</span><span class=p>:</span>
             <span class=n>importer</span><span class=o>.</span><span class=n>file_name_mtl</span> <span class=o>=</span> <span class=n>mtlp</span>
@@ -242,29 +242,29 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>export</span><span class=p>(</span><span class=n>ifp</span><span class=p>,</span> <span class=n>ofp</span><span class=p>,</span> <span class=n>ren</span><span class=p>,</span> <span class=n>ren_win</span><span class=p>):</span>
     <span class=n>exporter</span> <span class=o>=</span> <span class=kc>None</span>
-    <span class=k>if</span> <span class=n>ofp</span><span class=o>.</span><span class=n>suffix</span> <span class=o>==</span> <span class=s1>&#39;.wrl&#39;</span><span class=p>:</span>
+    <span class=k>if</span> <span class=n>ofp</span><span class=o>.</span><span class=n>suffix</span> <span class=o>==</span> <span class=s1>'.wrl'</span><span class=p>:</span>
 <span class=hll>        <span class=n>exporter</span> <span class=o>=</span> <span class=n>vtkVRMLExporter</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=n>ofp</span><span class=p>,</span>
 </span>                                   <span class=n>active_renderer</span><span class=o>=</span><span class=n>ren</span><span class=p>,</span> <span class=n>render_window</span><span class=o>=</span><span class=n>ren_win</span><span class=p>)</span>
-    <span class=k>if</span> <span class=n>ofp</span><span class=o>.</span><span class=n>suffix</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span> <span class=ow>in</span> <span class=p>(</span><span class=s1>&#39;.gltf&#39;</span><span class=p>,</span> <span class=s1>&#39;.glb&#39;</span><span class=p>):</span>
+    <span class=k>if</span> <span class=n>ofp</span><span class=o>.</span><span class=n>suffix</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span> <span class=ow>in</span> <span class=p>(</span><span class=s1>'.gltf'</span><span class=p>,</span> <span class=s1>'.glb'</span><span class=p>):</span>
 <span class=hll>        <span class=n>exporter</span> <span class=o>=</span> <span class=n>vtkGLTFExporter</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=n>ofp</span><span class=p>,</span>
 </span>                                   <span class=n>active_renderer</span><span class=o>=</span><span class=n>ren</span><span class=p>,</span> <span class=n>render_window</span><span class=o>=</span><span class=n>ren_win</span><span class=p>)</span>
-    <span class=k>if</span> <span class=n>ofp</span><span class=o>.</span><span class=n>suffix</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span> <span class=o>==</span> <span class=s1>&#39;.x3d&#39;</span><span class=p>:</span>
+    <span class=k>if</span> <span class=n>ofp</span><span class=o>.</span><span class=n>suffix</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span> <span class=o>==</span> <span class=s1>'.x3d'</span><span class=p>:</span>
 <span class=hll>        <span class=n>exporter</span> <span class=o>=</span> <span class=n>vtkX3DExporter</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=n>ofp</span><span class=p>,</span>
 </span>                                  <span class=n>active_renderer</span><span class=o>=</span><span class=n>ren</span><span class=p>,</span> <span class=n>render_window</span><span class=o>=</span><span class=n>ren_win</span><span class=p>)</span>
-    <span class=k>if</span> <span class=n>ofp</span><span class=o>.</span><span class=n>suffix</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span> <span class=o>==</span> <span class=s1>&#39;.obj&#39;</span><span class=p>:</span>
+    <span class=k>if</span> <span class=n>ofp</span><span class=o>.</span><span class=n>suffix</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span> <span class=o>==</span> <span class=s1>'.obj'</span><span class=p>:</span>
         <span class=n>parent_stem</span> <span class=o>=</span> <span class=n>ofp</span><span class=o>.</span><span class=n>parent</span> <span class=o>/</span> <span class=n>ofp</span><span class=o>.</span><span class=n>stem</span>
-        <span class=n>comment</span> <span class=o>=</span> <span class=sa>f</span><span class=s1>&#39;Converted by ImportExport from </span><span class=si>{</span><span class=n>ifp</span><span class=o>.</span><span class=n>name</span><span class=si>}</span><span class=s1>&#39;</span>
+        <span class=n>comment</span> <span class=o>=</span> <span class=sa>f</span><span class=s1>'Converted by ImportExport from </span><span class=si>{</span><span class=n>ifp</span><span class=o>.</span><span class=n>name</span><span class=si>}</span><span class=s1>'</span>
 <span class=hll>        <span class=n>exporter</span> <span class=o>=</span> <span class=n>vtkOBJExporter</span><span class=p>(</span><span class=n>file_prefix</span><span class=o>=</span><span class=n>parent_stem</span><span class=p>,</span>
 </span>                                  <span class=n>active_renderer</span><span class=o>=</span><span class=n>ren</span><span class=p>,</span> <span class=n>render_window</span><span class=o>=</span><span class=n>ren_win</span><span class=p>,</span>
                                   <span class=n>obj_file_comment</span><span class=o>=</span><span class=n>comment</span><span class=p>,</span> <span class=n>mtl_file_comment</span><span class=o>=</span><span class=n>comment</span><span class=p>)</span>
     <span class=k>if</span> <span class=n>exporter</span><span class=p>:</span>
-        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;Writing </span><span class=si>{</span><span class=n>ofp</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'Writing </span><span class=si>{</span><span class=n>ofp</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
         <span class=n>exporter</span><span class=o>.</span><span class=n>Write</span><span class=p>()</span>
     <span class=k>else</span><span class=p>:</span>
-        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;Not Writing </span><span class=si>{</span><span class=n>ofp</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
-        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;Is the extension correct?&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'Not Writing </span><span class=si>{</span><span class=n>ofp</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'Is the extension correct?'</span><span class=p>)</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

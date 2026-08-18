@@ -71,7 +71,7 @@ function registerListener(event, func) {
 
 <span class=nb>find_package</span><span class=p>(</span><span class=s>VTK</span><span class=w> </span><span class=s>REQUIRED</span><span class=p>)</span>
 <span class=nb>if</span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>vtkIOParallel_LOADED</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;vtkIOParallel is required but not available.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"vtkIOParallel is required but not available."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>CheckForModule</span><span class=w> </span><span class=s>CheckForModule.cxx</span><span class=p>)</span>

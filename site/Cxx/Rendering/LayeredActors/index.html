@@ -185,16 +185,16 @@ function registerListener(event, func) {
 </span><span class=w>  </span><span class=n>cubeMapper</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>cubeSource</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkProperty</span><span class=o>&gt;</span><span class=w> </span><span class=n>back</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>back</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Sienna&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+</span><span class=w>  </span><span class=n>back</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Sienna"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>cubeActor</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>cubeActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetDiffuseColor</span><span class=p>(</span>
-<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;BurlyWood&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"BurlyWood"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=n>cubeActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>cubeMapper</span><span class=p>);</span>
 <span class=w>  </span><span class=n>cubeActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>EdgeVisibilityOn</span><span class=p>();</span>
 <span class=w>  </span><span class=n>cubeActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetLineWidth</span><span class=p>(</span><span class=mf>2.0</span><span class=p>);</span>
 <span class=w>  </span><span class=n>cubeActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetEdgeColor</span><span class=p>(</span>
-<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;PapayaWhip&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"PapayaWhip"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=n>cubeActor</span><span class=o>-&gt;</span><span class=n>SetBackfaceProperty</span><span class=p>(</span><span class=n>back</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTransform</span><span class=o>&gt;</span><span class=w> </span><span class=n>transform</span><span class=p>;</span>
@@ -212,7 +212,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>ren</span><span class=p>);</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>800</span><span class=p>,</span><span class=w> </span><span class=mi>800</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;LayeredActors&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"LayeredActors"</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span><span class=w> </span><span class=n>iRen</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>iRen</span><span class=o>-&gt;</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renWin</span><span class=p>);</span>
@@ -222,14 +222,14 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=c1>// Define the renderers and allocate them to layers.</span>
 <span class=w>  </span><span class=c1>// Layer 0 - background not transparent.</span>
-<span class=w>  </span><span class=n>renderers</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;DarkSlateGray&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>renderers</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"DarkSlateGray"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=n>renderers</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>cubeActor</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renderers</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>SetLayer</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span>
 
 <span class=w>  </span><span class=c1>// Layer 1 - the background is transparent,</span>
 <span class=w>  </span><span class=c1>//       so we only see the layer 0 background color</span>
 <span class=w>  </span><span class=n>renderers</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>axes</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renderers</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;MidnightBlue&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>renderers</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"MidnightBlue"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=n>renderers</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>SetLayer</span><span class=p>(</span><span class=mi>1</span><span class=p>);</span>
 
 <span class=w>  </span><span class=c1>// Set a common camera view for each layer.</span>
@@ -267,7 +267,7 @@ function registerListener(event, func) {
 </span><span class=hll><span class=w>  </span><span class=n>vtkRendererCollection</span><span class=o>*</span><span class=w> </span><span class=n>renderers</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>iRen</span><span class=o>-&gt;</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetRenderers</span><span class=p>();</span>
 </span><span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>renderers</span><span class=o>-&gt;</span><span class=n>GetNumberOfItems</span><span class=p>()</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=mi>2</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cerr</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;We need at least two renderers, we have only &quot;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cerr</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"We need at least two renderers, we have only "</span>
 <span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>renderers</span><span class=o>-&gt;</span><span class=n>GetNumberOfItems</span><span class=p>()</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=k>return</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
@@ -279,9 +279,9 @@ function registerListener(event, func) {
 </span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>key</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>iRen</span><span class=o>-&gt;</span><span class=n>GetKeySym</span><span class=p>();</span>
 
-<span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>key</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;0&quot;</span><span class=w> </span><span class=o>||</span><span class=w> </span><span class=n>key</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;KP_0&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>key</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>"0"</span><span class=w> </span><span class=o>||</span><span class=w> </span><span class=n>key</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>"KP_0"</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Selected layer: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>key</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Selected layer: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>key</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=n>iRen</span><span class=o>-&gt;</span><span class=n>GetRenderWindow</span><span class=p>()</span>
 <span class=w>        </span><span class=o>-&gt;</span><span class=n>GetInteractor</span><span class=p>()</span>
 <span class=w>        </span><span class=o>-&gt;</span><span class=n>GetInteractorStyle</span><span class=p>()</span>
@@ -289,9 +289,9 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=n>ren0</span><span class=o>-&gt;</span><span class=n>InteractiveOn</span><span class=p>();</span>
 <span class=w>    </span><span class=n>ren1</span><span class=o>-&gt;</span><span class=n>InteractiveOff</span><span class=p>();</span>
 <span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>key</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;1&quot;</span><span class=w> </span><span class=o>||</span><span class=w> </span><span class=n>key</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>&quot;KP_1&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>key</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>"1"</span><span class=w> </span><span class=o>||</span><span class=w> </span><span class=n>key</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>"KP_1"</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Selected layer: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>key</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Selected layer: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>key</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=n>iRen</span><span class=o>-&gt;</span><span class=n>GetRenderWindow</span><span class=p>()</span>
 <span class=w>        </span><span class=o>-&gt;</span><span class=n>GetInteractor</span><span class=p>()</span>
 <span class=w>        </span><span class=o>-&gt;</span><span class=n>GetInteractorStyle</span><span class=p>()</span>
@@ -309,7 +309,7 @@ function registerListener(event, func) {
 </span><span class=hll><span class=w>  </span><span class=n>vtkRendererCollection</span><span class=o>*</span><span class=w> </span><span class=n>renderers</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>iRen</span><span class=o>-&gt;</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetRenderers</span><span class=p>();</span>
 </span><span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>renderers</span><span class=o>-&gt;</span><span class=n>GetNumberOfItems</span><span class=p>()</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=mi>2</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cerr</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;We need at least two renderers, we have only &quot;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cerr</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"We need at least two renderers, we have only "</span>
 <span class=w>              </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>renderers</span><span class=o>-&gt;</span><span class=n>GetNumberOfItems</span><span class=p>()</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=k>return</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
@@ -378,11 +378,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;LayeredActors: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"LayeredActors: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>LayeredActors</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>LayeredActors.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>LayeredActors</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

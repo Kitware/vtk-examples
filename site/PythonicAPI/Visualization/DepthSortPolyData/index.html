@@ -65,7 +65,7 @@ PhiResolution ... PHI resolution for the spheres
 
 ScalarVisibilityFlag ... show/hide the found depth values as scalars
 </code></pre></div> <p><em>Example calls:</em></p> <div class=codehilite><pre><span></span><code>./DepthSortPolyData 0 100 100 0
-... will render the spheres &#39;as usual&#39; (without depth sorting); in general you will be confronted with situations (specific view directions) where you cannot determine whether a small sphere is behind or in front of the big center sphere
+... will render the spheres 'as usual' (without depth sorting); in general you will be confronted with situations (specific view directions) where you cannot determine whether a small sphere is behind or in front of the big center sphere
 </code></pre></div> <div class=codehilite><pre><span></span><code>./DepthSortPolyData 1 100 100 0
 ... will render the spheres using depth sorting; the sphere depth order should now be visually traceable
 </code></pre></div> <div class=codehilite><pre><span></span><code>./DepthSortPolyData 1 100 100 1
@@ -91,19 +91,19 @@ ScalarVisibilityFlag ... show/hide the found depth values as scalars
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_program_parameters</span><span class=p>():</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>argparse</span>
-    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;Correctly render translucent geometry.&#39;</span>
-    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;</span>
-<span class=s1>    &#39;&#39;&#39;</span>
+    <span class=n>description</span> <span class=o>=</span> <span class=s1>'Correctly render translucent geometry.'</span>
+    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>'''</span>
+<span class=s1>    '''</span>
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
                                      <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawTextHelpFormatter</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-t&#39;</span><span class=p>,</span> <span class=s1>&#39;--theta&#39;</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mi>100</span><span class=p>,</span>
-                        <span class=n>help</span><span class=o>=</span><span class=s1>&#39;THETA resolution, default=100.&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-p&#39;</span><span class=p>,</span> <span class=s1>&#39;--phi&#39;</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mi>100</span><span class=p>,</span>
-                        <span class=n>help</span><span class=o>=</span><span class=s1>&#39;PHI resolution, default=100.&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-d&#39;</span><span class=p>,</span> <span class=s1>&#39;--depth_sort_flag&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_true&#39;</span><span class=p>,</span>
-                        <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Activate/deactivate the depth sorting algorithm.&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-s&#39;</span><span class=p>,</span> <span class=s1>&#39;--scalar_visibility_flag&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_true&#39;</span><span class=p>,</span>
-                        <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Show/hide the found depth values as scalars.&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-t'</span><span class=p>,</span> <span class=s1>'--theta'</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mi>100</span><span class=p>,</span>
+                        <span class=n>help</span><span class=o>=</span><span class=s1>'THETA resolution, default=100.'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-p'</span><span class=p>,</span> <span class=s1>'--phi'</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mi>100</span><span class=p>,</span>
+                        <span class=n>help</span><span class=o>=</span><span class=s1>'PHI resolution, default=100.'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-d'</span><span class=p>,</span> <span class=s1>'--depth_sort_flag'</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>'store_true'</span><span class=p>,</span>
+                        <span class=n>help</span><span class=o>=</span><span class=s1>'Activate/deactivate the depth sorting algorithm.'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-s'</span><span class=p>,</span> <span class=s1>'--scalar_visibility_flag'</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>'store_true'</span><span class=p>,</span>
+                        <span class=n>help</span><span class=o>=</span><span class=s1>'Show/hide the found depth values as scalars.'</span><span class=p>)</span>
     <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
 
     <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>theta</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>phi</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>depth_sort_flag</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>scalar_visibility_flag</span>
@@ -118,8 +118,8 @@ ScalarVisibilityFlag ... show/hide the found depth values as scalars
     <span class=n>translucent_geometry</span> <span class=o>=</span> <span class=n>generate_overlapping_bunch_of_spheres</span><span class=p>(</span><span class=n>theta</span><span class=p>,</span> <span class=n>phi</span><span class=p>)</span>
 
     <span class=c1># Create the RenderWindow, Renderer and RenderWindowInteractor</span>
-<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;SlateGray&#39;</span><span class=p>))</span>
-</span><span class=hll>    <span class=n>render_window</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>size</span><span class=o>=</span><span class=p>(</span><span class=mi>600</span><span class=p>,</span> <span class=mi>400</span><span class=p>),</span> <span class=n>window_name</span><span class=o>=</span><span class=s1>&#39;DepthSortPolyData&#39;</span><span class=p>)</span>
+<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'SlateGray'</span><span class=p>))</span>
+</span><span class=hll>    <span class=n>render_window</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>size</span><span class=o>=</span><span class=p>(</span><span class=mi>600</span><span class=p>,</span> <span class=mi>400</span><span class=p>),</span> <span class=n>window_name</span><span class=o>=</span><span class=s1>'DepthSortPolyData'</span><span class=p>)</span>
 </span>    <span class=n>render_window</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>render_window_interactor</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
@@ -142,7 +142,7 @@ ScalarVisibilityFlag ... show/hide the found depth values as scalars
 
 <span class=hll>    <span class=n>actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>(</span><span class=n>mapper</span><span class=o>=</span><span class=n>mapper</span><span class=p>)</span>
 </span>    <span class=n>actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>opacity</span> <span class=o>=</span> <span class=mf>0.5</span>  <span class=c1># translucent !!!</span>
-    <span class=n>actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Crimson&#39;</span><span class=p>)</span>
+    <span class=n>actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Crimson'</span><span class=p>)</span>
     <span class=c1># Put the objects in a position where it is easy to see different overlapping regions.</span>
     <span class=n>actor</span><span class=o>.</span><span class=n>RotateX</span><span class=p>(</span><span class=o>-</span><span class=mi>72</span><span class=p>)</span>
 
@@ -162,7 +162,7 @@ ScalarVisibilityFlag ... show/hide the found depth values as scalars
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>generate_overlapping_bunch_of_spheres</span><span class=p>(</span><span class=n>theta</span><span class=p>,</span> <span class=n>phi</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Generate a bunch of overlapping spheres within one poly data set:</span>
 <span class=sd>     one big sphere evenly surrounded by four small spheres that intersect the</span>
 <span class=sd>     centered sphere.</span>
@@ -170,7 +170,7 @@ ScalarVisibilityFlag ... show/hide the found depth values as scalars
 <span class=sd>    :param theta: theta sphere sampling resolution (THETA)</span>
 <span class=sd>    :param phi: phi sphere sampling resolution (PHI)</span>
 <span class=sd>    :return: Return the set of spheres within one logical poly data set.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 
 <span class=hll>    <span class=n>append_data</span> <span class=o>=</span> <span class=n>vtkAppendPolyData</span><span class=p>()</span>
 </span>
@@ -210,7 +210,7 @@ ScalarVisibilityFlag ... show/hide the found depth values as scalars
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>setup_environment_for_depth_peeling</span><span class=p>(</span><span class=n>render_window</span><span class=p>,</span> <span class=n>renderer</span><span class=p>,</span> <span class=n>max_no_of_peels</span><span class=p>,</span> <span class=n>occlusion_ratio</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Setup the rendering environment for depth peeling (general depth peeling support is requested).</span>
 <span class=sd>     See is_depth_peeling_supported()</span>
 
@@ -221,7 +221,7 @@ ScalarVisibilityFlag ... show/hide the found depth values as scalars
 <span class=sd>                            &gt;0.0 means a non-perfect image which in general</span>
 <span class=sd>                             results in faster rendering)</span>
 <span class=sd>    :return: True if depth peeling could be set up.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=k>if</span> <span class=ow>not</span> <span class=n>render_window</span> <span class=ow>or</span> <span class=ow>not</span> <span class=n>renderer</span><span class=p>:</span>
         <span class=k>return</span> <span class=kc>False</span>
 
@@ -244,7 +244,7 @@ ScalarVisibilityFlag ... show/hide the found depth values as scalars
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>is_depth_peeling_supported</span><span class=p>(</span><span class=n>render_window</span><span class=p>,</span> <span class=n>renderer</span><span class=p>,</span> <span class=n>do_it_off_screen</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Find out whether this box supports depth peeling. Depth peeling requires a variety of openGL extensions and appropriate drivers.</span>
 
 <span class=sd>    :param render_window: A valid openGL-supporting render window</span>
@@ -255,7 +255,7 @@ ScalarVisibilityFlag ... show/hide the found depth values as scalars
 <span class=sd>    :return: True if depth peeling is supported, False otherwise (which means</span>
 <span class=sd>                that another strategy must be used for correct rendering of translucent</span>
 <span class=sd>                geometry, e.g. CPU-based depth sorting)</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=n>success</span> <span class=o>=</span> <span class=kc>True</span>
 
     <span class=c1># Save original renderer / render window state</span>
@@ -289,6 +289,6 @@ ScalarVisibilityFlag ... show/hide the found depth values as scalars
     <span class=k>return</span> <span class=n>success</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

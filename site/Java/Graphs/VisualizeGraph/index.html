@@ -73,7 +73,7 @@ function registerListener(event, func) {
 <span class=w>      </span><span class=p>{</span>
 <span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>lib</span><span class=p>.</span><span class=na>IsLoaded</span><span class=p>())</span><span class=w> </span>
 <span class=w>        </span><span class=p>{</span>
-<span class=w>          </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&quot; not loaded&quot;</span><span class=p>);</span>
+<span class=w>          </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>" not loaded"</span><span class=p>);</span>
 <span class=w>        </span><span class=p>}</span>
 <span class=w>      </span><span class=p>}</span>
 <span class=w>    </span><span class=p>}</span>
@@ -93,7 +93,7 @@ function registerListener(event, func) {
 
 <span class=hll><span class=w>    </span><span class=n>vtkGraphLayoutView</span><span class=w> </span><span class=n>GraphLayoutView</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkGraphLayoutView</span><span class=p>();</span>
 </span><span class=w>    </span><span class=n>GraphLayoutView</span><span class=p>.</span><span class=na>AddRepresentationFromInput</span><span class=p>(</span><span class=n>G</span><span class=p>);</span>
-<span class=w>    </span><span class=n>GraphLayoutView</span><span class=p>.</span><span class=na>SetLayoutStrategy</span><span class=p>(</span><span class=s>&quot;Simple 2D&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>GraphLayoutView</span><span class=p>.</span><span class=na>SetLayoutStrategy</span><span class=p>(</span><span class=s>"Simple 2D"</span><span class=p>);</span>
 <span class=w>    </span><span class=n>GraphLayoutView</span><span class=p>.</span><span class=na>ResetCamera</span><span class=p>();</span>
 <span class=w>    </span><span class=n>GraphLayoutView</span><span class=p>.</span><span class=na>Render</span><span class=p>();</span>
 

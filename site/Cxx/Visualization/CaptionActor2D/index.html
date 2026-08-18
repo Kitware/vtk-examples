@@ -125,8 +125,8 @@ function registerListener(event, func) {
 </span>
 <span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=nf>OnLeftButtonDown</span><span class=p>()</span><span class=w> </span><span class=k>override</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=c1>// std::cout &lt;&lt; &quot;Picking pixel: &quot; &lt;&lt; this-&gt;Interactor-&gt;GetEventPosition()[0]</span>
-<span class=w>    </span><span class=c1>// &lt;&lt; &quot; &quot; &lt;&lt; this-&gt;Interactor-&gt;GetEventPosition()[1] &lt;&lt; std::endl;</span>
+<span class=w>    </span><span class=c1>// std::cout &lt;&lt; "Picking pixel: " &lt;&lt; this-&gt;Interactor-&gt;GetEventPosition()[0]</span>
+<span class=w>    </span><span class=c1>// &lt;&lt; " " &lt;&lt; this-&gt;Interactor-&gt;GetEventPosition()[1] &lt;&lt; std::endl;</span>
 <span class=w>    </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Interactor</span><span class=o>-&gt;</span><span class=n>GetPicker</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>Pick</span><span class=p>(</span>
 <span class=w>        </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Interactor</span><span class=o>-&gt;</span><span class=n>GetEventPosition</span><span class=p>()[</span><span class=mi>0</span><span class=p>],</span>
 <span class=w>        </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Interactor</span><span class=o>-&gt;</span><span class=n>GetEventPosition</span><span class=p>()[</span><span class=mi>1</span><span class=p>],</span>
@@ -135,8 +135,8 @@ function registerListener(event, func) {
 <span class=w>        </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>CurrentRenderer</span><span class=p>);</span>
 <span class=w>    </span><span class=kt>double</span><span class=w> </span><span class=n>picked</span><span class=p>[</span><span class=mi>3</span><span class=p>];</span>
 <span class=w>    </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Interactor</span><span class=o>-&gt;</span><span class=n>GetPicker</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetPickPosition</span><span class=p>(</span><span class=n>picked</span><span class=p>);</span>
-<span class=w>    </span><span class=c1>// std::cout &lt;&lt; &quot;Picked point with coordinate: &quot; &lt;&lt; picked[0] &lt;&lt; &quot; &quot; &lt;&lt;</span>
-<span class=w>    </span><span class=c1>// picked[1] &lt;&lt; &quot; &quot; &lt;&lt; picked[2] &lt;&lt; std::endl;</span>
+<span class=w>    </span><span class=c1>// std::cout &lt;&lt; "Picked point with coordinate: " &lt;&lt; picked[0] &lt;&lt; " " &lt;&lt;</span>
+<span class=w>    </span><span class=c1>// picked[1] &lt;&lt; " " &lt;&lt; picked[2] &lt;&lt; std::endl;</span>
 
 <span class=w>    </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>AddNumber</span><span class=p>(</span><span class=n>picked</span><span class=p>);</span>
 
@@ -149,7 +149,7 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=nf>AddNumber</span><span class=p>(</span><span class=kt>double</span><span class=w> </span><span class=n>p</span><span class=p>[</span><span class=mi>3</span><span class=p>])</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Adding marker at &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>p</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>p</span><span class=p>[</span><span class=mi>1</span><span class=p>];</span><span class=w> </span><span class=c1>//&lt;&lt; std::endl;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Adding marker at "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>p</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>p</span><span class=p>[</span><span class=mi>1</span><span class=p>];</span><span class=w> </span><span class=c1>//&lt;&lt; std::endl;</span>
 
 <span class=w>    </span><span class=c1>// normally, with an image you would do</span>
 <span class=w>    </span><span class=c1>// double* s = image-&gt;GetSpacing();</span>
@@ -158,12 +158,12 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=n>p</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>static_cast</span><span class=o>&lt;</span><span class=kt>int</span><span class=o>&gt;</span><span class=p>(</span><span class=n>p</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=mf>0.5</span><span class=p>);</span>
 <span class=w>    </span><span class=n>p</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>static_cast</span><span class=o>&lt;</span><span class=kt>int</span><span class=o>&gt;</span><span class=p>(</span><span class=n>p</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=mf>0.5</span><span class=p>);</span>
 
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; -&gt; &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>p</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>p</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" -&gt; "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>p</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>p</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 
 <span class=w>    </span><span class=c1>// Convert the current number to a string</span>
 <span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>stringstream</span><span class=w> </span><span class=n>ss</span><span class=p>;</span>
 <span class=w>    </span><span class=n>ss</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>Numbers</span><span class=p>.</span><span class=n>size</span><span class=p>();</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Adding number: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>ss</span><span class=p>.</span><span class=n>str</span><span class=p>()</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Adding number: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>ss</span><span class=p>.</span><span class=n>str</span><span class=p>()</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 
 <span class=w>    </span><span class=c1>// Create an actor for the text</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkCaptionActor2D</span><span class=o>&gt;</span><span class=w> </span><span class=n>captionActor</span><span class=p>;</span>
@@ -207,16 +207,16 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderer</span><span class=p>;</span>
 </span><span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderWindow</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;CaptionActor2D&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"CaptionActor2D"</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindowInteractor</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderWindowInteractor</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>renderWindowInteractor</span><span class=o>-&gt;</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renderWindow</span><span class=p>);</span>
 
 <span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Silver&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Silver"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>GradientBackgroundOn</span><span class=p>();</span>
-<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground2</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Blue&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground2</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Blue"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
 
@@ -247,11 +247,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;CaptionActor2D: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"CaptionActor2D: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>CaptionActor2D</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>CaptionActor2D.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>CaptionActor2D</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

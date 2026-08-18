@@ -91,7 +91,7 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
     <span class=c1># Set the background color.</span>
-    <span class=n>colors</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=s2>&quot;BkgColor&quot;</span><span class=p>,</span> <span class=p>[</span><span class=mi>51</span><span class=p>,</span> <span class=mi>77</span><span class=p>,</span> <span class=mi>102</span><span class=p>,</span> <span class=mi>255</span><span class=p>])</span>
+    <span class=n>colors</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=s2>"BkgColor"</span><span class=p>,</span> <span class=p>[</span><span class=mi>51</span><span class=p>,</span> <span class=mi>77</span><span class=p>,</span> <span class=mi>102</span><span class=p>,</span> <span class=mi>255</span><span class=p>])</span>
 
     <span class=c1># Create container to hold the 3D object generators (sources)</span>
     <span class=n>geometricObjectSources</span> <span class=o>=</span> <span class=nb>list</span><span class=p>()</span>
@@ -116,7 +116,7 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>textProperty</span> <span class=o>=</span> <span class=n>vtkTextProperty</span><span class=p>()</span>
 </span>    <span class=n>textProperty</span><span class=o>.</span><span class=n>SetFontSize</span><span class=p>(</span><span class=mi>16</span><span class=p>)</span>
     <span class=n>textProperty</span><span class=o>.</span><span class=n>SetJustificationToCentered</span><span class=p>()</span>
-    <span class=n>textProperty</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;LightGoldenrodYellow&#39;</span><span class=p>))</span>
+    <span class=n>textProperty</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'LightGoldenrodYellow'</span><span class=p>))</span>
 
     <span class=c1># Create a mapper and actor for each object and the corresponding text label</span>
     <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=nb>len</span><span class=p>(</span><span class=n>geometricObjectSources</span><span class=p>)):</span>
@@ -127,7 +127,7 @@ function registerListener(event, func) {
 
 <span class=hll>        <span class=n>actors</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>vtkActor</span><span class=p>())</span>
 </span>        <span class=n>actors</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mappers</span><span class=p>[</span><span class=n>i</span><span class=p>])</span>
-        <span class=n>actors</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;PeachPuff&#39;</span><span class=p>))</span>
+        <span class=n>actors</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'PeachPuff'</span><span class=p>))</span>
 
 <span class=hll>        <span class=n>textmappers</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>vtkTextMapper</span><span class=p>())</span>
 </span>        <span class=n>textmappers</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>SetInput</span><span class=p>(</span>
@@ -145,7 +145,7 @@ function registerListener(event, func) {
     <span class=n>rendererSize</span> <span class=o>=</span> <span class=mi>300</span>
 
 <span class=hll>    <span class=n>renderWindow</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>()</span>
-</span>    <span class=n>renderWindow</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;GeometricObjectsDemo&#39;</span><span class=p>)</span>
+</span>    <span class=n>renderWindow</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>'GeometricObjectsDemo'</span><span class=p>)</span>
     <span class=n>renderWindow</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=n>rendererSize</span> <span class=o>*</span> <span class=n>gridCols</span><span class=p>,</span> <span class=n>rendererSize</span> <span class=o>*</span> <span class=n>gridRows</span><span class=p>)</span>
 
     <span class=c1># Set up a grid of viewports for each renderer</span>
@@ -155,9 +155,9 @@ function registerListener(event, func) {
 
             <span class=c1># Create a renderer for this grid cell</span>
 <span class=hll>            <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>()</span>
-</span>            <span class=n>renderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;BkgColor&#39;</span><span class=p>))</span>
+</span>            <span class=n>renderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'BkgColor'</span><span class=p>))</span>
 
-            <span class=c1># Set the renderer&#39;s viewport dimensions (xmin, ymin, xmax, ymax) within the render window.</span>
+            <span class=c1># Set the renderer's viewport dimensions (xmin, ymin, xmax, ymax) within the render window.</span>
             <span class=c1># Note that for the Y values, we need to subtract the row index from gridRows</span>
             <span class=c1># because the viewport Y axis points upwards, but we want to draw the grid from top to down</span>
             <span class=n>viewport</span> <span class=o>=</span> <span class=p>[</span>
@@ -183,6 +183,6 @@ function registerListener(event, func) {
     <span class=n>interactor</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

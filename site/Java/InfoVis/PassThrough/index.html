@@ -71,7 +71,7 @@ function registerListener(event, func) {
 <span class=w>      </span><span class=p>{</span>
 <span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>lib</span><span class=p>.</span><span class=na>IsLoaded</span><span class=p>())</span><span class=w> </span>
 <span class=w>        </span><span class=p>{</span>
-<span class=w>          </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&quot; not loaded&quot;</span><span class=p>);</span>
+<span class=w>          </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>" not loaded"</span><span class=p>);</span>
 <span class=w>        </span><span class=p>}</span>
 <span class=w>      </span><span class=p>}</span>
 <span class=w>    </span><span class=p>}</span>
@@ -86,14 +86,14 @@ function registerListener(event, func) {
 <span class=hll><span class=w>    </span><span class=n>vtkSphereSource</span><span class=w> </span><span class=n>sphereSource</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkSphereSource</span><span class=p>();</span>
 </span><span class=w>    </span><span class=n>sphereSource</span><span class=p>.</span><span class=na>Update</span><span class=p>();</span>
 
-<span class=w>    </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&quot;Points before:&quot;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&quot; &quot;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>sphereSource</span><span class=p>.</span><span class=na>GetOutput</span><span class=p>().</span><span class=na>GetNumberOfPoints</span><span class=p>());</span>
+<span class=w>    </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>"Points before:"</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>" "</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>sphereSource</span><span class=p>.</span><span class=na>GetOutput</span><span class=p>().</span><span class=na>GetNumberOfPoints</span><span class=p>());</span>
 
 <span class=hll><span class=w>    </span><span class=n>vtkPassThrough</span><span class=w> </span><span class=n>passThrough</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkPassThrough</span><span class=p>();</span>
 </span><span class=w>    </span><span class=n>passThrough</span><span class=p>.</span><span class=na>SetInputConnection</span><span class=p>(</span><span class=n>sphereSource</span><span class=p>.</span><span class=na>GetOutputPort</span><span class=p>());</span>
 <span class=w>    </span><span class=n>passThrough</span><span class=p>.</span><span class=na>Update</span><span class=p>();</span>
 <span class=w>    </span><span class=n>passThrough</span><span class=p>.</span><span class=na>GetOutput</span><span class=p>();</span>
 
-<span class=w>    </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&quot;Points after:&quot;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&quot; &quot;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>sphereSource</span><span class=p>.</span><span class=na>GetOutput</span><span class=p>().</span><span class=na>GetNumberOfPoints</span><span class=p>());</span>
+<span class=w>    </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>"Points after:"</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>" "</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>sphereSource</span><span class=p>.</span><span class=na>GetOutput</span><span class=p>().</span><span class=na>GetNumberOfPoints</span><span class=p>());</span>
 
 <span class=w>  </span><span class=p>}</span>
 <span class=p>}</span>

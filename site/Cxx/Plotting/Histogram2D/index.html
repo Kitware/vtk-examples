@@ -115,17 +115,17 @@ function registerListener(event, func) {
 <span class=p>{</span>
 <span class=w>  </span><span class=c1>// Define colors.</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span><span class=w> </span><span class=n>colors</span><span class=p>;</span>
-</span><span class=hll><span class=w>  </span><span class=n>vtkColor3d</span><span class=w> </span><span class=n>backgroundColor</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;SlateGray&quot;</span><span class=p>);</span>
-</span><span class=hll><span class=w>  </span><span class=n>vtkColor3d</span><span class=w> </span><span class=n>titleColor</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Orange&quot;</span><span class=p>);</span>
-</span><span class=hll><span class=w>  </span><span class=n>vtkColor3d</span><span class=w> </span><span class=n>axisTitleColor</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Orange&quot;</span><span class=p>);</span>
-</span><span class=hll><span class=w>  </span><span class=n>vtkColor3d</span><span class=w> </span><span class=n>axisLabelColor</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Beige&quot;</span><span class=p>);</span>
-</span><span class=hll><span class=w>  </span><span class=n>vtkColor4ub</span><span class=w> </span><span class=n>legendBackgroundColor</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor4ub</span><span class=p>(</span><span class=s>&quot;Tomato&quot;</span><span class=p>);</span>
+</span><span class=hll><span class=w>  </span><span class=n>vtkColor3d</span><span class=w> </span><span class=n>backgroundColor</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"SlateGray"</span><span class=p>);</span>
+</span><span class=hll><span class=w>  </span><span class=n>vtkColor3d</span><span class=w> </span><span class=n>titleColor</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Orange"</span><span class=p>);</span>
+</span><span class=hll><span class=w>  </span><span class=n>vtkColor3d</span><span class=w> </span><span class=n>axisTitleColor</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Orange"</span><span class=p>);</span>
+</span><span class=hll><span class=w>  </span><span class=n>vtkColor3d</span><span class=w> </span><span class=n>axisLabelColor</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Beige"</span><span class=p>);</span>
+</span><span class=hll><span class=w>  </span><span class=n>vtkColor4ub</span><span class=w> </span><span class=n>legendBackgroundColor</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor4ub</span><span class=p>(</span><span class=s>"Tomato"</span><span class=p>);</span>
 </span>
 <span class=w>  </span><span class=c1>// Set up a 2D scene, add an XY chart to it.</span>
 <span class=w>  </span><span class=kt>int</span><span class=w> </span><span class=n>size</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>400</span><span class=p>;</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkContextView</span><span class=o>&gt;</span><span class=w> </span><span class=n>view</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>view</span><span class=o>-&gt;</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>512</span><span class=p>,</span><span class=w> </span><span class=mi>512</span><span class=p>);</span>
-<span class=w>  </span><span class=n>view</span><span class=o>-&gt;</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;Histogram2D&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>view</span><span class=o>-&gt;</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"Histogram2D"</span><span class=p>);</span>
 
 <span class=w>  </span><span class=n>view</span><span class=o>-&gt;</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>backgroundColor</span><span class=p>.</span><span class=n>GetData</span><span class=p>());</span>
 
@@ -133,7 +133,7 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkChartHistogram2D</span><span class=o>&gt;</span><span class=w> </span><span class=n>chart</span><span class=p>;</span>
 </span>
 <span class=w>  </span><span class=c1>// Chart Title.</span>
-<span class=w>  </span><span class=n>chart</span><span class=o>-&gt;</span><span class=n>SetTitle</span><span class=p>(</span><span class=s>&quot;2D Histogram&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>chart</span><span class=o>-&gt;</span><span class=n>SetTitle</span><span class=p>(</span><span class=s>"2D Histogram"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>chart</span><span class=o>-&gt;</span><span class=n>GetTitleProperties</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetFontSize</span><span class=p>(</span><span class=mi>36</span><span class=p>);</span>
 <span class=w>  </span><span class=n>chart</span><span class=o>-&gt;</span><span class=n>GetTitleProperties</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>titleColor</span><span class=p>.</span><span class=n>GetData</span><span class=p>());</span>
 
@@ -145,9 +145,9 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=n>chart</span><span class=o>-&gt;</span><span class=n>GetAxis</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span><span class=o>-&gt;</span><span class=n>GetTitleProperties</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetFontSize</span><span class=p>(</span><span class=mi>24</span><span class=p>);</span>
 <span class=w>  </span><span class=n>chart</span><span class=o>-&gt;</span><span class=n>GetAxis</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span><span class=o>-&gt;</span><span class=n>GetTitleProperties</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
-<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;orange&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"orange"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=n>chart</span><span class=o>-&gt;</span><span class=n>GetAxis</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span><span class=o>-&gt;</span><span class=n>GetLabelProperties</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
-<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;beige&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"beige"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=n>chart</span><span class=o>-&gt;</span><span class=n>GetAxis</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span><span class=o>-&gt;</span><span class=n>GetLabelProperties</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetFontSize</span><span class=p>(</span><span class=mi>18</span><span class=p>);</span>
 
 <span class=w>  </span><span class=c1>// Chart Legend.</span>
@@ -209,11 +209,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;Histogram2D: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"Histogram2D: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>Histogram2D</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>Histogram2D.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>Histogram2D</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

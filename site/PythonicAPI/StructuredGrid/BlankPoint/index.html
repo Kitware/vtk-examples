@@ -86,7 +86,7 @@ function registerListener(event, func) {
         <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>grid_size</span><span class=p>):</span>
             <span class=k>if</span> <span class=n>i</span> <span class=o>==</span> <span class=mi>3</span> <span class=ow>and</span> <span class=n>j</span> <span class=o>==</span> <span class=mi>3</span><span class=p>:</span>  <span class=c1># Make one point higher than the rest.</span>
                 <span class=n>points</span><span class=o>.</span><span class=n>InsertNextPoint</span><span class=p>(</span><span class=n>i</span><span class=p>,</span> <span class=n>j</span><span class=p>,</span> <span class=mi>2</span><span class=p>)</span>
-                <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;The different point is number </span><span class=si>{</span><span class=n>counter</span><span class=si>}</span><span class=s1>.&#39;</span><span class=p>)</span>
+                <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'The different point is number </span><span class=si>{</span><span class=n>counter</span><span class=si>}</span><span class=s1>.'</span><span class=p>)</span>
                 <span class=n>pt_idx</span> <span class=o>=</span> <span class=n>counter</span>
             <span class=k>else</span><span class=p>:</span>
                 <span class=c1># Make most of the points the same height.</span>
@@ -100,14 +100,14 @@ function registerListener(event, func) {
     <span class=c1># Check.</span>
     <span class=k>def</span><span class=w> </span><span class=nf>is_visible</span><span class=p>(</span><span class=n>pt_num</span><span class=p>):</span>
         <span class=k>if</span> <span class=n>structured_grid</span><span class=o>.</span><span class=n>IsPointVisible</span><span class=p>(</span><span class=n>pt_num</span><span class=p>):</span>
-            <span class=k>return</span> <span class=sa>f</span><span class=s1>&#39;Point </span><span class=si>{</span><span class=n>pt_num</span><span class=si>:</span><span class=s1>2d</span><span class=si>}</span><span class=s1> is visible.&#39;</span>
+            <span class=k>return</span> <span class=sa>f</span><span class=s1>'Point </span><span class=si>{</span><span class=n>pt_num</span><span class=si>:</span><span class=s1>2d</span><span class=si>}</span><span class=s1> is visible.'</span>
         <span class=k>else</span><span class=p>:</span>
-            <span class=k>return</span> <span class=sa>f</span><span class=s1>&#39;Point </span><span class=si>{</span><span class=n>pt_num</span><span class=si>:</span><span class=s1>2d</span><span class=si>}</span><span class=s1> is not visible.&#39;</span>
+            <span class=k>return</span> <span class=sa>f</span><span class=s1>'Point </span><span class=si>{</span><span class=n>pt_num</span><span class=si>:</span><span class=s1>2d</span><span class=si>}</span><span class=s1> is not visible.'</span>
 
     <span class=c1># Should not be visible.</span>
-    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;</span><span class=si>{</span><span class=n>is_visible</span><span class=p>(</span><span class=n>pt_idx</span><span class=p>)</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'</span><span class=si>{</span><span class=n>is_visible</span><span class=p>(</span><span class=n>pt_idx</span><span class=p>)</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
     <span class=c1># Should be visible.</span>
-    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;</span><span class=si>{</span><span class=n>is_visible</span><span class=p>(</span><span class=mi>7</span><span class=p>)</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'</span><span class=si>{</span><span class=n>is_visible</span><span class=p>(</span><span class=mi>7</span><span class=p>)</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
 
     <span class=c1># We need the geometry filter to ensure that the</span>
     <span class=c1># blanked point and surrounding faces is missing.</span>
@@ -119,11 +119,11 @@ function registerListener(event, func) {
 
 <span class=hll>    <span class=n>grid_actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>(</span><span class=n>mapper</span><span class=o>=</span><span class=n>grid_mapper</span><span class=p>)</span>
 </span>    <span class=n>grid_actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>edge_visibility</span> <span class=o>=</span> <span class=kc>True</span>
-    <span class=n>grid_actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>edge_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Blue&#39;</span><span class=p>)</span>
+    <span class=n>grid_actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>edge_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Blue'</span><span class=p>)</span>
 
     <span class=c1># Visualize</span>
-<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;ForestGreen&#39;</span><span class=p>))</span>
-</span><span class=hll>    <span class=n>ren_win</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>window_name</span><span class=o>=</span><span class=s1>&#39;BlankPoint&#39;</span><span class=p>)</span>
+<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'ForestGreen'</span><span class=p>))</span>
+</span><span class=hll>    <span class=n>ren_win</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>window_name</span><span class=o>=</span><span class=s1>'BlankPoint'</span><span class=p>)</span>
 </span>    <span class=n>ren_win</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>)</span>
 <span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>iren</span><span class=o>.</span><span class=n>render_window</span> <span class=o>=</span> <span class=n>ren_win</span>
@@ -134,6 +134,6 @@ function registerListener(event, func) {
     <span class=n>iren</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

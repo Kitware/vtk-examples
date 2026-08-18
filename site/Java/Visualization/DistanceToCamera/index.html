@@ -81,7 +81,7 @@ function registerListener(event, func) {
 <span class=w>      </span><span class=p>{</span>
 <span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>lib</span><span class=p>.</span><span class=na>IsLoaded</span><span class=p>())</span><span class=w> </span>
 <span class=w>        </span><span class=p>{</span>
-<span class=w>          </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&quot; not loaded&quot;</span><span class=p>);</span>
+<span class=w>          </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>" not loaded"</span><span class=p>);</span>
 <span class=w>        </span><span class=p>}</span>
 <span class=w>      </span><span class=p>}</span>
 <span class=w>    </span><span class=p>}</span>
@@ -100,9 +100,9 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=c1>//Renderer Background Color</span>
 <span class=w>    </span><span class=kt>double</span><span class=w> </span><span class=n>Bgcolor</span><span class=o>[]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=kt>double</span><span class=o>[</span><span class=mi>4</span><span class=o>]</span><span class=p>;</span>
 
-<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>&quot;Aqua&quot;</span><span class=p>,</span><span class=w> </span><span class=n>fixedActorColor</span><span class=p>);</span>
-<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>&quot;Yellow&quot;</span><span class=p>,</span><span class=n>sphereActorColor</span><span class=p>);</span>
-<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>&quot;White&quot;</span><span class=p>,</span><span class=w> </span><span class=n>Bgcolor</span><span class=p>);</span>
+<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>"Aqua"</span><span class=p>,</span><span class=w> </span><span class=n>fixedActorColor</span><span class=p>);</span>
+<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>"Yellow"</span><span class=p>,</span><span class=n>sphereActorColor</span><span class=p>);</span>
+<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>"White"</span><span class=p>,</span><span class=w> </span><span class=n>Bgcolor</span><span class=p>);</span>
 
 <span class=w>    </span><span class=c1>// Draw some arrows that maintain a fixed size during zooming.</span>
 <span class=w>    </span><span class=c1>// Create a set of points.</span>
@@ -122,7 +122,7 @@ function registerListener(event, func) {
 
 <span class=w>    </span><span class=c1>// Scale each point.</span>
 <span class=w>    </span><span class=n>fixedGlyph</span><span class=p>.</span><span class=na>SetScaleModeToScaleByScalar</span><span class=p>();</span>
-<span class=w>    </span><span class=n>fixedGlyph</span><span class=p>.</span><span class=na>SetInputArrayToProcess</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=s>&quot;DistanceToCamera&quot;</span><span class=p>);</span>
+<span class=w>    </span><span class=n>fixedGlyph</span><span class=p>.</span><span class=na>SetInputArrayToProcess</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=s>"DistanceToCamera"</span><span class=p>);</span>
 
 <span class=w>    </span><span class=c1>// Create a mapper.</span>
 <span class=hll><span class=w>    </span><span class=n>vtkPolyDataMapper</span><span class=w> </span><span class=n>fixedMapper</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkPolyDataMapper</span><span class=p>();</span>

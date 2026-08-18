@@ -73,7 +73,7 @@ function registerListener(event, func) {
 <span class=w>      </span><span class=p>{</span>
 <span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>lib</span><span class=p>.</span><span class=na>IsLoaded</span><span class=p>())</span><span class=w> </span>
 <span class=w>        </span><span class=p>{</span>
-<span class=w>          </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&quot; not loaded&quot;</span><span class=p>);</span>
+<span class=w>          </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>" not loaded"</span><span class=p>);</span>
 <span class=w>        </span><span class=p>}</span>
 <span class=w>      </span><span class=p>}</span>
 <span class=w>    </span><span class=p>}</span>
@@ -102,11 +102,11 @@ function registerListener(event, func) {
 
 <span class=w>     </span><span class=n>graph</span><span class=p>.</span><span class=na>SetPoints</span><span class=p>(</span><span class=n>points</span><span class=p>);</span>
 
-<span class=w>     </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&quot;Number of output points: &quot;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&quot; &quot;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>graph</span><span class=p>.</span><span class=na>GetPoints</span><span class=p>().</span><span class=na>GetNumberOfPoints</span><span class=p>());</span>
+<span class=w>     </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>"Number of output points: "</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>" "</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>graph</span><span class=p>.</span><span class=na>GetPoints</span><span class=p>().</span><span class=na>GetNumberOfPoints</span><span class=p>());</span>
 
 <span class=hll><span class=w>     </span><span class=n>vtkGraphLayoutView</span><span class=w> </span><span class=n>graphLayoutView</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkGraphLayoutView</span><span class=p>();</span>
 </span><span class=w>     </span><span class=n>graphLayoutView</span><span class=p>.</span><span class=na>AddRepresentationFromInput</span><span class=p>(</span><span class=n>graph</span><span class=p>);</span>
-<span class=w>     </span><span class=n>graphLayoutView</span><span class=p>.</span><span class=na>SetLayoutStrategy</span><span class=p>(</span><span class=s>&quot;Pass Through&quot;</span><span class=p>);</span>
+<span class=w>     </span><span class=n>graphLayoutView</span><span class=p>.</span><span class=na>SetLayoutStrategy</span><span class=p>(</span><span class=s>"Pass Through"</span><span class=p>);</span>
 <span class=w>     </span><span class=n>graphLayoutView</span><span class=p>.</span><span class=na>ResetCamera</span><span class=p>();</span>
 <span class=w>     </span><span class=n>graphLayoutView</span><span class=p>.</span><span class=na>Render</span><span class=p>();</span>
 <span class=w>     </span><span class=n>graphLayoutView</span><span class=p>.</span><span class=na>GetInteractor</span><span class=p>().</span><span class=na>Start</span><span class=p>();</span>

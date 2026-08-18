@@ -110,13 +110,13 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_program_parameters</span><span class=p>(</span><span class=n>argv</span><span class=p>):</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>argparse</span>
-    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;Demonstrates the background shading options.&#39;</span>
-    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;</span>
-<span class=s1>    &#39;&#39;&#39;</span>
+    <span class=n>description</span> <span class=o>=</span> <span class=s1>'Demonstrates the background shading options.'</span>
+    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>'''</span>
+<span class=s1>    '''</span>
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
                                      <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawDescriptionHelpFormatter</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-f&#39;</span><span class=p>,</span> <span class=s1>&#39;--file_name&#39;</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span>
-                        <span class=n>help</span><span class=o>=</span><span class=s1>&#39;An optional file name, e.g. star-wars-vader-tie-fighter.obj.&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-f'</span><span class=p>,</span> <span class=s1>'--file_name'</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span>
+                        <span class=n>help</span><span class=o>=</span><span class=s1>'An optional file name, e.g. star-wars-vader-tie-fighter.obj.'</span><span class=p>)</span>
     <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
     <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>file_name</span>
 
@@ -125,7 +125,7 @@ function registerListener(event, func) {
     <span class=k>if</span> <span class=n>fn</span><span class=p>:</span>
         <span class=n>fp</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>fn</span><span class=p>)</span>
         <span class=k>if</span> <span class=ow>not</span> <span class=n>fp</span><span class=o>.</span><span class=n>is_file</span><span class=p>():</span>
-            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;The path: </span><span class=si>{</span><span class=n>fp</span><span class=si>}</span><span class=s1> does not exist.&#39;</span><span class=p>)</span>
+            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'The path: </span><span class=si>{</span><span class=n>fp</span><span class=si>}</span><span class=s1> does not exist.'</span><span class=p>)</span>
             <span class=k>return</span>
     <span class=k>else</span><span class=p>:</span>
         <span class=n>fp</span> <span class=o>=</span> <span class=kc>None</span>
@@ -142,19 +142,19 @@ function registerListener(event, func) {
 </span>    <span class=n>pd</span> <span class=o>&gt;&gt;</span> <span class=n>mapper</span>
 
 <span class=hll>    <span class=n>actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>(</span><span class=n>mapper</span><span class=o>=</span><span class=n>mapper</span><span class=p>)</span>
-</span>    <span class=n>actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Honeydew&#39;</span><span class=p>)</span>
+</span>    <span class=n>actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Honeydew'</span><span class=p>)</span>
     <span class=n>actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>specular</span> <span class=o>=</span> <span class=mf>0.3</span>
     <span class=n>actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>specular_power</span> <span class=o>=</span> <span class=mf>60.0</span>
 
     <span class=c1># Here we select and name the colors.</span>
     <span class=c1># Feel free to change colors.</span>
-    <span class=n>bottom_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Gold&#39;</span><span class=p>)</span>
-    <span class=n>top_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;OrangeRed&#39;</span><span class=p>)</span>
-    <span class=n>left_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Gold&#39;</span><span class=p>)</span>
-    <span class=n>right_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;OrangeRed&#39;</span><span class=p>)</span>
-    <span class=n>center_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Gold&#39;</span><span class=p>)</span>
-    <span class=n>side_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;OrangeRed&#39;</span><span class=p>)</span>
-    <span class=n>corner_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;OrangeRed&#39;</span><span class=p>)</span>
+    <span class=n>bottom_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Gold'</span><span class=p>)</span>
+    <span class=n>top_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'OrangeRed'</span><span class=p>)</span>
+    <span class=n>left_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Gold'</span><span class=p>)</span>
+    <span class=n>right_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'OrangeRed'</span><span class=p>)</span>
+    <span class=n>center_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Gold'</span><span class=p>)</span>
+    <span class=n>side_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'OrangeRed'</span><span class=p>)</span>
+    <span class=n>corner_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'OrangeRed'</span><span class=p>)</span>
 
     <span class=c1># For each gradient specify the mode.</span>
     <span class=n>modes</span> <span class=o>=</span> <span class=p>[</span>
@@ -165,16 +165,16 @@ function registerListener(event, func) {
 </span>    <span class=p>]</span>
 
     <span class=n>viewport_titles</span> <span class=o>=</span> <span class=p>(</span>
-        <span class=s1>&#39;Vertical&#39;</span><span class=p>,</span>
-        <span class=s1>&#39;Horizontal&#39;</span><span class=p>,</span>
-        <span class=s1>&#39;Radial Farthest Side&#39;</span><span class=p>,</span>
-        <span class=s1>&#39;Radial Farthest Corner&#39;</span><span class=p>,</span>
+        <span class=s1>'Vertical'</span><span class=p>,</span>
+        <span class=s1>'Horizontal'</span><span class=p>,</span>
+        <span class=s1>'Radial Farthest Side'</span><span class=p>,</span>
+        <span class=s1>'Radial Farthest Corner'</span><span class=p>,</span>
     <span class=p>)</span>
     <span class=n>text_positions</span> <span class=o>=</span> <span class=n>get_text_positions</span><span class=p>(</span><span class=n>viewport_titles</span><span class=p>,</span> <span class=n>justification</span><span class=o>=</span><span class=n>TextProperty</span><span class=o>.</span><span class=n>Justification</span><span class=o>.</span><span class=n>VTK_TEXT_CENTERED</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>text_property</span> <span class=o>=</span> <span class=n>vtkTextProperty</span><span class=p>(</span><span class=n>color</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;MidnightBlue&#39;</span><span class=p>),</span>
+<span class=hll>    <span class=n>text_property</span> <span class=o>=</span> <span class=n>vtkTextProperty</span><span class=p>(</span><span class=n>color</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'MidnightBlue'</span><span class=p>),</span>
 </span>                                    <span class=n>bold</span><span class=o>=</span><span class=kc>False</span><span class=p>,</span> <span class=n>italic</span><span class=o>=</span><span class=kc>False</span><span class=p>,</span> <span class=n>shadow</span><span class=o>=</span><span class=kc>False</span><span class=p>,</span>
-                                    <span class=n>font_size</span><span class=o>=</span><span class=mi>12</span><span class=p>,</span> <span class=n>font_family_as_string</span><span class=o>=</span><span class=s1>&#39;Courier&#39;</span><span class=p>,</span>
+                                    <span class=n>font_size</span><span class=o>=</span><span class=mi>12</span><span class=p>,</span> <span class=n>font_family_as_string</span><span class=o>=</span><span class=s1>'Courier'</span><span class=p>,</span>
                                     <span class=n>justification</span><span class=o>=</span><span class=n>TextProperty</span><span class=o>.</span><span class=n>Justification</span><span class=o>.</span><span class=n>VTK_TEXT_CENTERED</span><span class=p>,</span>
                                     <span class=n>vertical_justification</span><span class=o>=</span><span class=n>TextProperty</span><span class=o>.</span><span class=n>VerticalJustification</span><span class=o>.</span><span class=n>VTK_TEXT_CENTERED</span><span class=p>)</span>
 
@@ -187,7 +187,7 @@ function registerListener(event, func) {
     <span class=c1># Create the renderer viewports.</span>
     <span class=n>blank</span> <span class=o>=</span> <span class=nb>len</span><span class=p>(</span><span class=n>viewport_titles</span><span class=p>)</span>
     <span class=n>viewports</span> <span class=o>=</span> <span class=nb>dict</span><span class=p>()</span>
-    <span class=n>VP_Params</span> <span class=o>=</span> <span class=n>namedtuple</span><span class=p>(</span><span class=s1>&#39;VP_Params&#39;</span><span class=p>,</span> <span class=p>[</span><span class=s1>&#39;name&#39;</span><span class=p>,</span> <span class=s1>&#39;viewport&#39;</span><span class=p>,</span> <span class=s1>&#39;border&#39;</span><span class=p>])</span>
+    <span class=n>VP_Params</span> <span class=o>=</span> <span class=n>namedtuple</span><span class=p>(</span><span class=s1>'VP_Params'</span><span class=p>,</span> <span class=p>[</span><span class=s1>'name'</span><span class=p>,</span> <span class=s1>'viewport'</span><span class=p>,</span> <span class=s1>'border'</span><span class=p>])</span>
     <span class=n>last_col</span> <span class=o>=</span> <span class=kc>False</span>
     <span class=n>last_row</span> <span class=o>=</span> <span class=kc>False</span>
     <span class=k>for</span> <span class=n>row</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>y_grid_dimensions</span><span class=p>):</span>
@@ -219,16 +219,16 @@ function registerListener(event, func) {
             <span class=k>if</span> <span class=n>index</span> <span class=o>&lt;</span> <span class=n>blank</span><span class=p>:</span>
                 <span class=n>viewports</span><span class=p>[</span><span class=n>index</span><span class=p>]</span> <span class=o>=</span> <span class=n>VP_Params</span><span class=p>(</span><span class=n>viewport_titles</span><span class=p>[</span><span class=n>index</span><span class=p>],</span> <span class=n>viewport</span><span class=p>,</span> <span class=n>border</span><span class=p>)</span>
             <span class=k>else</span><span class=p>:</span>
-                <span class=n>viewports</span><span class=p>[</span><span class=n>index</span><span class=p>]</span> <span class=o>=</span> <span class=n>VP_Params</span><span class=p>(</span><span class=s2>&quot;&quot;</span><span class=p>,</span> <span class=n>viewport</span><span class=p>,</span> <span class=n>border</span><span class=p>)</span>
+                <span class=n>viewports</span><span class=p>[</span><span class=n>index</span><span class=p>]</span> <span class=o>=</span> <span class=n>VP_Params</span><span class=p>(</span><span class=s2>""</span><span class=p>,</span> <span class=n>viewport</span><span class=p>,</span> <span class=n>border</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>ren_win</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>size</span><span class=o>=</span><span class=p>(</span><span class=n>width</span><span class=p>,</span> <span class=n>height</span><span class=p>),</span> <span class=n>window_name</span><span class=o>=</span><span class=s1>&#39;GradientBackground&#39;</span><span class=p>)</span>
+<span class=hll>    <span class=n>ren_win</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>size</span><span class=o>=</span><span class=p>(</span><span class=n>width</span><span class=p>,</span> <span class=n>height</span><span class=p>),</span> <span class=n>window_name</span><span class=o>=</span><span class=s1>'GradientBackground'</span><span class=p>)</span>
 </span>
 <span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>iren</span><span class=o>.</span><span class=n>render_window</span> <span class=o>=</span> <span class=n>ren_win</span>
 <span class=hll>    <span class=n>style</span> <span class=o>=</span> <span class=n>vtkInteractorStyleTrackballCamera</span><span class=p>()</span>
 </span>    <span class=n>iren</span><span class=o>.</span><span class=n>interactor_style</span> <span class=o>=</span> <span class=n>style</span>
 
-    <span class=n>border_color</span> <span class=o>=</span> <span class=s2>&quot;Black&quot;</span>
+    <span class=n>border_color</span> <span class=o>=</span> <span class=s2>"Black"</span>
     <span class=n>border_width</span> <span class=o>=</span> <span class=mi>4</span>
 
     <span class=n>text_widgets</span> <span class=o>=</span> <span class=nb>list</span><span class=p>()</span>
@@ -272,8 +272,8 @@ function registerListener(event, func) {
 
         <span class=c1># Create the text representation. Used for positioning the text actor.</span>
 <span class=hll>        <span class=n>text_representation</span> <span class=o>=</span> <span class=n>vtkTextRepresentation</span><span class=p>(</span><span class=n>enforce_normalized_viewport_bounds</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
-</span>        <span class=n>text_representation</span><span class=o>.</span><span class=n>position_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>text_positions</span><span class=p>[</span><span class=n>name</span><span class=p>][</span><span class=s1>&#39;p&#39;</span><span class=p>]</span>
-        <span class=n>text_representation</span><span class=o>.</span><span class=n>position2_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>text_positions</span><span class=p>[</span><span class=n>name</span><span class=p>][</span><span class=s1>&#39;p2&#39;</span><span class=p>]</span>
+</span>        <span class=n>text_representation</span><span class=o>.</span><span class=n>position_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>text_positions</span><span class=p>[</span><span class=n>name</span><span class=p>][</span><span class=s1>'p'</span><span class=p>]</span>
+        <span class=n>text_representation</span><span class=o>.</span><span class=n>position2_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>text_positions</span><span class=p>[</span><span class=n>name</span><span class=p>][</span><span class=s1>'p2'</span><span class=p>]</span>
 
         <span class=c1># Create the text widget, setting the default renderer and interactor.</span>
 <span class=hll>        <span class=n>text_widget</span> <span class=o>=</span> <span class=n>vtkTextWidget</span><span class=p>(</span><span class=n>representation</span><span class=o>=</span><span class=n>text_representation</span><span class=p>,</span> <span class=n>text_actor</span><span class=o>=</span><span class=n>text_actor</span><span class=p>,</span>
@@ -291,30 +291,30 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>read_poly_data</span><span class=p>(</span><span class=n>file_name</span><span class=p>):</span>
     <span class=k>if</span> <span class=ow>not</span> <span class=n>file_name</span><span class=p>:</span>
-        <span class=c1># print(f&#39;No file name.&#39;)</span>
+        <span class=c1># print(f'No file name.')</span>
         <span class=k>return</span> <span class=kc>None</span>
 
-    <span class=n>valid_suffixes</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;.g&#39;</span><span class=p>,</span> <span class=s1>&#39;.obj&#39;</span><span class=p>,</span> <span class=s1>&#39;.stl&#39;</span><span class=p>,</span> <span class=s1>&#39;.ply&#39;</span><span class=p>,</span> <span class=s1>&#39;.vtk&#39;</span><span class=p>,</span> <span class=s1>&#39;.vtp&#39;</span><span class=p>]</span>
+    <span class=n>valid_suffixes</span> <span class=o>=</span> <span class=p>[</span><span class=s1>'.g'</span><span class=p>,</span> <span class=s1>'.obj'</span><span class=p>,</span> <span class=s1>'.stl'</span><span class=p>,</span> <span class=s1>'.ply'</span><span class=p>,</span> <span class=s1>'.vtk'</span><span class=p>,</span> <span class=s1>'.vtp'</span><span class=p>]</span>
     <span class=n>path</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
     <span class=n>ext</span> <span class=o>=</span> <span class=kc>None</span>
     <span class=k>if</span> <span class=n>path</span><span class=o>.</span><span class=n>suffix</span><span class=p>:</span>
         <span class=n>ext</span> <span class=o>=</span> <span class=n>path</span><span class=o>.</span><span class=n>suffix</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span>
     <span class=k>if</span> <span class=n>path</span><span class=o>.</span><span class=n>suffix</span> <span class=ow>not</span> <span class=ow>in</span> <span class=n>valid_suffixes</span><span class=p>:</span>
-        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;No reader for this file suffix: </span><span class=si>{</span><span class=n>ext</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'No reader for this file suffix: </span><span class=si>{</span><span class=n>ext</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
         <span class=k>return</span> <span class=kc>None</span>
 
     <span class=n>reader</span> <span class=o>=</span> <span class=kc>None</span>
-    <span class=k>if</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>&#39;.ply&#39;</span><span class=p>:</span>
+    <span class=k>if</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>'.ply'</span><span class=p>:</span>
 <span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkPLYReader</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=n>file_name</span><span class=p>)</span>
-</span>    <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>&#39;.vtp&#39;</span><span class=p>:</span>
+</span>    <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>'.vtp'</span><span class=p>:</span>
 <span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkXMLPolyDataReader</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=n>file_name</span><span class=p>)</span>
-</span>    <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>&#39;.obj&#39;</span><span class=p>:</span>
+</span>    <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>'.obj'</span><span class=p>:</span>
 <span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkOBJReader</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=n>file_name</span><span class=p>)</span>
-</span>    <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>&#39;.stl&#39;</span><span class=p>:</span>
+</span>    <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>'.stl'</span><span class=p>:</span>
 <span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkSTLReader</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=n>file_name</span><span class=p>)</span>
-</span>    <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>&#39;.vtk&#39;</span><span class=p>:</span>
+</span>    <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>'.vtk'</span><span class=p>:</span>
 <span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkPolyDataReader</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=n>file_name</span><span class=p>)</span>
-</span>    <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>&#39;.g&#39;</span><span class=p>:</span>
+</span>    <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>'.g'</span><span class=p>:</span>
 <span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkBYUReader</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=n>file_name</span><span class=p>)</span>
 </span>
     <span class=k>if</span> <span class=n>reader</span><span class=p>:</span>
@@ -326,14 +326,14 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>draw_viewport_border</span><span class=p>(</span><span class=n>sides</span><span class=p>,</span> <span class=n>border_color</span><span class=p>,</span> <span class=n>border_width</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Set a border around a viewport.</span>
 
 <span class=sd>    :param sides: An array of boolean corresponding to [top, left, bottom, right]</span>
 <span class=sd>    :param border_color: The color of the border.</span>
 <span class=sd>    :param border_width: The width of the border.</span>
 <span class=sd>    :return: The border actor.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
     <span class=c1># Points start at upper right and proceed anti-clockwise.</span>
@@ -408,7 +408,7 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_text_positions</span><span class=p>(</span><span class=n>names</span><span class=p>,</span> <span class=n>justification</span><span class=o>=</span><span class=mi>0</span><span class=p>,</span> <span class=n>vertical_justification</span><span class=o>=</span><span class=mi>0</span><span class=p>,</span> <span class=n>width</span><span class=o>=</span><span class=mf>0.96</span><span class=p>,</span> <span class=n>height</span><span class=o>=</span><span class=mf>0.1</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Get viewport positioning information for a list of names.</span>
 
 <span class=sd>    :param names: The list of names.</span>
@@ -417,7 +417,7 @@ function registerListener(event, func) {
 <span class=sd>    :param width: Width of the bounding_box of the text in screen coordinates.</span>
 <span class=sd>    :param height: Height of the bounding_box of the text in screen coordinates.</span>
 <span class=sd>    :return: A list of positioning information.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=c1># The gap between the left or right edge of the screen and the text.</span>
     <span class=n>dx</span> <span class=o>=</span> <span class=mf>0.02</span>
     <span class=n>width</span> <span class=o>=</span> <span class=nb>abs</span><span class=p>(</span><span class=n>width</span><span class=p>)</span>
@@ -464,9 +464,9 @@ function registerListener(event, func) {
 
         <span class=c1># For debugging!</span>
         <span class=c1># print(</span>
-        <span class=c1>#     f&#39;{k:16s}: (x0, y0) = ({x0:3.2f}, {y0:3.2f}), (x1, y1) = ({x0 + delta_sz:3.2f}, {y0 + dy:3.2f})&#39;</span>
-        <span class=c1>#     f&#39;, width={delta_sz:3.2f}, height={dy:3.2f}&#39;)</span>
-        <span class=n>text_positions</span><span class=p>[</span><span class=n>k</span><span class=p>]</span> <span class=o>=</span> <span class=p>{</span><span class=s1>&#39;p&#39;</span><span class=p>:</span> <span class=p>[</span><span class=n>x0</span><span class=p>,</span> <span class=n>y0</span><span class=p>,</span> <span class=mi>0</span><span class=p>],</span> <span class=s1>&#39;p2&#39;</span><span class=p>:</span> <span class=p>[</span><span class=n>delta_sz</span><span class=p>,</span> <span class=n>dy</span><span class=p>,</span> <span class=mi>0</span><span class=p>]}</span>
+        <span class=c1>#     f'{k:16s}: (x0, y0) = ({x0:3.2f}, {y0:3.2f}), (x1, y1) = ({x0 + delta_sz:3.2f}, {y0 + dy:3.2f})'</span>
+        <span class=c1>#     f', width={delta_sz:3.2f}, height={dy:3.2f}')</span>
+        <span class=n>text_positions</span><span class=p>[</span><span class=n>k</span><span class=p>]</span> <span class=o>=</span> <span class=p>{</span><span class=s1>'p'</span><span class=p>:</span> <span class=p>[</span><span class=n>x0</span><span class=p>,</span> <span class=n>y0</span><span class=p>,</span> <span class=mi>0</span><span class=p>],</span> <span class=s1>'p2'</span><span class=p>:</span> <span class=p>[</span><span class=n>delta_sz</span><span class=p>,</span> <span class=n>dy</span><span class=p>,</span> <span class=mi>0</span><span class=p>]}</span>
 
     <span class=k>return</span> <span class=n>text_positions</span>
 
@@ -500,7 +500,7 @@ function registerListener(event, func) {
         <span class=n>VTK_TEXT_TOP</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>2</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>sys</span>
 
     <span class=n>file_path</span> <span class=o>=</span> <span class=n>get_program_parameters</span><span class=p>(</span><span class=n>sys</span><span class=o>.</span><span class=n>argv</span><span class=p>)</span>

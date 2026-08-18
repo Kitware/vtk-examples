@@ -78,8 +78,8 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_program_parameters</span><span class=p>():</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>argparse</span>
-    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;How to render an object in a scene with a glowing outline.&#39;</span>
-    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;</span>
+    <span class=n>description</span> <span class=o>=</span> <span class=s1>'How to render an object in a scene with a glowing outline.'</span>
+    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>'''</span>
 <span class=s1>Parts of a scene are highlighted by applying the render pass to a layered renderer</span>
 <span class=s1> on top of the main scene. For optimal results, actors that form the outline</span>
 <span class=s1> should be brightly colored with lighting disabled. The outline will have the</span>
@@ -87,7 +87,7 @@ function registerListener(event, func) {
 
 <span class=s1>When combined with layered renderers, this creates a very visible highlight without</span>
 <span class=s1> altering the highlighted object.</span>
-<span class=s1>    &#39;&#39;&#39;</span>
+<span class=s1>    '''</span>
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
                                      <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawDescriptionHelpFormatter</span><span class=p>)</span>
     <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
@@ -101,12 +101,12 @@ function registerListener(event, func) {
 </span>
     <span class=c1># Set up the renderers.</span>
     <span class=c1># One for the object and the other for the outline.</span>
-<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;DarkSlateGray&#39;</span><span class=p>),</span>
-</span>                           <span class=n>background2</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;DarkSlateBlue&#39;</span><span class=p>),</span>
+<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'DarkSlateGray'</span><span class=p>),</span>
+</span>                           <span class=n>background2</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'DarkSlateBlue'</span><span class=p>),</span>
                            <span class=n>gradient_background</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
 <span class=hll>    <span class=n>renderer_outline</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>layer</span><span class=o>=</span><span class=mi>1</span><span class=p>)</span>
 </span>
-<span class=hll>    <span class=n>ren_win</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>size</span><span class=o>=</span><span class=p>(</span><span class=mi>600</span><span class=p>,</span> <span class=mi>600</span><span class=p>),</span> <span class=n>multi_samples</span><span class=o>=</span><span class=mi>0</span><span class=p>,</span> <span class=n>window_name</span><span class=o>=</span><span class=s1>&#39;OutlineGlowPass&#39;</span><span class=p>,</span> <span class=n>number_of_layers</span><span class=o>=</span><span class=mi>2</span><span class=p>)</span>
+<span class=hll>    <span class=n>ren_win</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>size</span><span class=o>=</span><span class=p>(</span><span class=mi>600</span><span class=p>,</span> <span class=mi>600</span><span class=p>),</span> <span class=n>multi_samples</span><span class=o>=</span><span class=mi>0</span><span class=p>,</span> <span class=n>window_name</span><span class=o>=</span><span class=s1>'OutlineGlowPass'</span><span class=p>,</span> <span class=n>number_of_layers</span><span class=o>=</span><span class=mi>2</span><span class=p>)</span>
 </span>    <span class=n>ren_win</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer_outline</span><span class=p>)</span>
     <span class=n>ren_win</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>)</span>
 
@@ -121,11 +121,11 @@ function registerListener(event, func) {
 </span>    <span class=n>arrow_source</span> <span class=o>&gt;&gt;</span> <span class=n>cone_mapper_main</span>
 
 <span class=hll>    <span class=n>cone_actor_main</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>(</span><span class=n>mapper</span><span class=o>=</span><span class=n>cone_mapper_main</span><span class=p>)</span>
-</span>    <span class=n>cone_actor_main</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>diffuse_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;LimeGreen&#39;</span><span class=p>)</span>
+</span>    <span class=n>cone_actor_main</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>diffuse_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'LimeGreen'</span><span class=p>)</span>
 
     <span class=n>renderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>cone_actor_main</span><span class=p>)</span>
 
-    <span class=c1># Let&#39;s make the outline glow!</span>
+    <span class=c1># Let's make the outline glow!</span>
     <span class=c1># Create the render pass.</span>
 <span class=hll>    <span class=n>basic_passes</span> <span class=o>=</span> <span class=n>vtkRenderStepsPass</span><span class=p>()</span>
 </span><span class=hll>    <span class=n>glow_pass</span> <span class=o>=</span> <span class=n>vtkOutlineGlowPass</span><span class=p>(</span><span class=n>delegate_pass</span><span class=o>=</span><span class=n>basic_passes</span><span class=p>)</span>
@@ -138,7 +138,7 @@ function registerListener(event, func) {
 </span>    <span class=n>arrow_source</span> <span class=o>&gt;&gt;</span> <span class=n>cone_mapper_outline</span>
 
 <span class=hll>    <span class=n>cone_actor_outline</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>(</span><span class=n>mapper</span><span class=o>=</span><span class=n>cone_mapper_outline</span><span class=p>)</span>
-</span>    <span class=n>cone_actor_outline</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Magenta&#39;</span><span class=p>)</span>
+</span>    <span class=n>cone_actor_outline</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Magenta'</span><span class=p>)</span>
     <span class=n>cone_actor_outline</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>LightingOff</span><span class=p>()</span>
 
     <span class=n>renderer_outline</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>cone_actor_outline</span><span class=p>)</span>
@@ -157,6 +157,6 @@ function registerListener(event, func) {
     <span class=n>iren</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

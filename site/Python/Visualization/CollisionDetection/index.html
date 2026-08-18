@@ -82,8 +82,8 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_program_parameters</span><span class=p>():</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>argparse</span>
-    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;Collision detection.&#39;</span>
-    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;</span>
+    <span class=n>description</span> <span class=o>=</span> <span class=s1>'Collision detection.'</span>
+    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>'''</span>
 <span class=hll><span class=s1>This examples uses vtkCollisionDetectionFilter to find the intersection between a</span>
 </span><span class=s1> fixed (solid white) and moving (red wireframe) sphere.</span>
 <span class=s1>The animation places the moving sphere some distance from the fixed sphere and</span>
@@ -95,10 +95,10 @@ function registerListener(event, func) {
 <span class=s1>2. First contact (1) quickly find the first contact point.</span>
 <span class=s1>3. Half contacts (2) finds all the contacting cell pairs with one points per collision.</span>
 
-<span class=s1>    &#39;&#39;&#39;</span>
+<span class=s1>    '''</span>
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
                                      <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawDescriptionHelpFormatter</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;contactMode&#39;</span><span class=p>,</span> <span class=n>nargs</span><span class=o>=</span><span class=s1>&#39;?&#39;</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mi>0</span><span class=p>,</span> <span class=nb>type</span><span class=o>=</span><span class=nb>int</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Contact mode 0 (default), 1, or 2.&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'contactMode'</span><span class=p>,</span> <span class=n>nargs</span><span class=o>=</span><span class=s1>'?'</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mi>0</span><span class=p>,</span> <span class=nb>type</span><span class=o>=</span><span class=nb>int</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'Contact mode 0 (default), 1, or 2.'</span><span class=p>)</span>
     <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
     <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>contactMode</span>
 
@@ -147,7 +147,7 @@ function registerListener(event, func) {
 </span>    <span class=n>actor1</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper1</span><span class=p>)</span>
     <span class=n>actor1</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>BackfaceCullingOn</span><span class=p>()</span>
     <span class=n>actor1</span><span class=o>.</span><span class=n>SetUserTransform</span><span class=p>(</span><span class=n>transform0</span><span class=p>)</span>
-    <span class=n>actor1</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetDiffuseColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;Tomato&quot;</span><span class=p>))</span>
+    <span class=n>actor1</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetDiffuseColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>"Tomato"</span><span class=p>))</span>
     <span class=n>actor1</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetRepresentationToWireframe</span><span class=p>()</span>
 
 <span class=hll>    <span class=n>mapper2</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
@@ -164,7 +164,7 @@ function registerListener(event, func) {
 
 <span class=hll>    <span class=n>actor3</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>actor3</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper3</span><span class=p>)</span>
-    <span class=n>actor3</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;Black&quot;</span><span class=p>))</span>
+    <span class=n>actor3</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>"Black"</span><span class=p>))</span>
     <span class=n>actor3</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetLineWidth</span><span class=p>(</span><span class=mf>3.0</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>txt</span> <span class=o>=</span> <span class=n>vtkTextActor</span><span class=p>()</span>
@@ -176,7 +176,7 @@ function registerListener(event, func) {
     <span class=n>renderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor2</span><span class=p>)</span>
     <span class=n>renderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor3</span><span class=p>)</span>
     <span class=n>renderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>txt</span><span class=p>)</span>
-    <span class=n>renderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>&quot;Gray&quot;</span><span class=p>))</span>
+    <span class=n>renderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s2>"Gray"</span><span class=p>))</span>
     <span class=n>renderer</span><span class=o>.</span><span class=n>UseHiddenLineRemovalOn</span><span class=p>()</span>
 
 <span class=hll>    <span class=n>renderWindow</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>()</span>
@@ -195,13 +195,13 @@ function registerListener(event, func) {
     <span class=n>renderer</span><span class=o>.</span><span class=n>GetActiveCamera</span><span class=p>()</span><span class=o>.</span><span class=n>Elevation</span><span class=p>(</span><span class=mi>45</span><span class=p>)</span>
     <span class=n>renderer</span><span class=o>.</span><span class=n>GetActiveCamera</span><span class=p>()</span><span class=o>.</span><span class=n>Dolly</span><span class=p>(</span><span class=mf>1.2</span><span class=p>)</span>
 
-    <span class=n>renderWindow</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;CollisionDetection&#39;</span><span class=p>)</span>
+    <span class=n>renderWindow</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>'CollisionDetection'</span><span class=p>)</span>
     <span class=n>renderWindow</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
 
     <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>numSteps</span><span class=p>):</span>
         <span class=n>transform0</span><span class=o>.</span><span class=n>Translate</span><span class=p>(</span><span class=n>dx</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>)</span>
         <span class=n>renderer</span><span class=o>.</span><span class=n>ResetCameraClippingRange</span><span class=p>()</span>
-        <span class=n>s</span> <span class=o>=</span> <span class=s1>&#39;</span><span class=si>{:s}</span><span class=s1>: Number of contact cells is </span><span class=si>{:d}</span><span class=s1>&#39;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>collide</span><span class=o>.</span><span class=n>GetCollisionModeAsString</span><span class=p>(),</span>
+        <span class=n>s</span> <span class=o>=</span> <span class=s1>'</span><span class=si>{:s}</span><span class=s1>: Number of contact cells is </span><span class=si>{:d}</span><span class=s1>'</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>collide</span><span class=o>.</span><span class=n>GetCollisionModeAsString</span><span class=p>(),</span>
                                                            <span class=n>collide</span><span class=o>.</span><span class=n>GetNumberOfContacts</span><span class=p>())</span>
         <span class=n>txt</span><span class=o>.</span><span class=n>SetInput</span><span class=p>(</span><span class=n>s</span><span class=p>)</span>
         <span class=n>renderWindow</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
@@ -214,7 +214,7 @@ function registerListener(event, func) {
     <span class=n>renderWindow</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
     <span class=n>renderWindow</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
     <span class=n>interactor</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
-    <span class=c1># In Field Data there will be an array named &quot;ContactCells&quot;.</span>
+    <span class=c1># In Field Data there will be an array named "ContactCells".</span>
     <span class=c1># This array indexes contacting cells (e.g.) index 10 of array 0</span>
     <span class=c1>#  points to a cell (triangle) which contacts/intersects a cell</span>
     <span class=c1>#  at index 10 of array 1.</span>
@@ -224,6 +224,6 @@ function registerListener(event, func) {
     <span class=c1># print(collide.GetOutput(1))</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

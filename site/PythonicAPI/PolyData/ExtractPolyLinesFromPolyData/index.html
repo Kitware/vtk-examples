@@ -82,9 +82,9 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>main</span><span class=p>():</span>
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
-</span>    <span class=n>line_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;peacock&#39;</span><span class=p>)</span>
-    <span class=n>model_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;silver&#39;</span><span class=p>)</span>
-    <span class=n>background_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;wheat&#39;</span><span class=p>)</span>
+</span>    <span class=n>line_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'peacock'</span><span class=p>)</span>
+    <span class=n>model_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'silver'</span><span class=p>)</span>
+    <span class=n>background_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'wheat'</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>model_source</span> <span class=o>=</span> <span class=n>vtkSphereSource</span><span class=p>()</span>
 </span>
@@ -111,7 +111,7 @@ function registerListener(event, func) {
     <span class=n>lines</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>line_width</span> <span class=o>=</span> <span class=mf>3.0</span>
 
 <span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>background_color</span><span class=p>)</span>
-</span><span class=hll>    <span class=n>render_window</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>size</span><span class=o>=</span><span class=p>(</span><span class=mi>640</span><span class=p>,</span> <span class=mi>480</span><span class=p>),</span> <span class=n>window_name</span><span class=o>=</span><span class=s1>&#39;ExtractPolyLinesFromPolyData&#39;</span><span class=p>)</span>
+</span><span class=hll>    <span class=n>render_window</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>size</span><span class=o>=</span><span class=p>(</span><span class=mi>640</span><span class=p>,</span> <span class=mi>480</span><span class=p>),</span> <span class=n>window_name</span><span class=o>=</span><span class=s1>'ExtractPolyLinesFromPolyData'</span><span class=p>)</span>
 </span>    <span class=n>render_window</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>interactor</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
@@ -132,25 +132,25 @@ function registerListener(event, func) {
     <span class=c1># Extract the lines from the polydata.</span>
     <span class=n>number_of_lines</span> <span class=o>=</span> <span class=n>cutter</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetNumberOfLines</span><span class=p>()</span>
 
-<span class=hll>    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;-----------Lines without using vtkStripper&#39;</span><span class=p>)</span>
-</span>    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;There are </span><span class=si>{</span><span class=n>number_of_lines</span><span class=si>}</span><span class=s1> lines in the polydata.&#39;</span><span class=p>)</span>
+<span class=hll>    <span class=nb>print</span><span class=p>(</span><span class=s1>'-----------Lines without using vtkStripper'</span><span class=p>)</span>
+</span>    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'There are </span><span class=si>{</span><span class=n>number_of_lines</span><span class=si>}</span><span class=s1> lines in the polydata.'</span><span class=p>)</span>
 
     <span class=n>number_of_lines</span> <span class=o>=</span> <span class=n>stripper</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetNumberOfLines</span><span class=p>()</span>
     <span class=n>points</span> <span class=o>=</span> <span class=n>stripper</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetPoints</span><span class=p>()</span>
     <span class=n>cells</span> <span class=o>=</span> <span class=n>stripper</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetLines</span><span class=p>()</span>
     <span class=n>cells</span><span class=o>.</span><span class=n>InitTraversal</span><span class=p>()</span>
 
-<span class=hll>    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;-----------Lines using vtkStripper&#39;</span><span class=p>)</span>
-</span>    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;There are </span><span class=si>{</span><span class=n>number_of_lines</span><span class=si>}</span><span class=s1> lines in the polydata.&#39;</span><span class=p>)</span>
+<span class=hll>    <span class=nb>print</span><span class=p>(</span><span class=s1>'-----------Lines using vtkStripper'</span><span class=p>)</span>
+</span>    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'There are </span><span class=si>{</span><span class=n>number_of_lines</span><span class=si>}</span><span class=s1> lines in the polydata.'</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>indices</span> <span class=o>=</span> <span class=n>vtkIdList</span><span class=p>()</span>
 </span>    <span class=n>line_count</span> <span class=o>=</span> <span class=mi>0</span>
 
     <span class=k>while</span> <span class=n>cells</span><span class=o>.</span><span class=n>GetNextCell</span><span class=p>(</span><span class=n>indices</span><span class=p>):</span>
-        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;Line </span><span class=si>{</span><span class=n>line_count</span><span class=si>}</span><span class=s1>:&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'Line </span><span class=si>{</span><span class=n>line_count</span><span class=si>}</span><span class=s1>:'</span><span class=p>)</span>
         <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=n>indices</span><span class=o>.</span><span class=n>GetNumberOfIds</span><span class=p>()):</span>
             <span class=n>point</span> <span class=o>=</span> <span class=n>points</span><span class=o>.</span><span class=n>GetPoint</span><span class=p>(</span><span class=n>indices</span><span class=o>.</span><span class=n>GetId</span><span class=p>(</span><span class=n>i</span><span class=p>))</span>
-            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;</span><span class=se>\t</span><span class=s1>(</span><span class=si>{</span><span class=n>point</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=si>:</span><span class=s1>9.6f</span><span class=si>}</span><span class=s1>,</span><span class=si>{</span><span class=n>point</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=si>:</span><span class=s1>9.6f</span><span class=si>}</span><span class=s1>, </span><span class=si>{</span><span class=n>point</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span><span class=si>:</span><span class=s1>9.6f</span><span class=si>}</span><span class=s1>)&#39;</span><span class=p>)</span>
+            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'</span><span class=se>\t</span><span class=s1>(</span><span class=si>{</span><span class=n>point</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=si>:</span><span class=s1>9.6f</span><span class=si>}</span><span class=s1>,</span><span class=si>{</span><span class=n>point</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=si>:</span><span class=s1>9.6f</span><span class=si>}</span><span class=s1>, </span><span class=si>{</span><span class=n>point</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span><span class=si>:</span><span class=s1>9.6f</span><span class=si>}</span><span class=s1>)'</span><span class=p>)</span>
         <span class=n>line_count</span> <span class=o>+=</span> <span class=mi>1</span>
 
 
@@ -170,6 +170,6 @@ function registerListener(event, func) {
         <span class=n>VTK_SURFACE</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>2</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

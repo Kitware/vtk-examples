@@ -99,7 +99,7 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
     <span class=c1># Set the background color.</span>
-    <span class=n>colors</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=s1>&#39;BkgColor&#39;</span><span class=p>,</span> <span class=p>[</span><span class=mi>51</span><span class=p>,</span> <span class=mi>77</span><span class=p>,</span> <span class=mi>102</span><span class=p>,</span> <span class=mi>255</span><span class=p>])</span>
+    <span class=n>colors</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=s1>'BkgColor'</span><span class=p>,</span> <span class=p>[</span><span class=mi>51</span><span class=p>,</span> <span class=mi>77</span><span class=p>,</span> <span class=mi>102</span><span class=p>,</span> <span class=mi>255</span><span class=p>])</span>
 
     <span class=n>titles</span> <span class=o>=</span> <span class=nb>list</span><span class=p>()</span>
     <span class=n>textMappers</span> <span class=o>=</span> <span class=nb>list</span><span class=p>()</span>
@@ -111,26 +111,26 @@ function registerListener(event, func) {
     <span class=n>renderers</span> <span class=o>=</span> <span class=nb>list</span><span class=p>()</span>
 
     <span class=n>uGrids</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>MakeHexagonalPrism</span><span class=p>())</span>
-    <span class=n>titles</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;Hexagonal Prism&#39;</span><span class=p>)</span>
+    <span class=n>titles</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>'Hexagonal Prism'</span><span class=p>)</span>
     <span class=n>uGrids</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>MakeHexahedron</span><span class=p>())</span>
-    <span class=n>titles</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;Hexahedron&#39;</span><span class=p>)</span>
+    <span class=n>titles</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>'Hexahedron'</span><span class=p>)</span>
     <span class=n>uGrids</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>MakePentagonalPrism</span><span class=p>())</span>
-    <span class=n>titles</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;Pentagonal Prism&#39;</span><span class=p>)</span>
+    <span class=n>titles</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>'Pentagonal Prism'</span><span class=p>)</span>
 
     <span class=n>uGrids</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>MakePolyhedron</span><span class=p>())</span>
-    <span class=n>titles</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;Polyhedron&#39;</span><span class=p>)</span>
+    <span class=n>titles</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>'Polyhedron'</span><span class=p>)</span>
     <span class=n>uGrids</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>MakePyramid</span><span class=p>())</span>
-    <span class=n>titles</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;Pyramid&#39;</span><span class=p>)</span>
+    <span class=n>titles</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>'Pyramid'</span><span class=p>)</span>
     <span class=n>uGrids</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>MakeTetrahedron</span><span class=p>())</span>
-    <span class=n>titles</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;Tetrahedron&#39;</span><span class=p>)</span>
+    <span class=n>titles</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>'Tetrahedron'</span><span class=p>)</span>
 
     <span class=n>uGrids</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>MakeVoxel</span><span class=p>())</span>
-    <span class=n>titles</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;Voxel&#39;</span><span class=p>)</span>
+    <span class=n>titles</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>'Voxel'</span><span class=p>)</span>
     <span class=n>uGrids</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>MakeWedge</span><span class=p>())</span>
-    <span class=n>titles</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;Wedge&#39;</span><span class=p>)</span>
+    <span class=n>titles</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>'Wedge'</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>renWin</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>()</span>
-</span>    <span class=n>renWin</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;Cell3DDemonstration&#39;</span><span class=p>)</span>
+</span>    <span class=n>renWin</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>'Cell3DDemonstration'</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>iRen</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>iRen</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>renWin</span><span class=p>)</span>
@@ -139,7 +139,7 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>textProperty</span> <span class=o>=</span> <span class=n>vtkTextProperty</span><span class=p>()</span>
 </span>    <span class=n>textProperty</span><span class=o>.</span><span class=n>SetFontSize</span><span class=p>(</span><span class=mi>16</span><span class=p>)</span>
     <span class=n>textProperty</span><span class=o>.</span><span class=n>SetJustificationToCentered</span><span class=p>()</span>
-    <span class=n>textProperty</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;LightGoldenrodYellow&#39;</span><span class=p>))</span>
+    <span class=n>textProperty</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'LightGoldenrodYellow'</span><span class=p>))</span>
 
     <span class=c1># Create and link the mappers actors and renderers together.</span>
     <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=nb>len</span><span class=p>(</span><span class=n>uGrids</span><span class=p>)):</span>
@@ -152,7 +152,7 @@ function registerListener(event, func) {
 </span>
         <span class=n>mappers</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>uGrids</span><span class=p>[</span><span class=n>i</span><span class=p>])</span>
         <span class=n>actors</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mappers</span><span class=p>[</span><span class=n>i</span><span class=p>])</span>
-        <span class=n>actors</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;PeachPuff&#39;</span><span class=p>))</span>
+        <span class=n>actors</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'PeachPuff'</span><span class=p>))</span>
         <span class=n>renderers</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>actors</span><span class=p>[</span><span class=n>i</span><span class=p>])</span>
 
         <span class=n>textMappers</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>SetInput</span><span class=p>(</span><span class=n>titles</span><span class=p>[</span><span class=n>i</span><span class=p>])</span>
@@ -189,13 +189,13 @@ function registerListener(event, func) {
                 <span class=c1># Add a renderer even if there is no actor.</span>
                 <span class=c1># This makes the render window background all the same color.</span>
 <span class=hll>                <span class=n>ren</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>()</span>
-</span>                <span class=n>ren</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;BkgColor&#39;</span><span class=p>))</span>
+</span>                <span class=n>ren</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'BkgColor'</span><span class=p>))</span>
                 <span class=n>ren</span><span class=o>.</span><span class=n>SetViewport</span><span class=p>(</span><span class=n>viewport</span><span class=p>)</span>
                 <span class=n>renWin</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>ren</span><span class=p>)</span>
                 <span class=k>continue</span>
 
             <span class=n>renderers</span><span class=p>[</span><span class=n>index</span><span class=p>]</span><span class=o>.</span><span class=n>SetViewport</span><span class=p>(</span><span class=n>viewport</span><span class=p>)</span>
-            <span class=n>renderers</span><span class=p>[</span><span class=n>index</span><span class=p>]</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;BkgColor&#39;</span><span class=p>))</span>
+            <span class=n>renderers</span><span class=p>[</span><span class=n>index</span><span class=p>]</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'BkgColor'</span><span class=p>))</span>
             <span class=n>renderers</span><span class=p>[</span><span class=n>index</span><span class=p>]</span><span class=o>.</span><span class=n>ResetCamera</span><span class=p>()</span>
             <span class=n>renderers</span><span class=p>[</span><span class=n>index</span><span class=p>]</span><span class=o>.</span><span class=n>GetActiveCamera</span><span class=p>()</span><span class=o>.</span><span class=n>Azimuth</span><span class=p>(</span><span class=mi>30</span><span class=p>)</span>
             <span class=n>renderers</span><span class=p>[</span><span class=n>index</span><span class=p>]</span><span class=o>.</span><span class=n>GetActiveCamera</span><span class=p>()</span><span class=o>.</span><span class=n>Elevation</span><span class=p>(</span><span class=o>-</span><span class=mi>30</span><span class=p>)</span>
@@ -203,16 +203,16 @@ function registerListener(event, func) {
             <span class=n>renderers</span><span class=p>[</span><span class=n>index</span><span class=p>]</span><span class=o>.</span><span class=n>ResetCameraClippingRange</span><span class=p>()</span>
 
     <span class=n>iRen</span><span class=o>.</span><span class=n>Initialize</span><span class=p>()</span>
-    <span class=n>renWin</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;Cell3DDemonstration&#39;</span><span class=p>)</span>
+    <span class=n>renWin</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>'Cell3DDemonstration'</span><span class=p>)</span>
     <span class=n>renWin</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
     <span class=n>iRen</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>MakeHexagonalPrism</span><span class=p>():</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>      3D: hexagonal prism: a wedge with an hexagonal base.</span>
 <span class=sd>      Be careful, the base face ordering is different from wedge.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 
     <span class=n>numberOfVertices</span> <span class=o>=</span> <span class=mi>12</span>
 
@@ -245,7 +245,7 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>MakeHexahedron</span><span class=p>():</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>      A regular hexagon (cube) with all faces square and three squares around</span>
 <span class=sd>       each vertex is created below.</span>
 
@@ -255,7 +255,7 @@ function registerListener(event, func) {
 
 <span class=sd>      As an exercise you can modify the coordinates of the points to create</span>
 <span class=sd>       seven topologically distinct convex hexahedras.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=n>numberOfVertices</span> <span class=o>=</span> <span class=mi>8</span>
 
     <span class=c1># Create the points</span>
@@ -313,10 +313,10 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>MakePolyhedron</span><span class=p>():</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>      Make a regular dodecahedron. It consists of twelve regular pentagonal</span>
 <span class=sd>      faces with three faces meeting at each vertex.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=c1># numberOfVertices = 20</span>
     <span class=n>numberOfFaces</span> <span class=o>=</span> <span class=mi>12</span>
     <span class=c1># numberOfFaceVertices = 5</span>
@@ -376,9 +376,9 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>MakePyramid</span><span class=p>():</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>      Make a regular square pyramid.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=n>numberOfVertices</span> <span class=o>=</span> <span class=mi>5</span>
 
 <span class=hll>    <span class=n>points</span> <span class=o>=</span> <span class=n>vtkPoints</span><span class=p>()</span>
@@ -405,9 +405,9 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>MakeTetrahedron</span><span class=p>():</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>      Make a tetrahedron.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=n>numberOfVertices</span> <span class=o>=</span> <span class=mi>4</span>
 
 <span class=hll>    <span class=n>points</span> <span class=o>=</span> <span class=n>vtkPoints</span><span class=p>()</span>
@@ -431,9 +431,9 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>MakeVoxel</span><span class=p>():</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>      A voxel is a representation of a regular grid in 3-D space.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=n>numberOfVertices</span> <span class=o>=</span> <span class=mi>8</span>
 
 <span class=hll>    <span class=n>points</span> <span class=o>=</span> <span class=n>vtkPoints</span><span class=p>()</span>
@@ -458,9 +458,9 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>MakeWedge</span><span class=p>():</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>      A wedge consists of two triangular ends and three rectangular faces.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 
     <span class=n>numberOfVertices</span> <span class=o>=</span> <span class=mi>6</span>
 
@@ -485,7 +485,7 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>WritePNG</span><span class=p>(</span><span class=n>renWin</span><span class=p>,</span> <span class=n>fn</span><span class=p>,</span> <span class=n>magnification</span><span class=o>=</span><span class=mi>1</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>      Screenshot</span>
 
 <span class=sd>      Write out a png corresponding to the render window.</span>
@@ -493,7 +493,7 @@ function registerListener(event, func) {
 <span class=sd>      :param: renWin - the render window.</span>
 <span class=sd>      :param: fn - the file name.</span>
 <span class=sd>      :param: magnification - the magnification.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 <span class=hll>    <span class=n>windowToImageFilter</span> <span class=o>=</span> <span class=n>vtkWindowToImageFilter</span><span class=p>()</span>
 </span>    <span class=n>windowToImageFilter</span><span class=o>.</span><span class=n>SetInput</span><span class=p>(</span><span class=n>renWin</span><span class=p>)</span>
     <span class=n>windowToImageFilter</span><span class=o>.</span><span class=n>SetMagnification</span><span class=p>(</span><span class=n>magnification</span><span class=p>)</span>
@@ -510,6 +510,6 @@ function registerListener(event, func) {
     <span class=n>writer</span><span class=o>.</span><span class=n>Write</span><span class=p>()</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

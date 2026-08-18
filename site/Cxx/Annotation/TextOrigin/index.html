@@ -98,7 +98,7 @@ function registerListener(event, func) {
                         </script> <hr> <h3 id=description>Description<a class=headerlink href=#description title="Permanent link">&para;</a></h3> <p>This example demonstrates the use of <a href=https://www.vtk.org/doc/nightly/html/classvtkVectorText.html>vtkVectorText</a> and <a href=https://www.vtk.org/doc/nightly/html/classvtkFollower.html>vtkFollower</a>. <a href=https://www.vtk.org/doc/nightly/html/classvtkVectorText.html>vtkVectorText</a> is used to create 3D annotation. <a href=https://www.vtk.org/doc/nightly/html/classvtkFollower.html>vtkFollower</a> is used to position the 3D text and to ensure that the text always faces the renderer's active camera (i.e., the text is always readable).</p> <div class="admonition tip"> <p class=admonition-title>Other languages</p> <p>See (<a href=../../../Python/Annotation/TextOrigin>Python</a>), (<a href=../../../PythonicAPI/Annotation/TextOrigin>PythonicAPI</a>), (<a href=../../../Java/Annotation/TextOrigin>Java</a>)</p> </div> <div class="admonition question"> <p class=admonition-title>Question</p> <p>If you have a question about this example, please use the <a href=https://discourse.vtk.org/ >VTK Discourse Forum</a></p> </div> <h3 id=code>Code<a class=headerlink href=#code title="Permanent link">&para;</a></h3> <p><strong>TextOrigin.cxx</strong></p> <div class=codehilite><pre><span></span><code><span class=c1>// This example demonstrates the use of vtkVectorText and vtkFollower.</span>
 <span class=c1>// vtkVectorText is used to create 3D annotation.  vtkFollower is used to</span>
 <span class=c1>// position the 3D text and to ensure that the text always faces the</span>
-<span class=c1>// renderer&#39;s active camera (i.e., the text is always readable).</span>
+<span class=c1>// renderer's active camera (i.e., the text is always readable).</span>
 
 <span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkActor.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkAxes.h&gt;</span>
@@ -130,14 +130,14 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=c1>// actor).  Position the text so it is displayed over the origin of the</span>
 <span class=w>  </span><span class=c1>// axes.</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkVectorText</span><span class=o>&gt;</span><span class=w> </span><span class=n>atext</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>atext</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>&quot;Origin&quot;</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>atext</span><span class=o>-&gt;</span><span class=n>SetText</span><span class=p>(</span><span class=s>"Origin"</span><span class=p>);</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPolyDataMapper</span><span class=o>&gt;</span><span class=w> </span><span class=n>textMapper</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>textMapper</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>atext</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkFollower</span><span class=o>&gt;</span><span class=w> </span><span class=n>textActor</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>textActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>textMapper</span><span class=p>);</span>
 <span class=w>  </span><span class=n>textActor</span><span class=o>-&gt;</span><span class=n>SetScale</span><span class=p>(</span><span class=mf>0.2</span><span class=p>,</span><span class=w> </span><span class=mf>0.2</span><span class=p>,</span><span class=w> </span><span class=mf>0.2</span><span class=p>);</span>
 <span class=w>  </span><span class=n>textActor</span><span class=o>-&gt;</span><span class=n>AddPosition</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mf>-0.1</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>);</span>
-<span class=w>  </span><span class=n>textActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Peacock&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>textActor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Peacock"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=w>  </span><span class=c1>// Create the Renderer, RenderWindow, and RenderWindowInteractor.</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderer</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderer</span><span class=p>;</span>
@@ -154,7 +154,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=c1>// Add the actors to the renderer.</span>
 <span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>axesActor</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>textActor</span><span class=p>);</span>
-<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Silver&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Silver"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
 <span class=w>  </span><span class=c1>// Zoom in closer.</span>
 <span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>ResetCamera</span><span class=p>();</span>
@@ -166,7 +166,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>textActor</span><span class=o>-&gt;</span><span class=n>SetCamera</span><span class=p>(</span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>GetActiveCamera</span><span class=p>());</span>
 
 <span class=w>  </span><span class=n>interactor</span><span class=o>-&gt;</span><span class=n>Initialize</span><span class=p>();</span>
-<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;TextOrigin&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"TextOrigin"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
 <span class=w>  </span><span class=n>interactor</span><span class=o>-&gt;</span><span class=n>Start</span><span class=p>();</span>
 
@@ -189,11 +189,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;TextOrigin: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"TextOrigin: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>TextOrigin</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>TextOrigin.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>TextOrigin</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

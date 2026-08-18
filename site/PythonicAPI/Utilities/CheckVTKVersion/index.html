@@ -64,14 +64,14 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>vtk_version_ok</span><span class=p>(</span><span class=n>major</span><span class=p>:</span> <span class=nb>int</span><span class=p>,</span> <span class=n>minor</span><span class=p>:</span> <span class=nb>int</span><span class=p>,</span> <span class=n>build</span><span class=p>:</span> <span class=nb>int</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Check the VTK version.</span>
 
 <span class=sd>    :param major: Major version.</span>
 <span class=sd>    :param minor: Minor version.</span>
 <span class=sd>    :param build: Build version.</span>
 <span class=sd>    :return: True if the requested VTK version is greater or equal to the actual VTK version.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=n>needed_version</span> <span class=o>=</span> <span class=mi>10000000000</span> <span class=o>*</span> <span class=nb>int</span><span class=p>(</span><span class=n>major</span><span class=p>)</span> <span class=o>+</span> <span class=mi>100000000</span> <span class=o>*</span> <span class=nb>int</span><span class=p>(</span><span class=n>minor</span><span class=p>)</span> <span class=o>+</span> <span class=nb>int</span><span class=p>(</span><span class=n>build</span><span class=p>)</span>
     <span class=n>vtk_version_number</span> <span class=o>=</span> <span class=n>VTK_VERSION_NUMBER</span>
     <span class=k>if</span> <span class=n>vtk_version_number</span> <span class=o>&gt;=</span> <span class=n>needed_version</span><span class=p>:</span>
@@ -81,32 +81,32 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>main</span><span class=p>():</span>
-<span class=hll>    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;VTK Version:&#39;</span><span class=p>,</span> <span class=n>vtkVersion</span><span class=o>.</span><span class=n>GetVTKVersion</span><span class=p>())</span>
+<span class=hll>    <span class=nb>print</span><span class=p>(</span><span class=s1>'VTK Version:'</span><span class=p>,</span> <span class=n>vtkVersion</span><span class=o>.</span><span class=n>GetVTKVersion</span><span class=p>())</span>
 </span>    <span class=k>if</span> <span class=ow>not</span> <span class=n>vtk_version_ok</span><span class=p>(</span><span class=mi>9</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>):</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;You need VTK version 9.0.0 or greater to run this program.&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'You need VTK version 9.0.0 or greater to run this program.'</span><span class=p>)</span>
         <span class=k>return</span>
 
     <span class=n>test_versions</span> <span class=o>=</span> <span class=p>((</span><span class=mi>9</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>20220831</span><span class=p>),</span> <span class=p>(</span><span class=mi>9</span><span class=p>,</span> <span class=mi>19</span><span class=p>,</span> <span class=mi>0</span><span class=p>))</span>
     <span class=k>for</span> <span class=n>ver</span> <span class=ow>in</span> <span class=n>test_versions</span><span class=p>:</span>
         <span class=k>if</span> <span class=n>vtk_version_ok</span><span class=p>(</span><span class=o>*</span><span class=n>ver</span><span class=p>):</span>
-            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;This code works for VTK Versions &gt;= </span><span class=si>{</span><span class=s2>&quot;.&quot;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=nb>map</span><span class=p>(</span><span class=nb>str</span><span class=p>,</span><span class=w> </span><span class=n>ver</span><span class=p>))</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'This code works for VTK Versions &gt;= </span><span class=si>{</span><span class=s2>"."</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=nb>map</span><span class=p>(</span><span class=nb>str</span><span class=p>,</span><span class=w> </span><span class=n>ver</span><span class=p>))</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
         <span class=k>else</span><span class=p>:</span>
-            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;You need VTK Version </span><span class=si>{</span><span class=s2>&quot;.&quot;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=nb>map</span><span class=p>(</span><span class=nb>str</span><span class=p>,</span><span class=w> </span><span class=n>ver</span><span class=p>))</span><span class=si>}</span><span class=s1> or greater.&#39;</span><span class=p>)</span>
+            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'You need VTK Version </span><span class=si>{</span><span class=s2>"."</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=nb>map</span><span class=p>(</span><span class=nb>str</span><span class=p>,</span><span class=w> </span><span class=n>ver</span><span class=p>))</span><span class=si>}</span><span class=s1> or greater.'</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>current_version</span> <span class=o>=</span> <span class=nb>tuple</span><span class=p>(</span><span class=nb>map</span><span class=p>(</span><span class=nb>int</span><span class=p>,</span> <span class=n>vtkVersion</span><span class=o>.</span><span class=n>GetVTKVersion</span><span class=p>()</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=s1>&#39;.&#39;</span><span class=p>)))</span>
+<span class=hll>    <span class=n>current_version</span> <span class=o>=</span> <span class=nb>tuple</span><span class=p>(</span><span class=nb>map</span><span class=p>(</span><span class=nb>int</span><span class=p>,</span> <span class=n>vtkVersion</span><span class=o>.</span><span class=n>GetVTKVersion</span><span class=p>()</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=s1>'.'</span><span class=p>)))</span>
 </span>    <span class=k>if</span> <span class=n>vtk_version_ok</span><span class=p>(</span><span class=o>*</span><span class=n>current_version</span><span class=p>):</span>
         <span class=k>try</span><span class=p>:</span>
-<span class=hll>            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;This code works for VTK Version </span><span class=si>{</span><span class=n>vtkVersion</span><span class=o>.</span><span class=n>GetVTKVersion</span><span class=p>()</span><span class=si>}</span><span class=s1>.&#39;</span><span class=p>)</span>
+<span class=hll>            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'This code works for VTK Version </span><span class=si>{</span><span class=n>vtkVersion</span><span class=o>.</span><span class=n>GetVTKVersion</span><span class=p>()</span><span class=si>}</span><span class=s1>.'</span><span class=p>)</span>
 </span>            <span class=c1># ...</span>
         <span class=k>except</span> <span class=ne>AttributeError</span><span class=p>:</span>
             <span class=k>pass</span>
     <span class=k>else</span><span class=p>:</span>
-<span class=hll>        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;This is code for older versions of VTK &lt;= </span><span class=si>{</span><span class=n>vtkVersion</span><span class=o>.</span><span class=n>GetVTKVersion</span><span class=p>()</span><span class=si>}</span><span class=s1>.&#39;</span><span class=p>)</span>
+<span class=hll>        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'This is code for older versions of VTK &lt;= </span><span class=si>{</span><span class=n>vtkVersion</span><span class=o>.</span><span class=n>GetVTKVersion</span><span class=p>()</span><span class=si>}</span><span class=s1>.'</span><span class=p>)</span>
 </span>        <span class=c1># ...</span>
-    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Rest of the code.&#39;</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s1>'Rest of the code.'</span><span class=p>)</span>
     <span class=c1># ...</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

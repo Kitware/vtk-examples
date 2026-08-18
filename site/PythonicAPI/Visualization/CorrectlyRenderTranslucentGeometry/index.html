@@ -63,7 +63,7 @@ function registerListener(event, func) {
 ./CorrectlyRenderTranslucentGeometry<span class=w> </span><span class=m>100</span><span class=w> </span><span class=m>100</span><span class=w> </span><span class=m>50</span><span class=w> </span><span class=m>0</span>.1<span class=w> </span><span class=m>0</span><span class=w> </span><span class=m>1</span><span class=w> </span>...<span class=w> </span>will<span class=w> </span>render<span class=w> </span>the<span class=w> </span>spheres<span class=w> </span>using<span class=w> </span>neither<span class=w> </span>depth<span class=w> </span>peeling<span class=w> </span>nor<span class=w> </span>depth<span class=w> </span>sorting
 </code></pre></div> <p><strong><em>Resultant frame rates show that depth peeling is usually much faster than the CPU-implementation, however, it will slow down the rendering process due to internal multi-pass rendering.</em></strong></p> <div class="admonition tip"> <p class=admonition-title>Other languages</p> <p>See (<a href=../../../Cxx/Visualization/CorrectlyRenderTranslucentGeometry>Cxx</a>)</p> </div> <div class="admonition question"> <p class=admonition-title>Question</p> <p>If you have a question about this example, please use the <a href=https://discourse.vtk.org/ >VTK Discourse Forum</a></p> </div> <h3 id=code>Code<a class=headerlink href=#code title="Permanent link">&para;</a></h3> <p><strong>CorrectlyRenderTranslucentGeometry.py</strong></p> <div class=codehilite><pre><span></span><code><span class=ch>#!/usr/bin/env python3</span>
 
-<span class=sd>&quot;&quot;&quot;</span>
+<span class=sd>"""</span>
 <span class=sd> Example application demonstrating correct rendering of translucent geometry.</span>
 <span class=sd> It will automatically detect whether depth peeling is supported by the</span>
 <span class=sd> hardware and software, and will apply depth peeling if possible. Otherwise</span>
@@ -73,9 +73,9 @@ function registerListener(event, func) {
 <span class=sd> [ProgramName] Theta Phi MaximumPeels OcclusionRatio ForceDepthSortingFlag</span>
 <span class=sd> DoNotUseAnyDepthRelatedAlgorithmFlag</span>
 
-<span class=sd> Theta ... spheres&#39; THETA resolution</span>
+<span class=sd> Theta ... spheres' THETA resolution</span>
 
-<span class=sd> Phi ... spheres&#39; PHI resolution</span>
+<span class=sd> Phi ... spheres' PHI resolution</span>
 
 <span class=sd> MaximumPeels ... maximum number of depth peels (multi-pass rendering) for depth peeling mode</span>
 
@@ -84,7 +84,7 @@ function registerListener(event, func) {
 <span class=sd> ForceDepthSortingFlag ... force depth sorting even if depth peeling is supported</span>
 
 <span class=sd> DoNotUseAnyDepthRelatedAlgorithmFlag ... neither use depth peeling nor depth sorting - just render as usual</span>
-<span class=sd>&quot;&quot;&quot;</span>
+<span class=sd>"""</span>
 
 <span class=c1># noinspection PyUnresolvedReferences</span>
 <span class=kn>import</span><span class=w> </span><span class=nn>vtkmodules.vtkInteractionStyle</span>
@@ -107,23 +107,23 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_program_parameters</span><span class=p>():</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>argparse</span>
-    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;Correctly render translucent geometry.&#39;</span>
-    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;</span>
-<span class=s1>    &#39;&#39;&#39;</span>
+    <span class=n>description</span> <span class=o>=</span> <span class=s1>'Correctly render translucent geometry.'</span>
+    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>'''</span>
+<span class=s1>    '''</span>
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
                                      <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawTextHelpFormatter</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-t&#39;</span><span class=p>,</span> <span class=s1>&#39;--theta&#39;</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mi>100</span><span class=p>,</span>
-                        <span class=n>help</span><span class=o>=</span><span class=s1>&#39;THETA resolution, default=100.&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-p&#39;</span><span class=p>,</span> <span class=s1>&#39;--phi&#39;</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mi>100</span><span class=p>,</span>
-                        <span class=n>help</span><span class=o>=</span><span class=s1>&#39;PHI resolution, default=100.&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-m&#39;</span><span class=p>,</span> <span class=s1>&#39;--maximum_peels&#39;</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mi>50</span><span class=p>,</span>
-                        <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The maximum number of depth peels (multi-pass rendering) for depth peeling mode, default=50.&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-o&#39;</span><span class=p>,</span> <span class=s1>&#39;--occlusion_ratio&#39;</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mf>0.1</span><span class=p>,</span>
-                        <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The occlusion ratio for depth peeling mode (0.0 for a perfect rendered image, &gt;0.0 for a non-perfect image which is expected to be slower), default=0.1.&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-f&#39;</span><span class=p>,</span> <span class=s1>&#39;--force_depth_sorting_flag&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_true&#39;</span><span class=p>,</span>
-                        <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Force depth sorting even if depth peeling is supported.&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-d&#39;</span><span class=p>,</span> <span class=s1>&#39;--do_not_use_any_depth_related_algorithm_flag&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_true&#39;</span><span class=p>,</span>
-                        <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Neither use depth peeling nor depth sorting - just render as usual.&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-t'</span><span class=p>,</span> <span class=s1>'--theta'</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mi>100</span><span class=p>,</span>
+                        <span class=n>help</span><span class=o>=</span><span class=s1>'THETA resolution, default=100.'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-p'</span><span class=p>,</span> <span class=s1>'--phi'</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mi>100</span><span class=p>,</span>
+                        <span class=n>help</span><span class=o>=</span><span class=s1>'PHI resolution, default=100.'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-m'</span><span class=p>,</span> <span class=s1>'--maximum_peels'</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mi>50</span><span class=p>,</span>
+                        <span class=n>help</span><span class=o>=</span><span class=s1>'The maximum number of depth peels (multi-pass rendering) for depth peeling mode, default=50.'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-o'</span><span class=p>,</span> <span class=s1>'--occlusion_ratio'</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mf>0.1</span><span class=p>,</span>
+                        <span class=n>help</span><span class=o>=</span><span class=s1>'The occlusion ratio for depth peeling mode (0.0 for a perfect rendered image, &gt;0.0 for a non-perfect image which is expected to be slower), default=0.1.'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-f'</span><span class=p>,</span> <span class=s1>'--force_depth_sorting_flag'</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>'store_true'</span><span class=p>,</span>
+                        <span class=n>help</span><span class=o>=</span><span class=s1>'Force depth sorting even if depth peeling is supported.'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-d'</span><span class=p>,</span> <span class=s1>'--do_not_use_any_depth_related_algorithm_flag'</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>'store_true'</span><span class=p>,</span>
+                        <span class=n>help</span><span class=o>=</span><span class=s1>'Neither use depth peeling nor depth sorting - just render as usual.'</span><span class=p>)</span>
     <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
 
     <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>theta</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>phi</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>maximum_peels</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>occlusion_ratio</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>force_depth_sorting_flag</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>do_not_use_any_depth_related_algorithm_flag</span>
@@ -143,13 +143,13 @@ function registerListener(event, func) {
 
 <span class=hll>    <span class=n>actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>(</span><span class=n>mapper</span><span class=o>=</span><span class=n>mapper</span><span class=p>)</span>
 </span>    <span class=n>actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>opacity</span> <span class=o>=</span> <span class=mf>0.5</span>  <span class=c1># translucent !!!</span>
-    <span class=n>actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Crimson&#39;</span><span class=p>)</span>
+    <span class=n>actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Crimson'</span><span class=p>)</span>
     <span class=c1># Put the objects in a position where it is easy to see different overlapping regions.</span>
     <span class=n>actor</span><span class=o>.</span><span class=n>RotateX</span><span class=p>(</span><span class=o>-</span><span class=mi>72</span><span class=p>)</span>
 
     <span class=c1># Create the RenderWindow, Renderer and RenderWindowInteractor</span>
-<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;SlateGray&#39;</span><span class=p>))</span>
-</span><span class=hll>    <span class=n>render_window</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>size</span><span class=o>=</span><span class=p>(</span><span class=mi>600</span><span class=p>,</span> <span class=mi>400</span><span class=p>),</span> <span class=n>window_name</span><span class=o>=</span><span class=s1>&#39;CorrectlyRenderTranslucentGeometry&#39;</span><span class=p>)</span>
+<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'SlateGray'</span><span class=p>))</span>
+</span><span class=hll>    <span class=n>render_window</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>size</span><span class=o>=</span><span class=p>(</span><span class=mi>600</span><span class=p>,</span> <span class=mi>400</span><span class=p>),</span> <span class=n>window_name</span><span class=o>=</span><span class=s1>'CorrectlyRenderTranslucentGeometry'</span><span class=p>)</span>
 </span>    <span class=n>render_window</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>render_window_interactor</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
@@ -166,33 +166,33 @@ function registerListener(event, func) {
     <span class=c1># Answer the key question: Does this box support GPU Depth Peeling?</span>
     <span class=n>use_depth_peeling</span> <span class=o>=</span> <span class=n>is_depth_peeling_supported</span><span class=p>(</span><span class=n>render_window</span><span class=p>,</span> <span class=n>renderer</span><span class=p>,</span> <span class=kc>True</span><span class=p>)</span>
     <span class=k>if</span> <span class=n>use_depth_peeling</span><span class=p>:</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;DEPTH PEELING SUPPORT: YES&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'DEPTH PEELING SUPPORT: YES'</span><span class=p>)</span>
     <span class=k>else</span><span class=p>:</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;DEPTH PEELING SUPPORT: NO&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'DEPTH PEELING SUPPORT: NO'</span><span class=p>)</span>
 
     <span class=n>success</span> <span class=o>=</span> <span class=kc>True</span>
     <span class=c1># Use depth peeling if available and not explicitly prohibited, otherwise we</span>
     <span class=c1># use manual depth sorting</span>
-    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;CHOSEN MODE: &#39;</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s1>'CHOSEN MODE: '</span><span class=p>)</span>
     <span class=k>if</span> <span class=n>use_depth_peeling</span> <span class=ow>and</span> <span class=ow>not</span> <span class=n>force_depth_sort</span> <span class=ow>and</span> <span class=ow>not</span> <span class=n>without_any_depth_things</span><span class=p>:</span>
         <span class=c1># GPU</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;*** DEPTH PEELING ***&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'*** DEPTH PEELING ***'</span><span class=p>)</span>
         <span class=c1># Setup GPU depth peeling with configured parameters</span>
         <span class=n>success</span> <span class=o>=</span> <span class=ow>not</span> <span class=n>setup_environment_for_depth_peeling</span><span class=p>(</span><span class=n>render_window</span><span class=p>,</span> <span class=n>renderer</span><span class=p>,</span> <span class=n>max_peels</span><span class=p>,</span> <span class=n>occulusion_ratio</span><span class=p>)</span>
     <span class=k>elif</span> <span class=ow>not</span> <span class=n>without_any_depth_things</span><span class=p>:</span>
         <span class=c1># CPU</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;*** DEPTH SORTING ***&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'*** DEPTH SORTING ***'</span><span class=p>)</span>
         <span class=c1># Setup CPU depth sorting filter</span>
 <span class=hll>        <span class=n>depth_sort</span> <span class=o>=</span> <span class=n>vtkDepthSortPolyData</span><span class=p>()</span>
 </span>        <span class=n>depth_sort</span><span class=o>.</span><span class=n>SetDirectionToBackToFront</span><span class=p>()</span>
         <span class=n>depth_sort</span><span class=o>.</span><span class=n>vector</span> <span class=o>=</span> <span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
         <span class=n>depth_sort</span><span class=o>.</span><span class=n>camera</span> <span class=o>=</span> <span class=n>renderer</span><span class=o>.</span><span class=n>active_camera</span>
         <span class=n>depth_sort</span><span class=o>.</span><span class=n>sort_scalars</span> <span class=o>=</span> <span class=kc>False</span>  <span class=c1># do not really need this here</span>
-        <span class=c1># Bring it to the mapper&#39;s input</span>
+        <span class=c1># Bring it to the mapper's input</span>
         <span class=n>translucent_geometry</span> <span class=o>&gt;&gt;</span> <span class=n>depth_sort</span> <span class=o>&gt;&gt;</span> <span class=n>mapper</span>
         <span class=n>depth_sort</span><span class=o>.</span><span class=n>update</span><span class=p>()</span>
     <span class=k>else</span><span class=p>:</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;*** NEITHER DEPTH PEELING NOR DEPTH SORTING ***&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'*** NEITHER DEPTH PEELING NOR DEPTH SORTING ***'</span><span class=p>)</span>
 
     <span class=c1># Initialize the interaction.</span>
     <span class=n>render_window_interactor</span><span class=o>.</span><span class=n>Initialize</span><span class=p>()</span>
@@ -217,14 +217,14 @@ function registerListener(event, func) {
         <span class=n>render_window</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
     <span class=n>clock</span><span class=o>.</span><span class=n>StopTimer</span><span class=p>()</span>
     <span class=n>frame_rate</span> <span class=o>=</span> <span class=nb>float</span><span class=p>(</span><span class=n>end_count</span><span class=p>)</span> <span class=o>/</span> <span class=n>clock</span><span class=o>.</span><span class=n>GetElapsedTime</span><span class=p>()</span>
-    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;AVERAGE FRAME RATE: </span><span class=si>{</span><span class=n>frame_rate</span><span class=si>:</span><span class=s1>g</span><span class=si>}</span><span class=s1>fps.&#39;</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'AVERAGE FRAME RATE: </span><span class=si>{</span><span class=n>frame_rate</span><span class=si>:</span><span class=s1>g</span><span class=si>}</span><span class=s1>fps.'</span><span class=p>)</span>
 
     <span class=c1># Start the interaction.</span>
     <span class=n>render_window_interactor</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>generate_overlapping_bunch_of_spheres</span><span class=p>(</span><span class=n>theta</span><span class=p>,</span> <span class=n>phi</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Generate a bunch of overlapping spheres within one poly data set:</span>
 <span class=sd>     one big sphere evenly surrounded by four small spheres that intersect the</span>
 <span class=sd>     centered sphere.</span>
@@ -232,7 +232,7 @@ function registerListener(event, func) {
 <span class=sd>    :param theta: theta sphere sampling resolution (THETA)</span>
 <span class=sd>    :param phi: phi sphere sampling resolution (PHI)</span>
 <span class=sd>    :return: Return the set of spheres within one logical poly data set.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 
 <span class=hll>    <span class=n>append_data</span> <span class=o>=</span> <span class=n>vtkAppendPolyData</span><span class=p>()</span>
 </span>
@@ -272,7 +272,7 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>setup_environment_for_depth_peeling</span><span class=p>(</span><span class=n>render_window</span><span class=p>,</span> <span class=n>renderer</span><span class=p>,</span> <span class=n>max_no_of_peels</span><span class=p>,</span> <span class=n>occlusion_ratio</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Setup the rendering environment for depth peeling (general depth peeling support is requested).</span>
 <span class=sd>     See is_depth_peeling_supported()</span>
 
@@ -283,7 +283,7 @@ function registerListener(event, func) {
 <span class=sd>                            &gt;0.0 means a non-perfect image which in general</span>
 <span class=sd>                             results in faster rendering)</span>
 <span class=sd>    :return: True if depth peeling could be set up.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=k>if</span> <span class=ow>not</span> <span class=n>render_window</span> <span class=ow>or</span> <span class=ow>not</span> <span class=n>renderer</span><span class=p>:</span>
         <span class=k>return</span> <span class=kc>False</span>
 
@@ -306,7 +306,7 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>is_depth_peeling_supported</span><span class=p>(</span><span class=n>render_window</span><span class=p>,</span> <span class=n>renderer</span><span class=p>,</span> <span class=n>do_it_off_screen</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Find out whether this box supports depth peeling. Depth peeling requires a variety of openGL extensions and appropriate drivers.</span>
 
 <span class=sd>    :param render_window: A valid openGL-supporting render window</span>
@@ -317,7 +317,7 @@ function registerListener(event, func) {
 <span class=sd>    :return: True if depth peeling is supported, False otherwise (which means</span>
 <span class=sd>                that another strategy must be used for correct rendering of translucent</span>
 <span class=sd>                geometry, e.g. CPU-based depth sorting)</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=n>success</span> <span class=o>=</span> <span class=kc>True</span>
 
     <span class=c1># Save original renderer / render window state</span>
@@ -351,6 +351,6 @@ function registerListener(event, func) {
     <span class=k>return</span> <span class=n>success</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

@@ -79,13 +79,13 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_program_parameters</span><span class=p>():</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>argparse</span>
-<span class=hll>    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;Extract a surface from vtkPolyData points.&#39;</span>
-</span>    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;</span>
-<span class=s1>    &#39;&#39;&#39;</span>
+<span class=hll>    <span class=n>description</span> <span class=o>=</span> <span class=s1>'Extract a surface from vtkPolyData points.'</span>
+</span>    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>'''</span>
+<span class=s1>    '''</span>
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
                                      <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawTextHelpFormatter</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;text&#39;</span><span class=p>,</span> <span class=n>nargs</span><span class=o>=</span><span class=s1>&#39;?&#39;</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span>
-                        <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The optional text (enclosed in quotes) to convert to an image.&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'text'</span><span class=p>,</span> <span class=n>nargs</span><span class=o>=</span><span class=s1>'?'</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span>
+                        <span class=n>help</span><span class=o>=</span><span class=s1>'The optional text (enclosed in quotes) to convert to an image.'</span><span class=p>)</span>
     <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
 
     <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>text</span>
@@ -94,7 +94,7 @@ function registerListener(event, func) {
 <span class=k>def</span><span class=w> </span><span class=nf>main</span><span class=p>():</span>
     <span class=n>text</span> <span class=o>=</span> <span class=n>get_program_parameters</span><span class=p>()</span>
     <span class=k>if</span> <span class=n>text</span> <span class=ow>is</span> <span class=kc>None</span><span class=p>:</span>
-        <span class=n>text</span> <span class=o>=</span> <span class=s1>&#39;Old Guys Rule&#39;</span>
+        <span class=n>text</span> <span class=o>=</span> <span class=s1>'Old Guys Rule'</span>
 
     <span class=c1># Create a blank, black image</span>
 <span class=hll>    <span class=n>drawing</span> <span class=o>=</span> <span class=n>vtkImageCanvasSource2D</span><span class=p>(</span><span class=n>number_of_scalar_components</span><span class=o>=</span><span class=mi>3</span><span class=p>,</span> <span class=n>extent</span><span class=o>=</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>640</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>480</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>),</span> <span class=n>draw_color</span><span class=o>=</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>))</span>
@@ -114,7 +114,7 @@ function registerListener(event, func) {
 
     <span class=c1># Set up a property for the strings containing fixed parameters.</span>
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
-</span><span class=hll>    <span class=n>text_property</span> <span class=o>=</span> <span class=n>vtkTextProperty</span><span class=p>(</span><span class=n>color</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Tomato&#39;</span><span class=p>))</span>
+</span><span class=hll>    <span class=n>text_property</span> <span class=o>=</span> <span class=n>vtkTextProperty</span><span class=p>(</span><span class=n>color</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Tomato'</span><span class=p>))</span>
 </span>    <span class=n>text_property</span><span class=o>.</span><span class=n>SetVerticalJustificationToCentered</span><span class=p>()</span>
     <span class=n>text_property</span><span class=o>.</span><span class=n>SetJustificationToCentered</span><span class=p>()</span>
 
@@ -190,16 +190,16 @@ function registerListener(event, func) {
                 <span class=n>final</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
                 <span class=n>valid_extents</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>extent</span><span class=p>)</span>
 
-    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;Tried </span><span class=si>{</span><span class=n>tried</span><span class=si>}</span><span class=s1>, but only accepted </span><span class=si>{</span><span class=n>accepted</span><span class=si>}</span><span class=s1>.&#39;</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'Tried </span><span class=si>{</span><span class=n>tried</span><span class=si>}</span><span class=s1>, but only accepted </span><span class=si>{</span><span class=n>accepted</span><span class=si>}</span><span class=s1>.'</span><span class=p>)</span>
 
     <span class=c1># Display the result.</span>
 <span class=hll>    <span class=n>interactor</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>
 <span class=hll>    <span class=n>image_viewer</span> <span class=o>=</span> <span class=n>vtkImageViewer2</span><span class=p>(</span><span class=n>size</span><span class=o>=</span><span class=p>(</span><span class=mi>640</span><span class=p>,</span> <span class=mi>512</span><span class=p>),</span> <span class=n>input_data</span><span class=o>=</span><span class=n>final</span><span class=o>.</span><span class=n>output</span><span class=p>)</span>
 </span>    <span class=n>image_viewer</span><span class=o>.</span><span class=n>SetupInteractor</span><span class=p>(</span><span class=n>interactor</span><span class=p>)</span>
-    <span class=n>image_viewer</span><span class=o>.</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>.</span><span class=n>background</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Wheat&#39;</span><span class=p>)</span>
+    <span class=n>image_viewer</span><span class=o>.</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>.</span><span class=n>background</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Wheat'</span><span class=p>)</span>
     <span class=n>image_viewer</span><span class=o>.</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>.</span><span class=n>ResetCamera</span><span class=p>()</span>
-    <span class=n>image_viewer</span><span class=o>.</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>.</span><span class=n>window_name</span> <span class=o>=</span> <span class=s1>&#39;StringToImageDemo&#39;</span>
+    <span class=n>image_viewer</span><span class=o>.</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>.</span><span class=n>window_name</span> <span class=o>=</span> <span class=s1>'StringToImageDemo'</span>
 
     <span class=n>camera</span> <span class=o>=</span> <span class=n>image_viewer</span><span class=o>.</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>.</span><span class=n>active_camera</span>
     <span class=n>camera</span><span class=o>.</span><span class=n>ParallelProjectionOn</span><span class=p>()</span>
@@ -210,7 +210,7 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>do_polygons_intersect</span><span class=p>(</span><span class=n>a</span><span class=p>,</span> <span class=n>b</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    A function to determine whether there is an intersection</span>
 <span class=sd>     between the two polygons described by the lists of vertices.</span>
 
@@ -221,7 +221,7 @@ function registerListener(event, func) {
 <span class=sd>    :param a: The ndarray of connected points [[x_1, y_1], [x_2, y_2],...] that form a closed polygon</span>
 <span class=sd>    :param b: The ndarray of connected points [[x_1, y_1], [x_2, y_2],...] that form a closed polygon</span>
 <span class=sd>    :return: True if there is any intersection between the 2 polygons, False otherwise</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 
     <span class=n>polygons</span> <span class=o>=</span> <span class=p>[</span><span class=n>a</span><span class=p>,</span> <span class=n>b</span><span class=p>]</span>
 
@@ -238,14 +238,14 @@ function registerListener(event, func) {
             <span class=n>p2</span> <span class=o>=</span> <span class=n>polygon</span><span class=p>[</span><span class=n>i2</span><span class=p>]</span>
 
             <span class=c1># Find the line perpendicular to this edge.</span>
-            <span class=n>normal</span> <span class=o>=</span> <span class=p>{</span><span class=s1>&#39;x&#39;</span><span class=p>:</span> <span class=n>p2</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>-</span> <span class=n>p1</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span> <span class=s1>&#39;y&#39;</span><span class=p>:</span> <span class=n>p1</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>-</span> <span class=n>p2</span><span class=p>[</span><span class=mi>0</span><span class=p>]}</span>
+            <span class=n>normal</span> <span class=o>=</span> <span class=p>{</span><span class=s1>'x'</span><span class=p>:</span> <span class=n>p2</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>-</span> <span class=n>p1</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span> <span class=s1>'y'</span><span class=p>:</span> <span class=n>p1</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>-</span> <span class=n>p2</span><span class=p>[</span><span class=mi>0</span><span class=p>]}</span>
 
             <span class=n>min_a</span><span class=p>,</span> <span class=n>max_a</span> <span class=o>=</span> <span class=kc>None</span><span class=p>,</span> <span class=kc>None</span>
             <span class=c1># For each vertex in the first shape, project it onto the line</span>
             <span class=c1># perpendicular to the edge and keep track of the min and max</span>
             <span class=c1># of these values.</span>
             <span class=k>for</span> <span class=n>j</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=nb>len</span><span class=p>(</span><span class=n>a</span><span class=p>)):</span>
-                <span class=n>projected</span> <span class=o>=</span> <span class=n>normal</span><span class=p>[</span><span class=s1>&#39;x&#39;</span><span class=p>]</span> <span class=o>*</span> <span class=n>a</span><span class=p>[</span><span class=n>j</span><span class=p>][</span><span class=mi>0</span><span class=p>]</span> <span class=o>+</span> <span class=n>normal</span><span class=p>[</span><span class=s1>&#39;y&#39;</span><span class=p>]</span> <span class=o>*</span> <span class=n>a</span><span class=p>[</span><span class=n>j</span><span class=p>][</span><span class=mi>1</span><span class=p>]</span>
+                <span class=n>projected</span> <span class=o>=</span> <span class=n>normal</span><span class=p>[</span><span class=s1>'x'</span><span class=p>]</span> <span class=o>*</span> <span class=n>a</span><span class=p>[</span><span class=n>j</span><span class=p>][</span><span class=mi>0</span><span class=p>]</span> <span class=o>+</span> <span class=n>normal</span><span class=p>[</span><span class=s1>'y'</span><span class=p>]</span> <span class=o>*</span> <span class=n>a</span><span class=p>[</span><span class=n>j</span><span class=p>][</span><span class=mi>1</span><span class=p>]</span>
                 <span class=k>if</span> <span class=p>(</span><span class=n>min_a</span> <span class=ow>is</span> <span class=kc>None</span><span class=p>)</span> <span class=ow>or</span> <span class=p>(</span><span class=n>projected</span> <span class=o>&lt;</span> <span class=n>min_a</span><span class=p>):</span>
                     <span class=n>min_a</span> <span class=o>=</span> <span class=n>projected</span>
 
@@ -257,7 +257,7 @@ function registerListener(event, func) {
             <span class=c1># of these values.</span>
             <span class=n>min_b</span><span class=p>,</span> <span class=n>max_b</span> <span class=o>=</span> <span class=kc>None</span><span class=p>,</span> <span class=kc>None</span>
             <span class=k>for</span> <span class=n>j</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=nb>len</span><span class=p>(</span><span class=n>b</span><span class=p>)):</span>
-                <span class=n>projected</span> <span class=o>=</span> <span class=n>normal</span><span class=p>[</span><span class=s1>&#39;x&#39;</span><span class=p>]</span> <span class=o>*</span> <span class=n>b</span><span class=p>[</span><span class=n>j</span><span class=p>][</span><span class=mi>0</span><span class=p>]</span> <span class=o>+</span> <span class=n>normal</span><span class=p>[</span><span class=s1>&#39;y&#39;</span><span class=p>]</span> <span class=o>*</span> <span class=n>b</span><span class=p>[</span><span class=n>j</span><span class=p>][</span><span class=mi>1</span><span class=p>]</span>
+                <span class=n>projected</span> <span class=o>=</span> <span class=n>normal</span><span class=p>[</span><span class=s1>'x'</span><span class=p>]</span> <span class=o>*</span> <span class=n>b</span><span class=p>[</span><span class=n>j</span><span class=p>][</span><span class=mi>0</span><span class=p>]</span> <span class=o>+</span> <span class=n>normal</span><span class=p>[</span><span class=s1>'y'</span><span class=p>]</span> <span class=o>*</span> <span class=n>b</span><span class=p>[</span><span class=n>j</span><span class=p>][</span><span class=mi>1</span><span class=p>]</span>
                 <span class=k>if</span> <span class=p>(</span><span class=n>min_b</span> <span class=ow>is</span> <span class=kc>None</span><span class=p>)</span> <span class=ow>or</span> <span class=p>(</span><span class=n>projected</span> <span class=o>&lt;</span> <span class=n>min_b</span><span class=p>):</span>
                     <span class=n>min_b</span> <span class=o>=</span> <span class=n>projected</span>
                 <span class=k>if</span> <span class=p>(</span><span class=n>max_b</span> <span class=ow>is</span> <span class=kc>None</span><span class=p>)</span> <span class=ow>or</span> <span class=p>(</span><span class=n>projected</span> <span class=o>&gt;</span> <span class=n>max_b</span><span class=p>):</span>
@@ -266,12 +266,12 @@ function registerListener(event, func) {
             <span class=c1># If there is no overlap between the projections, the edge we are</span>
             <span class=c1># looking at separates the two polygons, and we know there is no overlap.</span>
             <span class=k>if</span> <span class=p>(</span><span class=n>max_a</span> <span class=o>&lt;</span> <span class=n>min_b</span><span class=p>)</span> <span class=ow>or</span> <span class=p>(</span><span class=n>max_b</span> <span class=o>&lt;</span> <span class=n>min_a</span><span class=p>):</span>
-                <span class=c1># print(&#39;polygons don&#39;t intersect!&#39;)</span>
+                <span class=c1># print('polygons don't intersect!')</span>
                 <span class=k>return</span> <span class=kc>False</span>
 
     <span class=k>return</span> <span class=kc>True</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

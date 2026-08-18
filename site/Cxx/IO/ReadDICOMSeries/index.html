@@ -117,7 +117,7 @@ function registerListener(event, func) {
 </span>
 
 <span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;iostream&gt;</span>
-<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;sstream&gt;</span><span class=c1> // Needed to easily convert int to std::string.</span>
+<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;sstream&gt;</span><span class=w> </span><span class=c1>// Needed to easily convert int to std::string.</span>
 
 <span class=k>namespace</span><span class=w> </span><span class=p>{</span>
 
@@ -128,7 +128,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=k>static</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>Format</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>slice</span><span class=p>,</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>maxSlice</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>stringstream</span><span class=w> </span><span class=n>tmp</span><span class=p>;</span>
-<span class=w>    </span><span class=n>tmp</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Slice Number  &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>slice</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=mi>1</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;/&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>maxSlice</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=mi>1</span><span class=p>;</span>
+<span class=w>    </span><span class=n>tmp</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Slice Number  "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>slice</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=mi>1</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"/"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>maxSlice</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=mi>1</span><span class=p>;</span>
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>tmp</span><span class=p>.</span><span class=n>str</span><span class=p>();</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=p>};</span>
@@ -154,7 +154,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=n>_MinSlice</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>imageViewer</span><span class=o>-&gt;</span><span class=n>GetSliceMin</span><span class=p>();</span>
 <span class=w>    </span><span class=n>_MaxSlice</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>imageViewer</span><span class=o>-&gt;</span><span class=n>GetSliceMax</span><span class=p>();</span>
 <span class=w>    </span><span class=n>_Slice</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>_MinSlice</span><span class=p>;</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Slicer: Min = &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>_MinSlice</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;, Max = &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>_MaxSlice</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Slicer: Min = "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>_MinSlice</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>", Max = "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>_MaxSlice</span>
 <span class=w>         </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 
@@ -169,7 +169,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>_Slice</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>_MaxSlice</span><span class=p>)</span>
 <span class=w>    </span><span class=p>{</span>
 <span class=w>      </span><span class=n>_Slice</span><span class=w> </span><span class=o>+=</span><span class=w> </span><span class=mi>1</span><span class=p>;</span>
-<span class=w>      </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;MoveSliceForward::Slice = &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>_Slice</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>      </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"MoveSliceForward::Slice = "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>_Slice</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>      </span><span class=n>_ImageViewer</span><span class=o>-&gt;</span><span class=n>SetSlice</span><span class=p>(</span><span class=n>_Slice</span><span class=p>);</span>
 <span class=w>      </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>msg</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>StatusMessage</span><span class=o>::</span><span class=n>Format</span><span class=p>(</span><span class=n>_Slice</span><span class=p>,</span><span class=w> </span><span class=n>_MaxSlice</span><span class=p>);</span>
 <span class=w>      </span><span class=n>_StatusMapper</span><span class=o>-&gt;</span><span class=n>SetInput</span><span class=p>(</span><span class=n>msg</span><span class=p>.</span><span class=n>c_str</span><span class=p>());</span>
@@ -182,7 +182,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>_Slice</span><span class=w> </span><span class=o>&gt;</span><span class=w> </span><span class=n>_MinSlice</span><span class=p>)</span>
 <span class=w>    </span><span class=p>{</span>
 <span class=w>      </span><span class=n>_Slice</span><span class=w> </span><span class=o>-=</span><span class=w> </span><span class=mi>1</span><span class=p>;</span>
-<span class=w>      </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;MoveSliceBackward::Slice = &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>_Slice</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>      </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"MoveSliceBackward::Slice = "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>_Slice</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>      </span><span class=n>_ImageViewer</span><span class=o>-&gt;</span><span class=n>SetSlice</span><span class=p>(</span><span class=n>_Slice</span><span class=p>);</span>
 <span class=w>      </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>msg</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>StatusMessage</span><span class=o>::</span><span class=n>Format</span><span class=p>(</span><span class=n>_Slice</span><span class=p>,</span><span class=w> </span><span class=n>_MaxSlice</span><span class=p>);</span>
 <span class=w>      </span><span class=n>_StatusMapper</span><span class=o>-&gt;</span><span class=n>SetInput</span><span class=p>(</span><span class=n>msg</span><span class=p>.</span><span class=n>c_str</span><span class=p>());</span>
@@ -193,14 +193,14 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=k>virtual</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=n>OnKeyDown</span><span class=p>()</span><span class=w> </span><span class=k>override</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>key</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>GetInteractor</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>GetKeySym</span><span class=p>();</span>
-<span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>key</span><span class=p>.</span><span class=n>compare</span><span class=p>(</span><span class=s>&quot;Up&quot;</span><span class=p>)</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=mi>0</span><span class=p>)</span>
+<span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>key</span><span class=p>.</span><span class=n>compare</span><span class=p>(</span><span class=s>"Up"</span><span class=p>)</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=mi>0</span><span class=p>)</span>
 <span class=w>    </span><span class=p>{</span>
-<span class=w>      </span><span class=c1>// cout &lt;&lt; &quot;Up arrow key was pressed.&quot; &lt;&lt; endl;</span>
+<span class=w>      </span><span class=c1>// cout &lt;&lt; "Up arrow key was pressed." &lt;&lt; endl;</span>
 <span class=w>      </span><span class=n>MoveSliceForward</span><span class=p>();</span>
 <span class=w>    </span><span class=p>}</span>
-<span class=w>    </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>key</span><span class=p>.</span><span class=n>compare</span><span class=p>(</span><span class=s>&quot;Down&quot;</span><span class=p>)</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=mi>0</span><span class=p>)</span>
+<span class=w>    </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>key</span><span class=p>.</span><span class=n>compare</span><span class=p>(</span><span class=s>"Down"</span><span class=p>)</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=mi>0</span><span class=p>)</span>
 <span class=w>    </span><span class=p>{</span>
-<span class=w>      </span><span class=c1>// cout &lt;&lt; &quot;Down arrow key was pressed.&quot; &lt;&lt; endl;</span>
+<span class=w>      </span><span class=c1>// cout &lt;&lt; "Down arrow key was pressed." &lt;&lt; endl;</span>
 <span class=w>      </span><span class=n>MoveSliceBackward</span><span class=p>();</span>
 <span class=w>    </span><span class=p>}</span>
 <span class=w>    </span><span class=c1>// forward event</span>
@@ -209,21 +209,21 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=k>virtual</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=n>OnMouseWheelForward</span><span class=p>()</span><span class=w> </span><span class=k>override</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=c1>// std::cout &lt;&lt; &quot;Scrolled mouse wheel forward.&quot; &lt;&lt; std::endl;</span>
+<span class=w>    </span><span class=c1>// std::cout &lt;&lt; "Scrolled mouse wheel forward." &lt;&lt; std::endl;</span>
 <span class=w>    </span><span class=n>MoveSliceForward</span><span class=p>();</span>
-<span class=w>    </span><span class=c1>// don&#39;t forward events, otherwise the image will be zoomed</span>
+<span class=w>    </span><span class=c1>// don't forward events, otherwise the image will be zoomed</span>
 <span class=w>    </span><span class=c1>// in case another interactorstyle is used (e.g. trackballstyle, ...)</span>
 <span class=w>    </span><span class=c1>// vtkInteractorStyleImage::OnMouseWheelForward();</span>
 <span class=w>  </span><span class=p>}</span>
 
 <span class=w>  </span><span class=k>virtual</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=n>OnMouseWheelBackward</span><span class=p>()</span><span class=w> </span><span class=k>override</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=c1>// std::cout &lt;&lt; &quot;Scrolled mouse wheel backward.&quot; &lt;&lt; std::endl;</span>
+<span class=w>    </span><span class=c1>// std::cout &lt;&lt; "Scrolled mouse wheel backward." &lt;&lt; std::endl;</span>
 <span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>_Slice</span><span class=w> </span><span class=o>&gt;</span><span class=w> </span><span class=n>_MinSlice</span><span class=p>)</span>
 <span class=w>    </span><span class=p>{</span>
 <span class=w>      </span><span class=n>MoveSliceBackward</span><span class=p>();</span>
 <span class=w>    </span><span class=p>}</span>
-<span class=w>    </span><span class=c1>// don&#39;t forward events, otherwise the image will be zoomed</span>
+<span class=w>    </span><span class=c1>// don't forward events, otherwise the image will be zoomed</span>
 <span class=w>    </span><span class=c1>// in case another interactorstyle is used (e.g. trackballstyle, ...)</span>
 <span class=w>    </span><span class=c1>// vtkInteractorStyleImage::OnMouseWheelBackward();</span>
 <span class=w>  </span><span class=p>}</span>
@@ -240,12 +240,12 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=c1>// Verify input arguments.</span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>argc</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=mi>2</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Usage: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; FolderName&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Usage: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" FolderName"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>EXIT_FAILURE</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>folder</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>];</span>
-<span class=w>  </span><span class=c1>// std::string folder = &quot;C:\\VTK\\vtkdata-5.8.0\\Data\\DicomTestImages&quot;;</span>
+<span class=w>  </span><span class=c1>// std::string folder = "C:\\VTK\\vtkdata-5.8.0\\Data\\DicomTestImages";</span>
 
 <span class=w>  </span><span class=c1>// Read all the DICOM files in the specified directory.</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkDICOMImageReader</span><span class=o>&gt;</span><span class=w> </span><span class=n>reader</span><span class=p>;</span>
@@ -282,8 +282,8 @@ function registerListener(event, func) {
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkTextMapper</span><span class=o>&gt;</span><span class=w> </span><span class=n>usageTextMapper</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>usageTextMapper</span><span class=o>-&gt;</span><span class=n>SetInput</span><span class=p>(</span>
-<span class=w>      </span><span class=s>&quot;- Slice with mouse wheel</span><span class=se>\n</span><span class=s>  or Up/Down-Key</span><span class=se>\n</span><span class=s>- Zoom with pressed right</span><span class=se>\n</span><span class=s> &quot;</span>
-<span class=w>      </span><span class=s>&quot; mouse button while dragging&quot;</span><span class=p>);</span>
+<span class=w>      </span><span class=s>"- Slice with mouse wheel</span><span class=se>\n</span><span class=s>  or Up/Down-Key</span><span class=se>\n</span><span class=s>- Zoom with pressed right</span><span class=se>\n</span><span class=s> "</span>
+<span class=w>      </span><span class=s>" mouse button while dragging"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>usageTextMapper</span><span class=o>-&gt;</span><span class=n>SetTextProperty</span><span class=p>(</span><span class=n>usageTextProp</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor2D</span><span class=o>&gt;</span><span class=w> </span><span class=n>usageTextActor</span><span class=p>;</span>
@@ -305,7 +305,7 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=n>imageViewer</span><span class=o>-&gt;</span><span class=n>SetupInteractor</span><span class=p>(</span><span class=n>renderWindowInteractor</span><span class=p>);</span>
 <span class=w>  </span><span class=c1>// Make the interactor use our own interactorstyle</span>
-<span class=w>  </span><span class=c1>// cause SetupInteractor() is defining it&#39;s own default interatorstyle</span>
+<span class=w>  </span><span class=c1>// cause SetupInteractor() is defining it's own default interatorstyle</span>
 <span class=w>  </span><span class=c1>// this must be called after SetupInteractor().</span>
 <span class=w>  </span><span class=n>renderWindowInteractor</span><span class=o>-&gt;</span><span class=n>SetInteractorStyle</span><span class=p>(</span><span class=n>myInteractorStyle</span><span class=p>);</span>
 <span class=w>  </span><span class=c1>// Sdd slice status message and usage hint message to the renderer.</span>
@@ -316,9 +316,9 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>imageViewer</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
 <span class=w>  </span><span class=n>imageViewer</span><span class=o>-&gt;</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>ResetCamera</span><span class=p>();</span>
 <span class=w>  </span><span class=n>imageViewer</span><span class=o>-&gt;</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span>
-<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;SlateGray&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"SlateGray"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=n>imageViewer</span><span class=o>-&gt;</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>800</span><span class=p>,</span><span class=w> </span><span class=mi>800</span><span class=p>);</span>
-<span class=w>  </span><span class=n>imageViewer</span><span class=o>-&gt;</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;ReadDICOMSeries&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>imageViewer</span><span class=o>-&gt;</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"ReadDICOMSeries"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>imageViewer</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
 <span class=w>  </span><span class=n>renderWindowInteractor</span><span class=o>-&gt;</span><span class=n>Start</span><span class=p>();</span>
 
@@ -342,11 +342,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;ReadDICOMSeries: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"ReadDICOMSeries: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>ReadDICOMSeries</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>ReadDICOMSeries.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>ReadDICOMSeries</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

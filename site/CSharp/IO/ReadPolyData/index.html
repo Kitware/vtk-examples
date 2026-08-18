@@ -76,27 +76,27 @@ function registerListener(event, func) {
 <span class=w>            </span><span class=n>ReadPolyData</span><span class=p>();</span>
 <span class=w>         </span><span class=p>}</span>
 <span class=w>         </span><span class=k>catch</span><span class=p>(</span><span class=n>Exception</span><span class=w> </span><span class=n>ex</span><span class=p>)</span><span class=w> </span><span class=p>{</span>
-<span class=w>            </span><span class=n>MessageBox</span><span class=p>.</span><span class=n>Show</span><span class=p>(</span><span class=n>ex</span><span class=p>.</span><span class=n>Message</span><span class=p>,</span><span class=w> </span><span class=s>&quot;Exception&quot;</span><span class=p>,</span><span class=w> </span><span class=n>MessageBoxButtons</span><span class=p>.</span><span class=n>OK</span><span class=p>);</span>
+<span class=w>            </span><span class=n>MessageBox</span><span class=p>.</span><span class=n>Show</span><span class=p>(</span><span class=n>ex</span><span class=p>.</span><span class=n>Message</span><span class=p>,</span><span class=w> </span><span class=s>"Exception"</span><span class=p>,</span><span class=w> </span><span class=n>MessageBoxButtons</span><span class=p>.</span><span class=n>OK</span><span class=p>);</span>
 <span class=w>         </span><span class=p>}</span>
 <span class=w>      </span><span class=p>}</span>
 
 
 <span class=w>      </span><span class=k>private</span><span class=w> </span><span class=k>void</span><span class=w> </span><span class=nf>ReadPolyData</span><span class=p>()</span><span class=w> </span><span class=p>{</span>
 <span class=w>         </span><span class=c1>// Path to vtk data must be set as an environment variable</span>
-<span class=w>         </span><span class=c1>// VTK_DATA_ROOT = &quot;C:\VTK\vtkdata-5.8.0&quot;</span>
+<span class=w>         </span><span class=c1>// VTK_DATA_ROOT = "C:\VTK\vtkdata-5.8.0"</span>
 <span class=w>         </span><span class=n>vtkTesting</span><span class=w> </span><span class=n>test</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>vtkTesting</span><span class=p>.</span><span class=n>New</span><span class=p>();</span>
 <span class=w>         </span><span class=kt>string</span><span class=w> </span><span class=n>root</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>test</span><span class=p>.</span><span class=n>GetDataRoot</span><span class=p>();</span>
-<span class=w>         </span><span class=c1>// string filePath = System.IO.Path.Combine(root, @&quot;Data\SyntheticPolyline.vtp&quot;);</span>
-<span class=w>         </span><span class=c1>// string filePath = System.IO.Path.Combine(root, @&quot;Data\uniform-001371-5x5x5.vtp&quot;);</span>
-<span class=w>         </span><span class=c1>// string filePath = System.IO.Path.Combine(root, @&quot;Data\political.vtp&quot;);</span>
-<span class=w>         </span><span class=c1>// string filePath = System.IO.Path.Combine(root, @&quot;Data\filledContours.vtp&quot;);</span>
-<span class=w>         </span><span class=c1>// string filePath = System.IO.Path.Combine(root, @&quot;Data\disk_out_ref_surface.vtp&quot;);</span>
-<span class=w>         </span><span class=kt>string</span><span class=w> </span><span class=n>filePath</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>System</span><span class=p>.</span><span class=n>IO</span><span class=p>.</span><span class=n>Path</span><span class=p>.</span><span class=n>Combine</span><span class=p>(</span><span class=n>root</span><span class=p>,</span><span class=w> </span><span class=s>@&quot;Data\cow.vtp&quot;</span><span class=p>);</span>
+<span class=w>         </span><span class=c1>// string filePath = System.IO.Path.Combine(root, @"Data\SyntheticPolyline.vtp");</span>
+<span class=w>         </span><span class=c1>// string filePath = System.IO.Path.Combine(root, @"Data\uniform-001371-5x5x5.vtp");</span>
+<span class=w>         </span><span class=c1>// string filePath = System.IO.Path.Combine(root, @"Data\political.vtp");</span>
+<span class=w>         </span><span class=c1>// string filePath = System.IO.Path.Combine(root, @"Data\filledContours.vtp");</span>
+<span class=w>         </span><span class=c1>// string filePath = System.IO.Path.Combine(root, @"Data\disk_out_ref_surface.vtp");</span>
+<span class=w>         </span><span class=kt>string</span><span class=w> </span><span class=n>filePath</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>System</span><span class=p>.</span><span class=n>IO</span><span class=p>.</span><span class=n>Path</span><span class=p>.</span><span class=n>Combine</span><span class=p>(</span><span class=n>root</span><span class=p>,</span><span class=w> </span><span class=s>@"Data\cow.vtp"</span><span class=p>);</span>
 <span class=w>         </span><span class=c1>// reader</span>
 <span class=w>         </span><span class=c1>// Read all the data from the file</span>
 <span class=hll><span class=w>         </span><span class=n>vtkXMLPolyDataReader</span><span class=w> </span><span class=n>reader</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>vtkXMLPolyDataReader</span><span class=p>.</span><span class=n>New</span><span class=p>();</span>
 </span><span class=w>         </span><span class=k>if</span><span class=p>(</span><span class=n>reader</span><span class=p>.</span><span class=n>CanReadFile</span><span class=p>(</span><span class=n>filePath</span><span class=p>)</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=mi>0</span><span class=p>)</span><span class=w> </span><span class=p>{</span>
-<span class=w>            </span><span class=n>MessageBox</span><span class=p>.</span><span class=n>Show</span><span class=p>(</span><span class=s>&quot;Cannot read file \&quot;&quot;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>filePath</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&quot;\&quot;&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;Error&quot;</span><span class=p>,</span><span class=w> </span><span class=n>MessageBoxButtons</span><span class=p>.</span><span class=n>OK</span><span class=p>);</span>
+<span class=w>            </span><span class=n>MessageBox</span><span class=p>.</span><span class=n>Show</span><span class=p>(</span><span class=s>"Cannot read file \""</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>filePath</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>"\""</span><span class=p>,</span><span class=w> </span><span class=s>"Error"</span><span class=p>,</span><span class=w> </span><span class=n>MessageBoxButtons</span><span class=p>.</span><span class=n>OK</span><span class=p>);</span>
 <span class=w>            </span><span class=k>return</span><span class=p>;</span>
 <span class=w>         </span><span class=p>}</span>
 <span class=w>         </span><span class=n>reader</span><span class=p>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>filePath</span><span class=p>);</span>

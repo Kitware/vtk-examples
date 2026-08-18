@@ -90,14 +90,14 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_program_parameters</span><span class=p>(</span><span class=n>argv</span><span class=p>):</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>argparse</span>
-    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;The frog</span><span class=se>\&#39;</span><span class=s1>s brain.&#39;</span>
-    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;</span>
+    <span class=n>description</span> <span class=o>=</span> <span class=s1>'The frog</span><span class=se>\'</span><span class=s1>s brain.'</span>
+    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>'''</span>
 <span class=s1>    Model extracted without smoothing (left) and with smoothing (right).</span>
-<span class=s1>    &#39;&#39;&#39;</span>
+<span class=s1>    '''</span>
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
                                      <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawDescriptionHelpFormatter</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;data_folder&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The path to the folder containing frogtissue.mhd.&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;tissue&#39;</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=s1>&#39;brain&#39;</span><span class=p>,</span> <span class=n>nargs</span><span class=o>=</span><span class=s1>&#39;?&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The tissue to use.&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'data_folder'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'The path to the folder containing frogtissue.mhd.'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'tissue'</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=s1>'brain'</span><span class=p>,</span> <span class=n>nargs</span><span class=o>=</span><span class=s1>'?'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'The tissue to use.'</span><span class=p>)</span>
     <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
     <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>data_folder</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>tissue</span>
 
@@ -110,15 +110,15 @@ function registerListener(event, func) {
 </span>
     <span class=n>path</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>data_folder</span><span class=p>)</span>
     <span class=k>if</span> <span class=n>path</span><span class=o>.</span><span class=n>is_dir</span><span class=p>():</span>
-        <span class=n>s</span> <span class=o>=</span> <span class=s1>&#39;&#39;</span>
-        <span class=n>file_name</span> <span class=o>=</span> <span class=n>path</span><span class=o>.</span><span class=n>joinpath</span><span class=p>(</span><span class=s1>&#39;frogtissue&#39;</span><span class=p>)</span><span class=o>.</span><span class=n>with_suffix</span><span class=p>(</span><span class=s1>&#39;.mhd&#39;</span><span class=p>)</span>
+        <span class=n>s</span> <span class=o>=</span> <span class=s1>''</span>
+        <span class=n>file_name</span> <span class=o>=</span> <span class=n>path</span><span class=o>.</span><span class=n>joinpath</span><span class=p>(</span><span class=s1>'frogtissue'</span><span class=p>)</span><span class=o>.</span><span class=n>with_suffix</span><span class=p>(</span><span class=s1>'.mhd'</span><span class=p>)</span>
         <span class=k>if</span> <span class=ow>not</span> <span class=n>file_name</span><span class=o>.</span><span class=n>is_file</span><span class=p>():</span>
-            <span class=n>s</span> <span class=o>+=</span> <span class=s1>&#39;The file: </span><span class=si>{:s}</span><span class=s1> does not exist.&#39;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=nb>str</span><span class=p>(</span><span class=n>file_name</span><span class=p>))</span>
+            <span class=n>s</span> <span class=o>+=</span> <span class=s1>'The file: </span><span class=si>{:s}</span><span class=s1> does not exist.'</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=nb>str</span><span class=p>(</span><span class=n>file_name</span><span class=p>))</span>
         <span class=k>if</span> <span class=n>s</span><span class=p>:</span>
             <span class=nb>print</span><span class=p>(</span><span class=n>s</span><span class=p>)</span>
             <span class=k>return</span>
     <span class=k>else</span><span class=p>:</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;Expected a path to frogtissue.mhd&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'Expected a path to frogtissue.mhd'</span><span class=p>)</span>
         <span class=k>return</span>
 
     <span class=n>tissue_map</span> <span class=o>=</span> <span class=n>create_tissue_map</span><span class=p>()</span>
@@ -152,12 +152,12 @@ function registerListener(event, func) {
     <span class=n>renderer_left</span><span class=o>.</span><span class=n>GetActiveCamera</span><span class=p>()</span><span class=o>.</span><span class=n>Azimuth</span><span class=p>(</span><span class=mi>180</span><span class=p>)</span>
     <span class=n>renderer_left</span><span class=o>.</span><span class=n>ResetCameraClippingRange</span><span class=p>()</span>
 
-    <span class=n>renderer_left</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;LightSteelBlue&#39;</span><span class=p>))</span>
-    <span class=n>renderer_right</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;LightSteelBlue&#39;</span><span class=p>))</span>
+    <span class=n>renderer_left</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'LightSteelBlue'</span><span class=p>))</span>
+    <span class=n>renderer_right</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'LightSteelBlue'</span><span class=p>))</span>
     <span class=n>renderer_right</span><span class=o>.</span><span class=n>SetActiveCamera</span><span class=p>(</span><span class=n>renderer_left</span><span class=o>.</span><span class=n>GetActiveCamera</span><span class=p>())</span>
 
     <span class=n>render_window</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>640</span><span class=p>,</span> <span class=mi>480</span><span class=p>)</span>
-    <span class=n>render_window</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;FrogBrain&#39;</span><span class=p>)</span>
+    <span class=n>render_window</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>'FrogBrain'</span><span class=p>)</span>
     <span class=n>render_window</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
 
     <span class=n>render_window_interactor</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
@@ -280,56 +280,56 @@ function registerListener(event, func) {
     <span class=n>lut</span><span class=o>.</span><span class=n>SetTableRange</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>15</span><span class=p>)</span>
     <span class=n>lut</span><span class=o>.</span><span class=n>Build</span><span class=p>()</span>
 
-    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>&#39;Black&#39;</span><span class=p>))</span>
-    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>&#39;salmon&#39;</span><span class=p>))</span>  <span class=c1># blood</span>
-    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>&#39;beige&#39;</span><span class=p>))</span>  <span class=c1># brain</span>
-    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>3</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>&#39;orange&#39;</span><span class=p>))</span>  <span class=c1># duodenum</span>
-    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>4</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>&#39;misty_rose&#39;</span><span class=p>))</span>  <span class=c1># eye_retina</span>
-    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>5</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>&#39;white&#39;</span><span class=p>))</span>  <span class=c1># eye_white</span>
-    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>6</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>&#39;tomato&#39;</span><span class=p>))</span>  <span class=c1># heart</span>
-    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>7</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>&#39;raspberry&#39;</span><span class=p>))</span>  <span class=c1># ileum</span>
-    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>8</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>&#39;banana&#39;</span><span class=p>))</span>  <span class=c1># kidney</span>
-    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>9</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>&#39;peru&#39;</span><span class=p>))</span>  <span class=c1># l_intestine</span>
-    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>10</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>&#39;pink&#39;</span><span class=p>))</span>  <span class=c1># liver</span>
-    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>11</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>&#39;powder_blue&#39;</span><span class=p>))</span>  <span class=c1># lung</span>
-    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>12</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>&#39;carrot&#39;</span><span class=p>))</span>  <span class=c1># nerve</span>
-    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>13</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>&#39;wheat&#39;</span><span class=p>))</span>  <span class=c1># skeleton</span>
-    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>14</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>&#39;violet&#39;</span><span class=p>))</span>  <span class=c1># spleen</span>
-    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>15</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>&#39;plum&#39;</span><span class=p>))</span>  <span class=c1># stomach</span>
+    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>'Black'</span><span class=p>))</span>
+    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>'salmon'</span><span class=p>))</span>  <span class=c1># blood</span>
+    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>'beige'</span><span class=p>))</span>  <span class=c1># brain</span>
+    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>3</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>'orange'</span><span class=p>))</span>  <span class=c1># duodenum</span>
+    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>4</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>'misty_rose'</span><span class=p>))</span>  <span class=c1># eye_retina</span>
+    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>5</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>'white'</span><span class=p>))</span>  <span class=c1># eye_white</span>
+    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>6</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>'tomato'</span><span class=p>))</span>  <span class=c1># heart</span>
+    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>7</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>'raspberry'</span><span class=p>))</span>  <span class=c1># ileum</span>
+    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>8</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>'banana'</span><span class=p>))</span>  <span class=c1># kidney</span>
+    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>9</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>'peru'</span><span class=p>))</span>  <span class=c1># l_intestine</span>
+    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>10</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>'pink'</span><span class=p>))</span>  <span class=c1># liver</span>
+    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>11</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>'powder_blue'</span><span class=p>))</span>  <span class=c1># lung</span>
+    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>12</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>'carrot'</span><span class=p>))</span>  <span class=c1># nerve</span>
+    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>13</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>'wheat'</span><span class=p>))</span>  <span class=c1># skeleton</span>
+    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>14</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>'violet'</span><span class=p>))</span>  <span class=c1># spleen</span>
+    <span class=n>lut</span><span class=o>.</span><span class=n>SetTableValue</span><span class=p>(</span><span class=mi>15</span><span class=p>,</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor4d</span><span class=p>(</span><span class=s1>'plum'</span><span class=p>))</span>  <span class=c1># stomach</span>
 
     <span class=k>return</span> <span class=n>lut</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>create_tissue_map</span><span class=p>():</span>
     <span class=n>tissue_map</span> <span class=o>=</span> <span class=nb>dict</span><span class=p>()</span>
-    <span class=n>tissue_map</span><span class=p>[</span><span class=s1>&#39;blood&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=mi>1</span>
-    <span class=n>tissue_map</span><span class=p>[</span><span class=s1>&#39;brain&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=mi>2</span>
-    <span class=n>tissue_map</span><span class=p>[</span><span class=s1>&#39;duodenum&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=mi>3</span>
-    <span class=n>tissue_map</span><span class=p>[</span><span class=s1>&#39;eyeRetina&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=mi>4</span>
-    <span class=n>tissue_map</span><span class=p>[</span><span class=s1>&#39;eyeWhite&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=mi>5</span>
-    <span class=n>tissue_map</span><span class=p>[</span><span class=s1>&#39;heart&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=mi>6</span>
-    <span class=n>tissue_map</span><span class=p>[</span><span class=s1>&#39;ileum&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=mi>7</span>
-    <span class=n>tissue_map</span><span class=p>[</span><span class=s1>&#39;kidney&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=mi>8</span>
-    <span class=n>tissue_map</span><span class=p>[</span><span class=s1>&#39;intestine&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=mi>9</span>
-    <span class=n>tissue_map</span><span class=p>[</span><span class=s1>&#39;liver&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=mi>10</span>
-    <span class=n>tissue_map</span><span class=p>[</span><span class=s1>&#39;lung&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=mi>11</span>
-    <span class=n>tissue_map</span><span class=p>[</span><span class=s1>&#39;nerve&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=mi>12</span>
-    <span class=n>tissue_map</span><span class=p>[</span><span class=s1>&#39;skeleton&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=mi>13</span>
-    <span class=n>tissue_map</span><span class=p>[</span><span class=s1>&#39;spleen&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=mi>14</span>
-    <span class=n>tissue_map</span><span class=p>[</span><span class=s1>&#39;stomach&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=mi>15</span>
+    <span class=n>tissue_map</span><span class=p>[</span><span class=s1>'blood'</span><span class=p>]</span> <span class=o>=</span> <span class=mi>1</span>
+    <span class=n>tissue_map</span><span class=p>[</span><span class=s1>'brain'</span><span class=p>]</span> <span class=o>=</span> <span class=mi>2</span>
+    <span class=n>tissue_map</span><span class=p>[</span><span class=s1>'duodenum'</span><span class=p>]</span> <span class=o>=</span> <span class=mi>3</span>
+    <span class=n>tissue_map</span><span class=p>[</span><span class=s1>'eyeRetina'</span><span class=p>]</span> <span class=o>=</span> <span class=mi>4</span>
+    <span class=n>tissue_map</span><span class=p>[</span><span class=s1>'eyeWhite'</span><span class=p>]</span> <span class=o>=</span> <span class=mi>5</span>
+    <span class=n>tissue_map</span><span class=p>[</span><span class=s1>'heart'</span><span class=p>]</span> <span class=o>=</span> <span class=mi>6</span>
+    <span class=n>tissue_map</span><span class=p>[</span><span class=s1>'ileum'</span><span class=p>]</span> <span class=o>=</span> <span class=mi>7</span>
+    <span class=n>tissue_map</span><span class=p>[</span><span class=s1>'kidney'</span><span class=p>]</span> <span class=o>=</span> <span class=mi>8</span>
+    <span class=n>tissue_map</span><span class=p>[</span><span class=s1>'intestine'</span><span class=p>]</span> <span class=o>=</span> <span class=mi>9</span>
+    <span class=n>tissue_map</span><span class=p>[</span><span class=s1>'liver'</span><span class=p>]</span> <span class=o>=</span> <span class=mi>10</span>
+    <span class=n>tissue_map</span><span class=p>[</span><span class=s1>'lung'</span><span class=p>]</span> <span class=o>=</span> <span class=mi>11</span>
+    <span class=n>tissue_map</span><span class=p>[</span><span class=s1>'nerve'</span><span class=p>]</span> <span class=o>=</span> <span class=mi>12</span>
+    <span class=n>tissue_map</span><span class=p>[</span><span class=s1>'skeleton'</span><span class=p>]</span> <span class=o>=</span> <span class=mi>13</span>
+    <span class=n>tissue_map</span><span class=p>[</span><span class=s1>'spleen'</span><span class=p>]</span> <span class=o>=</span> <span class=mi>14</span>
+    <span class=n>tissue_map</span><span class=p>[</span><span class=s1>'stomach'</span><span class=p>]</span> <span class=o>=</span> <span class=mi>15</span>
 
     <span class=k>return</span> <span class=n>tissue_map</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>vtk_version_ok</span><span class=p>(</span><span class=n>major</span><span class=p>,</span> <span class=n>minor</span><span class=p>,</span> <span class=n>build</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Check the VTK version.</span>
 
 <span class=sd>    :param major: Major version.</span>
 <span class=sd>    :param minor: Minor version.</span>
 <span class=sd>    :param build: Build version.</span>
 <span class=sd>    :return: True if the requested VTK version is greater or equal to the actual VTK version.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=n>needed_version</span> <span class=o>=</span> <span class=mi>10000000000</span> <span class=o>*</span> <span class=nb>int</span><span class=p>(</span><span class=n>major</span><span class=p>)</span> <span class=o>+</span> <span class=mi>100000000</span> <span class=o>*</span> <span class=nb>int</span><span class=p>(</span><span class=n>minor</span><span class=p>)</span> <span class=o>+</span> <span class=nb>int</span><span class=p>(</span><span class=n>build</span><span class=p>)</span>
     <span class=k>try</span><span class=p>:</span>
         <span class=n>vtk_version_number</span> <span class=o>=</span> <span class=n>VTK_VERSION_NUMBER</span>
@@ -343,7 +343,7 @@ function registerListener(event, func) {
         <span class=k>return</span> <span class=kc>False</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>sys</span>
 
     <span class=n>data_folder</span><span class=p>,</span> <span class=n>tissue</span> <span class=o>=</span> <span class=n>get_program_parameters</span><span class=p>(</span><span class=n>sys</span><span class=o>.</span><span class=n>argv</span><span class=p>)</span>

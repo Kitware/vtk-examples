@@ -92,11 +92,11 @@ function registerListener(event, func) {
 </span><span class=hll><span class=w>               </span><span class=n>vtkGenericOpenGLRenderWindow</span><span class=o>*</span><span class=w> </span><span class=n>window</span><span class=p>,</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>mt19937</span><span class=o>&amp;</span><span class=w> </span><span class=n>randEng</span><span class=p>);</span>
 </span><span class=p>}</span><span class=w> </span><span class=c1>// namespace</span>
 
-<span class=kt>int</span><span class=w> </span><span class=n>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>argv</span><span class=p>[])</span>
+<span class=kt>int</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=w> </span><span class=n>argv</span><span class=p>[])</span>
 <span class=p>{</span>
 <span class=w>  </span><span class=n>QSurfaceFormat</span><span class=o>::</span><span class=n>setDefaultFormat</span><span class=p>(</span><span class=n>QVTKOpenGLNativeWidget</span><span class=o>::</span><span class=n>defaultFormat</span><span class=p>());</span>
 
-<span class=w>  </span><span class=n>QApplication</span><span class=w> </span><span class=nf>app</span><span class=p>(</span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=n>argv</span><span class=p>);</span>
+<span class=w>  </span><span class=n>QApplication</span><span class=w> </span><span class=n>app</span><span class=p>(</span><span class=n>argc</span><span class=p>,</span><span class=w> </span><span class=n>argv</span><span class=p>);</span>
 
 <span class=w>  </span><span class=c1>// Main window.</span>
 <span class=w>  </span><span class=n>QMainWindow</span><span class=w> </span><span class=n>mainWindow</span><span class=p>;</span>
@@ -106,7 +106,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>QDockWidget</span><span class=w> </span><span class=n>controlDock</span><span class=p>;</span>
 <span class=w>  </span><span class=n>mainWindow</span><span class=p>.</span><span class=n>addDockWidget</span><span class=p>(</span><span class=n>Qt</span><span class=o>::</span><span class=n>LeftDockWidgetArea</span><span class=p>,</span><span class=w> </span><span class=o>&amp;</span><span class=n>controlDock</span><span class=p>);</span>
 
-<span class=w>  </span><span class=n>QLabel</span><span class=w> </span><span class=n>controlDockTitle</span><span class=p>(</span><span class=s>&quot;Control Dock&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>QLabel</span><span class=w> </span><span class=n>controlDockTitle</span><span class=p>(</span><span class=s>"Control Dock"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>controlDockTitle</span><span class=p>.</span><span class=n>setMargin</span><span class=p>(</span><span class=mi>20</span><span class=p>);</span>
 <span class=w>  </span><span class=n>controlDock</span><span class=p>.</span><span class=n>setTitleBarWidget</span><span class=p>(</span><span class=o>&amp;</span><span class=n>controlDockTitle</span><span class=p>);</span>
 
@@ -116,7 +116,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>controlDock</span><span class=p>.</span><span class=n>setWidget</span><span class=p>(</span><span class=o>&amp;</span><span class=n>layoutContainer</span><span class=p>);</span>
 
 <span class=w>  </span><span class=n>QPushButton</span><span class=w> </span><span class=n>randomizeButton</span><span class=p>;</span>
-<span class=w>  </span><span class=n>randomizeButton</span><span class=p>.</span><span class=n>setText</span><span class=p>(</span><span class=s>&quot;Randomize&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>randomizeButton</span><span class=p>.</span><span class=n>setText</span><span class=p>(</span><span class=s>"Randomize"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>dockLayout</span><span class=o>-&gt;</span><span class=n>addWidget</span><span class=p>(</span><span class=o>&amp;</span><span class=n>randomizeButton</span><span class=p>);</span>
 
 <span class=w>  </span><span class=c1>// Render area.</span>
@@ -147,7 +147,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>window</span><span class=o>-&gt;</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>);</span>
 
 <span class=w>  </span><span class=c1>// Setup initial status.</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>mt19937</span><span class=w> </span><span class=nf>randEng</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>mt19937</span><span class=w> </span><span class=n>randEng</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span>
 <span class=w>  </span><span class=o>::</span><span class=n>Randomize</span><span class=p>(</span><span class=n>sphere</span><span class=p>,</span><span class=w> </span><span class=n>mapper</span><span class=p>,</span><span class=w> </span><span class=n>window</span><span class=p>,</span><span class=w> </span><span class=n>randEng</span><span class=p>);</span>
 
 <span class=w>  </span><span class=c1>// connect the buttons</span>
@@ -174,7 +174,7 @@ function registerListener(event, func) {
 </span><span class=w>  </span><span class=n>newSphere</span><span class=p>.</span><span class=n>TakeReference</span><span class=p>(</span><span class=n>sphere</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>NewInstance</span><span class=p>());</span>
 <span class=w>  </span><span class=n>newSphere</span><span class=o>-&gt;</span><span class=n>DeepCopy</span><span class=p>(</span><span class=n>sphere</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>());</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkDoubleArray</span><span class=o>&gt;</span><span class=w> </span><span class=n>height</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>height</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>&quot;Height&quot;</span><span class=p>);</span>
+</span><span class=w>  </span><span class=n>height</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>"Height"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>height</span><span class=o>-&gt;</span><span class=n>SetNumberOfComponents</span><span class=p>(</span><span class=mi>1</span><span class=p>);</span>
 <span class=w>  </span><span class=n>height</span><span class=o>-&gt;</span><span class=n>SetNumberOfTuples</span><span class=p>(</span><span class=n>newSphere</span><span class=o>-&gt;</span><span class=n>GetNumberOfPoints</span><span class=p>());</span>
 <span class=w>  </span><span class=n>newSphere</span><span class=o>-&gt;</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>AddArray</span><span class=p>(</span><span class=n>height</span><span class=p>);</span>
@@ -200,7 +200,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=c1>// Reconfigure the pipeline to take the new deformed sphere.</span>
 <span class=w>  </span><span class=n>mapper</span><span class=o>-&gt;</span><span class=n>SetInputDataObject</span><span class=p>(</span><span class=n>newSphere</span><span class=p>);</span>
 <span class=w>  </span><span class=n>mapper</span><span class=o>-&gt;</span><span class=n>SetScalarModeToUsePointData</span><span class=p>();</span>
-<span class=w>  </span><span class=n>mapper</span><span class=o>-&gt;</span><span class=n>ColorByArrayComponent</span><span class=p>(</span><span class=s>&quot;Height&quot;</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>);</span>
+<span class=w>  </span><span class=n>mapper</span><span class=o>-&gt;</span><span class=n>ColorByArrayComponent</span><span class=p>(</span><span class=s>"Height"</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>);</span>
 <span class=w>  </span><span class=n>window</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
 <span class=p>}</span>
 <span class=p>}</span><span class=w> </span><span class=c1>// namespace</span>
@@ -229,11 +229,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;MinimalQtVTKApp: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"MinimalQtVTKApp: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
 <span class=nb>if</span><span class=p>(</span><span class=s>NOT(TARGET</span><span class=w> </span><span class=s>VTK::GUISupportQt</span><span class=p>)</span><span class=err>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;MinimalQtVTKApp: VTK not built with Qt support.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"MinimalQtVTKApp: VTK not built with Qt support."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
 <span class=nb>if</span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>DEFINED</span><span class=w> </span><span class=s>VTK_QT_VERSION</span><span class=p>)</span>
@@ -252,10 +252,10 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>foreach</span><span class=p>(</span><span class=s>_qt_comp</span><span class=w> </span><span class=s>IN</span><span class=w> </span><span class=s>LISTS</span><span class=w> </span><span class=s>qt_components</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>list</span><span class=p>(</span><span class=s>APPEND</span><span class=w> </span><span class=s>qt_modules</span><span class=w> </span><span class=s2>&quot;Qt${VTK_QT_VERSION}::${_qt_comp}&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>list</span><span class=p>(</span><span class=s>APPEND</span><span class=w> </span><span class=s>qt_modules</span><span class=w> </span><span class=s2>"Qt${VTK_QT_VERSION}::${_qt_comp}"</span><span class=p>)</span>
 <span class=nb>endforeach</span><span class=p>()</span>
 
-<span class=nb>message</span><span class=w> </span><span class=p>(</span><span class=s>STATUS</span><span class=w> </span><span class=s2>&quot;VTK_VERSION: ${VTK_VERSION}, Qt Version: ${Qt${VTK_QT_VERSION}Widgets_VERSION}&quot;</span><span class=p>)</span>
+<span class=nb>message</span><span class=w> </span><span class=p>(</span><span class=s>STATUS</span><span class=w> </span><span class=s2>"VTK_VERSION: ${VTK_VERSION}, Qt Version: ${Qt${VTK_QT_VERSION}Widgets_VERSION}"</span><span class=p>)</span>
 
 <span class=c># Instruct CMake to run moc and uic automatically when needed.</span>
 <span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_AUTOMOC</span><span class=w> </span><span class=s>ON</span><span class=p>)</span>
@@ -271,13 +271,13 @@ function registerListener(event, func) {
 <span class=c>#  CMAKE_AUTOUIC is ON so we handle uic automatically for Qt targets.</span>
 <span class=c>#  CMAKE_AUTOMOC is ON so we handle moc automatically for Qt targets.</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=c># CMAKE_AUTOMOC in ON so the MOC headers will be automatically wrapped.</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>MinimalQtVTKApp</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span>
 <span class=w>  </span><span class=o>${</span><span class=nv>CXX_FILES</span><span class=o>}</span><span class=w> </span><span class=o>${</span><span class=nv>UI_FILES</span><span class=o>}</span><span class=w> </span><span class=o>${</span><span class=nv>QT_WRAP</span><span class=o>}</span>
 <span class=p>)</span>
-<span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>Qt</span><span class=o>${</span><span class=nv>VTK_QT_VERSION</span><span class=o>}</span><span class=s>Widgets_VERSION</span><span class=w> </span><span class=s>VERSION_LESS</span><span class=w> </span><span class=s2>&quot;5.11.0&quot;</span><span class=p>)</span>
+<span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>Qt</span><span class=o>${</span><span class=nv>VTK_QT_VERSION</span><span class=o>}</span><span class=s>Widgets_VERSION</span><span class=w> </span><span class=s>VERSION_LESS</span><span class=w> </span><span class=s2>"5.11.0"</span><span class=p>)</span>
 <span class=w>  </span><span class=nb>qt5_use_modules</span><span class=p>(</span><span class=s>MinimalQtVTKApp</span><span class=w> </span><span class=o>${</span><span class=nv>qt_components</span><span class=o>}</span><span class=p>)</span>
 <span class=nb>else</span><span class=p>()</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>MinimalQtVTKApp</span><span class=w> </span><span class=o>${</span><span class=nv>qt_modules</span><span class=o>}</span><span class=p>)</span>

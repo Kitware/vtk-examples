@@ -120,7 +120,7 @@ function registerListener(event, func) {
 <span class=p>{</span>
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>argc</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=mi>2</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Usage: &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; file.mhd e.g. FullHead.mhd&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Usage: "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>argv</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" file.mhd e.g. FullHead.mhd"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>EXIT_FAILURE</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 
@@ -144,11 +144,11 @@ function registerListener(event, func) {
 </span><span class=w>  </span><span class=c1>// Inside points have one or more points above the isosurface</span>
 <span class=w>  </span><span class=kt>int</span><span class=w> </span><span class=n>insideId</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>threshold</span><span class=o>-&gt;</span><span class=n>AddIntervalSet</span><span class=p>(</span>
 <span class=hll><span class=w>      </span><span class=mi>501</span><span class=p>,</span><span class=w> </span><span class=mi>20000</span><span class=p>,</span><span class=w> </span><span class=n>vtkMultiThreshold</span><span class=o>::</span><span class=n>CLOSED</span><span class=p>,</span><span class=w> </span><span class=n>vtkMultiThreshold</span><span class=o>::</span><span class=n>CLOSED</span><span class=p>,</span>
-</span><span class=hll><span class=w>      </span><span class=n>vtkDataObject</span><span class=o>::</span><span class=n>FIELD_ASSOCIATION_POINTS</span><span class=p>,</span><span class=w> </span><span class=s>&quot;ImageScalars&quot;</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>);</span>
+</span><span class=hll><span class=w>      </span><span class=n>vtkDataObject</span><span class=o>::</span><span class=n>FIELD_ASSOCIATION_POINTS</span><span class=p>,</span><span class=w> </span><span class=s>"ImageScalars"</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>);</span>
 </span><span class=w>  </span><span class=c1>// Border points have points that straddle the boundary</span>
 <span class=w>  </span><span class=kt>int</span><span class=w> </span><span class=n>borderId</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>threshold</span><span class=o>-&gt;</span><span class=n>AddIntervalSet</span><span class=p>(</span>
 <span class=hll><span class=w>      </span><span class=mf>499.9999</span><span class=p>,</span><span class=w> </span><span class=mf>501.0000</span><span class=p>,</span><span class=w> </span><span class=n>vtkMultiThreshold</span><span class=o>::</span><span class=n>OPEN</span><span class=p>,</span><span class=w> </span><span class=n>vtkMultiThreshold</span><span class=o>::</span><span class=n>OPEN</span><span class=p>,</span>
-</span><span class=hll><span class=w>      </span><span class=n>vtkDataObject</span><span class=o>::</span><span class=n>FIELD_ASSOCIATION_POINTS</span><span class=p>,</span><span class=w> </span><span class=s>&quot;ImageScalars&quot;</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>);</span>
+</span><span class=hll><span class=w>      </span><span class=n>vtkDataObject</span><span class=o>::</span><span class=n>FIELD_ASSOCIATION_POINTS</span><span class=p>,</span><span class=w> </span><span class=s>"ImageScalars"</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>);</span>
 </span>
 <span class=w>  </span><span class=n>threshold</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>imageDataToPointSet</span><span class=o>-&gt;</span><span class=n>GetOutput</span><span class=p>());</span>
 
@@ -159,11 +159,11 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=c1>// Visualize</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span><span class=w> </span><span class=n>colors</span><span class=p>;</span>
-</span><span class=w>  </span><span class=c1>// vtkColor3d outsideColor    = colors-&gt;GetColor3d(&quot;Crimson&quot;);</span>
-<span class=hll><span class=w>  </span><span class=n>vtkColor3d</span><span class=w> </span><span class=n>insideColor</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Banana&quot;</span><span class=p>);</span>
-</span><span class=hll><span class=w>  </span><span class=n>vtkColor3d</span><span class=w> </span><span class=n>borderColor</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Mint&quot;</span><span class=p>);</span>
-</span><span class=w>  </span><span class=c1>// vtkColor3d surfaceColor    = colors-&gt;GetColor3d(&quot;Peacock&quot;);</span>
-<span class=hll><span class=w>  </span><span class=n>vtkColor3d</span><span class=w> </span><span class=n>backgroundColor</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Silver&quot;</span><span class=p>);</span>
+</span><span class=w>  </span><span class=c1>// vtkColor3d outsideColor    = colors-&gt;GetColor3d("Crimson");</span>
+<span class=hll><span class=w>  </span><span class=n>vtkColor3d</span><span class=w> </span><span class=n>insideColor</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Banana"</span><span class=p>);</span>
+</span><span class=hll><span class=w>  </span><span class=n>vtkColor3d</span><span class=w> </span><span class=n>borderColor</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Mint"</span><span class=p>);</span>
+</span><span class=w>  </span><span class=c1>// vtkColor3d surfaceColor    = colors-&gt;GetColor3d("Peacock");</span>
+<span class=hll><span class=w>  </span><span class=n>vtkColor3d</span><span class=w> </span><span class=n>backgroundColor</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Silver"</span><span class=p>);</span>
 </span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkPlane</span><span class=o>&gt;</span><span class=w> </span><span class=n>plane</span><span class=p>;</span>
 </span><span class=hll><span class=w>  </span><span class=n>plane</span><span class=o>-&gt;</span><span class=n>SetOrigin</span><span class=p>(</span><span class=k>dynamic_cast</span><span class=o>&lt;</span><span class=n>vtkUnstructuredGrid</span><span class=o>*&gt;</span><span class=p>(</span>
@@ -217,7 +217,7 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>insideActor</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renderer</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>borderActor</span><span class=p>);</span>
 
-<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;CellsOnBoundary&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"CellsOnBoundary"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
 
 <span class=w>  </span><span class=c1>// Setup a good view</span>
@@ -253,11 +253,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;VoxelsOnBoundary: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"VoxelsOnBoundary: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>VoxelsOnBoundary</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>VoxelsOnBoundary.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>VoxelsOnBoundary</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

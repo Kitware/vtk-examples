@@ -107,12 +107,12 @@ function registerListener(event, func) {
     <span class=c1># The type of the newly imported data is set to unsigned char (uint8)</span>
     <span class=c1># data_importer.SetDataScalarTypeToUnsignedChar()</span>
     <span class=c1># Because the data that is imported only contains an intensity value</span>
-    <span class=c1>#  (it isn&#39;t RGB-coded or something similar), the importer must be told this is the case.</span>
+    <span class=c1>#  (it isn't RGB-coded or something similar), the importer must be told this is the case.</span>
     <span class=c1># data_importer.SetNumberOfScalarComponents(1)</span>
     <span class=c1># The following two functions describe how the data is stored and the dimensions of the array it is stored in.</span>
     <span class=c1>#  For this simple case, all axes are of length 75 and begins with the first element.</span>
     <span class=c1>#  For other data, this is probably not the case.</span>
-    <span class=c1># I have to admit however, that I honestly don&#39;t know the difference between SetDataExtent()</span>
+    <span class=c1># I have to admit however, that I honestly don't know the difference between SetDataExtent()</span>
     <span class=c1>#  and SetWholeExtent() although VTK complains if not both are used.</span>
     <span class=c1># data_importer.SetDataExtent(0, 74, 0, 74, 0, 74)</span>
     <span class=c1># data_importer.SetWholeExtent(0, 74, 0, 74, 0, 74)</span>
@@ -145,11 +145,11 @@ function registerListener(event, func) {
     <span class=c1>#  to be used when rendering that volume.</span>
 <span class=hll>    <span class=n>volume</span> <span class=o>=</span> <span class=n>vtkVolume</span><span class=p>(</span><span class=n>mapper</span><span class=o>=</span><span class=n>volume_mapper</span><span class=p>,</span> <span class=nb>property</span><span class=o>=</span><span class=n>volume_property</span><span class=p>)</span>
 </span>
-    <span class=c1># With almost everything else ready, it&#39;s time to initialize the renderer and window,</span>
+    <span class=c1># With almost everything else ready, it's time to initialize the renderer and window,</span>
     <span class=c1>#  as well as creating a method for exiting the application</span>
-<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;MistyRose&#39;</span><span class=p>))</span>
+<span class=hll>    <span class=n>renderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'MistyRose'</span><span class=p>))</span>
 </span>    <span class=c1># Set the window size and name.</span>
-<span class=hll>    <span class=n>render_win</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>size</span><span class=o>=</span><span class=p>(</span><span class=mi>400</span><span class=p>,</span> <span class=mi>400</span><span class=p>),</span> <span class=n>window_name</span><span class=o>=</span><span class=s1>&#39;VTKWithNumpy&#39;</span><span class=p>)</span>
+<span class=hll>    <span class=n>render_win</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>size</span><span class=o>=</span><span class=p>(</span><span class=mi>400</span><span class=p>,</span> <span class=mi>400</span><span class=p>),</span> <span class=n>window_name</span><span class=o>=</span><span class=s1>'VTKWithNumpy'</span><span class=p>)</span>
 </span>    <span class=n>render_win</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>)</span>
 <span class=hll>    <span class=n>render_interactor</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>render_interactor</span><span class=o>.</span><span class=n>render_window</span> <span class=o>=</span> <span class=n>render_win</span>
@@ -163,7 +163,7 @@ function registerListener(event, func) {
             <span class=n>obj</span><span class=o>.</span><span class=n>SetAbortRender</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
 
     <span class=c1># Tell the application to use the function as an exit check.</span>
-    <span class=n>render_win</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=s1>&#39;AbortCheckEvent&#39;</span><span class=p>,</span> <span class=n>exit_check</span><span class=p>)</span>
+    <span class=n>render_win</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=s1>'AbortCheckEvent'</span><span class=p>,</span> <span class=n>exit_check</span><span class=p>)</span>
 
     <span class=n>render_interactor</span><span class=o>.</span><span class=n>Initialize</span><span class=p>()</span>
     <span class=c1># Because nothing will be rendered without any input, we order the first render manually</span>
@@ -184,6 +184,6 @@ function registerListener(event, func) {
         <span class=n>VTK_DOUBLE</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>11</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

@@ -98,7 +98,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=k>using</span><span class=w> </span><span class=n>VecAccess</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>vtkDataArrayAccessor</span><span class=o>&lt;</span><span class=n>VecArray</span><span class=o>&gt;</span><span class=p>;</span>
 <span class=w>    </span><span class=k>using</span><span class=w> </span><span class=n>MagAccess</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>vtkDataArrayAccessor</span><span class=o>&lt;</span><span class=n>MagArray</span><span class=o>&gt;</span><span class=p>;</span>
 
-<span class=w>    </span><span class=c1>// The &quot;APITypes&quot;</span>
+<span class=w>    </span><span class=c1>// The "APITypes"</span>
 <span class=w>    </span><span class=c1>// (explicit-type when possible, double for plain vtkDataArrays)</span>
 <span class=w>    </span><span class=k>using</span><span class=w> </span><span class=n>VecType</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>typename</span><span class=w> </span><span class=nc>VecAccess</span><span class=o>::</span><span class=n>APIType</span><span class=p>;</span>
 <span class=w>    </span><span class=k>using</span><span class=w> </span><span class=n>MagType</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>typename</span><span class=w> </span><span class=nc>MagAccess</span><span class=o>::</span><span class=n>APIType</span><span class=p>;</span>
@@ -261,8 +261,8 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>printTuple</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>[](</span><span class=k>const</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=n>vtkTypeFloat64</span><span class=p>,</span><span class=w> </span><span class=mi>3</span><span class=o>&gt;</span><span class=w> </span><span class=n>tuple</span><span class=p>)</span><span class=w> </span><span class=p>{</span>
 <span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>ostringstream</span><span class=w> </span><span class=n>os</span><span class=p>;</span>
-<span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=n>separator</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&quot;&quot;</span><span class=p>;</span>
-<span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=k>const</span><span class=w> </span><span class=n>sep</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&quot;, &quot;</span><span class=p>;</span>
+<span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=n>separator</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>""</span><span class=p>;</span>
+<span class=w>    </span><span class=k>auto</span><span class=w> </span><span class=k>const</span><span class=w> </span><span class=n>sep</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>", "</span><span class=p>;</span>
 <span class=w>    </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=k>const</span><span class=w> </span><span class=k>auto</span><span class=o>&amp;</span><span class=w> </span><span class=n>t</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=n>tuple</span><span class=p>)</span>
 <span class=w>    </span><span class=p>{</span>
 <span class=w>      </span><span class=n>os</span><span class=p>.</span><span class=n>setf</span><span class=p>(</span><span class=n>ios</span><span class=o>::</span><span class=n>fixed</span><span class=p>,</span><span class=w> </span><span class=n>ios</span><span class=o>::</span><span class=n>floatfield</span><span class=p>);</span>
@@ -284,10 +284,10 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=c1>// Set up for testing.</span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>vector</span><span class=o>&lt;</span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=o>&gt;</span><span class=w> </span><span class=n>expectedMagnitudes</span><span class=p>{</span>
-<span class=w>      </span><span class=s>&quot;0.000000&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;0.374166&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;0.748331&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;1.122497&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;1.496663&quot;</span><span class=p>,</span>
-<span class=w>      </span><span class=s>&quot;1.870829&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;2.244994&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;2.619160&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;2.993326&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;3.367492&quot;</span><span class=p>};</span>
+<span class=w>      </span><span class=s>"0.000000"</span><span class=p>,</span><span class=w> </span><span class=s>"0.374166"</span><span class=p>,</span><span class=w> </span><span class=s>"0.748331"</span><span class=p>,</span><span class=w> </span><span class=s>"1.122497"</span><span class=p>,</span><span class=w> </span><span class=s>"1.496663"</span><span class=p>,</span>
+<span class=w>      </span><span class=s>"1.870829"</span><span class=p>,</span><span class=w> </span><span class=s>"2.244994"</span><span class=p>,</span><span class=w> </span><span class=s>"2.619160"</span><span class=p>,</span><span class=w> </span><span class=s>"2.993326"</span><span class=p>,</span><span class=w> </span><span class=s>"3.367492"</span><span class=p>};</span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>failMessage</span><span class=w> </span><span class=o>=</span>
-<span class=w>      </span><span class=s>&quot;---         Fail: Results don&#39;t match expected values.&quot;</span><span class=p>;</span>
+<span class=w>      </span><span class=s>"---         Fail: Results don't match expected values."</span><span class=p>;</span>
 <span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>exitValue</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>EXIT_SUCCESS</span><span class=p>;</span>
 
 <span class=w>  </span><span class=c1>// We could explicitly specify the capture list:</span>
@@ -342,11 +342,11 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>exitValue</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=n>EXIT_SUCCESS</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;All tests passed.&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"All tests passed."</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=w>  </span><span class=k>else</span>
 <span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Some tests failed.&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Some tests failed."</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>exitValue</span><span class=p>;</span>
 <span class=p>}</span>
@@ -355,7 +355,7 @@ function registerListener(event, func) {
 
 <span class=hll><span class=kt>void</span><span class=w> </span><span class=nf>naivemag3</span><span class=p>(</span><span class=n>vtkDataArray</span><span class=o>*</span><span class=w> </span><span class=n>vectors</span><span class=p>,</span><span class=w> </span><span class=n>vtkDataArray</span><span class=o>*</span><span class=w> </span><span class=n>magnitudes</span><span class=p>)</span>
 </span><span class=p>{</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;--- Testing naivemag3&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"--- Testing naivemag3"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>  </span><span class=k>const</span><span class=w> </span><span class=n>vtkIdType</span><span class=w> </span><span class=n>numTuples</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>vectors</span><span class=o>-&gt;</span><span class=n>GetNumberOfTuples</span><span class=p>();</span>
 <span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=n>vtkTypeFloat64</span><span class=p>,</span><span class=w> </span><span class=mi>3</span><span class=o>&gt;</span><span class=w> </span><span class=n>tuple</span><span class=p>;</span>
 <span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=n>vtkIdType</span><span class=w> </span><span class=n>t</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>t</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>numTuples</span><span class=p>;</span><span class=w> </span><span class=o>++</span><span class=n>t</span><span class=p>)</span>
@@ -370,7 +370,7 @@ function registerListener(event, func) {
 <span class=c1>// GetVoidPointer, mag3GetPointer call mag3Trampoline then call mag3Helper</span>
 <span class=hll><span class=kt>void</span><span class=w> </span><span class=nf>mag3GetPointer</span><span class=p>(</span><span class=n>vtkDataArray</span><span class=o>*</span><span class=w> </span><span class=n>vecs</span><span class=p>,</span><span class=w> </span><span class=n>vtkDataArray</span><span class=o>*</span><span class=w> </span><span class=n>mags</span><span class=p>)</span>
 </span><span class=p>{</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;--- Testing mag3GetPointer&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"--- Testing mag3GetPointer"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>  </span><span class=k>const</span><span class=w> </span><span class=n>vtkIdType</span><span class=w> </span><span class=n>numTuples</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>vecs</span><span class=o>-&gt;</span><span class=n>GetNumberOfTuples</span><span class=p>();</span>
 <span class=w>  </span><span class=c1>// Resolve vecs data type:</span>
 <span class=w>  </span><span class=k>switch</span><span class=w> </span><span class=p>(</span><span class=n>vecs</span><span class=o>-&gt;</span><span class=n>GetDataType</span><span class=p>())</span>
@@ -378,7 +378,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=n>vtkTemplateMacro</span><span class=p>(</span><span class=n>mag3Trampoline</span><span class=p>(</span>
 <span class=w>        </span><span class=k>static_cast</span><span class=o>&lt;</span><span class=n>VTK_TT</span><span class=o>*&gt;</span><span class=p>(</span><span class=n>vecs</span><span class=o>-&gt;</span><span class=n>GetVoidPointer</span><span class=p>(</span><span class=mi>0</span><span class=p>)),</span><span class=w> </span><span class=n>mags</span><span class=p>,</span><span class=w> </span><span class=n>numTuples</span><span class=p>));</span>
 <span class=w>  </span><span class=k>default</span><span class=o>:</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;error at mag3GetPointer&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"error at mag3GetPointer"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=p>}</span>
 
@@ -391,7 +391,7 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=n>vtkTemplateMacro</span><span class=p>(</span><span class=n>mag3Helper</span><span class=p>(</span>
 <span class=w>        </span><span class=n>vecs</span><span class=p>,</span><span class=w> </span><span class=k>static_cast</span><span class=o>&lt;</span><span class=n>VTK_TT</span><span class=o>*&gt;</span><span class=p>(</span><span class=n>mags</span><span class=o>-&gt;</span><span class=n>GetVoidPointer</span><span class=p>(</span><span class=mi>0</span><span class=p>)),</span><span class=w> </span><span class=n>numTuples</span><span class=p>));</span>
 <span class=w>  </span><span class=k>default</span><span class=o>:</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;error at mag3Trampoline&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"error at mag3Trampoline"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>  </span><span class=p>}</span>
 <span class=p>}</span>
 
@@ -416,7 +416,7 @@ function registerListener(event, func) {
 <span class=kt>void</span><span class=w> </span><span class=n>mag3Explicit</span><span class=p>(</span><span class=n>ArrayT1</span><span class=o>*</span><span class=w> </span><span class=n>vectors</span><span class=p>,</span><span class=w> </span><span class=n>ArrayT2</span><span class=o>*</span><span class=w> </span><span class=n>magnitudes</span><span class=p>)</span>
 
 <span class=p>{</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;--- Testing mag3Explicit&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"--- Testing mag3Explicit"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>  </span><span class=k>using</span><span class=w> </span><span class=n>VecType</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>typename</span><span class=w> </span><span class=nc>ArrayT1</span><span class=o>::</span><span class=n>ValueType</span><span class=p>;</span>
 <span class=w>  </span><span class=k>using</span><span class=w> </span><span class=n>MagType</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>typename</span><span class=w> </span><span class=nc>ArrayT2</span><span class=o>::</span><span class=n>ValueType</span><span class=p>;</span>
 
@@ -437,7 +437,7 @@ function registerListener(event, func) {
 
 <span class=hll><span class=kt>void</span><span class=w> </span><span class=n>mag3Dispatch1</span><span class=p>(</span><span class=n>vtkDataArray</span><span class=o>*</span><span class=w> </span><span class=n>vecs</span><span class=p>,</span><span class=w> </span><span class=n>vtkDataArray</span><span class=o>*</span><span class=w> </span><span class=n>mags</span><span class=p>)</span>
 </span><span class=p>{</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;--- Testing mag3Dispatch1&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"--- Testing mag3Dispatch1"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>  </span><span class=n>Mag3Worker1</span><span class=w> </span><span class=n>worker1</span><span class=p>;</span>
 
 <span class=w>  </span><span class=c1>// Create a dispatcher. We want to generate fast-paths for when</span>
@@ -456,7 +456,7 @@ function registerListener(event, func) {
 
 <span class=hll><span class=kt>void</span><span class=w> </span><span class=n>mag3Dispatch2a</span><span class=p>(</span><span class=n>vtkDataArray</span><span class=o>*</span><span class=w> </span><span class=n>vecs</span><span class=p>,</span><span class=w> </span><span class=n>vtkDataArray</span><span class=o>*</span><span class=w> </span><span class=n>mags</span><span class=p>)</span>
 </span><span class=p>{</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;--- Testing mag3Dispatch2a&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"--- Testing mag3Dispatch2a"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>  </span><span class=n>Mag3Worker2a</span><span class=w> </span><span class=n>worker2a</span><span class=p>;</span>
 
 <span class=w>  </span><span class=c1>// Create a dispatcher. We want to generate fast-paths for when</span>
@@ -476,7 +476,7 @@ function registerListener(event, func) {
 
 <span class=hll><span class=kt>void</span><span class=w> </span><span class=n>mag3Dispatch2b</span><span class=p>(</span><span class=n>vtkDataArray</span><span class=o>*</span><span class=w> </span><span class=n>vecs</span><span class=p>,</span><span class=w> </span><span class=n>vtkDataArray</span><span class=o>*</span><span class=w> </span><span class=n>mags</span><span class=p>)</span>
 </span><span class=p>{</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;--- Testing mag3Dispatch2b&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"--- Testing mag3Dispatch2b"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>  </span><span class=n>Mag3Worker2b</span><span class=w> </span><span class=n>worker2b</span><span class=p>;</span>
 
 <span class=w>  </span><span class=c1>// Create a dispatcher. We want to generate fast-paths for when</span>
@@ -496,7 +496,7 @@ function registerListener(event, func) {
 
 <span class=hll><span class=kt>void</span><span class=w> </span><span class=n>mag3Dispatch3</span><span class=p>(</span><span class=n>vtkDataArray</span><span class=o>*</span><span class=w> </span><span class=n>vecs</span><span class=p>,</span><span class=w> </span><span class=n>vtkDataArray</span><span class=o>*</span><span class=w> </span><span class=n>mags</span><span class=p>)</span>
 </span><span class=p>{</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;--- Testing mag3Dispatch3&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"--- Testing mag3Dispatch3"</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>  </span><span class=n>Mag3Worker3</span><span class=w> </span><span class=n>worker3</span><span class=p>;</span>
 
 <span class=w>  </span><span class=c1>// Create a dispatcher. We want to generate fast-paths for when</span>
@@ -541,11 +541,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;ForLoop: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"ForLoop: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>ForLoop</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>ForLoop.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>ForLoop</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

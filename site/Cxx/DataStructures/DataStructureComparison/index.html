@@ -148,7 +148,7 @@ function registerListener(event, func) {
 <span class=w>      </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>renderers</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>meshActor</span><span class=p>);</span>
 <span class=w>    </span><span class=p>}</span>
 <span class=w>    </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Level</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>1</span><span class=p>;</span>
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Level = &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Level</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Level = "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Level</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>ReDraw</span><span class=p>();</span>
 <span class=w>  </span><span class=p>}</span>
 
@@ -173,39 +173,39 @@ function registerListener(event, func) {
 </span><span class=w>    </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>meshActor</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=k>this</span><span class=o>-&gt;</span><span class=n>meshMapper</span><span class=p>);</span>
 <span class=w>  </span><span class=p>}</span>
 
-<span class=w>  </span><span class=k>virtual</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=n>OnChar</span><span class=p>()</span>
+<span class=w>  </span><span class=k>virtual</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>OnChar</span><span class=p>()</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=kt>char</span><span class=w> </span><span class=n>ch</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Interactor</span><span class=o>-&gt;</span><span class=n>GetKeyCode</span><span class=p>();</span>
 
 <span class=w>    </span><span class=k>switch</span><span class=w> </span><span class=p>(</span><span class=n>ch</span><span class=p>)</span>
 <span class=w>    </span><span class=p>{</span>
-<span class=w>    </span><span class=k>case</span><span class=w> </span><span class=sc>&#39;n&#39;</span><span class=p>:</span>
+<span class=w>    </span><span class=k>case</span><span class=w> </span><span class=sc>'n'</span><span class=p>:</span>
 <span class=w>      </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Level</span><span class=o>++</span><span class=p>;</span>
 <span class=w>      </span><span class=k>break</span><span class=p>;</span>
-<span class=w>    </span><span class=k>case</span><span class=w> </span><span class=sc>&#39;p&#39;</span><span class=p>:</span>
+<span class=w>    </span><span class=k>case</span><span class=w> </span><span class=sc>'p'</span><span class=p>:</span>
 <span class=w>      </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Level</span><span class=w> </span><span class=o>&gt;</span><span class=w> </span><span class=mi>1</span><span class=p>)</span>
 <span class=w>      </span><span class=p>{</span>
 <span class=w>        </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Level</span><span class=o>--</span><span class=p>;</span>
 <span class=w>      </span><span class=p>}</span>
 <span class=w>      </span><span class=k>break</span><span class=p>;</span>
 <span class=w>    </span><span class=k>default</span><span class=o>:</span>
-<span class=w>      </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;An unhandled key was pressed.&quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>      </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"An unhandled key was pressed."</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>      </span><span class=k>break</span><span class=p>;</span>
 <span class=w>    </span><span class=p>}</span>
 
 <span class=w>    </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>ReDraw</span><span class=p>();</span>
 
 <span class=w>    </span><span class=c1>// Forward events.</span>
-<span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>ch</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=sc>&#39;p&#39;</span><span class=p>)</span><span class=w> </span><span class=c1>// Don&#39;t forward the &quot;pick&quot; command.</span>
+<span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>ch</span><span class=w> </span><span class=o>!=</span><span class=w> </span><span class=sc>'p'</span><span class=p>)</span><span class=w> </span><span class=c1>// Don't forward the "pick" command.</span>
 <span class=w>    </span><span class=p>{</span>
 <span class=hll><span class=w>      </span><span class=n>vtkInteractorStyleTrackballCamera</span><span class=o>::</span><span class=n>OnChar</span><span class=p>();</span>
 </span><span class=w>    </span><span class=p>}</span>
 <span class=w>  </span><span class=p>}</span>
 
-<span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=n>ReDraw</span><span class=p>()</span>
+<span class=w>  </span><span class=kt>void</span><span class=w> </span><span class=nf>ReDraw</span><span class=p>()</span>
 <span class=w>  </span><span class=p>{</span>
 
-<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Level &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Level</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Level "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Level</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 <span class=w>    </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=kt>unsigned</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=mi>4</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=o>++</span><span class=p>)</span>
 <span class=w>    </span><span class=p>{</span>
 
@@ -217,7 +217,7 @@ function registerListener(event, func) {
 
 <span class=hll><span class=w>      </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;</span><span class=w> </span><span class=n>polydata</span><span class=w> </span><span class=o>=</span>
 </span><span class=hll><span class=w>          </span><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkPolyData</span><span class=o>&gt;::</span><span class=n>New</span><span class=p>();</span>
-</span><span class=w>      </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot;Tree &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; has &quot;</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>tree</span><span class=o>-&gt;</span><span class=n>GetLevel</span><span class=p>()</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>&quot; levels.&quot;</span>
+</span><span class=w>      </span><span class=n>std</span><span class=o>::</span><span class=n>cout</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>"Tree "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" has "</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>tree</span><span class=o>-&gt;</span><span class=n>GetLevel</span><span class=p>()</span><span class=w> </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=s>" levels."</span>
 <span class=w>                </span><span class=o>&lt;&lt;</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>endl</span><span class=p>;</span>
 
 <span class=w>      </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=k>this</span><span class=o>-&gt;</span><span class=n>Level</span><span class=w> </span><span class=o>&gt;</span><span class=w> </span><span class=n>tree</span><span class=o>-&gt;</span><span class=n>GetLevel</span><span class=p>())</span>
@@ -267,7 +267,7 @@ function registerListener(event, func) {
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkRenderWindow</span><span class=o>&gt;</span><span class=w> </span><span class=n>renderWindow</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>200</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=n>numberOfViewports</span><span class=p>,</span><span class=w> </span><span class=mi>200</span><span class=p>);</span><span class=w> </span><span class=c1>//(width, height)</span>
-<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;DataStructureComparison&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>renderWindow</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"DataStructureComparison"</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>KeyPressInteractorStyle</span><span class=o>&gt;</span><span class=w> </span><span class=n>style</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>style</span><span class=o>-&gt;</span><span class=n>data</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>originalMesh</span><span class=p>;</span>
@@ -315,11 +315,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;DataStructureComparison: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"DataStructureComparison: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>DataStructureComparison</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>DataStructureComparison.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>DataStructureComparison</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

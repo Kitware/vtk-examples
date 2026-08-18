@@ -67,7 +67,7 @@ function registerListener(event, func) {
 <span class=k>def</span><span class=w> </span><span class=nf>main</span><span class=p>():</span>
     <span class=c1># create a 2-element array</span>
 <span class=hll>    <span class=n>array</span> <span class=o>=</span> <span class=n>vtkDoubleArray</span><span class=p>()</span>
-</span>    <span class=n>array</span><span class=o>.</span><span class=n>SetName</span><span class=p>(</span><span class=s1>&#39;array&#39;</span><span class=p>)</span>
+</span>    <span class=n>array</span><span class=o>.</span><span class=n>SetName</span><span class=p>(</span><span class=s1>'array'</span><span class=p>)</span>
     <span class=n>array</span><span class=o>.</span><span class=n>SetNumberOfComponents</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
     <span class=n>array</span><span class=o>.</span><span class=n>SetNumberOfTuples</span><span class=p>(</span><span class=mi>2</span><span class=p>)</span>
     <span class=n>array</span><span class=o>.</span><span class=n>SetValue</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mf>1.0</span><span class=p>)</span>
@@ -77,8 +77,8 @@ function registerListener(event, func) {
     <span class=n>info</span> <span class=o>=</span> <span class=n>array</span><span class=o>.</span><span class=n>GetInformation</span><span class=p>()</span>
 
     <span class=c1># Add one attribute, a double vector.</span>
-    <span class=n>name</span> <span class=o>=</span> <span class=s1>&#39;myKey&#39;</span>
-    <span class=n>location</span> <span class=o>=</span> <span class=s1>&#39;MyClass&#39;</span>
+    <span class=n>name</span> <span class=o>=</span> <span class=s1>'myKey'</span>
+    <span class=n>location</span> <span class=o>=</span> <span class=s1>'MyClass'</span>
     <span class=n>length</span> <span class=o>=</span> <span class=mi>3</span>
     <span class=n>key</span> <span class=o>=</span> <span class=n>DoubleVectorKey</span><span class=o>.</span><span class=n>MakeKey</span><span class=p>(</span><span class=n>name</span><span class=p>,</span> <span class=n>location</span><span class=p>,</span> <span class=n>length</span><span class=p>)</span>
     <span class=n>values</span> <span class=o>=</span> <span class=p>(</span><span class=mf>0.1</span><span class=p>,</span> <span class=mf>0.2</span><span class=p>,</span> <span class=mf>0.3</span><span class=p>)</span>
@@ -86,25 +86,25 @@ function registerListener(event, func) {
 
     <span class=c1># Extract the key.</span>
     <span class=n>vals</span> <span class=o>=</span> <span class=n>info</span><span class=o>.</span><span class=n>Get</span><span class=p>(</span><span class=n>key</span><span class=p>)</span>
-    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;Extracted values are: (</span><span class=si>{</span><span class=n>fmt_floats</span><span class=p>(</span><span class=n>vals</span><span class=p>)</span><span class=si>}</span><span class=s1>)&#39;</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'Extracted values are: (</span><span class=si>{</span><span class=n>fmt_floats</span><span class=p>(</span><span class=n>vals</span><span class=p>)</span><span class=si>}</span><span class=s1>)'</span><span class=p>)</span>
 
 
-<span class=k>def</span><span class=w> </span><span class=nf>fmt_floats</span><span class=p>(</span><span class=n>v</span><span class=p>,</span> <span class=n>w</span><span class=o>=</span><span class=mi>0</span><span class=p>,</span> <span class=n>d</span><span class=o>=</span><span class=mi>6</span><span class=p>,</span> <span class=n>pt</span><span class=o>=</span><span class=s1>&#39;g&#39;</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=k>def</span><span class=w> </span><span class=nf>fmt_floats</span><span class=p>(</span><span class=n>v</span><span class=p>,</span> <span class=n>w</span><span class=o>=</span><span class=mi>0</span><span class=p>,</span> <span class=n>d</span><span class=o>=</span><span class=mi>6</span><span class=p>,</span> <span class=n>pt</span><span class=o>=</span><span class=s1>'g'</span><span class=p>):</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Pretty print a list or tuple of floats.</span>
 
 <span class=sd>    :param v: The list or tuple of floats.</span>
 <span class=sd>    :param w: Total width of the field.</span>
 <span class=sd>    :param d: The number of decimal places.</span>
-<span class=sd>    :param pt: The presentation type, &#39;f&#39;, &#39;g&#39; or &#39;e&#39;.</span>
+<span class=sd>    :param pt: The presentation type, 'f', 'g' or 'e'.</span>
 <span class=sd>    :return: A string.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=n>pt</span> <span class=o>=</span> <span class=n>pt</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span>
-    <span class=k>if</span> <span class=n>pt</span> <span class=ow>not</span> <span class=ow>in</span> <span class=p>[</span><span class=s1>&#39;f&#39;</span><span class=p>,</span> <span class=s1>&#39;g&#39;</span><span class=p>,</span> <span class=s1>&#39;e&#39;</span><span class=p>]:</span>
-        <span class=n>pt</span> <span class=o>=</span> <span class=s1>&#39;f&#39;</span>
-    <span class=k>return</span> <span class=s1>&#39;, &#39;</span><span class=o>.</span><span class=n>join</span><span class=p>([</span><span class=sa>f</span><span class=s1>&#39;</span><span class=si>{</span><span class=n>element</span><span class=si>:{</span><span class=n>w</span><span class=si>}</span><span class=s1>.</span><span class=si>{</span><span class=n>d</span><span class=si>}{</span><span class=n>pt</span><span class=si>}}</span><span class=s1>&#39;</span> <span class=k>for</span> <span class=n>element</span> <span class=ow>in</span> <span class=n>v</span><span class=p>])</span>
+    <span class=k>if</span> <span class=n>pt</span> <span class=ow>not</span> <span class=ow>in</span> <span class=p>[</span><span class=s1>'f'</span><span class=p>,</span> <span class=s1>'g'</span><span class=p>,</span> <span class=s1>'e'</span><span class=p>]:</span>
+        <span class=n>pt</span> <span class=o>=</span> <span class=s1>'f'</span>
+    <span class=k>return</span> <span class=s1>', '</span><span class=o>.</span><span class=n>join</span><span class=p>([</span><span class=sa>f</span><span class=s1>'</span><span class=si>{</span><span class=n>element</span><span class=si>:{</span><span class=n>w</span><span class=si>}</span><span class=s1>.</span><span class=si>{</span><span class=n>d</span><span class=si>}{</span><span class=n>pt</span><span class=si>}}</span><span class=s1>'</span> <span class=k>for</span> <span class=n>element</span> <span class=ow>in</span> <span class=n>v</span><span class=p>])</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

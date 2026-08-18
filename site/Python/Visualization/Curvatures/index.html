@@ -97,14 +97,14 @@ function registerListener(event, func) {
     <span class=kn>import</span><span class=w> </span><span class=nn>argparse</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>textwrap</span>
 
-    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;Calculate Gauss or Mean Curvature.&#39;</span>
-    <span class=n>epilogue</span> <span class=o>=</span> <span class=n>textwrap</span><span class=o>.</span><span class=n>dedent</span><span class=p>(</span><span class=s1>&#39;&#39;&#39;</span>
-<span class=s1>    &#39;&#39;&#39;</span><span class=p>)</span>
+    <span class=n>description</span> <span class=o>=</span> <span class=s1>'Calculate Gauss or Mean Curvature.'</span>
+    <span class=n>epilogue</span> <span class=o>=</span> <span class=n>textwrap</span><span class=o>.</span><span class=n>dedent</span><span class=p>(</span><span class=s1>'''</span>
+<span class=s1>    '''</span><span class=p>)</span>
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawDescriptionHelpFormatter</span><span class=p>,</span> <span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span>
                                      <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;file_name&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39; e.g. cowHead.vtp.&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-i&#39;</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mi>16</span><span class=p>,</span> <span class=nb>type</span><span class=o>=</span><span class=nb>int</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The color map index e.g. 16.&#39;</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-g&#39;</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Use Gaussian Curvature.&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_true&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'file_name'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>' e.g. cowHead.vtp.'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-i'</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=mi>16</span><span class=p>,</span> <span class=nb>type</span><span class=o>=</span><span class=nb>int</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'The color map index e.g. 16.'</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-g'</span><span class=p>,</span> <span class=n>help</span><span class=o>=</span><span class=s1>'Use Gaussian Curvature.'</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>'store_true'</span><span class=p>)</span>
 
     <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
     <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>file_name</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>i</span><span class=p>,</span> <span class=n>args</span><span class=o>.</span><span class=n>g</span>
@@ -114,12 +114,12 @@ function registerListener(event, func) {
     <span class=n>file_name</span><span class=p>,</span> <span class=n>color_map_idx</span><span class=p>,</span> <span class=n>gaussian_curvature</span> <span class=o>=</span> <span class=n>get_program_parameters</span><span class=p>(</span><span class=n>argv</span><span class=p>)</span>
 
     <span class=k>if</span> <span class=ow>not</span> <span class=n>Path</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span><span class=o>.</span><span class=n>is_file</span><span class=p>():</span>
-        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;The path: </span><span class=si>{</span><span class=n>file_name</span><span class=si>}</span><span class=s1> does not exist.&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'The path: </span><span class=si>{</span><span class=n>file_name</span><span class=si>}</span><span class=s1> does not exist.'</span><span class=p>)</span>
         <span class=k>return</span>
     <span class=k>if</span> <span class=n>gaussian_curvature</span><span class=p>:</span>
-        <span class=n>curvature</span> <span class=o>=</span> <span class=s1>&#39;Gauss_Curvature&#39;</span>
+        <span class=n>curvature</span> <span class=o>=</span> <span class=s1>'Gauss_Curvature'</span>
     <span class=k>else</span><span class=p>:</span>
-        <span class=n>curvature</span> <span class=o>=</span> <span class=s1>&#39;Mean_Curvature&#39;</span>
+        <span class=n>curvature</span> <span class=o>=</span> <span class=s1>'Mean_Curvature'</span>
 
 <span class=hll>    <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkXMLPolyDataReader</span><span class=p>()</span>
 </span>    <span class=n>reader</span><span class=o>.</span><span class=n>SetFileName</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
@@ -141,7 +141,7 @@ function registerListener(event, func) {
 
     <span class=c1># Uncomment the following lines if you want to write out the polydata.</span>
     <span class=c1># writer = vtkXMLPolyDataWriter()</span>
-    <span class=c1># writer.SetFileName(&#39;Source.vtp&#39;)</span>
+    <span class=c1># writer.SetFileName('Source.vtp')</span>
     <span class=c1># writer.SetInputData(source)</span>
     <span class=c1># writer.SetDataModeToAscii()</span>
     <span class=c1># writer.Write()</span>
@@ -149,7 +149,7 @@ function registerListener(event, func) {
     <span class=c1># Build a lookup table</span>
 <span class=hll>    <span class=n>color_series</span> <span class=o>=</span> <span class=n>vtkColorSeries</span><span class=p>()</span>
 </span>    <span class=n>color_series</span><span class=o>.</span><span class=n>SetColorScheme</span><span class=p>(</span><span class=n>color_map_idx</span><span class=p>)</span>
-    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;Using color scheme #: </span><span class=si>{</span><span class=n>color_series</span><span class=o>.</span><span class=n>GetColorScheme</span><span class=p>()</span><span class=si>}</span><span class=s1>, </span><span class=si>{</span><span class=n>color_series</span><span class=o>.</span><span class=n>GetColorSchemeName</span><span class=p>()</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'Using color scheme #: </span><span class=si>{</span><span class=n>color_series</span><span class=o>.</span><span class=n>GetColorScheme</span><span class=p>()</span><span class=si>}</span><span class=s1>, </span><span class=si>{</span><span class=n>color_series</span><span class=o>.</span><span class=n>GetColorSchemeName</span><span class=p>()</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>lut</span> <span class=o>=</span> <span class=n>vtkColorTransferFunction</span><span class=p>()</span>
 </span>    <span class=n>lut</span><span class=o>.</span><span class=n>SetColorSpaceToHSV</span><span class=p>()</span>
@@ -180,7 +180,7 @@ function registerListener(event, func) {
     <span class=c1># Create a scalar bar</span>
 <span class=hll>    <span class=n>scalar_bar</span> <span class=o>=</span> <span class=n>vtkScalarBarActor</span><span class=p>()</span>
 </span>    <span class=n>scalar_bar</span><span class=o>.</span><span class=n>SetLookupTable</span><span class=p>(</span><span class=n>mapper</span><span class=o>.</span><span class=n>GetLookupTable</span><span class=p>())</span>
-    <span class=n>scalar_bar</span><span class=o>.</span><span class=n>SetTitle</span><span class=p>(</span><span class=n>curvature</span><span class=o>.</span><span class=n>replace</span><span class=p>(</span><span class=s1>&#39;_&#39;</span><span class=p>,</span> <span class=s1>&#39;</span><span class=se>\n</span><span class=s1>&#39;</span><span class=p>))</span>
+    <span class=n>scalar_bar</span><span class=o>.</span><span class=n>SetTitle</span><span class=p>(</span><span class=n>curvature</span><span class=o>.</span><span class=n>replace</span><span class=p>(</span><span class=s1>'_'</span><span class=p>,</span> <span class=s1>'</span><span class=se>\n</span><span class=s1>'</span><span class=p>))</span>
     <span class=n>scalar_bar</span><span class=o>.</span><span class=n>UnconstrainedFontSizeOn</span><span class=p>()</span>
     <span class=n>scalar_bar</span><span class=o>.</span><span class=n>SetNumberOfLabels</span><span class=p>(</span><span class=mi>5</span><span class=p>)</span>
     <span class=n>scalar_bar</span><span class=o>.</span><span class=n>SetMaximumWidthInPixels</span><span class=p>(</span><span class=n>window_width</span> <span class=o>//</span> <span class=mi>8</span><span class=p>)</span>
@@ -191,7 +191,7 @@ function registerListener(event, func) {
 </span><span class=hll>    <span class=n>ren_win</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>()</span>
 </span>    <span class=n>ren_win</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>renderer</span><span class=p>)</span>
     <span class=n>ren_win</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=n>window_width</span><span class=p>,</span> <span class=n>window_height</span><span class=p>)</span>
-    <span class=n>ren_win</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;Curvatures&#39;</span><span class=p>)</span>
+    <span class=n>ren_win</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>'Curvatures'</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>iren</span><span class=o>.</span><span class=n>SetRenderWindow</span><span class=p>(</span><span class=n>ren_win</span><span class=p>)</span>
@@ -207,7 +207,7 @@ function registerListener(event, func) {
     <span class=c1># Add the actors to the scene</span>
     <span class=n>renderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor</span><span class=p>)</span>
     <span class=n>renderer</span><span class=o>.</span><span class=n>AddViewProp</span><span class=p>(</span><span class=n>scalar_bar</span><span class=p>)</span>
-    <span class=n>renderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;DarkSlateGray&#39;</span><span class=p>))</span>
+    <span class=n>renderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'DarkSlateGray'</span><span class=p>))</span>
 
     <span class=c1># Render and interact</span>
     <span class=n>ren_win</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
@@ -215,14 +215,14 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>vtk_version_ok</span><span class=p>(</span><span class=n>major</span><span class=p>,</span> <span class=n>minor</span><span class=p>,</span> <span class=n>build</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    Check the VTK version.</span>
 
 <span class=sd>    :param major: Requested major version.</span>
 <span class=sd>    :param minor: Requested minor version.</span>
 <span class=sd>    :param build: Requested build version.</span>
 <span class=sd>    :return: True if the requested VTK version is &gt;= the actual VTK version.</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
     <span class=n>requested_version</span> <span class=o>=</span> <span class=p>(</span><span class=mi>100</span> <span class=o>*</span> <span class=nb>int</span><span class=p>(</span><span class=n>major</span><span class=p>)</span> <span class=o>+</span> <span class=nb>int</span><span class=p>(</span><span class=n>minor</span><span class=p>))</span> <span class=o>*</span> <span class=mi>100000000</span> <span class=o>+</span> <span class=nb>int</span><span class=p>(</span><span class=n>build</span><span class=p>)</span>
 <span class=hll>    <span class=n>ver</span> <span class=o>=</span> <span class=n>vtkVersion</span><span class=p>()</span>
 </span>    <span class=n>actual_version</span> <span class=o>=</span> <span class=p>(</span><span class=mi>100</span> <span class=o>*</span> <span class=n>ver</span><span class=o>.</span><span class=n>GetVTKMajorVersion</span><span class=p>()</span> <span class=o>+</span> <span class=n>ver</span><span class=o>.</span><span class=n>GetVTKMinorVersion</span><span class=p>())</span> \
@@ -234,30 +234,30 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>adjust_edge_curvatures</span><span class=p>(</span><span class=n>source</span><span class=p>,</span> <span class=n>curvature_name</span><span class=p>,</span> <span class=n>epsilon</span><span class=o>=</span><span class=mf>1.0e-08</span><span class=p>):</span>
-<span class=w>    </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>    </span><span class=sd>"""</span>
 <span class=sd>    This function adjusts curvatures along the edges of the surface by replacing</span>
 <span class=sd>     the value with the average value of the curvatures of points in the neighborhood.</span>
 
 <span class=hll><span class=sd>    Remember to update the vtkCurvatures object before calling this.</span>
 </span>
 <span class=hll><span class=sd>    :param source: A vtkPolyData object corresponding to the vtkCurvatures object.</span>
-</span><span class=sd>    :param curvature_name: The name of the curvature, &#39;Gauss_Curvature&#39; or &#39;Mean_Curvature&#39;.</span>
+</span><span class=sd>    :param curvature_name: The name of the curvature, 'Gauss_Curvature' or 'Mean_Curvature'.</span>
 <span class=sd>    :param epsilon: Absolute curvature values less than this will be set to zero.</span>
 <span class=sd>    :return:</span>
-<span class=sd>    &quot;&quot;&quot;</span>
+<span class=sd>    """</span>
 
     <span class=k>def</span><span class=w> </span><span class=nf>point_neighbourhood</span><span class=p>(</span><span class=n>pt_id</span><span class=p>):</span>
-<span class=w>        </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>        </span><span class=sd>"""</span>
 <span class=sd>        Find the ids of the neighbours of pt_id.</span>
 
 <span class=sd>        :param pt_id: The point id.</span>
 <span class=sd>        :return: The neighbour ids.</span>
-<span class=sd>        &quot;&quot;&quot;</span>
-<span class=w>        </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=sd>        """</span>
+<span class=w>        </span><span class=sd>"""</span>
 <span class=sd>        Extract the topological neighbors for point pId. In two steps:</span>
 <span class=sd>        1) source.GetPointCells(pt_id, cell_ids)</span>
 <span class=sd>        2) source.GetCellPoints(cell_id, cell_point_ids) for all cell_id in cell_ids</span>
-<span class=sd>        &quot;&quot;&quot;</span>
+<span class=sd>        """</span>
 <span class=hll>        <span class=n>cell_ids</span> <span class=o>=</span> <span class=n>vtkIdList</span><span class=p>()</span>
 </span>        <span class=n>source</span><span class=o>.</span><span class=n>GetPointCells</span><span class=p>(</span><span class=n>pt_id</span><span class=p>,</span> <span class=n>cell_ids</span><span class=p>)</span>
         <span class=n>neighbour</span> <span class=o>=</span> <span class=nb>set</span><span class=p>()</span>
@@ -270,13 +270,13 @@ function registerListener(event, func) {
         <span class=k>return</span> <span class=n>neighbour</span>
 
     <span class=k>def</span><span class=w> </span><span class=nf>compute_distance</span><span class=p>(</span><span class=n>pt_id_a</span><span class=p>,</span> <span class=n>pt_id_b</span><span class=p>):</span>
-<span class=w>        </span><span class=sd>&quot;&quot;&quot;</span>
+<span class=w>        </span><span class=sd>"""</span>
 <span class=sd>        Compute the distance between two points given their ids.</span>
 
 <span class=sd>        :param pt_id_a:</span>
 <span class=sd>        :param pt_id_b:</span>
 <span class=sd>        :return:</span>
-<span class=sd>        &quot;&quot;&quot;</span>
+<span class=sd>        """</span>
         <span class=n>pt_a</span> <span class=o>=</span> <span class=n>np</span><span class=o>.</span><span class=n>array</span><span class=p>(</span><span class=n>source</span><span class=o>.</span><span class=n>GetPoint</span><span class=p>(</span><span class=n>pt_id_a</span><span class=p>))</span>
         <span class=n>pt_b</span> <span class=o>=</span> <span class=n>np</span><span class=o>.</span><span class=n>array</span><span class=p>(</span><span class=n>source</span><span class=o>.</span><span class=n>GetPoint</span><span class=p>(</span><span class=n>pt_id_b</span><span class=p>))</span>
         <span class=k>return</span> <span class=n>np</span><span class=o>.</span><span class=n>linalg</span><span class=o>.</span><span class=n>norm</span><span class=p>(</span><span class=n>pt_a</span> <span class=o>-</span> <span class=n>pt_b</span><span class=p>)</span>
@@ -287,7 +287,7 @@ function registerListener(event, func) {
     <span class=n>curvatures</span> <span class=o>=</span> <span class=n>np_source</span><span class=o>.</span><span class=n>PointData</span><span class=p>[</span><span class=n>curvature_name</span><span class=p>]</span>
 
     <span class=c1>#  Get the boundary point IDs.</span>
-    <span class=n>array_name</span> <span class=o>=</span> <span class=s1>&#39;ids&#39;</span>
+    <span class=n>array_name</span> <span class=o>=</span> <span class=s1>'ids'</span>
     <span class=n>id_filter</span> <span class=o>=</span> <span class=n>vtkIdFilter</span><span class=p>()</span>
     <span class=n>id_filter</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>source</span><span class=p>)</span>
     <span class=n>id_filter</span><span class=o>.</span><span class=n>SetPointIds</span><span class=p>(</span><span class=kc>True</span><span class=p>)</span>
@@ -350,7 +350,7 @@ function registerListener(event, func) {
         <span class=n>source</span><span class=o>.</span><span class=n>GetPointData</span><span class=p>()</span><span class=o>.</span><span class=n>SetActiveScalars</span><span class=p>(</span><span class=n>curvature_name</span><span class=p>)</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>sys</span>
 
     <span class=n>main</span><span class=p>(</span><span class=n>sys</span><span class=o>.</span><span class=n>argv</span><span class=p>)</span>

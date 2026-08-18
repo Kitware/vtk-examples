@@ -112,19 +112,19 @@ function registerListener(event, func) {
 <span class=k>constexpr</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>NUM_ITEMS</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>5</span><span class=p>;</span>
 <span class=k>constexpr</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>data</span><span class=p>[]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>{</span><span class=mi>77938</span><span class=p>,</span><span class=w> </span><span class=mi>9109</span><span class=p>,</span><span class=w> </span><span class=mi>2070</span><span class=p>,</span><span class=w> </span><span class=mi>12806</span><span class=p>,</span><span class=w> </span><span class=mi>19514</span><span class=p>};</span>
 <span class=c1>// constexpr int data[] = {200,200,200,200,200};</span>
-<span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>labels</span><span class=p>[]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>{</span><span class=s>&quot;Books&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;New and Popular&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;Periodical&quot;</span><span class=p>,</span><span class=w> </span><span class=s>&quot;Audiobook&quot;</span><span class=p>,</span>
-<span class=w>                        </span><span class=s>&quot;Video&quot;</span><span class=p>};</span>
+<span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>labels</span><span class=p>[]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>{</span><span class=s>"Books"</span><span class=p>,</span><span class=w> </span><span class=s>"New and Popular"</span><span class=p>,</span><span class=w> </span><span class=s>"Periodical"</span><span class=p>,</span><span class=w> </span><span class=s>"Audiobook"</span><span class=p>,</span>
+<span class=w>                        </span><span class=s>"Video"</span><span class=p>};</span>
 <span class=p>}</span><span class=w> </span><span class=c1>// namespace</span>
 
-<span class=kt>int</span><span class=w> </span><span class=n>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=p>[])</span>
+<span class=kt>int</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=p>[])</span>
 <span class=p>{</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span><span class=w> </span><span class=n>colors</span><span class=p>;</span>
 </span>
 <span class=w>  </span><span class=c1>// Set up a 2D scene, add an XY chart to it</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkContextView</span><span class=o>&gt;</span><span class=w> </span><span class=n>view</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>view</span><span class=o>-&gt;</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;SlateGray&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+</span><span class=w>  </span><span class=n>view</span><span class=o>-&gt;</span><span class=n>GetRenderer</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"SlateGray"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=n>view</span><span class=o>-&gt;</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>600</span><span class=p>,</span><span class=w> </span><span class=mi>350</span><span class=p>);</span>
-<span class=w>  </span><span class=n>view</span><span class=o>-&gt;</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;PieChart&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>view</span><span class=o>-&gt;</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"PieChart"</span><span class=p>);</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkChartPie</span><span class=o>&gt;</span><span class=w> </span><span class=n>chart</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>view</span><span class=o>-&gt;</span><span class=n>GetScene</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>AddItem</span><span class=p>(</span><span class=n>chart</span><span class=p>);</span>
@@ -135,7 +135,7 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkIntArray</span><span class=o>&gt;</span><span class=w> </span><span class=n>arrData</span><span class=p>;</span>
 </span><span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkStringArray</span><span class=o>&gt;</span><span class=w> </span><span class=n>labelArray</span><span class=p>;</span>
 </span>
-<span class=w>  </span><span class=n>arrData</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>&quot;2008 Circulation&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>arrData</span><span class=o>-&gt;</span><span class=n>SetName</span><span class=p>(</span><span class=s>"2008 Circulation"</span><span class=p>);</span>
 <span class=w>  </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>0</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>NUM_ITEMS</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=o>++</span><span class=p>)</span>
 <span class=w>  </span><span class=p>{</span>
 <span class=w>    </span><span class=n>arrData</span><span class=o>-&gt;</span><span class=n>InsertNextValue</span><span class=p>(</span><span class=n>data</span><span class=p>[</span><span class=n>i</span><span class=p>]);</span>
@@ -152,12 +152,12 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkPlotPie</span><span class=o>*</span><span class=w> </span><span class=n>pie</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>dynamic_cast</span><span class=o>&lt;</span><span class=n>vtkPlotPie</span><span class=o>*&gt;</span><span class=p>(</span><span class=n>chart</span><span class=o>-&gt;</span><span class=n>AddPlot</span><span class=p>(</span><span class=mi>0</span><span class=p>));</span>
 </span><span class=w>  </span><span class=n>pie</span><span class=o>-&gt;</span><span class=n>SetColorSeries</span><span class=p>(</span><span class=n>colorSeries</span><span class=p>);</span>
 <span class=w>  </span><span class=n>pie</span><span class=o>-&gt;</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>table</span><span class=p>);</span>
-<span class=w>  </span><span class=n>pie</span><span class=o>-&gt;</span><span class=n>SetInputArray</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=s>&quot;2008 Circulation&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>pie</span><span class=o>-&gt;</span><span class=n>SetInputArray</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=s>"2008 Circulation"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>pie</span><span class=o>-&gt;</span><span class=n>SetLabels</span><span class=p>(</span><span class=n>labelArray</span><span class=p>);</span>
 
 <span class=w>  </span><span class=n>chart</span><span class=o>-&gt;</span><span class=n>SetShowLegend</span><span class=p>(</span><span class=nb>true</span><span class=p>);</span>
 
-<span class=w>  </span><span class=n>chart</span><span class=o>-&gt;</span><span class=n>SetTitle</span><span class=p>(</span><span class=s>&quot;Circulation 2008&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>chart</span><span class=o>-&gt;</span><span class=n>SetTitle</span><span class=p>(</span><span class=s>"Circulation 2008"</span><span class=p>);</span>
 
 <span class=w>  </span><span class=c1>// Finally render the scene and compare the image to a reference image</span>
 <span class=w>  </span><span class=n>view</span><span class=o>-&gt;</span><span class=n>GetRenderWindow</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetMultiSamples</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span>
@@ -186,11 +186,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;PieChart: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"PieChart: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>PieChart</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>PieChart.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>PieChart</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

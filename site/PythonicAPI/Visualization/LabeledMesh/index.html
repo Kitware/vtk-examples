@@ -117,7 +117,7 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>rect_mapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper2D</span><span class=p>(</span><span class=n>input_data</span><span class=o>=</span><span class=n>select_rect</span><span class=p>)</span>
 </span>
 <span class=hll>    <span class=n>rect_actor</span> <span class=o>=</span> <span class=n>vtkActor2D</span><span class=p>(</span><span class=n>mapper</span><span class=o>=</span><span class=n>rect_mapper</span><span class=p>)</span>
-</span>    <span class=n>rect_actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Black&#39;</span><span class=p>)</span>
+</span>    <span class=n>rect_actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Black'</span><span class=p>)</span>
 
     <span class=c1># Create a sphere and its associated mapper and actor.</span>
 <span class=hll>    <span class=n>sphere</span> <span class=o>=</span> <span class=n>vtkSphereSource</span><span class=p>()</span>
@@ -125,14 +125,14 @@ function registerListener(event, func) {
 </span>    <span class=n>sphere</span> <span class=o>&gt;&gt;</span> <span class=n>sphere_mapper</span>
 
 <span class=hll>    <span class=n>sphere_actor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>(</span><span class=n>mapper</span><span class=o>=</span><span class=n>sphere_mapper</span><span class=p>)</span>
-</span>    <span class=n>sphere_actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;BurlyWood&#39;</span><span class=p>)</span>
+</span>    <span class=n>sphere_actor</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'BurlyWood'</span><span class=p>)</span>
 
     <span class=c1># Generate data arrays containing point and cell ids.</span>
 <span class=hll>    <span class=n>ids</span> <span class=o>=</span> <span class=n>vtkGenerateIds</span><span class=p>(</span><span class=n>point_ids</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>cell_ids</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>field_data</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
 </span>    <span class=n>sphere</span> <span class=o>&gt;&gt;</span> <span class=n>ids</span>
 
     <span class=c1># Create the renderer here because vtkSelectVisiblePoints needs it.</span>
-<span class=hll>    <span class=n>ren</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>use_hidden_line_removal</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;SlateGray&#39;</span><span class=p>))</span>
+<span class=hll>    <span class=n>ren</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>use_hidden_line_removal</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'SlateGray'</span><span class=p>))</span>
 </span>
     <span class=c1># Create labels for points</span>
 <span class=hll>    <span class=n>vis_pts</span> <span class=o>=</span> <span class=n>vtkSelectVisiblePoints</span><span class=p>(</span><span class=n>renderer</span><span class=o>=</span><span class=n>ren</span><span class=p>,</span> <span class=n>selection_window</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>selection</span><span class=o>=</span><span class=n>selection</span><span class=p>)</span>
@@ -142,11 +142,11 @@ function registerListener(event, func) {
     <span class=c1># Note: We need to change the field_data_name because the point ID array</span>
     <span class=c1>#       default name has changed in vtkGenerateIds.</span>
 <span class=hll>    <span class=n>ldm</span> <span class=o>=</span> <span class=n>vtkLabeledDataMapper</span><span class=p>(</span><span class=n>label_mode</span><span class=o>=</span><span class=n>LabeledDataMapper</span><span class=o>.</span><span class=n>LabelMode</span><span class=o>.</span><span class=n>VTK_LABEL_FIELD_DATA</span><span class=p>,</span>
-</span>                               <span class=n>field_data_name</span><span class=o>=</span><span class=s1>&#39;vtkPointIds&#39;</span><span class=p>)</span>
+</span>                               <span class=n>field_data_name</span><span class=o>=</span><span class=s1>'vtkPointIds'</span><span class=p>)</span>
     <span class=n>ids</span> <span class=o>&gt;&gt;</span> <span class=n>vis_pts</span> <span class=o>&gt;&gt;</span> <span class=n>ldm</span>
 
 <span class=hll>    <span class=n>point_labels</span> <span class=o>=</span> <span class=n>vtkActor2D</span><span class=p>(</span><span class=n>mapper</span><span class=o>=</span><span class=n>ldm</span><span class=p>)</span>
-</span>    <span class=n>point_labels</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Yellow&#39;</span><span class=p>)</span>
+</span>    <span class=n>point_labels</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Yellow'</span><span class=p>)</span>
 
     <span class=c1># Create labels for cells</span>
 <span class=hll>    <span class=n>cc</span> <span class=o>=</span> <span class=n>vtkCellCenters</span><span class=p>()</span>
@@ -157,12 +157,12 @@ function registerListener(event, func) {
     <span class=c1># format to use for the labels.  Also create the associated actor.</span>
 <span class=hll>    <span class=n>cell_mapper</span> <span class=o>=</span> <span class=n>vtkLabeledDataMapper</span><span class=p>(</span><span class=n>label_mode</span><span class=o>=</span><span class=n>LabeledDataMapper</span><span class=o>.</span><span class=n>LabelMode</span><span class=o>.</span><span class=n>VTK_LABEL_FIELD_DATA</span><span class=p>)</span>
 </span>    <span class=n>ids</span> <span class=o>&gt;&gt;</span> <span class=n>cc</span> <span class=o>&gt;&gt;</span> <span class=n>vis_cells</span> <span class=o>&gt;&gt;</span> <span class=n>cell_mapper</span>
-    <span class=n>cell_mapper</span><span class=o>.</span><span class=n>label_text_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;DarkGreen&#39;</span><span class=p>)</span>
+    <span class=n>cell_mapper</span><span class=o>.</span><span class=n>label_text_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'DarkGreen'</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>cell_labels</span> <span class=o>=</span> <span class=n>vtkActor2D</span><span class=p>(</span><span class=n>mapper</span><span class=o>=</span><span class=n>cell_mapper</span><span class=p>)</span>
 </span>
     <span class=c1># Create the RenderWindow and RenderWindowInteractor</span>
-<span class=hll>    <span class=n>ren_win</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>size</span><span class=o>=</span><span class=p>(</span><span class=mi>500</span><span class=p>,</span> <span class=mi>500</span><span class=p>),</span> <span class=n>window_name</span><span class=o>=</span><span class=s1>&#39;LabeledMesh&#39;</span><span class=p>)</span>
+<span class=hll>    <span class=n>ren_win</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>size</span><span class=o>=</span><span class=p>(</span><span class=mi>500</span><span class=p>,</span> <span class=mi>500</span><span class=p>),</span> <span class=n>window_name</span><span class=o>=</span><span class=s1>'LabeledMesh'</span><span class=p>)</span>
 </span>    <span class=n>ren_win</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>ren</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
@@ -176,7 +176,7 @@ function registerListener(event, func) {
 
     <span class=n>ren_win</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
 
-    <span class=n>data</span> <span class=o>=</span> <span class=p>{</span><span class=s1>&#39;Visible Points&#39;</span><span class=p>:</span> <span class=n>vis_pts</span><span class=p>,</span> <span class=s1>&#39;Visible Cells&#39;</span><span class=p>:</span> <span class=n>vis_cells</span><span class=p>,</span> <span class=s1>&#39;Points&#39;</span><span class=p>:</span> <span class=n>pts</span><span class=p>,</span> <span class=s1>&#39;Render Window&#39;</span><span class=p>:</span> <span class=n>ren_win</span><span class=p>}</span>
+    <span class=n>data</span> <span class=o>=</span> <span class=p>{</span><span class=s1>'Visible Points'</span><span class=p>:</span> <span class=n>vis_pts</span><span class=p>,</span> <span class=s1>'Visible Cells'</span><span class=p>:</span> <span class=n>vis_cells</span><span class=p>,</span> <span class=s1>'Points'</span><span class=p>:</span> <span class=n>pts</span><span class=p>,</span> <span class=s1>'Render Window'</span><span class=p>:</span> <span class=n>ren_win</span><span class=p>}</span>
 
     <span class=c1># Move the selection window across the data set.</span>
     <span class=n>move_window</span><span class=p>(</span><span class=n>data</span><span class=p>,</span> <span class=n>x_length</span><span class=p>,</span> <span class=n>y_length</span><span class=p>)</span>
@@ -191,21 +191,21 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>place_window</span><span class=p>(</span><span class=n>data</span><span class=p>,</span> <span class=n>selection</span><span class=p>):</span>
-    <span class=n>data</span><span class=p>[</span><span class=s1>&#39;Visible Points&#39;</span><span class=p>]</span><span class=o>.</span><span class=n>selection</span> <span class=o>=</span> <span class=n>selection</span>
-    <span class=n>data</span><span class=p>[</span><span class=s1>&#39;Visible Cells&#39;</span><span class=p>]</span><span class=o>.</span><span class=n>selection</span> <span class=o>=</span> <span class=n>selection</span>
+    <span class=n>data</span><span class=p>[</span><span class=s1>'Visible Points'</span><span class=p>]</span><span class=o>.</span><span class=n>selection</span> <span class=o>=</span> <span class=n>selection</span>
+    <span class=n>data</span><span class=p>[</span><span class=s1>'Visible Cells'</span><span class=p>]</span><span class=o>.</span><span class=n>selection</span> <span class=o>=</span> <span class=n>selection</span>
 
     <span class=n>xmin</span> <span class=o>=</span> <span class=n>selection</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span>
     <span class=n>ymin</span> <span class=o>=</span> <span class=n>selection</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span>
-    <span class=n>data</span><span class=p>[</span><span class=s1>&#39;Points&#39;</span><span class=p>]</span><span class=o>.</span><span class=n>InsertPoint</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>xmin</span><span class=p>,</span> <span class=n>ymin</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
-    <span class=n>data</span><span class=p>[</span><span class=s1>&#39;Points&#39;</span><span class=p>]</span><span class=o>.</span><span class=n>InsertPoint</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>xmin</span><span class=p>,</span> <span class=n>ymin</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
-    <span class=n>data</span><span class=p>[</span><span class=s1>&#39;Points&#39;</span><span class=p>]</span><span class=o>.</span><span class=n>InsertPoint</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span> <span class=n>xmin</span><span class=p>,</span> <span class=n>ymin</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
-    <span class=n>data</span><span class=p>[</span><span class=s1>&#39;Points&#39;</span><span class=p>]</span><span class=o>.</span><span class=n>InsertPoint</span><span class=p>(</span><span class=mi>3</span><span class=p>,</span> <span class=n>xmin</span><span class=p>,</span> <span class=n>ymin</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
+    <span class=n>data</span><span class=p>[</span><span class=s1>'Points'</span><span class=p>]</span><span class=o>.</span><span class=n>InsertPoint</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>xmin</span><span class=p>,</span> <span class=n>ymin</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
+    <span class=n>data</span><span class=p>[</span><span class=s1>'Points'</span><span class=p>]</span><span class=o>.</span><span class=n>InsertPoint</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>xmin</span><span class=p>,</span> <span class=n>ymin</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
+    <span class=n>data</span><span class=p>[</span><span class=s1>'Points'</span><span class=p>]</span><span class=o>.</span><span class=n>InsertPoint</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span> <span class=n>xmin</span><span class=p>,</span> <span class=n>ymin</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
+    <span class=n>data</span><span class=p>[</span><span class=s1>'Points'</span><span class=p>]</span><span class=o>.</span><span class=n>InsertPoint</span><span class=p>(</span><span class=mi>3</span><span class=p>,</span> <span class=n>xmin</span><span class=p>,</span> <span class=n>ymin</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
 
     <span class=c1># Call Modified because InsertPoints does not modify vtkPoints</span>
     <span class=c1># (for performance reasons).</span>
-    <span class=n>data</span><span class=p>[</span><span class=s1>&#39;Points&#39;</span><span class=p>]</span><span class=o>.</span><span class=n>Modified</span><span class=p>()</span>
+    <span class=n>data</span><span class=p>[</span><span class=s1>'Points'</span><span class=p>]</span><span class=o>.</span><span class=n>Modified</span><span class=p>()</span>
 
-    <span class=n>data</span><span class=p>[</span><span class=s1>&#39;Render Window&#39;</span><span class=p>]</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
+    <span class=n>data</span><span class=p>[</span><span class=s1>'Render Window'</span><span class=p>]</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>move_window</span><span class=p>(</span><span class=n>data</span><span class=p>,</span> <span class=n>xLength</span><span class=p>,</span> <span class=n>yLength</span><span class=p>):</span>
@@ -228,6 +228,6 @@ function registerListener(event, func) {
         <span class=n>VTK_LABEL_FIELD_DATA</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>6</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

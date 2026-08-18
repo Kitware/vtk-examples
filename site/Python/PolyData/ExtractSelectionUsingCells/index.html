@@ -84,15 +84,15 @@ function registerListener(event, func) {
 <span class=k>def</span><span class=w> </span><span class=nf>main</span><span class=p>():</span>
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
-    <span class=c1># colors.SetColor(&#39;leftBkg&#39;, [0.6, 0.5, 0.4, 1.0])</span>
-    <span class=c1># colors.SetColor(&#39;centreBkg&#39;, [0.3, 0.1, 0.4, 1.0])</span>
-    <span class=c1># colors.SetColor(&#39;rightBkg&#39;, [0.4, 0.5, 0.6, 1.0])</span>
+    <span class=c1># colors.SetColor('leftBkg', [0.6, 0.5, 0.4, 1.0])</span>
+    <span class=c1># colors.SetColor('centreBkg', [0.3, 0.1, 0.4, 1.0])</span>
+    <span class=c1># colors.SetColor('rightBkg', [0.4, 0.5, 0.6, 1.0])</span>
 
 <span class=hll>    <span class=n>sphereSource</span> <span class=o>=</span> <span class=n>vtkSphereSource</span><span class=p>()</span>
 </span>    <span class=n>sphereSource</span><span class=o>.</span><span class=n>Update</span><span class=p>()</span>
 
-    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;There are </span><span class=si>%s</span><span class=s1> input points&#39;</span> <span class=o>%</span> <span class=n>sphereSource</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetNumberOfPoints</span><span class=p>())</span>
-    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;There are </span><span class=si>%s</span><span class=s1> input cells&#39;</span> <span class=o>%</span> <span class=n>sphereSource</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetNumberOfCells</span><span class=p>())</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s1>'There are </span><span class=si>%s</span><span class=s1> input points'</span> <span class=o>%</span> <span class=n>sphereSource</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetNumberOfPoints</span><span class=p>())</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s1>'There are </span><span class=si>%s</span><span class=s1> input cells'</span> <span class=o>%</span> <span class=n>sphereSource</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>()</span><span class=o>.</span><span class=n>GetNumberOfCells</span><span class=p>())</span>
 
 <span class=hll>    <span class=n>ids</span> <span class=o>=</span> <span class=n>vtkIdTypeArray</span><span class=p>()</span>
 </span>    <span class=n>ids</span><span class=o>.</span><span class=n>SetNumberOfComponents</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
@@ -120,8 +120,8 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>selected</span> <span class=o>=</span> <span class=n>vtkUnstructuredGrid</span><span class=p>()</span>
 </span>    <span class=n>selected</span><span class=o>.</span><span class=n>ShallowCopy</span><span class=p>(</span><span class=n>extractSelection</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>())</span>
 
-    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;There are </span><span class=si>%s</span><span class=s1> points in the selection&#39;</span> <span class=o>%</span> <span class=n>selected</span><span class=o>.</span><span class=n>GetNumberOfPoints</span><span class=p>())</span>
-    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;There are </span><span class=si>%s</span><span class=s1> cells in the selection&#39;</span> <span class=o>%</span> <span class=n>selected</span><span class=o>.</span><span class=n>GetNumberOfCells</span><span class=p>())</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s1>'There are </span><span class=si>%s</span><span class=s1> points in the selection'</span> <span class=o>%</span> <span class=n>selected</span><span class=o>.</span><span class=n>GetNumberOfPoints</span><span class=p>())</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s1>'There are </span><span class=si>%s</span><span class=s1> cells in the selection'</span> <span class=o>%</span> <span class=n>selected</span><span class=o>.</span><span class=n>GetNumberOfCells</span><span class=p>())</span>
 
     <span class=c1># Get points that are NOT in the selection</span>
     <span class=n>selectionNode</span><span class=o>.</span><span class=n>GetProperties</span><span class=p>()</span><span class=o>.</span><span class=n>Set</span><span class=p>(</span><span class=n>vtkSelectionNode</span><span class=o>.</span><span class=n>INVERSE</span><span class=p>(),</span> <span class=mi>1</span><span class=p>)</span>  <span class=c1># invert the selection</span>
@@ -130,18 +130,18 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>notSelected</span> <span class=o>=</span> <span class=n>vtkUnstructuredGrid</span><span class=p>()</span>
 </span>    <span class=n>notSelected</span><span class=o>.</span><span class=n>ShallowCopy</span><span class=p>(</span><span class=n>extractSelection</span><span class=o>.</span><span class=n>GetOutput</span><span class=p>())</span>
 
-    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;There are </span><span class=si>%s</span><span class=s1> points NOT in the selection&#39;</span> <span class=o>%</span> <span class=n>notSelected</span><span class=o>.</span><span class=n>GetNumberOfPoints</span><span class=p>())</span>
-    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;There are </span><span class=si>%s</span><span class=s1> cells NOT in the selection&#39;</span> <span class=o>%</span> <span class=n>notSelected</span><span class=o>.</span><span class=n>GetNumberOfCells</span><span class=p>())</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s1>'There are </span><span class=si>%s</span><span class=s1> points NOT in the selection'</span> <span class=o>%</span> <span class=n>notSelected</span><span class=o>.</span><span class=n>GetNumberOfPoints</span><span class=p>())</span>
+    <span class=nb>print</span><span class=p>(</span><span class=s1>'There are </span><span class=si>%s</span><span class=s1> cells NOT in the selection'</span> <span class=o>%</span> <span class=n>notSelected</span><span class=o>.</span><span class=n>GetNumberOfCells</span><span class=p>())</span>
 
 <span class=hll>    <span class=n>backfaces</span> <span class=o>=</span> <span class=n>vtkProperty</span><span class=p>()</span>
-</span>    <span class=n>backfaces</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Gold&#39;</span><span class=p>))</span>
+</span>    <span class=n>backfaces</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Gold'</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>inputMapper</span> <span class=o>=</span> <span class=n>vtkDataSetMapper</span><span class=p>()</span>
 </span>    <span class=n>inputMapper</span><span class=o>.</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>sphereSource</span><span class=o>.</span><span class=n>GetOutputPort</span><span class=p>())</span>
 <span class=hll>    <span class=n>inputActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>inputActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>inputMapper</span><span class=p>)</span>
     <span class=n>inputActor</span><span class=o>.</span><span class=n>SetBackfaceProperty</span><span class=p>(</span><span class=n>backfaces</span><span class=p>)</span>
-    <span class=n>inputActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;MistyRose&#39;</span><span class=p>))</span>
+    <span class=n>inputActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'MistyRose'</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>selectedMapper</span> <span class=o>=</span> <span class=n>vtkDataSetMapper</span><span class=p>()</span>
 </span>    <span class=n>selectedMapper</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>selected</span><span class=p>)</span>
@@ -149,7 +149,7 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>selectedActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>selectedActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>selectedMapper</span><span class=p>)</span>
     <span class=n>selectedActor</span><span class=o>.</span><span class=n>SetBackfaceProperty</span><span class=p>(</span><span class=n>backfaces</span><span class=p>)</span>
-    <span class=n>selectedActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;MistyRose&#39;</span><span class=p>))</span>
+    <span class=n>selectedActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'MistyRose'</span><span class=p>))</span>
 
 <span class=hll>    <span class=n>notSelectedMapper</span> <span class=o>=</span> <span class=n>vtkDataSetMapper</span><span class=p>()</span>
 </span>    <span class=n>notSelectedMapper</span><span class=o>.</span><span class=n>SetInputData</span><span class=p>(</span><span class=n>notSelected</span><span class=p>)</span>
@@ -157,12 +157,12 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>notSelectedActor</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>()</span>
 </span>    <span class=n>notSelectedActor</span><span class=o>.</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>notSelectedMapper</span><span class=p>)</span>
     <span class=n>notSelectedActor</span><span class=o>.</span><span class=n>SetBackfaceProperty</span><span class=p>(</span><span class=n>backfaces</span><span class=p>)</span>
-    <span class=n>notSelectedActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;MistyRose&#39;</span><span class=p>))</span>
+    <span class=n>notSelectedActor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'MistyRose'</span><span class=p>))</span>
 
     <span class=c1># There will be one render window</span>
 <span class=hll>    <span class=n>renderWindow</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>()</span>
 </span>    <span class=n>renderWindow</span><span class=o>.</span><span class=n>SetSize</span><span class=p>(</span><span class=mi>900</span><span class=p>,</span> <span class=mi>300</span><span class=p>)</span>
-    <span class=n>renderWindow</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>&#39;ExtractSelectionCells&#39;</span><span class=p>)</span>
+    <span class=n>renderWindow</span><span class=o>.</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s1>'ExtractSelectionCells'</span><span class=p>)</span>
 
     <span class=c1># And one interactor</span>
 <span class=hll>    <span class=n>interactor</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
@@ -181,19 +181,19 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>leftRenderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>()</span>
 </span>    <span class=n>renderWindow</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>leftRenderer</span><span class=p>)</span>
     <span class=n>leftRenderer</span><span class=o>.</span><span class=n>SetViewport</span><span class=p>(</span><span class=n>leftViewport</span><span class=p>)</span>
-    <span class=n>leftRenderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;BurlyWood&#39;</span><span class=p>))</span>
+    <span class=n>leftRenderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'BurlyWood'</span><span class=p>))</span>
     <span class=n>leftRenderer</span><span class=o>.</span><span class=n>SetActiveCamera</span><span class=p>(</span><span class=n>camera</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>centerRenderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>()</span>
 </span>    <span class=n>renderWindow</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>centerRenderer</span><span class=p>)</span>
     <span class=n>centerRenderer</span><span class=o>.</span><span class=n>SetViewport</span><span class=p>(</span><span class=n>centerViewport</span><span class=p>)</span>
-    <span class=n>centerRenderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;orchid_dark&#39;</span><span class=p>))</span>
+    <span class=n>centerRenderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'orchid_dark'</span><span class=p>))</span>
     <span class=n>centerRenderer</span><span class=o>.</span><span class=n>SetActiveCamera</span><span class=p>(</span><span class=n>camera</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>rightRenderer</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>()</span>
 </span>    <span class=n>renderWindow</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>rightRenderer</span><span class=p>)</span>
     <span class=n>rightRenderer</span><span class=o>.</span><span class=n>SetViewport</span><span class=p>(</span><span class=n>rightViewport</span><span class=p>)</span>
-    <span class=n>rightRenderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;CornflowerBlue&#39;</span><span class=p>))</span>
+    <span class=n>rightRenderer</span><span class=o>.</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'CornflowerBlue'</span><span class=p>))</span>
     <span class=n>rightRenderer</span><span class=o>.</span><span class=n>SetActiveCamera</span><span class=p>(</span><span class=n>camera</span><span class=p>)</span>
 
     <span class=n>leftRenderer</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>inputActor</span><span class=p>)</span>
@@ -206,6 +206,6 @@ function registerListener(event, func) {
     <span class=n>interactor</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

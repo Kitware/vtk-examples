@@ -95,7 +95,7 @@ function registerListener(event, func) {
                                       checkbox.addEventListener('change', (event) => {
                                         frame.contentWindow.postMessage("ToggleOutput", "https://vtk.org")
                                       })
-                        </script> <hr> <div class="admonition tip"> <p class=admonition-title>Other languages</p> <p>See (<a href=../../../Python/CompositeData/OverlappingAMR>Python</a>), (<a href=../../../PythonicAPI/CompositeData/OverlappingAMR>PythonicAPI</a>)</p> </div> <div class="admonition question"> <p class=admonition-title>Question</p> <p>If you have a question about this example, please use the <a href=https://discourse.vtk.org/ >VTK Discourse Forum</a></p> </div> <h3 id=code>Code<a class=headerlink href=#code title="Permanent link">&para;</a></h3> <p><strong>OverlappingAMR.cxx</strong></p> <div class=codehilite><pre><span></span><code><span class=c1>// Demonstrates how to create and populate a VTK&#39;s Overlapping AMR Grid</span>
+                        </script> <hr> <div class="admonition tip"> <p class=admonition-title>Other languages</p> <p>See (<a href=../../../Python/CompositeData/OverlappingAMR>Python</a>), (<a href=../../../PythonicAPI/CompositeData/OverlappingAMR>PythonicAPI</a>)</p> </div> <div class="admonition question"> <p class=admonition-title>Question</p> <p>If you have a question about this example, please use the <a href=https://discourse.vtk.org/ >VTK Discourse Forum</a></p> </div> <h3 id=code>Code<a class=headerlink href=#code title="Permanent link">&para;</a></h3> <p><strong>OverlappingAMR.cxx</strong></p> <div class=codehilite><pre><span></span><code><span class=c1>// Demonstrates how to create and populate a VTK's Overlapping AMR Grid</span>
 <span class=c1>// type Data</span>
 
 <span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkAMRBox.h&gt;</span>
@@ -126,7 +126,7 @@ function registerListener(event, func) {
 <span class=hll><span class=w>                 </span><span class=n>vtkFloatArray</span><span class=o>*</span><span class=w> </span><span class=n>scalars</span><span class=p>);</span>
 </span><span class=p>}</span>
 
-<span class=kt>int</span><span class=w> </span><span class=n>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=p>[])</span>
+<span class=kt>int</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=kt>int</span><span class=p>,</span><span class=w> </span><span class=kt>char</span><span class=o>*</span><span class=p>[])</span>
 <span class=p>{</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span><span class=w> </span><span class=n>colors</span><span class=p>;</span>
 </span>
@@ -165,7 +165,7 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=kt>int</span><span class=w> </span><span class=n>lo</span><span class=p>[</span><span class=mi>3</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>{</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>};</span>
 <span class=w>  </span><span class=kt>int</span><span class=w> </span><span class=n>hi</span><span class=p>[</span><span class=mi>3</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>{</span><span class=mi>9</span><span class=p>,</span><span class=w> </span><span class=mi>9</span><span class=p>,</span><span class=w> </span><span class=mi>9</span><span class=p>};</span>
-<span class=hll><span class=w>  </span><span class=n>vtkAMRBox</span><span class=w> </span><span class=nf>box1</span><span class=p>(</span><span class=n>lo</span><span class=p>,</span><span class=w> </span><span class=n>hi</span><span class=p>);</span>
+<span class=hll><span class=w>  </span><span class=n>vtkAMRBox</span><span class=w> </span><span class=n>box1</span><span class=p>(</span><span class=n>lo</span><span class=p>,</span><span class=w> </span><span class=n>hi</span><span class=p>);</span>
 </span><span class=w>  </span><span class=n>amr</span><span class=o>-&gt;</span><span class=n>SetAMRBox</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=n>box1</span><span class=p>);</span>
 <span class=w>  </span><span class=n>amr</span><span class=o>-&gt;</span><span class=n>SetDataSet</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=n>ug1</span><span class=p>);</span>
 
@@ -184,7 +184,7 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=kt>int</span><span class=w> </span><span class=n>lo2</span><span class=p>[</span><span class=mi>3</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>{</span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>};</span>
 <span class=w>  </span><span class=kt>int</span><span class=w> </span><span class=n>hi2</span><span class=p>[</span><span class=mi>3</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>{</span><span class=mi>9</span><span class=p>,</span><span class=w> </span><span class=mi>9</span><span class=p>,</span><span class=w> </span><span class=mi>9</span><span class=p>};</span>
-<span class=hll><span class=w>  </span><span class=n>vtkAMRBox</span><span class=w> </span><span class=nf>box2</span><span class=p>(</span><span class=n>lo2</span><span class=p>,</span><span class=w> </span><span class=n>hi2</span><span class=p>);</span>
+<span class=hll><span class=w>  </span><span class=n>vtkAMRBox</span><span class=w> </span><span class=n>box2</span><span class=p>(</span><span class=n>lo2</span><span class=p>,</span><span class=w> </span><span class=n>hi2</span><span class=p>);</span>
 </span><span class=w>  </span><span class=n>amr</span><span class=o>-&gt;</span><span class=n>SetAMRBox</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=n>box2</span><span class=p>);</span>
 <span class=w>  </span><span class=n>amr</span><span class=o>-&gt;</span><span class=n>SetDataSet</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=w> </span><span class=n>ug2</span><span class=p>);</span>
 
@@ -203,7 +203,7 @@ function registerListener(event, func) {
 
 <span class=w>  </span><span class=kt>int</span><span class=w> </span><span class=n>lo3</span><span class=p>[</span><span class=mi>3</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>{</span><span class=mi>10</span><span class=p>,</span><span class=w> </span><span class=mi>10</span><span class=p>,</span><span class=w> </span><span class=mi>10</span><span class=p>};</span>
 <span class=w>  </span><span class=kt>int</span><span class=w> </span><span class=n>hi3</span><span class=p>[</span><span class=mi>3</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>{</span><span class=mi>19</span><span class=p>,</span><span class=w> </span><span class=mi>19</span><span class=p>,</span><span class=w> </span><span class=mi>19</span><span class=p>};</span>
-<span class=hll><span class=w>  </span><span class=n>vtkAMRBox</span><span class=w> </span><span class=nf>box3</span><span class=p>(</span><span class=n>lo3</span><span class=p>,</span><span class=w> </span><span class=n>hi3</span><span class=p>);</span>
+<span class=hll><span class=w>  </span><span class=n>vtkAMRBox</span><span class=w> </span><span class=n>box3</span><span class=p>(</span><span class=n>lo3</span><span class=p>,</span><span class=w> </span><span class=n>hi3</span><span class=p>);</span>
 </span><span class=w>  </span><span class=n>amr</span><span class=o>-&gt;</span><span class=n>SetAMRBox</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=n>box3</span><span class=p>);</span>
 <span class=w>  </span><span class=n>amr</span><span class=o>-&gt;</span><span class=n>SetDataSet</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=n>ug3</span><span class=p>);</span>
 
@@ -239,7 +239,7 @@ function registerListener(event, func) {
 </span><span class=w>  </span><span class=n>mapper</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>of</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkActor</span><span class=o>&gt;</span><span class=w> </span><span class=n>actor1</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>actor1</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;Yellow&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+</span><span class=w>  </span><span class=n>actor1</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"Yellow"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 <span class=w>  </span><span class=n>actor1</span><span class=o>-&gt;</span><span class=n>SetMapper</span><span class=p>(</span><span class=n>mapper</span><span class=p>);</span>
 
 <span class=w>  </span><span class=c1>// Vssociate the geometry with a mapper and the mapper to an actor.</span>
@@ -253,9 +253,9 @@ function registerListener(event, func) {
 <span class=w>  </span><span class=n>aren</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor1</span><span class=p>);</span>
 <span class=w>  </span><span class=n>aren</span><span class=o>-&gt;</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor2</span><span class=p>);</span>
 
-<span class=w>  </span><span class=n>aren</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>&quot;CornflowerBlue&quot;</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>aren</span><span class=o>-&gt;</span><span class=n>SetBackground</span><span class=p>(</span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s>"CornflowerBlue"</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
-<span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>&quot;OverlappingAMR&quot;</span><span class=p>);</span>
+<span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>SetWindowName</span><span class=p>(</span><span class=s>"OverlappingAMR"</span><span class=p>);</span>
 
 <span class=w>  </span><span class=n>renWin</span><span class=o>-&gt;</span><span class=n>Render</span><span class=p>();</span>
 <span class=w>  </span><span class=n>iren</span><span class=o>-&gt;</span><span class=n>Start</span><span class=p>();</span>
@@ -309,11 +309,11 @@ function registerListener(event, func) {
 <span class=p>)</span>
 
 <span class=nb>if</span><span class=w> </span><span class=p>(</span><span class=s>NOT</span><span class=w> </span><span class=s>VTK_FOUND</span><span class=p>)</span>
-<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>&quot;OverlappingAMR: Unable to find the VTK build folder.&quot;</span><span class=p>)</span>
+<span class=w>  </span><span class=nb>message</span><span class=p>(</span><span class=s>FATAL_ERROR</span><span class=w> </span><span class=s2>"OverlappingAMR: Unable to find the VTK build folder."</span><span class=p>)</span>
 <span class=nb>endif</span><span class=p>()</span>
 
-<span class=c># Prevent a &quot;command line is too long&quot; failure in Windows.</span>
-<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>&quot;ON&quot;</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>&quot;Force Ninja to use response files.&quot;</span><span class=p>)</span>
+<span class=c># Prevent a "command line is too long" failure in Windows.</span>
+<span class=nb>set</span><span class=p>(</span><span class=s>CMAKE_NINJA_FORCE_RESPONSE_FILE</span><span class=w> </span><span class=s2>"ON"</span><span class=w> </span><span class=s>CACHE</span><span class=w> </span><span class=s>BOOL</span><span class=w> </span><span class=s2>"Force Ninja to use response files."</span><span class=p>)</span>
 <span class=nb>add_executable</span><span class=p>(</span><span class=s>OverlappingAMR</span><span class=w> </span><span class=s>MACOSX_BUNDLE</span><span class=w> </span><span class=s>OverlappingAMR.cxx</span><span class=w> </span><span class=p>)</span>
 <span class=w>  </span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>OverlappingAMR</span><span class=w> </span><span class=s>PRIVATE</span><span class=w> </span><span class=o>${</span><span class=nv>VTK_LIBRARIES</span><span class=o>}</span>
 <span class=p>)</span>

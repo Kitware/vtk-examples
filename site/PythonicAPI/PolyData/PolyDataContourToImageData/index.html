@@ -100,15 +100,15 @@ function registerListener(event, func) {
 </span>
 <span class=hll>    <span class=n>stripper</span> <span class=o>=</span> <span class=n>vtkStripper</span><span class=p>()</span>
 </span>
-    <span class=c1># That&#39;s our circle</span>
+    <span class=c1># That's our circle</span>
     <span class=n>circle</span> <span class=o>=</span> <span class=p>(</span><span class=n>sphere_source</span> <span class=o>&gt;&gt;</span> <span class=n>circle_cutter</span> <span class=o>&gt;&gt;</span> <span class=n>stripper</span><span class=p>)</span><span class=o>.</span><span class=n>update</span><span class=p>()</span><span class=o>.</span><span class=n>output</span>
 
     <span class=c1># Write the circle out.</span>
-<span class=hll>    <span class=n>poly_data_writer</span> <span class=o>=</span> <span class=n>vtkXMLPolyDataWriter</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=s1>&#39;circle.vtp&#39;</span><span class=p>,</span> <span class=n>input_data</span><span class=o>=</span><span class=n>circle</span><span class=p>,</span>
+<span class=hll>    <span class=n>poly_data_writer</span> <span class=o>=</span> <span class=n>vtkXMLPolyDataWriter</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=s1>'circle.vtp'</span><span class=p>,</span> <span class=n>input_data</span><span class=o>=</span><span class=n>circle</span><span class=p>,</span>
 </span><span class=hll>                                            <span class=n>compressor_type</span><span class=o>=</span><span class=n>vtkXMLWriterBase</span><span class=o>.</span><span class=n>NONE</span><span class=p>,</span> <span class=n>data_mode</span><span class=o>=</span><span class=n>vtkXMLWriterBase</span><span class=o>.</span><span class=n>Ascii</span><span class=p>)</span>
 </span>    <span class=n>poly_data_writer</span><span class=o>.</span><span class=n>Write</span><span class=p>()</span>
 
-    <span class=c1># Prepare the binary image&#39;s voxel grid.</span>
+    <span class=c1># Prepare the binary image's voxel grid.</span>
     <span class=n>spacing</span> <span class=o>=</span> <span class=p>(</span><span class=mf>0.5</span><span class=p>,</span> <span class=mf>0.5</span><span class=p>,</span> <span class=mf>0.5</span><span class=p>)</span>
 
     <span class=n>bounds</span> <span class=o>=</span> <span class=n>circle</span><span class=o>.</span><span class=n>bounds</span>
@@ -150,11 +150,11 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>img_stenc</span> <span class=o>=</span> <span class=n>vtkImageStencil</span><span class=p>(</span><span class=n>input_data</span><span class=o>=</span><span class=n>white_image</span><span class=p>,</span> <span class=n>stencil_connection</span><span class=o>=</span><span class=n>pol_2_stenc</span><span class=o>.</span><span class=n>output_port</span><span class=p>,</span>
 </span>                                <span class=n>reverse_stencil</span><span class=o>=</span><span class=kc>False</span><span class=p>,</span> <span class=n>background_value</span><span class=o>=</span><span class=n>out_val</span><span class=p>)</span>
 
-<span class=hll>    <span class=n>image_writer</span> <span class=o>=</span> <span class=n>vtkMetaImageWriter</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=s1>&#39;labelImage.mhd&#39;</span><span class=p>,</span> <span class=p>)</span>
+<span class=hll>    <span class=n>image_writer</span> <span class=o>=</span> <span class=n>vtkMetaImageWriter</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=s1>'labelImage.mhd'</span><span class=p>,</span> <span class=p>)</span>
 </span>    <span class=n>img_stenc</span> <span class=o>&gt;&gt;</span> <span class=n>image_writer</span>
     <span class=n>image_writer</span><span class=o>.</span><span class=n>Write</span><span class=p>()</span>
 
-<span class=hll>    <span class=n>image_writer</span> <span class=o>=</span> <span class=n>vtkPNGWriter</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=s1>&#39;labelImage.png&#39;</span><span class=p>)</span>
+<span class=hll>    <span class=n>image_writer</span> <span class=o>=</span> <span class=n>vtkPNGWriter</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=s1>'labelImage.png'</span><span class=p>)</span>
 </span>    <span class=n>img_stenc</span> <span class=o>&gt;&gt;</span> <span class=n>image_writer</span>
     <span class=n>image_writer</span><span class=o>.</span><span class=n>Write</span><span class=p>()</span>
 
@@ -168,6 +168,6 @@ function registerListener(event, func) {
         <span class=n>VTK_POINT_EXTRUSION</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>3</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

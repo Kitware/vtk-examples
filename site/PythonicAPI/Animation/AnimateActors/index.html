@@ -83,13 +83,13 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_program_parameters</span><span class=p>():</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>argparse</span>
-    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;Animate Actors.&#39;</span>
-    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;</span>
-<span class=s1>    &#39;&#39;&#39;</span>
+    <span class=n>description</span> <span class=o>=</span> <span class=s1>'Animate Actors.'</span>
+    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>'''</span>
+<span class=s1>    '''</span>
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
                                      <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawDescriptionHelpFormatter</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;-r&#39;</span><span class=p>,</span> <span class=s1>&#39;--real_time&#39;</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>&#39;store_true&#39;</span><span class=p>,</span>
-                        <span class=n>help</span><span class=o>=</span><span class=s1>&#39;Sets the scene mode to real time instead of the default sequence mode.&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'-r'</span><span class=p>,</span> <span class=s1>'--real_time'</span><span class=p>,</span> <span class=n>action</span><span class=o>=</span><span class=s1>'store_true'</span><span class=p>,</span>
+                        <span class=n>help</span><span class=o>=</span><span class=s1>'Sets the scene mode to real time instead of the default sequence mode.'</span><span class=p>)</span>
     <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
     <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>real_time</span>
 
@@ -98,13 +98,13 @@ function registerListener(event, func) {
     <span class=n>scene_mode</span> <span class=o>=</span> <span class=n>get_program_parameters</span><span class=p>()</span>
 
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
-</span>    <span class=n>cone_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Tomato&#39;</span><span class=p>)</span>
-    <span class=n>sphere_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Banana&#39;</span><span class=p>)</span>
-    <span class=n>background_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>&#39;Peacock&#39;</span><span class=p>)</span>
+</span>    <span class=n>cone_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Tomato'</span><span class=p>)</span>
+    <span class=n>sphere_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Banana'</span><span class=p>)</span>
+    <span class=n>background_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Peacock'</span><span class=p>)</span>
 
     <span class=c1># Create the Renderer, RenderWindow and RenderWindowInteractor.</span>
 <span class=hll>    <span class=n>ren</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>background_color</span><span class=p>)</span>
-</span><span class=hll>    <span class=n>ren_win</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>window_name</span><span class=o>=</span><span class=s1>&#39;AnimateActors&#39;</span><span class=p>)</span>
+</span><span class=hll>    <span class=n>ren_win</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>window_name</span><span class=o>=</span><span class=s1>'AnimateActors'</span><span class=p>)</span>
 </span>    <span class=n>ren_win</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>ren</span><span class=p>)</span>
 <span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
 </span>    <span class=n>iren</span><span class=o>.</span><span class=n>render_window</span> <span class=o>=</span> <span class=n>ren_win</span>
@@ -125,10 +125,10 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>scene</span> <span class=o>=</span> <span class=n>vtkAnimationScene</span><span class=p>(</span><span class=n>loop</span><span class=o>=</span><span class=mi>0</span><span class=p>,</span> <span class=n>frame_rate</span><span class=o>=</span><span class=mi>5</span><span class=p>,</span> <span class=n>start_time</span><span class=o>=</span><span class=mi>0</span><span class=p>,</span> <span class=n>end_time</span><span class=o>=</span><span class=mi>20</span><span class=p>)</span>
 </span>    <span class=k>if</span> <span class=n>scene_mode</span><span class=p>:</span>
         <span class=n>scene</span><span class=o>.</span><span class=n>SetModeToRealTime</span><span class=p>()</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;real-time mode&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'real-time mode'</span><span class=p>)</span>
     <span class=k>else</span><span class=p>:</span>
         <span class=n>scene</span><span class=o>.</span><span class=n>SetModeToSequence</span><span class=p>()</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;sequence mode&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=s1>'sequence mode'</span><span class=p>)</span>
 
     <span class=c1># Create an Animation Cue for each actor.</span>
 <span class=hll>    <span class=n>cue1</span> <span class=o>=</span> <span class=n>vtkAnimationCue</span><span class=p>(</span><span class=n>start_time</span><span class=o>=</span><span class=mi>5</span><span class=p>,</span> <span class=n>end_time</span><span class=o>=</span><span class=mi>23</span><span class=p>)</span>
@@ -169,19 +169,19 @@ function registerListener(event, func) {
 
     <span class=k>def</span><span class=w> </span><span class=fm>__call__</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>info</span><span class=p>,</span> <span class=n>event</span><span class=p>):</span>
         <span class=k>if</span> <span class=bp>self</span><span class=o>.</span><span class=n>animator</span> <span class=ow>and</span> <span class=bp>self</span><span class=o>.</span><span class=n>renderer</span><span class=p>:</span>
-            <span class=k>if</span> <span class=n>event</span> <span class=o>==</span> <span class=s1>&#39;StartAnimationCueEvent&#39;</span><span class=p>:</span>
+            <span class=k>if</span> <span class=n>event</span> <span class=o>==</span> <span class=s1>'StartAnimationCueEvent'</span><span class=p>:</span>
                 <span class=bp>self</span><span class=o>.</span><span class=n>animator</span><span class=o>.</span><span class=n>start</span><span class=p>()</span>
-            <span class=k>if</span> <span class=n>event</span> <span class=o>==</span> <span class=s1>&#39;AnimationCueTickEvent&#39;</span><span class=p>:</span>
+            <span class=k>if</span> <span class=n>event</span> <span class=o>==</span> <span class=s1>'AnimationCueTickEvent'</span><span class=p>:</span>
                 <span class=bp>self</span><span class=o>.</span><span class=n>animator</span><span class=o>.</span><span class=n>tick</span><span class=p>(</span><span class=n>info</span><span class=p>)</span>
-            <span class=k>if</span> <span class=n>event</span> <span class=o>==</span> <span class=s1>&#39;EndAnimationCueEvent&#39;</span><span class=p>:</span>
+            <span class=k>if</span> <span class=n>event</span> <span class=o>==</span> <span class=s1>'EndAnimationCueEvent'</span><span class=p>:</span>
                 <span class=bp>self</span><span class=o>.</span><span class=n>animator</span><span class=o>.</span><span class=n>end</span><span class=p>()</span>
             <span class=k>if</span> <span class=bp>self</span><span class=o>.</span><span class=n>ren_win</span><span class=p>:</span>
                 <span class=bp>self</span><span class=o>.</span><span class=n>ren_win</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
 
     <span class=k>def</span><span class=w> </span><span class=nf>add_observers_to_cue</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
-        <span class=bp>self</span><span class=o>.</span><span class=n>cue</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=s1>&#39;StartAnimationCueEvent&#39;</span><span class=p>,</span> <span class=bp>self</span><span class=p>)</span>
-        <span class=bp>self</span><span class=o>.</span><span class=n>cue</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=s1>&#39;EndAnimationCueEvent&#39;</span><span class=p>,</span> <span class=bp>self</span><span class=p>)</span>
-        <span class=bp>self</span><span class=o>.</span><span class=n>cue</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=s1>&#39;AnimationCueTickEvent&#39;</span><span class=p>,</span> <span class=bp>self</span><span class=p>)</span>
+        <span class=bp>self</span><span class=o>.</span><span class=n>cue</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=s1>'StartAnimationCueEvent'</span><span class=p>,</span> <span class=bp>self</span><span class=p>)</span>
+        <span class=bp>self</span><span class=o>.</span><span class=n>cue</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=s1>'EndAnimationCueEvent'</span><span class=p>,</span> <span class=bp>self</span><span class=p>)</span>
+        <span class=bp>self</span><span class=o>.</span><span class=n>cue</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=s1>'AnimationCueTickEvent'</span><span class=p>,</span> <span class=bp>self</span><span class=p>)</span>
 
 
 <span class=k>class</span><span class=w> </span><span class=nc>ActorAnimator</span><span class=p>:</span>
@@ -200,11 +200,11 @@ function registerListener(event, func) {
         <span class=bp>self</span><span class=o>.</span><span class=n>actor</span><span class=o>.</span><span class=n>SetPosition</span><span class=p>(</span><span class=n>pos</span><span class=o>.</span><span class=n>tolist</span><span class=p>())</span>
 
     <span class=k>def</span><span class=w> </span><span class=nf>end</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
-        <span class=c1># Don&#39;t remove the actor for the regression image.</span>
+        <span class=c1># Don't remove the actor for the regression image.</span>
         <span class=c1># ren.RemoveActor(self.actor)</span>
         <span class=bp>self</span><span class=o>.</span><span class=n>actor</span><span class=o>.</span><span class=n>SetPosition</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>end_position</span><span class=p>)</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

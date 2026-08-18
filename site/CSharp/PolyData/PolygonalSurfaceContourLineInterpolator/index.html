@@ -75,7 +75,7 @@ function registerListener(event, func) {
 <span class=w>            </span><span class=n>PolygonalSurfaceContourLineInterpolator</span><span class=p>();</span>
 <span class=w>         </span><span class=p>}</span>
 <span class=w>         </span><span class=k>catch</span><span class=p>(</span><span class=n>Exception</span><span class=w> </span><span class=n>ex</span><span class=p>)</span><span class=w> </span><span class=p>{</span>
-<span class=w>            </span><span class=n>MessageBox</span><span class=p>.</span><span class=n>Show</span><span class=p>(</span><span class=n>ex</span><span class=p>.</span><span class=n>Message</span><span class=p>,</span><span class=w> </span><span class=s>&quot;Exception&quot;</span><span class=p>,</span><span class=w> </span><span class=n>MessageBoxButtons</span><span class=p>.</span><span class=n>OK</span><span class=p>);</span>
+<span class=w>            </span><span class=n>MessageBox</span><span class=p>.</span><span class=n>Show</span><span class=p>(</span><span class=n>ex</span><span class=p>.</span><span class=n>Message</span><span class=p>,</span><span class=w> </span><span class=s>"Exception"</span><span class=p>,</span><span class=w> </span><span class=n>MessageBoxButtons</span><span class=p>.</span><span class=n>OK</span><span class=p>);</span>
 <span class=w>         </span><span class=p>}</span>
 <span class=w>      </span><span class=p>}</span>
 
@@ -88,7 +88,7 @@ function registerListener(event, func) {
 <span class=w>         </span><span class=n>sphereSource</span><span class=p>.</span><span class=n>Update</span><span class=p>();</span>
 
 <span class=w>         </span><span class=n>polyData</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>sphereSource</span><span class=p>.</span><span class=n>GetOutput</span><span class=p>();</span>
-<span class=w>         </span><span class=c1>// The Dijkstra interpolator will not accept cells that aren&#39;t triangles</span>
+<span class=w>         </span><span class=c1>// The Dijkstra interpolator will not accept cells that aren't triangles</span>
 <span class=hll><span class=w>         </span><span class=n>vtkTriangleFilter</span><span class=w> </span><span class=n>triangleFilter</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>vtkTriangleFilter</span><span class=p>.</span><span class=n>New</span><span class=p>();</span>
 </span><span class=cp>#if VTK_MAJOR_VERSION_5</span>
 <span class=w>         </span><span class=n>triangleFilter</span><span class=p>.</span><span class=n>SetInput</span><span class=p>(</span><span class=w> </span><span class=n>polyData</span><span class=w> </span><span class=p>);</span>

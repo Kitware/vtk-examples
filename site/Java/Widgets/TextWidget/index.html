@@ -81,7 +81,7 @@ function registerListener(event, func) {
 <span class=w>      </span><span class=p>{</span>
 <span class=w>         </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>lib</span><span class=p>.</span><span class=na>IsLoaded</span><span class=p>())</span><span class=w> </span>
 <span class=w>        </span><span class=p>{</span>
-<span class=w>          </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&quot; not loaded&quot;</span><span class=p>);</span>
+<span class=w>          </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>lib</span><span class=p>.</span><span class=na>GetLibraryName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>" not loaded"</span><span class=p>);</span>
 <span class=w>        </span><span class=p>}</span>
 <span class=w>      </span><span class=p>}</span>
 <span class=w>    </span><span class=p>}</span>
@@ -103,9 +103,9 @@ function registerListener(event, func) {
 <span class=w>    </span><span class=c1>//TextColor </span>
 <span class=w>    </span><span class=kt>double</span><span class=w> </span><span class=n>TextColor</span><span class=o>[]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=kt>double</span><span class=o>[</span><span class=mi>4</span><span class=o>]</span><span class=p>;</span>
 
-<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>&quot;DimGray&quot;</span><span class=p>,</span><span class=w> </span><span class=n>actorColor</span><span class=p>);</span>
-<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>&quot;MidnightBlue&quot;</span><span class=p>,</span><span class=w> </span><span class=n>Bgcolor</span><span class=p>);</span>
-<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>&quot;Yellow&quot;</span><span class=p>,</span><span class=w> </span><span class=n>TextColor</span><span class=p>);</span>
+<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>"DimGray"</span><span class=p>,</span><span class=w> </span><span class=n>actorColor</span><span class=p>);</span>
+<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>"MidnightBlue"</span><span class=p>,</span><span class=w> </span><span class=n>Bgcolor</span><span class=p>);</span>
+<span class=w>    </span><span class=n>colors</span><span class=p>.</span><span class=na>GetColor</span><span class=p>(</span><span class=s>"Yellow"</span><span class=p>,</span><span class=w> </span><span class=n>TextColor</span><span class=p>);</span>
 
 <span class=w>    </span><span class=c1>// Create the renderer, render window and interactor.</span>
 <span class=hll><span class=w>    </span><span class=n>vtkRenderer</span><span class=w> </span><span class=n>ren</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkRenderer</span><span class=p>();</span>
@@ -128,7 +128,7 @@ function registerListener(event, func) {
 
 <span class=w>    </span><span class=c1>// Create the text widget</span>
 <span class=hll><span class=w>    </span><span class=n>vtkTextActor</span><span class=w> </span><span class=n>TextActor</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkTextActor</span><span class=p>();</span>
-</span><span class=w>    </span><span class=n>TextActor</span><span class=p>.</span><span class=na>SetInput</span><span class=p>(</span><span class=s>&quot;This is a Sphere&quot;</span><span class=p>);</span>
+</span><span class=w>    </span><span class=n>TextActor</span><span class=p>.</span><span class=na>SetInput</span><span class=p>(</span><span class=s>"This is a Sphere"</span><span class=p>);</span>
 <span class=w>    </span><span class=n>TextActor</span><span class=p>.</span><span class=na>GetTextProperty</span><span class=p>().</span><span class=na>SetColor</span><span class=p>(</span><span class=n>TextColor</span><span class=p>);</span>
 <span class=w>    </span><span class=n>TextActor</span><span class=p>.</span><span class=na>GetTextProperty</span><span class=p>().</span><span class=na>SetFontFamilyToCourier</span><span class=p>();</span>
 

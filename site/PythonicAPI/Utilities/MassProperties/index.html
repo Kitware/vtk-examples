@@ -82,13 +82,13 @@ function registerListener(event, func) {
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_program_parameters</span><span class=p>():</span>
     <span class=kn>import</span><span class=w> </span><span class=nn>argparse</span>
-    <span class=n>description</span> <span class=o>=</span> <span class=s1>&#39;Compute volume and surface area of a closed, triangulated mesh.&#39;</span>
-    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;</span>
-<span class=s1>    &#39;&#39;&#39;</span>
+    <span class=n>description</span> <span class=o>=</span> <span class=s1>'Compute volume and surface area of a closed, triangulated mesh.'</span>
+    <span class=n>epilogue</span> <span class=o>=</span> <span class=s1>'''</span>
+<span class=s1>    '''</span>
     <span class=n>parser</span> <span class=o>=</span> <span class=n>argparse</span><span class=o>.</span><span class=n>ArgumentParser</span><span class=p>(</span><span class=n>description</span><span class=o>=</span><span class=n>description</span><span class=p>,</span> <span class=n>epilog</span><span class=o>=</span><span class=n>epilogue</span><span class=p>,</span>
                                      <span class=n>formatter_class</span><span class=o>=</span><span class=n>argparse</span><span class=o>.</span><span class=n>RawTextHelpFormatter</span><span class=p>)</span>
-    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>&#39;file_name&#39;</span><span class=p>,</span> <span class=n>nargs</span><span class=o>=</span><span class=s1>&#39;?&#39;</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span>
-                        <span class=n>help</span><span class=o>=</span><span class=s1>&#39;The polydata source file name,e.g. Torso.vtp.&#39;</span><span class=p>)</span>
+    <span class=n>parser</span><span class=o>.</span><span class=n>add_argument</span><span class=p>(</span><span class=s1>'file_name'</span><span class=p>,</span> <span class=n>nargs</span><span class=o>=</span><span class=s1>'?'</span><span class=p>,</span> <span class=n>default</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span>
+                        <span class=n>help</span><span class=o>=</span><span class=s1>'The polydata source file name,e.g. Torso.vtp.'</span><span class=p>)</span>
     <span class=n>args</span> <span class=o>=</span> <span class=n>parser</span><span class=o>.</span><span class=n>parse_args</span><span class=p>()</span>
 
     <span class=k>return</span> <span class=n>args</span><span class=o>.</span><span class=n>file_name</span>
@@ -101,7 +101,7 @@ function registerListener(event, func) {
         <span class=k>if</span> <span class=n>Path</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span><span class=o>.</span><span class=n>is_file</span><span class=p>():</span>
             <span class=n>poly_data</span> <span class=o>=</span> <span class=n>read_poly_data</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
         <span class=k>else</span><span class=p>:</span>
-            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;</span><span class=si>{</span><span class=n>file_name</span><span class=si>}</span><span class=s1> not found.</span><span class=se>\n</span><span class=s1>Using a sphere instead.&#39;</span><span class=p>)</span>
+            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'</span><span class=si>{</span><span class=n>file_name</span><span class=si>}</span><span class=s1> not found.</span><span class=se>\n</span><span class=s1>Using a sphere instead.'</span><span class=p>)</span>
     <span class=k>if</span> <span class=n>file_name</span> <span class=ow>is</span> <span class=kc>None</span> <span class=ow>or</span> <span class=n>poly_data</span> <span class=ow>is</span> <span class=kc>None</span><span class=p>:</span>
 <span class=hll>        <span class=n>source</span> <span class=o>=</span> <span class=n>vtkSphereSource</span><span class=p>(</span><span class=n>radius</span><span class=o>=</span><span class=mf>0.5</span><span class=p>,</span> <span class=n>phi_resolution</span><span class=o>=</span><span class=mi>51</span><span class=p>,</span> <span class=n>theta_resolution</span><span class=o>=</span><span class=mi>51</span><span class=p>)</span>
 </span>        <span class=n>poly_data</span> <span class=o>=</span> <span class=n>source</span><span class=o>.</span><span class=n>update</span><span class=p>()</span><span class=o>.</span><span class=n>output</span>
@@ -115,44 +115,44 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>mass_properties</span> <span class=o>=</span> <span class=n>vtkMassProperties</span><span class=p>()</span>
 </span>    <span class=n>fill_holes_filter</span> <span class=o>&gt;&gt;</span> <span class=n>triangle_filter</span> <span class=o>&gt;&gt;</span> <span class=n>normals</span> <span class=o>&gt;&gt;</span> <span class=n>mass_properties</span>
     <span class=n>mass_properties</span><span class=o>.</span><span class=n>update</span><span class=p>()</span>
-    <span class=n>fmt</span> <span class=o>=</span> <span class=s1>&#39;8.6f&#39;</span>
+    <span class=n>fmt</span> <span class=o>=</span> <span class=s1>'8.6f'</span>
     <span class=nb>print</span><span class=p>(</span>
-        <span class=sa>f</span><span class=s1>&#39;Volume: </span><span class=si>{</span><span class=n>mass_properties</span><span class=o>.</span><span class=n>volume</span><span class=si>:{</span><span class=n>fmt</span><span class=si>}}</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=sa>f</span><span class=s1>&#39;    VolumeX: </span><span class=si>{</span><span class=n>mass_properties</span><span class=o>.</span><span class=n>volume_x</span><span class=si>:{</span><span class=n>fmt</span><span class=si>}}</span><span class=se>\n</span><span class=s1> &#39;</span>
-        <span class=sa>f</span><span class=s1>&#39;   VolumeY: </span><span class=si>{</span><span class=n>mass_properties</span><span class=o>.</span><span class=n>volume_y</span><span class=si>:{</span><span class=n>fmt</span><span class=si>}}</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=sa>f</span><span class=s1>&#39;    VolumeZ: </span><span class=si>{</span><span class=n>mass_properties</span><span class=o>.</span><span class=n>volume_z</span><span class=si>:{</span><span class=n>fmt</span><span class=si>}}</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=sa>f</span><span class=s1>&#39;Area: </span><span class=si>{</span><span class=n>mass_properties</span><span class=o>.</span><span class=n>surface_area</span><span class=si>:{</span><span class=n>fmt</span><span class=si>}}</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=sa>f</span><span class=s1>&#39;    MinCellArea: </span><span class=si>{</span><span class=n>mass_properties</span><span class=o>.</span><span class=n>min_cell_area</span><span class=si>:{</span><span class=n>fmt</span><span class=si>}}</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=sa>f</span><span class=s1>&#39;    MaxCellArea: </span><span class=si>{</span><span class=n>mass_properties</span><span class=o>.</span><span class=n>max_cell_area</span><span class=si>:{</span><span class=n>fmt</span><span class=si>}}</span><span class=se>\n</span><span class=s1>&#39;</span>
-        <span class=sa>f</span><span class=s1>&#39;NormalizedShapeIndex: </span><span class=si>{</span><span class=n>mass_properties</span><span class=o>.</span><span class=n>normalized_shape_index</span><span class=si>:{</span><span class=n>fmt</span><span class=si>}}</span><span class=s1>&#39;</span><span class=p>)</span>
+        <span class=sa>f</span><span class=s1>'Volume: </span><span class=si>{</span><span class=n>mass_properties</span><span class=o>.</span><span class=n>volume</span><span class=si>:{</span><span class=n>fmt</span><span class=si>}}</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=sa>f</span><span class=s1>'    VolumeX: </span><span class=si>{</span><span class=n>mass_properties</span><span class=o>.</span><span class=n>volume_x</span><span class=si>:{</span><span class=n>fmt</span><span class=si>}}</span><span class=se>\n</span><span class=s1> '</span>
+        <span class=sa>f</span><span class=s1>'   VolumeY: </span><span class=si>{</span><span class=n>mass_properties</span><span class=o>.</span><span class=n>volume_y</span><span class=si>:{</span><span class=n>fmt</span><span class=si>}}</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=sa>f</span><span class=s1>'    VolumeZ: </span><span class=si>{</span><span class=n>mass_properties</span><span class=o>.</span><span class=n>volume_z</span><span class=si>:{</span><span class=n>fmt</span><span class=si>}}</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=sa>f</span><span class=s1>'Area: </span><span class=si>{</span><span class=n>mass_properties</span><span class=o>.</span><span class=n>surface_area</span><span class=si>:{</span><span class=n>fmt</span><span class=si>}}</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=sa>f</span><span class=s1>'    MinCellArea: </span><span class=si>{</span><span class=n>mass_properties</span><span class=o>.</span><span class=n>min_cell_area</span><span class=si>:{</span><span class=n>fmt</span><span class=si>}}</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=sa>f</span><span class=s1>'    MaxCellArea: </span><span class=si>{</span><span class=n>mass_properties</span><span class=o>.</span><span class=n>max_cell_area</span><span class=si>:{</span><span class=n>fmt</span><span class=si>}}</span><span class=se>\n</span><span class=s1>'</span>
+        <span class=sa>f</span><span class=s1>'NormalizedShapeIndex: </span><span class=si>{</span><span class=n>mass_properties</span><span class=o>.</span><span class=n>normalized_shape_index</span><span class=si>:{</span><span class=n>fmt</span><span class=si>}}</span><span class=s1>'</span><span class=p>)</span>
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>read_poly_data</span><span class=p>(</span><span class=n>file_name</span><span class=p>):</span>
     <span class=k>if</span> <span class=ow>not</span> <span class=n>file_name</span><span class=p>:</span>
-        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;No file name.&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'No file name.'</span><span class=p>)</span>
         <span class=k>return</span> <span class=kc>None</span>
 
-    <span class=n>valid_suffixes</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;.g&#39;</span><span class=p>,</span> <span class=s1>&#39;.obj&#39;</span><span class=p>,</span> <span class=s1>&#39;.stl&#39;</span><span class=p>,</span> <span class=s1>&#39;.ply&#39;</span><span class=p>,</span> <span class=s1>&#39;.vtk&#39;</span><span class=p>,</span> <span class=s1>&#39;.vtp&#39;</span><span class=p>]</span>
+    <span class=n>valid_suffixes</span> <span class=o>=</span> <span class=p>[</span><span class=s1>'.g'</span><span class=p>,</span> <span class=s1>'.obj'</span><span class=p>,</span> <span class=s1>'.stl'</span><span class=p>,</span> <span class=s1>'.ply'</span><span class=p>,</span> <span class=s1>'.vtk'</span><span class=p>,</span> <span class=s1>'.vtp'</span><span class=p>]</span>
     <span class=n>path</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>file_name</span><span class=p>)</span>
     <span class=n>ext</span> <span class=o>=</span> <span class=kc>None</span>
     <span class=k>if</span> <span class=n>path</span><span class=o>.</span><span class=n>suffix</span><span class=p>:</span>
         <span class=n>ext</span> <span class=o>=</span> <span class=n>path</span><span class=o>.</span><span class=n>suffix</span><span class=o>.</span><span class=n>lower</span><span class=p>()</span>
     <span class=k>if</span> <span class=n>path</span><span class=o>.</span><span class=n>suffix</span> <span class=ow>not</span> <span class=ow>in</span> <span class=n>valid_suffixes</span><span class=p>:</span>
-        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;No reader for this file suffix: </span><span class=si>{</span><span class=n>ext</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'No reader for this file suffix: </span><span class=si>{</span><span class=n>ext</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
         <span class=k>return</span> <span class=kc>None</span>
 
     <span class=n>reader</span> <span class=o>=</span> <span class=kc>None</span>
-    <span class=k>if</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>&#39;.ply&#39;</span><span class=p>:</span>
+    <span class=k>if</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>'.ply'</span><span class=p>:</span>
 <span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkPLYReader</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=n>file_name</span><span class=p>)</span>
-</span>    <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>&#39;.vtp&#39;</span><span class=p>:</span>
+</span>    <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>'.vtp'</span><span class=p>:</span>
 <span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkXMLPolyDataReader</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=n>file_name</span><span class=p>)</span>
-</span>    <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>&#39;.obj&#39;</span><span class=p>:</span>
+</span>    <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>'.obj'</span><span class=p>:</span>
 <span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkOBJReader</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=n>file_name</span><span class=p>)</span>
-</span>    <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>&#39;.stl&#39;</span><span class=p>:</span>
+</span>    <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>'.stl'</span><span class=p>:</span>
 <span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkSTLReader</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=n>file_name</span><span class=p>)</span>
-</span>    <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>&#39;.vtk&#39;</span><span class=p>:</span>
+</span>    <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>'.vtk'</span><span class=p>:</span>
 <span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkPolyDataReader</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=n>file_name</span><span class=p>)</span>
-</span>    <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>&#39;.g&#39;</span><span class=p>:</span>
+</span>    <span class=k>elif</span> <span class=n>ext</span> <span class=o>==</span> <span class=s1>'.g'</span><span class=p>:</span>
 <span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkBYUReader</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=n>file_name</span><span class=p>)</span>
 </span>
     <span class=k>if</span> <span class=n>reader</span><span class=p>:</span>
@@ -161,6 +161,6 @@ function registerListener(event, func) {
         <span class=k>return</span> <span class=kc>None</span>
 
 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>
 </code></pre></div> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> <font color=#666>Content is available under </font><a href=https://creativecommons.org/licenses/by/2.5/ title=Attribution2.5>Attribution2.5</a> <font color=#666>unless otherwise noted.</font> </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script> <script src=../../../assets/javascripts/bundle.d7400e89.min.js></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>
