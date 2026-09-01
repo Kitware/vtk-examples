@@ -128,8 +128,8 @@ function registerListener(event, func) {
 <span class=cp>#ifdef USE_IMAGE_THRESHOLD</span>
 <span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkImageThreshold.h&gt;</span>
 </span><span class=cp>#else</span>
-<span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkImageBinaryThreshold.h&gt;</span>
-</span><span class=cp>#endif</span>
+<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkImageBinaryThreshold.h&gt;</span>
+<span class=cp>#endif</span>
 
 <span class=k>namespace</span><span class=w> </span><span class=p>{</span>
 <span class=hll><span class=n>vtkSmartPointer</span><span class=o>&lt;</span><span class=n>vtkLookupTable</span><span class=o>&gt;</span><span class=w> </span><span class=n>MakeColors</span><span class=p>(</span><span class=kt>unsigned</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>n</span><span class=p>);</span>
@@ -222,8 +222,8 @@ function registerListener(event, func) {
 <span class=cp>#else</span>
 <span class=hll><span class=w>    </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageBinaryThreshold</span><span class=o>&gt;</span><span class=w> </span><span class=n>thres</span><span class=p>;</span>
 </span><span class=w>    </span><span class=n>thres</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>sampler</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
-<span class=hll><span class=w>    </span><span class=n>thres</span><span class=o>-&gt;</span><span class=n>SetThresholdFunction</span><span class=p>(</span><span class=n>vtkImageBinaryThreshold</span><span class=o>::</span><span class=n>THRESHOLD_LOWER</span><span class=p>);</span>
-</span><span class=w>    </span><span class=n>thres</span><span class=o>-&gt;</span><span class=n>SetUpperThreshold</span><span class=p>(</span><span class=n>radius</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=n>radius</span><span class=p>);</span>
+<span class=w>    </span><span class=n>thres</span><span class=o>-&gt;</span><span class=n>SetThresholdFunction</span><span class=p>(</span><span class=n>vtkImageBinaryThreshold</span><span class=o>::</span><span class=n>THRESHOLD_LOWER</span><span class=p>);</span>
+<span class=w>    </span><span class=n>thres</span><span class=o>-&gt;</span><span class=n>SetUpperThreshold</span><span class=p>(</span><span class=n>radius</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=n>radius</span><span class=p>);</span>
 <span class=w>    </span><span class=n>thres</span><span class=o>-&gt;</span><span class=n>ReplaceInOn</span><span class=p>();</span>
 <span class=w>    </span><span class=n>thres</span><span class=o>-&gt;</span><span class=n>ReplaceOutOn</span><span class=p>();</span>
 <span class=w>    </span><span class=n>thres</span><span class=o>-&gt;</span><span class=n>SetInValue</span><span class=p>(</span><span class=n>i</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=mi>1</span><span class=p>);</span>

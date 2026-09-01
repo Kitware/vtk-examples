@@ -63,8 +63,8 @@ function registerListener(event, func) {
 </span><span class=hll><span class=kn>import</span><span class=w> </span><span class=nn>vtk.vtkPolyDataMapper</span><span class=p>;</span>
 </span><span class=hll><span class=kn>import</span><span class=w> </span><span class=nn>vtk.vtkActor</span><span class=p>;</span>
 </span><span class=hll><span class=kn>import</span><span class=w> </span><span class=nn>vtk.vtkImageTracerWidget</span><span class=p>;</span>
-</span><span class=kn>import</span><span class=w> </span><span class=nn>vtk.vtkInteractorStyleTrackball</span><span class=p>;</span>
-<span class=hll><span class=kn>import</span><span class=w> </span><span class=nn>vtk.vtkSphereSource</span><span class=p>;</span>
+</span><span class=hll><span class=kn>import</span><span class=w> </span><span class=nn>vtk.vtkInteractorStyleTrackball</span><span class=p>;</span>
+</span><span class=hll><span class=kn>import</span><span class=w> </span><span class=nn>vtk.vtkSphereSource</span><span class=p>;</span>
 </span>
 <span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>ImageTracerWidgetNonPlanar</span><span class=w> </span>
 <span class=p>{</span>
@@ -118,8 +118,8 @@ function registerListener(event, func) {
 <span class=hll><span class=w>    </span><span class=n>vtkRenderWindowInteractor</span><span class=w> </span><span class=n>iren</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkRenderWindowInteractor</span><span class=p>();</span>
 </span><span class=w>    </span><span class=n>iren</span><span class=p>.</span><span class=na>SetRenderWindow</span><span class=p>(</span><span class=n>renWin</span><span class=p>);</span>
 
-<span class=w>    </span><span class=n>vtkInteractorStyleTrackball</span><span class=w> </span><span class=n>Style</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkInteractorStyleTrackball</span><span class=p>();</span>
-<span class=w>    </span><span class=n>iren</span><span class=p>.</span><span class=na>SetInteractorStyle</span><span class=p>(</span><span class=n>Style</span><span class=p>);</span><span class=w>  </span>
+<span class=hll><span class=w>    </span><span class=n>vtkInteractorStyleTrackball</span><span class=w> </span><span class=n>Style</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkInteractorStyleTrackball</span><span class=p>();</span>
+</span><span class=w>    </span><span class=n>iren</span><span class=p>.</span><span class=na>SetInteractorStyle</span><span class=p>(</span><span class=n>Style</span><span class=p>);</span><span class=w>  </span>
 
 <span class=hll><span class=w>    </span><span class=n>vtkImageTracerWidget</span><span class=w> </span><span class=n>TracerWidget</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>vtkImageTracerWidget</span><span class=p>();</span>
 </span><span class=w>    </span><span class=n>TracerWidget</span><span class=p>.</span><span class=na>SetInteractor</span><span class=p>(</span><span class=n>iren</span><span class=p>);</span>

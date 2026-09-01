@@ -75,8 +75,8 @@ function registerListener(event, func) {
 </span><span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkFiltersPoints</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkBoundedPointSource</span><span class=p>,</span> <span class=n>vtkMaskPointsFilter</span>
 </span><span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkFiltersSources</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkSphereSource</span>
 </span><span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkIOImage</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkMetaImageReader</span>
-</span><span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkImagingCore</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkImageBinaryThreshold</span>
-</span><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkRenderingCore</span><span class=w> </span><span class=kn>import</span> <span class=p>(</span>
+</span><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkImagingCore</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkImageBinaryThreshold</span>
+<span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkRenderingCore</span><span class=w> </span><span class=kn>import</span> <span class=p>(</span>
 <span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkPolyDataMapper</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkRenderWindow</span><span class=p>,</span>
@@ -113,10 +113,10 @@ function registerListener(event, func) {
 <span class=hll>        <span class=n>reader</span> <span class=o>=</span> <span class=n>vtkMetaImageReader</span><span class=p>(</span><span class=n>file_name</span><span class=o>=</span><span class=n>fn_path</span><span class=p>)</span>
 </span>        <span class=n>reader</span><span class=o>.</span><span class=n>update</span><span class=p>()</span>
 
-<span class=hll>        <span class=n>threshold</span> <span class=o>=</span> <span class=n>vtkImageBinaryThreshold</span><span class=p>(</span><span class=n>in_value</span><span class=o>=</span><span class=mi>255</span><span class=p>,</span> <span class=n>out_value</span><span class=o>=</span><span class=mi>0</span><span class=p>,</span>
-</span>                                            <span class=n>output_scalar_type</span><span class=o>=</span><span class=n>vtk</span><span class=o>.</span><span class=n>VTK_UNSIGNED_CHAR</span><span class=p>,</span>
-<span class=hll>                                            <span class=n>threshold_function</span><span class=o>=</span><span class=n>vtkImageBinaryThreshold</span><span class=o>.</span><span class=n>THRESHOLD_UPPER</span><span class=p>,</span>
-</span>                                            <span class=n>lower_threshold</span><span class=o>=</span><span class=n>upper</span><span class=p>,</span>
+        <span class=n>threshold</span> <span class=o>=</span> <span class=n>vtkImageBinaryThreshold</span><span class=p>(</span><span class=n>in_value</span><span class=o>=</span><span class=mi>255</span><span class=p>,</span> <span class=n>out_value</span><span class=o>=</span><span class=mi>0</span><span class=p>,</span>
+                                            <span class=n>output_scalar_type</span><span class=o>=</span><span class=n>vtk</span><span class=o>.</span><span class=n>VTK_UNSIGNED_CHAR</span><span class=p>,</span>
+                                            <span class=n>threshold_function</span><span class=o>=</span><span class=n>vtkImageBinaryThreshold</span><span class=o>.</span><span class=n>THRESHOLD_UPPER</span><span class=p>,</span>
+                                            <span class=n>lower_threshold</span><span class=o>=</span><span class=n>upper</span><span class=p>,</span>
                                             <span class=n>replace_in</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>replace_out</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
 
         <span class=n>reader</span> <span class=o>&gt;&gt;</span> <span class=n>threshold</span>
@@ -175,10 +175,10 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>implicit_function</span> <span class=o>=</span> <span class=n>vtkCone</span><span class=p>()</span>
 </span><span class=hll>    <span class=n>sample</span> <span class=o>=</span> <span class=n>vtkSampleImplicitFunctionFilter</span><span class=p>(</span><span class=n>implicit_function</span><span class=o>=</span><span class=n>implicit_function</span><span class=p>,</span> <span class=n>input_data</span><span class=o>=</span><span class=n>image</span><span class=p>)</span>
 </span>
-<span class=hll>    <span class=n>threshold</span> <span class=o>=</span> <span class=n>vtkImageBinaryThreshold</span><span class=p>(</span><span class=n>in_value</span><span class=o>=</span><span class=mi>255</span><span class=p>,</span> <span class=n>out_value</span><span class=o>=</span><span class=mi>0</span><span class=p>,</span>
-</span>                                        <span class=n>output_scalar_type</span><span class=o>=</span><span class=n>vtk</span><span class=o>.</span><span class=n>VTK_UNSIGNED_CHAR</span><span class=p>,</span>
-<span class=hll>                                        <span class=n>threshold_function</span><span class=o>=</span><span class=n>vtkImageBinaryThreshold</span><span class=o>.</span><span class=n>THRESHOLD_LOWER</span><span class=p>,</span>
-</span>                                        <span class=n>upper_threshold</span><span class=o>=</span><span class=mf>0.5</span><span class=p>,</span>
+    <span class=n>threshold</span> <span class=o>=</span> <span class=n>vtkImageBinaryThreshold</span><span class=p>(</span><span class=n>in_value</span><span class=o>=</span><span class=mi>255</span><span class=p>,</span> <span class=n>out_value</span><span class=o>=</span><span class=mi>0</span><span class=p>,</span>
+                                        <span class=n>output_scalar_type</span><span class=o>=</span><span class=n>vtk</span><span class=o>.</span><span class=n>VTK_UNSIGNED_CHAR</span><span class=p>,</span>
+                                        <span class=n>threshold_function</span><span class=o>=</span><span class=n>vtkImageBinaryThreshold</span><span class=o>.</span><span class=n>THRESHOLD_LOWER</span><span class=p>,</span>
+                                        <span class=n>upper_threshold</span><span class=o>=</span><span class=mf>0.5</span><span class=p>,</span>
                                         <span class=n>replace_in</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>replace_out</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
 
     <span class=n>sample</span> <span class=o>&gt;&gt;</span> <span class=n>threshold</span>

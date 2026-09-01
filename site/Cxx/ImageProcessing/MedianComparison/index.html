@@ -123,8 +123,8 @@ function registerListener(event, func) {
 <span class=cp>#ifdef USE_IMAGE_THRESHOLD</span>
 <span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkImageThreshold.h&gt;</span>
 </span><span class=cp>#else</span>
-<span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkImageBinaryThreshold.h&gt;</span>
-</span><span class=cp>#endif</span>
+<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkImageBinaryThreshold.h&gt;</span>
+<span class=cp>#endif</span>
 
 <span class=k>namespace</span><span class=w> </span><span class=p>{</span>
 <span class=hll><span class=kt>void</span><span class=w> </span><span class=nf>AddShotNoise</span><span class=p>(</span><span class=n>vtkImageData</span><span class=o>*</span><span class=w> </span><span class=n>inputImage</span><span class=p>,</span><span class=w> </span><span class=n>vtkImageData</span><span class=o>*</span><span class=w> </span><span class=n>outputImage</span><span class=p>,</span>
@@ -291,8 +291,8 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageBinaryThreshold</span><span class=o>&gt;</span><span class=w> </span><span class=n>shotNoiseThresh1</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>shotNoiseThresh1</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>shotNoiseSource</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 <span class=w>  </span><span class=n>shotNoiseThresh1</span><span class=o>-&gt;</span><span class=n>SetThresholdFunction</span><span class=p>(</span>
-<span class=hll><span class=w>      </span><span class=n>vtkImageBinaryThreshold</span><span class=o>::</span><span class=n>THRESHOLD_UPPER</span><span class=p>);</span>
-</span><span class=w>  </span><span class=n>shotNoiseThresh1</span><span class=o>-&gt;</span><span class=n>SetLowerThreshold</span><span class=p>(</span><span class=mf>1.0</span><span class=w> </span><span class=o>-</span><span class=w> </span><span class=n>noiseFraction</span><span class=p>);</span>
+<span class=w>      </span><span class=n>vtkImageBinaryThreshold</span><span class=o>::</span><span class=n>THRESHOLD_UPPER</span><span class=p>);</span>
+<span class=w>  </span><span class=n>shotNoiseThresh1</span><span class=o>-&gt;</span><span class=n>SetLowerThreshold</span><span class=p>(</span><span class=mf>1.0</span><span class=w> </span><span class=o>-</span><span class=w> </span><span class=n>noiseFraction</span><span class=p>);</span>
 <span class=w>  </span><span class=n>shotNoiseThresh1</span><span class=o>-&gt;</span><span class=n>ReplaceInOn</span><span class=p>();</span>
 <span class=w>  </span><span class=n>shotNoiseThresh1</span><span class=o>-&gt;</span><span class=n>ReplaceOutOn</span><span class=p>();</span>
 <span class=w>  </span><span class=n>shotNoiseThresh1</span><span class=o>-&gt;</span><span class=n>SetInValue</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span>
@@ -309,8 +309,8 @@ function registerListener(event, func) {
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkImageBinaryThreshold</span><span class=o>&gt;</span><span class=w> </span><span class=n>shotNoiseThresh2</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>shotNoiseThresh2</span><span class=o>-&gt;</span><span class=n>SetInputConnection</span><span class=p>(</span><span class=n>shotNoiseSource</span><span class=o>-&gt;</span><span class=n>GetOutputPort</span><span class=p>());</span>
 <span class=w>  </span><span class=n>shotNoiseThresh1</span><span class=o>-&gt;</span><span class=n>SetThresholdFunction</span><span class=p>(</span>
-<span class=hll><span class=w>      </span><span class=n>vtkImageBinaryThreshold</span><span class=o>::</span><span class=n>THRESHOLD_UPPER</span><span class=p>);</span>
-</span><span class=w>  </span><span class=n>shotNoiseThresh2</span><span class=o>-&gt;</span><span class=n>SetLowerThreshold</span><span class=p>(</span><span class=n>noiseFraction</span><span class=p>);</span>
+<span class=w>      </span><span class=n>vtkImageBinaryThreshold</span><span class=o>::</span><span class=n>THRESHOLD_UPPER</span><span class=p>);</span>
+<span class=w>  </span><span class=n>shotNoiseThresh2</span><span class=o>-&gt;</span><span class=n>SetLowerThreshold</span><span class=p>(</span><span class=n>noiseFraction</span><span class=p>);</span>
 <span class=w>  </span><span class=n>shotNoiseThresh2</span><span class=o>-&gt;</span><span class=n>ReplaceInOn</span><span class=p>();</span>
 <span class=w>  </span><span class=n>shotNoiseThresh2</span><span class=o>-&gt;</span><span class=n>ReplaceOutOn</span><span class=p>();</span>
 <span class=w>  </span><span class=n>shotNoiseThresh2</span><span class=o>-&gt;</span><span class=n>SetInValue</span><span class=p>(</span><span class=mf>1.0</span><span class=w> </span><span class=o>-</span><span class=w> </span><span class=n>noiseAmplitude</span><span class=p>);</span>
