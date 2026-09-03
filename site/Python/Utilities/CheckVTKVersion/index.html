@@ -90,7 +90,7 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>main</span><span class=p>():</span>
-<span class=hll>    <span class=nb>print</span><span class=p>(</span><span class=s1>'VTK Version:'</span><span class=p>,</span><span class=n>vtkVersion</span><span class=o>.</span><span class=n>GetVTKVersion</span><span class=p>())</span>
+<span class=hll>    <span class=nb>print</span><span class=p>(</span><span class=s1>'VTK Version:'</span><span class=p>,</span> <span class=n>vtkVersion</span><span class=o>.</span><span class=n>GetVTKVersion</span><span class=p>())</span>
 </span>    <span class=k>if</span> <span class=ow>not</span> <span class=n>vtk_version_ok</span><span class=p>(</span><span class=mi>9</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>):</span>
         <span class=nb>print</span><span class=p>(</span><span class=s1>'You need VTK version 9.0.0 or greater to run this program.'</span><span class=p>)</span>
         <span class=k>return</span>

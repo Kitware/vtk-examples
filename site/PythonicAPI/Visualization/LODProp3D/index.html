@@ -88,10 +88,10 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>low_res_mapper</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span><span class=hll>    <span class=n>vtkSphereSource</span><span class=p>()</span> <span class=o>&gt;&gt;</span> <span class=n>low_res_mapper</span>
 </span>
-<span class=hll>    <span class=n>property_low_res</span> <span class=o>=</span> <span class=n>vtkProperty</span><span class=p>(</span><span class=n>diffuse_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'BlanchedAlmond'</span><span class=p>),</span>
-</span>                                 <span class=n>interpolation</span><span class=o>=</span><span class=n>Property</span><span class=o>.</span><span class=n>Interpolation</span><span class=o>.</span><span class=n>VTK_FLAT</span><span class=p>)</span>
-<span class=hll>    <span class=n>property_high_res</span> <span class=o>=</span> <span class=n>vtkProperty</span><span class=p>(</span><span class=n>diffuse_color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'MistyRose'</span><span class=p>),</span>
-</span>                                  <span class=n>interpolation</span><span class=o>=</span><span class=n>Property</span><span class=o>.</span><span class=n>Interpolation</span><span class=o>.</span><span class=n>VTK_FLAT</span><span class=p>)</span>
+<span class=hll>    <span class=n>property_low_res</span> <span class=o>=</span> <span class=n>vtkProperty</span><span class=p>(</span><span class=n>diffuse_color</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'BlanchedAlmond'</span><span class=p>),</span>
+</span>                                   <span class=n>interpolation</span><span class=o>=</span><span class=n>Property</span><span class=o>.</span><span class=n>Interpolation</span><span class=o>.</span><span class=n>VTK_FLAT</span><span class=p>)</span>
+<span class=hll>    <span class=n>property_high_res</span> <span class=o>=</span> <span class=n>vtkProperty</span><span class=p>(</span><span class=n>diffuse_color</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'MistyRose'</span><span class=p>),</span>
+</span>                                    <span class=n>interpolation</span><span class=o>=</span><span class=n>Property</span><span class=o>.</span><span class=n>Interpolation</span><span class=o>.</span><span class=n>VTK_FLAT</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>prop</span> <span class=o>=</span> <span class=n>vtkLODProp3D</span><span class=p>(</span><span class=n>automatic_lod_selection</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
 </span>    <span class=n>prop</span><span class=o>.</span><span class=n>AddLOD</span><span class=p>(</span><span class=n>low_res_mapper</span><span class=p>,</span> <span class=n>property_low_res</span><span class=p>,</span> <span class=mf>0.0</span><span class=p>)</span>
@@ -152,6 +152,7 @@ function registerListener(event, func) {
 
     <span class=k>def</span><span class=w> </span><span class=fm>__call__</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>caller</span><span class=p>,</span> <span class=n>ev</span><span class=p>):</span>
         <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>'Last rendered LOD ID: </span><span class=si>{</span><span class=bp>self</span><span class=o>.</span><span class=n>prop</span><span class=o>.</span><span class=n>last_rendered_lodid</span><span class=si>}</span><span class=s1>'</span><span class=p>)</span>
+
 
 <span class=nd>@dataclass</span><span class=p>(</span><span class=n>frozen</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
 <span class=k>class</span><span class=w> </span><span class=nc>Property</span><span class=p>:</span>

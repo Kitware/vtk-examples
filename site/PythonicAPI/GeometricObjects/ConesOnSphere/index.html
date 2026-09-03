@@ -59,7 +59,6 @@ function registerListener(event, func) {
 
 <span class=kn>from</span><span class=w> </span><span class=nn>dataclasses</span><span class=w> </span><span class=kn>import</span> <span class=n>dataclass</span>
 
-
 <span class=c1># noinspection PyUnresolvedReferences</span>
 <span class=kn>import</span><span class=w> </span><span class=nn>vtkmodules.vtkInteractionStyle</span>
 <span class=c1># noinspection PyUnresolvedReferences</span>
@@ -90,7 +89,7 @@ function registerListener(event, func) {
 </span>    <span class=n>colors</span><span class=o>.</span><span class=n>SetColor</span><span class=p>(</span><span class=s2>"ParaViewBkg"</span><span class=p>,</span> <span class=mi>82</span><span class=p>,</span> <span class=mi>87</span><span class=p>,</span> <span class=mi>110</span><span class=p>,</span> <span class=mi>255</span><span class=p>)</span>
 
 <span class=hll>    <span class=n>sphere_source</span> <span class=o>=</span> <span class=n>vtkSphereSource</span><span class=p>(</span>
-</span>        <span class=n>radius</span> <span class=o>=</span> <span class=mf>0.5</span><span class=p>,</span>
+</span>        <span class=n>radius</span><span class=o>=</span><span class=mf>0.5</span><span class=p>,</span>
         <span class=n>theta_resolution</span><span class=o>=</span><span class=mi>16</span><span class=p>,</span>
         <span class=n>phi_resolution</span><span class=o>=</span><span class=mi>16</span><span class=p>,</span>
         <span class=n>lat_long_tessellation</span><span class=o>=</span><span class=kc>False</span>
@@ -141,6 +140,7 @@ function registerListener(event, func) {
     <span class=n>render_window</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
     <span class=n>render_window_interactor</span><span class=o>.</span><span class=n>Start</span><span class=p>()</span>
 
+
 <span class=nd>@dataclass</span><span class=p>(</span><span class=n>frozen</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
 <span class=k>class</span><span class=w> </span><span class=nc>Glyph3D</span><span class=p>:</span>
     <span class=nd>@dataclass</span><span class=p>(</span><span class=n>frozen</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
@@ -168,6 +168,7 @@ function registerListener(event, func) {
         <span class=n>VTK_USE_NORMAL</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>1</span>
         <span class=n>VTK_VECTOR_ROTATION_OFF</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>2</span>
         <span class=n>VTK_FOLLOW_CAMERA_DIRECTION</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>3</span>
+
 
 <span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
     <span class=n>main</span><span class=p>()</span>

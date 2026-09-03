@@ -77,7 +77,7 @@ function registerListener(event, func) {
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
     <span class=c1># Create a rendering window, renderer and interactor.</span>
-<span class=hll>    <span class=n>ren</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'MidnightBlue'</span><span class=p>))</span>
+<span class=hll>    <span class=n>ren</span> <span class=o>=</span> <span class=n>vtkRenderer</span><span class=p>(</span><span class=n>background</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'MidnightBlue'</span><span class=p>))</span>
 </span><span class=hll>    <span class=n>ren_win</span> <span class=o>=</span> <span class=n>vtkRenderWindow</span><span class=p>(</span><span class=n>window_name</span><span class=o>=</span><span class=s1>'Outline'</span><span class=p>)</span>
 </span>    <span class=n>ren_win</span><span class=o>.</span><span class=n>AddRenderer</span><span class=p>(</span><span class=n>ren</span><span class=p>)</span>
 <span class=hll>    <span class=n>iren</span> <span class=o>=</span> <span class=n>vtkRenderWindowInteractor</span><span class=p>()</span>
@@ -90,14 +90,14 @@ function registerListener(event, func) {
 </span>    <span class=n>source</span> <span class=o>&gt;&gt;</span> <span class=n>mapper1</span>
     <span class=c1># Actor</span>
 <span class=hll>    <span class=n>actor1</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>(</span><span class=n>mapper</span><span class=o>=</span><span class=n>mapper1</span><span class=p>)</span>
-</span>    <span class=n>actor1</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'MistyRose'</span><span class=p>)</span>
+</span>    <span class=n>actor1</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'MistyRose'</span><span class=p>)</span>
 
     <span class=c1># Outline</span>
 <span class=hll>    <span class=n>outline</span> <span class=o>=</span> <span class=n>vtkOutlineFilter</span><span class=p>()</span>
 </span><span class=hll>    <span class=n>mapper2</span> <span class=o>=</span> <span class=n>vtkPolyDataMapper</span><span class=p>()</span>
 </span>    <span class=n>source</span> <span class=o>&gt;&gt;</span> <span class=n>outline</span> <span class=o>&gt;&gt;</span> <span class=n>mapper2</span>
 <span class=hll>    <span class=n>actor2</span> <span class=o>=</span> <span class=n>vtkActor</span><span class=p>(</span><span class=n>mapper</span><span class=o>=</span><span class=n>mapper2</span><span class=p>)</span>
-</span>    <span class=n>actor2</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span><span class=o>=</span><span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Gold'</span><span class=p>)</span>
+</span>    <span class=n>actor2</span><span class=o>.</span><span class=n>property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=s1>'Gold'</span><span class=p>)</span>
 
     <span class=c1># Assign the actors to the renderer.</span>
     <span class=n>ren</span><span class=o>.</span><span class=n>AddActor</span><span class=p>(</span><span class=n>actor1</span><span class=p>)</span>

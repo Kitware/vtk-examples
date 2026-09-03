@@ -97,7 +97,7 @@ function registerListener(event, func) {
 
     <span class=c1># Render the dataset.</span>
 <span class=hll>    <span class=n>mapper</span> <span class=o>=</span> <span class=n>vtkCompositePolyDataMapper</span><span class=p>(</span><span class=n>lookup_table</span><span class=o>=</span><span class=n>get_ctf</span><span class=p>(),</span>
-</span>                               <span class=n>scalar_mode</span><span class=o>=</span><span class=n>Mapper</span><span class=o>.</span><span class=n>ScalarMode</span><span class=o>.</span><span class=n>VTK_SCALAR_MODE_USE_POINT_FIELD_DATA</span><span class=p>)</span>
+</span>                                        <span class=n>scalar_mode</span><span class=o>=</span><span class=n>Mapper</span><span class=o>.</span><span class=n>ScalarMode</span><span class=o>.</span><span class=n>VTK_SCALAR_MODE_USE_POINT_FIELD_DATA</span><span class=p>)</span>
     <span class=n>mapper</span><span class=o>.</span><span class=n>SelectColorArray</span><span class=p>(</span><span class=s1>'SpatioTemporalHarmonics'</span><span class=p>)</span>
     <span class=n>reader</span> <span class=o>&gt;&gt;</span> <span class=n>mapper</span>
 
@@ -130,7 +130,6 @@ function registerListener(event, func) {
 
 
 <span class=k>def</span><span class=w> </span><span class=nf>get_ctf</span><span class=p>():</span>
-
 <span class=hll>    <span class=n>series</span> <span class=o>=</span> <span class=n>vtkColorSeries</span><span class=p>()</span>
 </span><span class=hll>    <span class=n>series</span><span class=o>.</span><span class=n>SetColorScheme</span><span class=p>(</span><span class=n>vtkColorSeries</span><span class=o>.</span><span class=n>WARM</span><span class=p>)</span>
 </span>

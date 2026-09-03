@@ -61,15 +61,9 @@ function registerListener(event, func) {
 <span class=kn>import</span><span class=w> </span><span class=nn>vtkmodules.vtkInteractionStyle</span>
 <span class=c1># noinspection PyUnresolvedReferences</span>
 <span class=kn>import</span><span class=w> </span><span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
-<span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.util.execution_model</span><span class=w> </span><span class=kn>import</span> <span class=n>select_ports</span>
 <span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkCommonColor</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkNamedColors</span>
 </span><span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkImagingCore</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkImageCast</span>
-</span><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkImagingGeneral</span><span class=w> </span><span class=kn>import</span> <span class=p>(</span>
-<span class=hll>    <span class=n>vtkImageGradient</span><span class=p>,</span>
-</span><span class=hll>    <span class=n>vtkImageGradientMagnitude</span>
-</span><span class=p>)</span>
-<span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkImagingMorphological</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkImageNonMaximumSuppression</span>
-</span><span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkImagingSources</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkImageSinusoidSource</span><span class=p>,</span> <span class=n>vtkImageGridSource</span>
+</span><span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkImagingSources</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkImageGridSource</span>
 </span><span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkInteractionStyle</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkInteractorStyleImage</span>
 </span><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkRenderingCore</span><span class=w> </span><span class=kn>import</span> <span class=p>(</span>
 <span class=hll>    <span class=n>vtkImageActor</span><span class=p>,</span>
