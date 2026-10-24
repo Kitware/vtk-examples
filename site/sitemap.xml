@@ -3581,6 +3581,10 @@
          <lastmod>2026-10-24</lastmod>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/Cxx/Snippets/SliceOrder/</loc>
+         <lastmod>2026-10-24</lastmod>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/Cxx/Snippets/WriteImage/</loc>
          <lastmod>2026-10-24</lastmod>
     </url>
@@ -8902,6 +8906,10 @@
     </url>
     <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/Snippets/ScreenshotCallback/</loc>
+         <lastmod>2026-10-24</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Snippets/SliceOrder/</loc>
          <lastmod>2026-10-24</lastmod>
     </url>
     <url>
