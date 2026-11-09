@@ -299,7 +299,7 @@ function registerListener(event, func) {
 <span class=p>{</span>
 <span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>permute</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>Permute</span><span class=p>();</span>
 <span class=w>  </span><span class=c1>// permute.PrintAllTransforms();</span>
-<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>lr</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>permute</span><span class=p>.</span><span class=n>Get</span><span class=p>(</span><span class=s>"lr"</span><span class=p>);</span>
+<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>lr</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>permute</span><span class=p>.</span><span class=n>GetTransform</span><span class=p>(</span><span class=s>"lr"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>vtk</span><span class=o>::</span><span class=n>println</span><span class=p>(</span><span class=s>"</span><span class=se>\n</span><span class=s>Print out the lr transform:"</span><span class=p>);</span>
 <span class=w>  </span><span class=n>permute</span><span class=p>.</span><span class=n>PrintTransform</span><span class=p>(</span><span class=s>"lr"</span><span class=p>);</span>
 
