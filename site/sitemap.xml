@@ -3585,6 +3585,10 @@
          <lastmod>2026-11-15</lastmod>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/Cxx/Snippets/SliceOrder/</loc>
+         <lastmod>2026-11-15</lastmod>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/Cxx/Snippets/WriteImage/</loc>
          <lastmod>2026-11-15</lastmod>
     </url>
@@ -8829,6 +8833,10 @@
          <lastmod>2026-11-15</lastmod>
     </url>
     <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Rendering/Shadows/</loc>
+         <lastmod>2026-11-15</lastmod>
+    </url>
+    <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/Rendering/StringToImageDemo/</loc>
          <lastmod>2026-11-15</lastmod>
     </url>
@@ -8910,6 +8918,10 @@
     </url>
     <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/Snippets/ScreenshotCallback/</loc>
+         <lastmod>2026-11-15</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/Snippets/SliceOrder/</loc>
          <lastmod>2026-11-15</lastmod>
     </url>
     <url>
@@ -9330,6 +9342,22 @@
     </url>
     <url>
          <loc>https://examples.vtk.org/site/PythonicAPI/VisualizationAlgorithms/ImageGradient/</loc>
+         <lastmod>2026-11-15</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/VisualizationAlgorithms/LOx/</loc>
+         <lastmod>2026-11-15</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/VisualizationAlgorithms/LOxGrid/</loc>
+         <lastmod>2026-11-15</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/VisualizationAlgorithms/LOxSeeds/</loc>
+         <lastmod>2026-11-15</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.vtk.org/site/PythonicAPI/VisualizationAlgorithms/Motor/</loc>
          <lastmod>2026-11-15</lastmod>
     </url>
     <url>
