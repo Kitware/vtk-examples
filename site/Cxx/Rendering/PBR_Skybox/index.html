@@ -165,18 +165,6 @@ Options:
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkPNGWriter.h&gt;</span>
 </span><span class=hll><span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vtkWindowToImageFilter.h&gt;</span>
 </span>
-<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;array&gt;</span>
-<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;cstdlib&gt;</span>
-<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;filesystem&gt;</span>
-<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;iomanip&gt;</span>
-<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;iostream&gt;</span>
-<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;map&gt;</span>
-<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;memory&gt;</span>
-<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;numeric&gt;</span>
-<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;sstream&gt;</span>
-<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;string&gt;</span>
-<span class=cp>#include</span><span class=w> </span><span class=cpf>&lt;vector&gt;</span>
-
 <span class=cp>#if VTK_VERSION_NUMBER &gt;= 90020210809ULL</span>
 <span class=cp>#define VTK_HAS_COW 1</span>
 <span class=cp>#endif</span>
@@ -324,36 +312,98 @@ Options:
 <span class=hll><span class=w>  </span><span class=n>vtkProperty</span><span class=o>*</span><span class=w> </span><span class=n>property</span><span class=p>;</span>
 </span><span class=p>};</span>
 
-<span class=k>struct</span><span class=w> </span><span class=nc>SliderProperties</span>
+<span class=cm>/**</span>
+<span class=cm> * @brief The Slider2DProperties struct.</span>
+<span class=cm> *</span>
+<span class=cm> * These are the default properties.</span>
+<span class=cm> * Instantiate the struct and modify as appropriate.</span>
+<span class=cm> *</span>
+<span class=cm> * @return The properties.</span>
+<span class=cm> */</span>
+<span class=k>struct</span><span class=w> </span><span class=nc>Slider2DProperties</span>
 <span class=p>{</span>
-<span class=w>  </span><span class=c1>// Set up the sliders</span>
-<span class=w>  </span><span class=kt>double</span><span class=w> </span><span class=n>tubeWidth</span><span class=p>{</span><span class=mf>0.008</span><span class=p>};</span>
-<span class=w>  </span><span class=kt>double</span><span class=w> </span><span class=n>sliderLength</span><span class=p>{</span><span class=mf>0.075</span><span class=p>};</span>
-<span class=w>  </span><span class=kt>double</span><span class=w> </span><span class=n>sliderWidth</span><span class=p>{</span><span class=mf>0.025</span><span class=p>};</span>
-<span class=w>  </span><span class=kt>double</span><span class=w> </span><span class=n>endCapLength</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mf>0.025</span><span class=p>;</span>
-<span class=w>  </span><span class=kt>double</span><span class=w> </span><span class=n>endCapWidth</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mf>0.025</span><span class=p>;</span>
-<span class=w>  </span><span class=kt>double</span><span class=w> </span><span class=n>titleHeight</span><span class=p>{</span><span class=mf>0.025</span><span class=p>};</span>
-<span class=w>  </span><span class=kt>double</span><span class=w> </span><span class=n>labelHeight</span><span class=p>{</span><span class=mf>0.020</span><span class=p>};</span>
+<span class=w>  </span><span class=k>struct</span><span class=w> </span><span class=nc>_Colors</span>
+<span class=w>  </span><span class=p>{</span>
+<span class=w>    </span><span class=c1>// The color of the bar.</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>barColor</span><span class=p>{</span><span class=s>"White"</span><span class=p>};</span>
+<span class=w>    </span><span class=c1>// The color of the ends of the bar.</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>barEndsColor</span><span class=p>{</span><span class=s>"White"</span><span class=p>};</span>
+<span class=w>    </span><span class=c1>// The color of the text displaying the value.</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>labelColor</span><span class=p>{</span><span class=s>"White"</span><span class=p>};</span>
+<span class=w>    </span><span class=c1>// The color of the knob when the mouse is held on it.</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>selectedColor</span><span class=p>{</span><span class=s>"HotPink"</span><span class=p>};</span>
+<span class=w>    </span><span class=c1>// The color of the knob that slides.</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>sliderColor</span><span class=p>{</span><span class=s>"White"</span><span class=p>};</span>
+<span class=w>    </span><span class=c1>// The color of the text indicating what the slider controls.</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>titleColor</span><span class=p>{</span><span class=s>"White"</span><span class=p>};</span>
+<span class=w>  </span><span class=p>};</span>
 
-<span class=w>  </span><span class=kt>double</span><span class=w> </span><span class=n>minimumValue</span><span class=p>{</span><span class=mf>0.0</span><span class=p>};</span>
-<span class=w>  </span><span class=kt>double</span><span class=w> </span><span class=n>maximumValue</span><span class=p>{</span><span class=mf>1.0</span><span class=p>};</span>
-<span class=w>  </span><span class=kt>double</span><span class=w> </span><span class=n>initialValue</span><span class=p>{</span><span class=mf>0.0</span><span class=p>};</span>
+<span class=w>  </span><span class=k>struct</span><span class=w> </span><span class=nc>_Dimensions</span>
+<span class=w>  </span><span class=p>{</span>
+<span class=w>    </span><span class=kt>double</span><span class=w> </span><span class=n>endCapLength</span><span class=p>{</span><span class=mf>0.005</span><span class=p>};</span>
+<span class=w>    </span><span class=kt>double</span><span class=w> </span><span class=n>endCapWidth</span><span class=p>{</span><span class=mf>0.05</span><span class=p>};</span>
+<span class=w>    </span><span class=kt>double</span><span class=w> </span><span class=n>labelHeight</span><span class=p>{</span><span class=mf>0.025</span><span class=p>};</span>
+<span class=w>    </span><span class=kt>double</span><span class=w> </span><span class=n>sliderLength</span><span class=p>{</span><span class=mf>0.01</span><span class=p>};</span>
+<span class=w>    </span><span class=kt>double</span><span class=w> </span><span class=n>sliderWidth</span><span class=p>{</span><span class=mf>0.02</span><span class=p>};</span>
+<span class=w>    </span><span class=kt>double</span><span class=w> </span><span class=n>titleHeight</span><span class=p>{</span><span class=mf>0.03</span><span class=p>};</span>
+<span class=w>    </span><span class=kt>double</span><span class=w> </span><span class=n>tubeWidth</span><span class=p>{</span><span class=mf>0.008</span><span class=p>};</span>
+<span class=w>  </span><span class=p>};</span>
 
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>double</span><span class=p>,</span><span class=w> </span><span class=mi>2</span><span class=o>&gt;</span><span class=w> </span><span class=n>p1</span><span class=p>{</span><span class=mf>0.02</span><span class=p>,</span><span class=w> </span><span class=mf>0.1</span><span class=p>};</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>double</span><span class=p>,</span><span class=w> </span><span class=mi>2</span><span class=o>&gt;</span><span class=w> </span><span class=n>p2</span><span class=p>{</span><span class=mf>0.18</span><span class=p>,</span><span class=w> </span><span class=mf>0.1</span><span class=p>};</span>
+<span class=w>  </span><span class=k>struct</span><span class=w> </span><span class=nc>_Position</span>
+<span class=w>  </span><span class=p>{</span>
+<span class=w>    </span><span class=kt>int</span><span class=w> </span><span class=n>coordinateSystem</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>VTK_NORMALIZED_VIEWPORT</span><span class=p>;</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>double</span><span class=p>,</span><span class=w> </span><span class=mi>2</span><span class=o>&gt;</span><span class=w> </span><span class=n>point1</span><span class=p>{</span><span class=mf>0.1</span><span class=p>,</span><span class=w> </span><span class=mf>0.1</span><span class=p>};</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>double</span><span class=p>,</span><span class=w> </span><span class=mi>2</span><span class=o>&gt;</span><span class=w> </span><span class=n>point2</span><span class=p>{</span><span class=mf>0.9</span><span class=p>,</span><span class=w> </span><span class=mf>0.1</span><span class=p>};</span>
+<span class=w>  </span><span class=p>};</span>
 
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>title</span><span class=p>{</span><span class=s>""</span><span class=p>};</span>
+<span class=w>  </span><span class=k>struct</span><span class=w> </span><span class=nc>_Range</span>
+<span class=w>  </span><span class=p>{</span>
+<span class=w>    </span><span class=kt>double</span><span class=w> </span><span class=n>minimumValue</span><span class=p>{</span><span class=mf>0.0</span><span class=p>};</span>
+<span class=w>    </span><span class=kt>double</span><span class=w> </span><span class=n>maximumValue</span><span class=p>{</span><span class=mf>1.0</span><span class=p>};</span>
+<span class=w>    </span><span class=kt>double</span><span class=w> </span><span class=n>value</span><span class=p>{</span><span class=mf>0.0</span><span class=p>};</span>
+<span class=w>  </span><span class=p>};</span>
 
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>titleColor</span><span class=p>{</span><span class=s>"Black"</span><span class=p>};</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>labelColor</span><span class=p>{</span><span class=s>"Black"</span><span class=p>};</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>valueColor</span><span class=p>{</span><span class=s>"DarkSlateGray"</span><span class=p>};</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>sliderColor</span><span class=p>{</span><span class=s>"BurlyWood"</span><span class=p>};</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>selectedColor</span><span class=p>{</span><span class=s>"Lime"</span><span class=p>};</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>barColor</span><span class=p>{</span><span class=s>"Black"</span><span class=p>};</span>
-<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>barEndsColor</span><span class=p>{</span><span class=s>"Indigo"</span><span class=p>};</span>
+<span class=w>  </span><span class=k>struct</span><span class=w> </span><span class=nc>_Text</span>
+<span class=w>  </span><span class=p>{</span>
+<span class=w>    </span><span class=c1>// Font families are: Ariel, Courier and Times</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>labelFontFamily</span><span class=p>{</span><span class=s>"Arial"</span><span class=p>};</span>
+<span class=w>    </span><span class=kt>bool</span><span class=w> </span><span class=n>labelBold</span><span class=p>{</span><span class=nb>true</span><span class=p>};</span>
+<span class=w>    </span><span class=kt>bool</span><span class=w> </span><span class=n>labelItalic</span><span class=p>{</span><span class=nb>false</span><span class=p>};</span>
+<span class=w>    </span><span class=kt>bool</span><span class=w> </span><span class=n>labelShadow</span><span class=p>{</span><span class=nb>true</span><span class=p>};</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>title</span><span class=p>{};</span>
+<span class=w>    </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>titleFontFamily</span><span class=p>{</span><span class=s>"Arial"</span><span class=p>};</span>
+<span class=w>    </span><span class=kt>bool</span><span class=w> </span><span class=n>titleBold</span><span class=p>{</span><span class=nb>true</span><span class=p>};</span>
+<span class=w>    </span><span class=kt>bool</span><span class=w> </span><span class=n>titleItalic</span><span class=p>{</span><span class=nb>false</span><span class=p>};</span>
+<span class=w>    </span><span class=kt>bool</span><span class=w> </span><span class=n>titleShadow</span><span class=p>{</span><span class=nb>true</span><span class=p>};</span>
+<span class=w>  </span><span class=p>};</span>
+
+<span class=w>  </span><span class=k>struct</span><span class=w> </span><span class=nc>_Colors</span><span class=w> </span><span class=n>Colors</span><span class=p>;</span>
+<span class=w>  </span><span class=k>struct</span><span class=w> </span><span class=nc>_Dimensions</span><span class=w> </span><span class=n>Dimensions</span><span class=p>;</span>
+<span class=w>  </span><span class=k>struct</span><span class=w> </span><span class=nc>_Position</span><span class=w> </span><span class=n>Position</span><span class=p>;</span>
+<span class=w>  </span><span class=k>struct</span><span class=w> </span><span class=nc>_Range</span><span class=w> </span><span class=n>Range</span><span class=p>;</span>
+<span class=w>  </span><span class=k>struct</span><span class=w> </span><span class=nc>_Text</span><span class=w> </span><span class=n>Text</span><span class=p>;</span>
 <span class=p>};</span>
 
-<span class=hll><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkSliderWidget</span><span class=o>&gt;</span><span class=w> </span><span class=n>MakeSliderWidget</span><span class=p>(</span><span class=n>SliderProperties</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>properties</span><span class=p>);</span>
+<span class=cm>/**</span>
+<span class=cm> * @brief MakeSlider2DProperties</span>
+<span class=cm> *</span>
+<span class=cm> * This applies more specific values to the default Slider2DProperties.</span>
+<span class=cm> *</span>
+<span class=cm> * @return The slider 2D properties.</span>
+<span class=cm> */</span>
+<span class=n>Slider2DProperties</span><span class=w> </span><span class=nf>MakeSlider2DProperties</span><span class=p>();</span>
+
+<span class=cm>/**</span>
+<span class=cm> * @brief Make2DSliderWidget</span>
+<span class=cm> *</span>
+<span class=cm> * Make a 2D slider widget.</span>
+<span class=cm> *</span>
+<span class=cm> * @param properties The 2D slider properties.</span>
+<span class=cm> * @param iren The vtkInteractor.</span>
+<span class=cm> * @return The slider widget.</span>
+<span class=cm> */</span>
+<span class=hll><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkSliderWidget</span><span class=o>&gt;</span><span class=w> </span><span class=n>Make2DSliderWidget</span><span class=p>(</span><span class=n>Slider2DProperties</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>properties</span><span class=p>,</span>
+</span><span class=hll><span class=w>                                           </span><span class=n>vtkRenderWindowInteractor</span><span class=o>*</span><span class=w> </span><span class=n>iren</span><span class=p>);</span>
 </span>
 <span class=hll><span class=k>class</span><span class=w> </span><span class=nc>PrintCallback</span><span class=w> </span><span class=o>:</span><span class=w> </span><span class=k>public</span><span class=w> </span><span class=n>vtkCallbackCommand</span>
 </span><span class=p>{</span>
@@ -737,71 +787,45 @@ Options:
 
 <span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>stepSize</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mf>1.0</span><span class=w> </span><span class=o>/</span><span class=w> </span><span class=mf>3.0</span><span class=p>;</span>
 <span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>posY</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mf>0.1</span><span class=p>;</span>
-<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>posX0</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mf>0.02</span><span class=p>;</span>
-<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>posX1</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mf>0.18</span><span class=p>;</span>
+<span class=w>  </span><span class=c1>// auto posX0 = 0.02;</span>
+<span class=w>  </span><span class=c1>// auto posX1 = 0.18;</span>
 
-<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>slwP</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>SliderProperties</span><span class=p>();</span>
-
-<span class=w>  </span><span class=n>slwP</span><span class=p>.</span><span class=n>initialValue</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mf>1.0</span><span class=p>;</span>
-<span class=w>  </span><span class=n>slwP</span><span class=p>.</span><span class=n>maximumValue</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mf>5.0</span><span class=p>;</span>
-<span class=w>  </span><span class=n>slwP</span><span class=p>.</span><span class=n>title</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>"Exposure"</span><span class=p>;</span>
-<span class=w>  </span><span class=c1>//  Screen coordinates.</span>
-<span class=w>  </span><span class=n>slwP</span><span class=p>.</span><span class=n>p1</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>posX0</span><span class=p>;</span>
-<span class=w>  </span><span class=n>slwP</span><span class=p>.</span><span class=n>p1</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>posY</span><span class=p>;</span>
-<span class=w>  </span><span class=n>slwP</span><span class=p>.</span><span class=n>p2</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>posX1</span><span class=p>;</span>
-<span class=w>  </span><span class=n>slwP</span><span class=p>.</span><span class=n>p2</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>posY</span><span class=p>;</span>
-
-<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>swExposure</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>MakeSliderWidget</span><span class=p>(</span><span class=n>slwP</span><span class=p>);</span>
-<span class=w>  </span><span class=n>swExposure</span><span class=o>-&gt;</span><span class=n>SetInteractor</span><span class=p>(</span><span class=n>interactor</span><span class=p>);</span>
-<span class=w>  </span><span class=n>swExposure</span><span class=o>-&gt;</span><span class=n>SetAnimationModeToAnimate</span><span class=p>();</span>
-<span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>useTonemapping</span><span class=p>)</span>
-<span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>swExposure</span><span class=o>-&gt;</span><span class=n>EnabledOn</span><span class=p>();</span>
-<span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=k>else</span>
-<span class=w>  </span><span class=p>{</span>
-<span class=w>    </span><span class=n>swExposure</span><span class=o>-&gt;</span><span class=n>EnabledOff</span><span class=p>();</span>
-<span class=w>  </span><span class=p>}</span>
-<span class=w>  </span><span class=n>swExposure</span><span class=o>-&gt;</span><span class=n>SetCurrentRenderer</span><span class=p>(</span><span class=n>ren1</span><span class=p>);</span>
+<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>slwP</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>MakeSlider2DProperties</span><span class=p>();</span>
+<span class=w>  </span><span class=n>slwP</span><span class=p>.</span><span class=n>Position</span><span class=p>.</span><span class=n>point1</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>double</span><span class=p>,</span><span class=w> </span><span class=mi>2</span><span class=o>&gt;</span><span class=p>{</span><span class=mf>0.1</span><span class=p>,</span><span class=w> </span><span class=n>posY</span><span class=p>};</span>
+<span class=w>  </span><span class=n>slwP</span><span class=p>.</span><span class=n>Position</span><span class=p>.</span><span class=n>point2</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>double</span><span class=p>,</span><span class=w> </span><span class=mi>2</span><span class=o>&gt;</span><span class=p>{</span><span class=mf>0.9</span><span class=p>,</span><span class=w> </span><span class=n>posY</span><span class=p>};</span>
+<span class=w>  </span><span class=n>slwP</span><span class=p>.</span><span class=n>Range</span><span class=p>.</span><span class=n>value</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mf>1.0</span><span class=p>;</span>
+<span class=w>  </span><span class=n>slwP</span><span class=p>.</span><span class=n>Range</span><span class=p>.</span><span class=n>maximumValue</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mf>5.0</span><span class=p>;</span>
+<span class=w>  </span><span class=n>slwP</span><span class=p>.</span><span class=n>Text</span><span class=p>.</span><span class=n>title</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>"Exposure"</span><span class=p>;</span>
+<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>swExposure</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>Make2DSliderWidget</span><span class=p>(</span><span class=n>slwP</span><span class=p>,</span><span class=w> </span><span class=n>interactor</span><span class=p>);</span>
+<span class=w>  </span><span class=c1>// swExposure-&gt;SetCurrentRenderer(ren1);</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>SliderCallbackExposure</span><span class=o>&gt;</span><span class=w> </span><span class=n>swExpCB</span><span class=p>;</span>
 </span><span class=hll><span class=w>  </span><span class=n>swExpCB</span><span class=o>-&gt;</span><span class=n>property</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>dynamic_cast</span><span class=o>&lt;</span><span class=n>vtkToneMappingPass</span><span class=o>*&gt;</span><span class=p>(</span><span class=n>ren2</span><span class=o>-&gt;</span><span class=n>GetPass</span><span class=p>());</span>
 </span><span class=hll><span class=w>  </span><span class=n>swExposure</span><span class=o>-&gt;</span><span class=n>AddObserver</span><span class=p>(</span><span class=n>vtkCommand</span><span class=o>::</span><span class=n>InteractionEvent</span><span class=p>,</span><span class=w> </span><span class=n>swExpCB</span><span class=p>);</span>
-</span>
+</span><span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=n>useTonemapping</span><span class=p>)</span>
+<span class=w>  </span><span class=p>{</span>
+<span class=w>    </span><span class=n>swExposure</span><span class=o>-&gt;</span><span class=n>EnabledOff</span><span class=p>();</span>
+<span class=w>  </span><span class=p>}</span>
+
 <span class=w>  </span><span class=n>posY</span><span class=w> </span><span class=o>+=</span><span class=w> </span><span class=n>stepSize</span><span class=p>;</span>
-
-<span class=w>  </span><span class=n>slwP</span><span class=p>.</span><span class=n>initialValue</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>metallicCoefficient</span><span class=p>;</span>
-<span class=w>  </span><span class=n>slwP</span><span class=p>.</span><span class=n>maximumValue</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mf>1.0</span><span class=p>;</span>
-<span class=w>  </span><span class=n>slwP</span><span class=p>.</span><span class=n>title</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>"Metallicity"</span><span class=p>;</span>
-<span class=w>  </span><span class=c1>//  Screen coordinates.</span>
-<span class=w>  </span><span class=n>slwP</span><span class=p>.</span><span class=n>p1</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>posX0</span><span class=p>;</span>
-<span class=w>  </span><span class=n>slwP</span><span class=p>.</span><span class=n>p1</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>posY</span><span class=p>;</span>
-<span class=w>  </span><span class=n>slwP</span><span class=p>.</span><span class=n>p2</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>posX1</span><span class=p>;</span>
-<span class=w>  </span><span class=n>slwP</span><span class=p>.</span><span class=n>p2</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>posY</span><span class=p>;</span>
-
-<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>swMetallic</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>MakeSliderWidget</span><span class=p>(</span><span class=n>slwP</span><span class=p>);</span>
-<span class=w>  </span><span class=n>swMetallic</span><span class=o>-&gt;</span><span class=n>SetInteractor</span><span class=p>(</span><span class=n>interactor</span><span class=p>);</span>
-<span class=w>  </span><span class=n>swMetallic</span><span class=o>-&gt;</span><span class=n>SetAnimationModeToAnimate</span><span class=p>();</span>
-<span class=w>  </span><span class=n>swMetallic</span><span class=o>-&gt;</span><span class=n>EnabledOn</span><span class=p>();</span>
-<span class=w>  </span><span class=n>swMetallic</span><span class=o>-&gt;</span><span class=n>SetCurrentRenderer</span><span class=p>(</span><span class=n>ren1</span><span class=p>);</span>
+<span class=w>  </span><span class=n>slwP</span><span class=p>.</span><span class=n>Position</span><span class=p>.</span><span class=n>point1</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>double</span><span class=p>,</span><span class=w> </span><span class=mi>2</span><span class=o>&gt;</span><span class=p>{</span><span class=mf>0.1</span><span class=p>,</span><span class=w> </span><span class=n>posY</span><span class=p>};</span>
+<span class=w>  </span><span class=n>slwP</span><span class=p>.</span><span class=n>Position</span><span class=p>.</span><span class=n>point2</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>double</span><span class=p>,</span><span class=w> </span><span class=mi>2</span><span class=o>&gt;</span><span class=p>{</span><span class=mf>0.9</span><span class=p>,</span><span class=w> </span><span class=n>posY</span><span class=p>};</span>
+<span class=w>  </span><span class=n>slwP</span><span class=p>.</span><span class=n>Range</span><span class=p>.</span><span class=n>value</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>metallicCoefficient</span><span class=p>;</span>
+<span class=w>  </span><span class=n>slwP</span><span class=p>.</span><span class=n>Range</span><span class=p>.</span><span class=n>maximumValue</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mf>1.0</span><span class=p>;</span>
+<span class=w>  </span><span class=n>slwP</span><span class=p>.</span><span class=n>Text</span><span class=p>.</span><span class=n>title</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>"Metallicity"</span><span class=p>;</span>
+<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>swMetallic</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>Make2DSliderWidget</span><span class=p>(</span><span class=n>slwP</span><span class=p>,</span><span class=w> </span><span class=n>interactor</span><span class=p>);</span>
+<span class=w>  </span><span class=c1>// swMetallic-&gt;SetCurrentRenderer(ren1);</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>SliderCallbackMetallic</span><span class=o>&gt;</span><span class=w> </span><span class=n>swMetallicCB</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>swMetallicCB</span><span class=o>-&gt;</span><span class=n>property</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>actor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>();</span>
 <span class=hll><span class=w>  </span><span class=n>swMetallic</span><span class=o>-&gt;</span><span class=n>AddObserver</span><span class=p>(</span><span class=n>vtkCommand</span><span class=o>::</span><span class=n>InteractionEvent</span><span class=p>,</span><span class=w> </span><span class=n>swMetallicCB</span><span class=p>);</span>
 </span>
 <span class=w>  </span><span class=n>posY</span><span class=w> </span><span class=o>+=</span><span class=w> </span><span class=n>stepSize</span><span class=p>;</span>
-
-<span class=w>  </span><span class=n>slwP</span><span class=p>.</span><span class=n>initialValue</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>roughnessCoefficient</span><span class=p>;</span>
-<span class=w>  </span><span class=n>slwP</span><span class=p>.</span><span class=n>title</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>"Roughness"</span><span class=p>;</span>
-<span class=w>  </span><span class=c1>//  Screen coordinates.</span>
-<span class=w>  </span><span class=n>slwP</span><span class=p>.</span><span class=n>p1</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>posX0</span><span class=p>;</span>
-<span class=w>  </span><span class=n>slwP</span><span class=p>.</span><span class=n>p1</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>posY</span><span class=p>;</span>
-<span class=w>  </span><span class=n>slwP</span><span class=p>.</span><span class=n>p2</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>posX1</span><span class=p>;</span>
-<span class=w>  </span><span class=n>slwP</span><span class=p>.</span><span class=n>p2</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>posY</span><span class=p>;</span>
-
-<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>swRoughness</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>MakeSliderWidget</span><span class=p>(</span><span class=n>slwP</span><span class=p>);</span>
-<span class=w>  </span><span class=n>swRoughness</span><span class=o>-&gt;</span><span class=n>SetInteractor</span><span class=p>(</span><span class=n>interactor</span><span class=p>);</span>
-<span class=w>  </span><span class=n>swRoughness</span><span class=o>-&gt;</span><span class=n>SetAnimationModeToAnimate</span><span class=p>();</span>
-<span class=w>  </span><span class=n>swRoughness</span><span class=o>-&gt;</span><span class=n>EnabledOn</span><span class=p>();</span>
-<span class=w>  </span><span class=n>swRoughness</span><span class=o>-&gt;</span><span class=n>SetCurrentRenderer</span><span class=p>(</span><span class=n>ren1</span><span class=p>);</span>
+<span class=w>  </span><span class=n>slwP</span><span class=p>.</span><span class=n>Position</span><span class=p>.</span><span class=n>point1</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>double</span><span class=p>,</span><span class=w> </span><span class=mi>2</span><span class=o>&gt;</span><span class=p>{</span><span class=mf>0.1</span><span class=p>,</span><span class=w> </span><span class=n>posY</span><span class=p>};</span>
+<span class=w>  </span><span class=n>slwP</span><span class=p>.</span><span class=n>Position</span><span class=p>.</span><span class=n>point2</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>double</span><span class=p>,</span><span class=w> </span><span class=mi>2</span><span class=o>&gt;</span><span class=p>{</span><span class=mf>0.9</span><span class=p>,</span><span class=w> </span><span class=n>posY</span><span class=p>};</span>
+<span class=w>  </span><span class=n>slwP</span><span class=p>.</span><span class=n>Range</span><span class=p>.</span><span class=n>value</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>roughnessCoefficient</span><span class=p>;</span>
+<span class=w>  </span><span class=n>slwP</span><span class=p>.</span><span class=n>Range</span><span class=p>.</span><span class=n>maximumValue</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mf>1.0</span><span class=p>;</span>
+<span class=w>  </span><span class=n>slwP</span><span class=p>.</span><span class=n>Text</span><span class=p>.</span><span class=n>title</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>"Roughness"</span><span class=p>;</span>
+<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>swRoughness</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>Make2DSliderWidget</span><span class=p>(</span><span class=n>slwP</span><span class=p>,</span><span class=w> </span><span class=n>interactor</span><span class=p>);</span>
+<span class=w>  </span><span class=c1>// swRoughness-&gt;SetCurrentRenderer(ren1);</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>SliderCallbackRoughness</span><span class=o>&gt;</span><span class=w> </span><span class=n>swRoughnessCB</span><span class=p>;</span>
 </span><span class=w>  </span><span class=n>swRoughnessCB</span><span class=o>-&gt;</span><span class=n>property</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>actor</span><span class=o>-&gt;</span><span class=n>GetProperty</span><span class=p>();</span>
 <span class=hll><span class=w>  </span><span class=n>swRoughness</span><span class=o>-&gt;</span><span class=n>AddObserver</span><span class=p>(</span><span class=n>vtkCommand</span><span class=o>::</span><span class=n>InteractionEvent</span><span class=p>,</span><span class=w> </span><span class=n>swRoughnessCB</span><span class=p>);</span>
@@ -1372,56 +1396,119 @@ Options:
 <span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>pd</span><span class=p>;</span>
 <span class=p>}</span>
 
-<span class=hll><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkSliderWidget</span><span class=o>&gt;</span><span class=w> </span><span class=n>MakeSliderWidget</span><span class=p>(</span><span class=n>SliderProperties</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>properties</span><span class=p>)</span>
+<span class=n>Slider2DProperties</span><span class=w> </span><span class=n>MakeSlider2DProperties</span><span class=p>()</span>
+<span class=p>{</span>
+<span class=w>  </span><span class=k>auto</span><span class=w> </span><span class=n>sp</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>Slider2DProperties</span><span class=p>();</span>
+
+<span class=w>  </span><span class=n>sp</span><span class=p>.</span><span class=n>Colors</span><span class=p>.</span><span class=n>barColor</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>"Black"</span><span class=p>;</span>
+<span class=w>  </span><span class=n>sp</span><span class=p>.</span><span class=n>Colors</span><span class=p>.</span><span class=n>barEndsColor</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>"Indigo"</span><span class=p>;</span>
+<span class=w>  </span><span class=n>sp</span><span class=p>.</span><span class=n>Colors</span><span class=p>.</span><span class=n>labelColor</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>"Black"</span><span class=p>;</span>
+<span class=w>  </span><span class=n>sp</span><span class=p>.</span><span class=n>Colors</span><span class=p>.</span><span class=n>selectedColor</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>"Lime"</span><span class=p>;</span>
+<span class=w>  </span><span class=n>sp</span><span class=p>.</span><span class=n>Colors</span><span class=p>.</span><span class=n>sliderColor</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>"BurlyWood"</span><span class=p>;</span>
+<span class=w>  </span><span class=n>sp</span><span class=p>.</span><span class=n>Colors</span><span class=p>.</span><span class=n>titleColor</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>"Black"</span><span class=p>;</span>
+
+<span class=w>  </span><span class=n>sp</span><span class=p>.</span><span class=n>Dimensions</span><span class=p>.</span><span class=n>endCapLength</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mf>0.025</span><span class=p>;</span>
+<span class=w>  </span><span class=n>sp</span><span class=p>.</span><span class=n>Dimensions</span><span class=p>.</span><span class=n>endCapWidth</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mf>0.025</span><span class=p>;</span>
+<span class=w>  </span><span class=n>sp</span><span class=p>.</span><span class=n>Dimensions</span><span class=p>.</span><span class=n>labelHeight</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mf>0.020</span><span class=p>;</span>
+<span class=w>  </span><span class=n>sp</span><span class=p>.</span><span class=n>Dimensions</span><span class=p>.</span><span class=n>sliderLength</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mf>0.075</span><span class=p>;</span>
+<span class=w>  </span><span class=n>sp</span><span class=p>.</span><span class=n>Dimensions</span><span class=p>.</span><span class=n>sliderWidth</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mf>0.025</span><span class=p>;</span>
+<span class=w>  </span><span class=n>sp</span><span class=p>.</span><span class=n>Dimensions</span><span class=p>.</span><span class=n>titleHeight</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mf>0.025</span><span class=p>;</span>
+<span class=w>  </span><span class=n>sp</span><span class=p>.</span><span class=n>Dimensions</span><span class=p>.</span><span class=n>tubeWidth</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mf>0.008</span><span class=p>;</span>
+
+<span class=w>  </span><span class=n>sp</span><span class=p>.</span><span class=n>Position</span><span class=p>.</span><span class=n>point1</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>double</span><span class=p>,</span><span class=w> </span><span class=mi>2</span><span class=o>&gt;</span><span class=p>{</span><span class=mf>0.3</span><span class=p>,</span><span class=w> </span><span class=mf>0.1</span><span class=p>};</span>
+<span class=w>  </span><span class=n>sp</span><span class=p>.</span><span class=n>Position</span><span class=p>.</span><span class=n>point2</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>std</span><span class=o>::</span><span class=n>array</span><span class=o>&lt;</span><span class=kt>double</span><span class=p>,</span><span class=w> </span><span class=mi>2</span><span class=o>&gt;</span><span class=p>{</span><span class=mf>0.7</span><span class=p>,</span><span class=w> </span><span class=mf>0.1</span><span class=p>};</span>
+
+<span class=w>  </span><span class=n>sp</span><span class=p>.</span><span class=n>Range</span><span class=p>.</span><span class=n>minimumValue</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mf>0.0</span><span class=p>;</span>
+<span class=w>  </span><span class=n>sp</span><span class=p>.</span><span class=n>Range</span><span class=p>.</span><span class=n>maximumValue</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mf>1.0</span><span class=p>;</span>
+<span class=w>  </span><span class=n>sp</span><span class=p>.</span><span class=n>Range</span><span class=p>.</span><span class=n>value</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mf>0.0</span><span class=p>;</span>
+
+<span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>sp</span><span class=p>;</span>
+<span class=p>}</span>
+
+<span class=hll><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkSliderWidget</span><span class=o>&gt;</span><span class=w> </span><span class=n>Make2DSliderWidget</span><span class=p>(</span><span class=n>Slider2DProperties</span><span class=w> </span><span class=k>const</span><span class=o>&amp;</span><span class=w> </span><span class=n>properties</span><span class=p>,</span>
+</span><span class=hll><span class=w>                                           </span><span class=n>vtkRenderWindowInteractor</span><span class=o>*</span><span class=w> </span><span class=n>iren</span><span class=p>)</span>
 </span><span class=p>{</span>
 <span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkNamedColors</span><span class=o>&gt;</span><span class=w> </span><span class=n>colors</span><span class=p>;</span>
-</span><span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkSliderRepresentation2D</span><span class=o>&gt;</span><span class=w> </span><span class=n>slider</span><span class=p>;</span>
 </span>
-<span class=w>  </span><span class=n>slider</span><span class=o>-&gt;</span><span class=n>SetMinimumValue</span><span class=p>(</span><span class=n>properties</span><span class=p>.</span><span class=n>minimumValue</span><span class=p>);</span>
-<span class=w>  </span><span class=n>slider</span><span class=o>-&gt;</span><span class=n>SetMaximumValue</span><span class=p>(</span><span class=n>properties</span><span class=p>.</span><span class=n>maximumValue</span><span class=p>);</span>
-<span class=w>  </span><span class=n>slider</span><span class=o>-&gt;</span><span class=n>SetValue</span><span class=p>(</span><span class=n>properties</span><span class=p>.</span><span class=n>initialValue</span><span class=p>);</span>
-<span class=w>  </span><span class=n>slider</span><span class=o>-&gt;</span><span class=n>SetTitleText</span><span class=p>(</span><span class=n>properties</span><span class=p>.</span><span class=n>title</span><span class=p>.</span><span class=n>c_str</span><span class=p>());</span>
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkSliderRepresentation2D</span><span class=o>&gt;</span><span class=w> </span><span class=n>sliderRep</span><span class=p>;</span>
+</span>
+<span class=w>  </span><span class=n>sliderRep</span><span class=o>-&gt;</span><span class=n>GetTubeProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
+<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>properties</span><span class=p>.</span><span class=n>Colors</span><span class=p>.</span><span class=n>barColor</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>sliderRep</span><span class=o>-&gt;</span><span class=n>GetCapProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
+<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>properties</span><span class=p>.</span><span class=n>Colors</span><span class=p>.</span><span class=n>barEndsColor</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>sliderRep</span><span class=o>-&gt;</span><span class=n>GetLabelProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
+<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>properties</span><span class=p>.</span><span class=n>Colors</span><span class=p>.</span><span class=n>labelColor</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>sliderRep</span><span class=o>-&gt;</span><span class=n>GetSelectedProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
+<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>properties</span><span class=p>.</span><span class=n>Colors</span><span class=p>.</span><span class=n>selectedColor</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>sliderRep</span><span class=o>-&gt;</span><span class=n>GetSliderProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
+<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>properties</span><span class=p>.</span><span class=n>Colors</span><span class=p>.</span><span class=n>sliderColor</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=n>sliderRep</span><span class=o>-&gt;</span><span class=n>GetTitleProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
+<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>properties</span><span class=p>.</span><span class=n>Colors</span><span class=p>.</span><span class=n>titleColor</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
 
-<span class=w>  </span><span class=n>slider</span><span class=o>-&gt;</span><span class=n>GetPoint1Coordinate</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetCoordinateSystemToNormalizedDisplay</span><span class=p>();</span>
-<span class=w>  </span><span class=n>slider</span><span class=o>-&gt;</span><span class=n>GetPoint1Coordinate</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetValue</span><span class=p>(</span><span class=n>properties</span><span class=p>.</span><span class=n>p1</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span><span class=w> </span><span class=n>properties</span><span class=p>.</span><span class=n>p1</span><span class=p>[</span><span class=mi>1</span><span class=p>]);</span>
-<span class=w>  </span><span class=n>slider</span><span class=o>-&gt;</span><span class=n>GetPoint2Coordinate</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetCoordinateSystemToNormalizedDisplay</span><span class=p>();</span>
-<span class=w>  </span><span class=n>slider</span><span class=o>-&gt;</span><span class=n>GetPoint2Coordinate</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetValue</span><span class=p>(</span><span class=n>properties</span><span class=p>.</span><span class=n>p2</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span><span class=w> </span><span class=n>properties</span><span class=p>.</span><span class=n>p2</span><span class=p>[</span><span class=mi>1</span><span class=p>]);</span>
+<span class=w>  </span><span class=n>sliderRep</span><span class=o>-&gt;</span><span class=n>SetEndCapLength</span><span class=p>(</span><span class=n>properties</span><span class=p>.</span><span class=n>Dimensions</span><span class=p>.</span><span class=n>endCapLength</span><span class=p>);</span>
+<span class=w>  </span><span class=n>sliderRep</span><span class=o>-&gt;</span><span class=n>SetEndCapWidth</span><span class=p>(</span><span class=n>properties</span><span class=p>.</span><span class=n>Dimensions</span><span class=p>.</span><span class=n>endCapWidth</span><span class=p>);</span>
+<span class=w>  </span><span class=n>sliderRep</span><span class=o>-&gt;</span><span class=n>SetLabelHeight</span><span class=p>(</span><span class=n>properties</span><span class=p>.</span><span class=n>Dimensions</span><span class=p>.</span><span class=n>labelHeight</span><span class=p>);</span>
+<span class=w>  </span><span class=n>sliderRep</span><span class=o>-&gt;</span><span class=n>SetSliderLength</span><span class=p>(</span><span class=n>properties</span><span class=p>.</span><span class=n>Dimensions</span><span class=p>.</span><span class=n>sliderLength</span><span class=p>);</span>
+<span class=w>  </span><span class=n>sliderRep</span><span class=o>-&gt;</span><span class=n>SetSliderWidth</span><span class=p>(</span><span class=n>properties</span><span class=p>.</span><span class=n>Dimensions</span><span class=p>.</span><span class=n>sliderWidth</span><span class=p>);</span>
+<span class=w>  </span><span class=n>sliderRep</span><span class=o>-&gt;</span><span class=n>SetTitleHeight</span><span class=p>(</span><span class=n>properties</span><span class=p>.</span><span class=n>Dimensions</span><span class=p>.</span><span class=n>titleHeight</span><span class=p>);</span>
+<span class=w>  </span><span class=n>sliderRep</span><span class=o>-&gt;</span><span class=n>SetTubeWidth</span><span class=p>(</span><span class=n>properties</span><span class=p>.</span><span class=n>Dimensions</span><span class=p>.</span><span class=n>tubeWidth</span><span class=p>);</span>
 
-<span class=w>  </span><span class=n>slider</span><span class=o>-&gt;</span><span class=n>SetTubeWidth</span><span class=p>(</span><span class=n>properties</span><span class=p>.</span><span class=n>tubeWidth</span><span class=p>);</span>
-<span class=w>  </span><span class=n>slider</span><span class=o>-&gt;</span><span class=n>SetSliderLength</span><span class=p>(</span><span class=n>properties</span><span class=p>.</span><span class=n>sliderLength</span><span class=p>);</span>
-<span class=w>  </span><span class=n>slider</span><span class=o>-&gt;</span><span class=n>SetSliderWidth</span><span class=p>(</span><span class=n>properties</span><span class=p>.</span><span class=n>sliderWidth</span><span class=p>);</span>
-<span class=w>  </span><span class=n>slider</span><span class=o>-&gt;</span><span class=n>SetEndCapLength</span><span class=p>(</span><span class=n>properties</span><span class=p>.</span><span class=n>endCapLength</span><span class=p>);</span>
-<span class=w>  </span><span class=n>slider</span><span class=o>-&gt;</span><span class=n>SetEndCapWidth</span><span class=p>(</span><span class=n>properties</span><span class=p>.</span><span class=n>endCapWidth</span><span class=p>);</span>
-<span class=w>  </span><span class=n>slider</span><span class=o>-&gt;</span><span class=n>SetTitleHeight</span><span class=p>(</span><span class=n>properties</span><span class=p>.</span><span class=n>titleHeight</span><span class=p>);</span>
-<span class=w>  </span><span class=n>slider</span><span class=o>-&gt;</span><span class=n>SetLabelHeight</span><span class=p>(</span><span class=n>properties</span><span class=p>.</span><span class=n>labelHeight</span><span class=p>);</span>
+<span class=w>  </span><span class=c1>// Set the position.</span>
+<span class=w>  </span><span class=n>sliderRep</span><span class=o>-&gt;</span><span class=n>GetPoint1Coordinate</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetCoordinateSystem</span><span class=p>(</span>
+<span class=w>      </span><span class=n>properties</span><span class=p>.</span><span class=n>Position</span><span class=p>.</span><span class=n>coordinateSystem</span><span class=p>);</span>
+<span class=w>  </span><span class=n>sliderRep</span><span class=o>-&gt;</span><span class=n>GetPoint1Coordinate</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetValue</span><span class=p>(</span><span class=n>properties</span><span class=p>.</span><span class=n>Position</span><span class=p>.</span><span class=n>point1</span><span class=p>.</span><span class=n>data</span><span class=p>());</span>
+<span class=w>  </span><span class=n>sliderRep</span><span class=o>-&gt;</span><span class=n>GetPoint2Coordinate</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetCoordinateSystem</span><span class=p>(</span>
+<span class=w>      </span><span class=n>properties</span><span class=p>.</span><span class=n>Position</span><span class=p>.</span><span class=n>coordinateSystem</span><span class=p>);</span>
+<span class=w>  </span><span class=n>sliderRep</span><span class=o>-&gt;</span><span class=n>GetPoint2Coordinate</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetValue</span><span class=p>(</span><span class=n>properties</span><span class=p>.</span><span class=n>Position</span><span class=p>.</span><span class=n>point2</span><span class=p>.</span><span class=n>data</span><span class=p>());</span>
 
-<span class=w>  </span><span class=c1>// Set the color properties</span>
-<span class=w>  </span><span class=c1>// Change the color of the title.</span>
-<span class=w>  </span><span class=n>slider</span><span class=o>-&gt;</span><span class=n>GetTitleProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
-<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>properties</span><span class=p>.</span><span class=n>titleColor</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
-<span class=w>  </span><span class=c1>// Change the color of the label.</span>
-<span class=w>  </span><span class=n>slider</span><span class=o>-&gt;</span><span class=n>GetLabelProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
-<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>properties</span><span class=p>.</span><span class=n>labelColor</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
-<span class=w>  </span><span class=c1>// Change the color of the bar.</span>
-<span class=w>  </span><span class=n>slider</span><span class=o>-&gt;</span><span class=n>GetTubeProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
-<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>properties</span><span class=p>.</span><span class=n>barColor</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
-<span class=w>  </span><span class=c1>// Change the color of the ends of the bar.</span>
-<span class=w>  </span><span class=n>slider</span><span class=o>-&gt;</span><span class=n>GetCapProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
-<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>properties</span><span class=p>.</span><span class=n>barEndsColor</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
-<span class=w>  </span><span class=c1>// Change the color of the knob that slides.</span>
-<span class=w>  </span><span class=n>slider</span><span class=o>-&gt;</span><span class=n>GetSliderProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
-<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>properties</span><span class=p>.</span><span class=n>sliderColor</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
-<span class=w>  </span><span class=c1>// Change the color of the knob when the mouse is held on it.</span>
-<span class=w>  </span><span class=n>slider</span><span class=o>-&gt;</span><span class=n>GetSelectedProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
-<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>properties</span><span class=p>.</span><span class=n>selectedColor</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
-<span class=w>  </span><span class=c1>// Change the color of the text displaying the value.</span>
-<span class=w>  </span><span class=n>slider</span><span class=o>-&gt;</span><span class=n>GetLabelProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetColor</span><span class=p>(</span>
-<span class=w>      </span><span class=n>colors</span><span class=o>-&gt;</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>properties</span><span class=p>.</span><span class=n>valueColor</span><span class=p>).</span><span class=n>GetData</span><span class=p>());</span>
+<span class=w>  </span><span class=c1>// Set the range.</span>
+<span class=w>  </span><span class=n>sliderRep</span><span class=o>-&gt;</span><span class=n>SetMinimumValue</span><span class=p>(</span><span class=n>properties</span><span class=p>.</span><span class=n>Range</span><span class=p>.</span><span class=n>minimumValue</span><span class=p>);</span>
+<span class=w>  </span><span class=n>sliderRep</span><span class=o>-&gt;</span><span class=n>SetMaximumValue</span><span class=p>(</span><span class=n>properties</span><span class=p>.</span><span class=n>Range</span><span class=p>.</span><span class=n>maximumValue</span><span class=p>);</span>
+<span class=w>  </span><span class=n>sliderRep</span><span class=o>-&gt;</span><span class=n>SetValue</span><span class=p>(</span><span class=n>properties</span><span class=p>.</span><span class=n>Range</span><span class=p>.</span><span class=n>value</span><span class=p>);</span>
 
-<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkSliderWidget</span><span class=o>&gt;</span><span class=w> </span><span class=n>sliderWidget</span><span class=p>;</span>
-</span><span class=w>  </span><span class=n>sliderWidget</span><span class=o>-&gt;</span><span class=n>SetRepresentation</span><span class=p>(</span><span class=n>slider</span><span class=p>);</span>
+<span class=w>  </span><span class=c1>// Set label and title fonts properties.</span>
+<span class=w>  </span><span class=c1>// Also set the title.</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>labelFontFamily</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>properties</span><span class=p>.</span><span class=n>Text</span><span class=p>.</span><span class=n>labelFontFamily</span><span class=p>;</span>
+<span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>labelFontFamily</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>"Courier"</span><span class=p>)</span>
+<span class=w>  </span><span class=p>{</span>
+<span class=w>    </span><span class=n>sliderRep</span><span class=o>-&gt;</span><span class=n>GetLabelProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetFontFamilyToCourier</span><span class=p>();</span>
+<span class=w>  </span><span class=p>}</span>
+<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>labelFontFamily</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>"Times"</span><span class=p>)</span>
+<span class=w>  </span><span class=p>{</span>
+<span class=w>    </span><span class=n>sliderRep</span><span class=o>-&gt;</span><span class=n>GetLabelProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetFontFamilyToTimes</span><span class=p>();</span>
+<span class=w>  </span><span class=p>}</span>
+<span class=w>  </span><span class=k>else</span>
+<span class=w>  </span><span class=p>{</span>
+<span class=w>    </span><span class=n>sliderRep</span><span class=o>-&gt;</span><span class=n>GetLabelProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetFontFamilyToArial</span><span class=p>();</span>
+<span class=w>  </span><span class=p>}</span>
+<span class=w>  </span><span class=n>sliderRep</span><span class=o>-&gt;</span><span class=n>GetLabelProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetBold</span><span class=p>(</span><span class=n>properties</span><span class=p>.</span><span class=n>Text</span><span class=p>.</span><span class=n>labelBold</span><span class=p>);</span>
+<span class=w>  </span><span class=n>sliderRep</span><span class=o>-&gt;</span><span class=n>GetLabelProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetItalic</span><span class=p>(</span><span class=n>properties</span><span class=p>.</span><span class=n>Text</span><span class=p>.</span><span class=n>labelItalic</span><span class=p>);</span>
+<span class=w>  </span><span class=n>sliderRep</span><span class=o>-&gt;</span><span class=n>GetLabelProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetShadow</span><span class=p>(</span><span class=n>properties</span><span class=p>.</span><span class=n>Text</span><span class=p>.</span><span class=n>labelShadow</span><span class=p>);</span>
+<span class=w>  </span><span class=n>sliderRep</span><span class=o>-&gt;</span><span class=n>SetTitleText</span><span class=p>(</span><span class=n>properties</span><span class=p>.</span><span class=n>Text</span><span class=p>.</span><span class=n>title</span><span class=p>.</span><span class=n>c_str</span><span class=p>());</span>
+<span class=w>  </span><span class=n>std</span><span class=o>::</span><span class=n>string</span><span class=w> </span><span class=n>titleFontFamily</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>properties</span><span class=p>.</span><span class=n>Text</span><span class=p>.</span><span class=n>titleFontFamily</span><span class=p>;</span>
+<span class=w>  </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>titleFontFamily</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>"Courier"</span><span class=p>)</span>
+<span class=w>  </span><span class=p>{</span>
+<span class=w>    </span><span class=n>sliderRep</span><span class=o>-&gt;</span><span class=n>GetLabelProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetFontFamilyToCourier</span><span class=p>();</span>
+<span class=w>  </span><span class=p>}</span>
+<span class=w>  </span><span class=k>else</span><span class=w> </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>titleFontFamily</span><span class=w> </span><span class=o>==</span><span class=w> </span><span class=s>"Times"</span><span class=p>)</span>
+<span class=w>  </span><span class=p>{</span>
+<span class=w>    </span><span class=n>sliderRep</span><span class=o>-&gt;</span><span class=n>GetLabelProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetFontFamilyToTimes</span><span class=p>();</span>
+<span class=w>  </span><span class=p>}</span>
+<span class=w>  </span><span class=k>else</span>
+<span class=w>  </span><span class=p>{</span>
+<span class=w>    </span><span class=n>sliderRep</span><span class=o>-&gt;</span><span class=n>GetLabelProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetFontFamilyToArial</span><span class=p>();</span>
+<span class=w>  </span><span class=p>}</span>
+<span class=w>  </span><span class=n>sliderRep</span><span class=o>-&gt;</span><span class=n>GetTitleProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetBold</span><span class=p>(</span><span class=n>properties</span><span class=p>.</span><span class=n>Text</span><span class=p>.</span><span class=n>titleBold</span><span class=p>);</span>
+<span class=w>  </span><span class=n>sliderRep</span><span class=o>-&gt;</span><span class=n>GetTitleProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetItalic</span><span class=p>(</span><span class=n>properties</span><span class=p>.</span><span class=n>Text</span><span class=p>.</span><span class=n>titleItalic</span><span class=p>);</span>
+<span class=w>  </span><span class=n>sliderRep</span><span class=o>-&gt;</span><span class=n>GetTitleProperty</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>SetShadow</span><span class=p>(</span><span class=n>properties</span><span class=p>.</span><span class=n>Text</span><span class=p>.</span><span class=n>titleShadow</span><span class=p>);</span>
 
-<span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>sliderWidget</span><span class=p>;</span>
+<span class=hll><span class=w>  </span><span class=n>vtkNew</span><span class=o>&lt;</span><span class=n>vtkSliderWidget</span><span class=o>&gt;</span><span class=w> </span><span class=n>widget</span><span class=p>;</span>
+</span><span class=w>  </span><span class=n>widget</span><span class=o>-&gt;</span><span class=n>SetInteractor</span><span class=p>(</span><span class=n>iren</span><span class=p>);</span>
+<span class=w>  </span><span class=n>widget</span><span class=o>-&gt;</span><span class=n>SetRepresentation</span><span class=p>(</span><span class=n>sliderRep</span><span class=p>);</span>
+<span class=w>  </span><span class=n>widget</span><span class=o>-&gt;</span><span class=n>EnabledOn</span><span class=p>();</span>
+<span class=w>  </span><span class=n>widget</span><span class=o>-&gt;</span><span class=n>SetAnimationModeToAnimate</span><span class=p>();</span>
+
+<span class=w>  </span><span class=k>return</span><span class=w> </span><span class=n>widget</span><span class=p>;</span>
 <span class=p>}</span>
 
 <span class=p>}</span><span class=w> </span><span class=c1>// namespace</span>

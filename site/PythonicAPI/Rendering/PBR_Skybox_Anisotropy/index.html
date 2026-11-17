@@ -70,6 +70,7 @@ Options:
 <span class=kn>import</span><span class=w> </span><span class=nn>sys</span>
 <span class=kn>from</span><span class=w> </span><span class=nn>dataclasses</span><span class=w> </span><span class=kn>import</span> <span class=n>dataclass</span>
 <span class=kn>from</span><span class=w> </span><span class=nn>pathlib</span><span class=w> </span><span class=kn>import</span> <span class=n>Path</span>
+<span class=kn>from</span><span class=w> </span><span class=nn>typing</span><span class=w> </span><span class=kn>import</span> <span class=n>Tuple</span>
 
 <span class=c1># noinspection PyUnresolvedReferences</span>
 <span class=kn>import</span><span class=w> </span><span class=nn>vtkmodules.vtkRenderingOpenGL2</span>
@@ -118,22 +119,22 @@ Options:
 <span class=hll><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkRenderingAnnotation</span><span class=w> </span><span class=kn>import</span> <span class=n>vtkAxesActor</span>
 </span><span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkRenderingCore</span><span class=w> </span><span class=kn>import</span> <span class=p>(</span>
 <span class=hll>    <span class=n>vtkActor</span><span class=p>,</span>
-</span><span class=hll>    <span class=n>vtkPolyDataMapper</span><span class=p>,</span>
-</span><span class=hll>    <span class=n>vtkRenderWindow</span><span class=p>,</span>
-</span><span class=hll>    <span class=n>vtkRenderWindowInteractor</span><span class=p>,</span>
-</span><span class=hll>    <span class=n>vtkSkybox</span><span class=p>,</span>
-</span><span class=hll>    <span class=n>vtkTexture</span><span class=p>,</span>
-</span><span class=hll>    <span class=n>vtkRenderer</span><span class=p>,</span>
-</span><span class=hll>    <span class=n>vtkWindowToImageFilter</span>
-</span><span class=p>)</span>
-<span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkRenderingOpenGL2</span><span class=w> </span><span class=kn>import</span> <span class=p>(</span>
-<span class=hll>    <span class=n>vtkCameraPass</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkCameraPass</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkLightsPass</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkOpaquePass</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkOverlayPass</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkPolyDataMapper</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderer</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkRenderPassCollection</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderWindow</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkRenderWindowInteractor</span><span class=p>,</span>
 </span><span class=hll>    <span class=n>vtkSequencePass</span><span class=p>,</span>
-</span><span class=hll>    <span class=n>vtkToneMappingPass</span>
+</span><span class=hll>    <span class=n>vtkSkybox</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkTexture</span><span class=p>,</span>
+</span><span class=hll>    <span class=n>vtkWindowToImageFilter</span>
+</span><span class=p>)</span>
+<span class=kn>from</span><span class=w> </span><span class=nn>vtkmodules.vtkRenderingOpenGL2</span><span class=w> </span><span class=kn>import</span> <span class=p>(</span>
+<span class=hll>    <span class=n>vtkToneMappingPass</span>
 </span><span class=p>)</span>
 
 
@@ -363,71 +364,76 @@ Options:
     <span class=n>step_size</span> <span class=o>=</span> <span class=mf>1.0</span> <span class=o>/</span> <span class=mi>7</span>
     <span class=n>y_val</span> <span class=o>=</span> <span class=mf>0.1</span>
     <span class=c1># Setup a slider widget for each varying parameter.</span>
-    <span class=n>slider_properties</span> <span class=o>=</span> <span class=n>SliderProperties</span><span class=p>()</span>
+    <span class=n>slider_properties</span> <span class=o>=</span> <span class=n>make_slider_2d_properties</span><span class=p>()</span>
 
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>title_text</span> <span class=o>=</span> <span class=s1>'Exposure'</span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>range</span><span class=p>[</span><span class=s1>'maximum_value'</span><span class=p>]</span> <span class=o>=</span> <span class=mf>5.0</span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>range</span><span class=p>[</span><span class=s1>'value'</span><span class=p>]</span> <span class=o>=</span> <span class=n>exposure_coefficient</span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>position</span> <span class=o>=</span> <span class=p>{</span><span class=s1>'point1'</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.1</span><span class=p>,</span> <span class=n>y_val</span><span class=p>),</span> <span class=s1>'point2'</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.9</span><span class=p>,</span> <span class=n>y_val</span><span class=p>)}</span>
-    <span class=n>sw_exposure</span> <span class=o>=</span> <span class=n>make_slider_widget</span><span class=p>(</span><span class=n>slider_properties</span><span class=p>,</span> <span class=n>interactor</span><span class=p>)</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>Range</span><span class=o>.</span><span class=n>maximum_value</span> <span class=o>=</span> <span class=mf>5.0</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>Range</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>exposure_coefficient</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>Position</span><span class=o>.</span><span class=n>point1</span> <span class=o>=</span> <span class=p>(</span><span class=mf>0.1</span><span class=p>,</span> <span class=n>y_val</span><span class=p>)</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>Position</span><span class=o>.</span><span class=n>point2</span> <span class=o>=</span> <span class=p>(</span><span class=mf>0.9</span><span class=p>,</span> <span class=n>y_val</span><span class=p>)</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>Text</span><span class=o>.</span><span class=n>title</span> <span class=o>=</span> <span class=s1>'Exposure'</span>
     <span class=k>if</span> <span class=n>use_tonemapping</span><span class=p>:</span>
-        <span class=n>sw_exposure</span><span class=o>.</span><span class=n>enable</span> <span class=o>=</span> <span class=kc>True</span>
-    <span class=k>else</span><span class=p>:</span>
-        <span class=n>sw_exposure</span><span class=o>.</span><span class=n>enable</span> <span class=o>=</span> <span class=kc>False</span>
-    <span class=n>sw_exposure_cb</span> <span class=o>=</span> <span class=n>SliderCallbackExposure</span><span class=p>(</span><span class=n>tone_mapping_p</span><span class=p>)</span>
-<span class=hll>    <span class=n>sw_exposure</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=n>vtkCommand</span><span class=o>.</span><span class=n>InteractionEvent</span><span class=p>,</span> <span class=n>sw_exposure_cb</span><span class=p>)</span>
+        <span class=n>sw_exposure</span> <span class=o>=</span> <span class=n>make_2d_slider_widget</span><span class=p>(</span><span class=n>slider_properties</span><span class=p>,</span> <span class=n>interactor</span><span class=p>)</span>
+        <span class=n>sw_exposure_cb</span> <span class=o>=</span> <span class=n>SliderCallbackExposure</span><span class=p>(</span><span class=n>tone_mapping_p</span><span class=p>)</span>
+<span class=hll>        <span class=n>sw_exposure</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=n>vtkCommand</span><span class=o>.</span><span class=n>InteractionEvent</span><span class=p>,</span> <span class=n>sw_exposure_cb</span><span class=p>)</span>
 </span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>title_text</span> <span class=o>=</span> <span class=s1>'Metallicity'</span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>range</span><span class=p>[</span><span class=s1>'maximum_value'</span><span class=p>]</span> <span class=o>=</span> <span class=mf>1.0</span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>range</span><span class=p>[</span><span class=s1>'value'</span><span class=p>]</span> <span class=o>=</span> <span class=n>metallic_coefficient</span>
     <span class=n>y_val</span> <span class=o>+=</span> <span class=n>step_size</span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>position</span> <span class=o>=</span> <span class=p>{</span><span class=s1>'point1'</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.1</span><span class=p>,</span> <span class=n>y_val</span><span class=p>),</span> <span class=s1>'point2'</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.9</span><span class=p>,</span> <span class=n>y_val</span><span class=p>)}</span>
-    <span class=n>sw_metallic</span> <span class=o>=</span> <span class=n>make_slider_widget</span><span class=p>(</span><span class=n>slider_properties</span><span class=p>,</span> <span class=n>interactor</span><span class=p>)</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>Range</span><span class=o>.</span><span class=n>maximum_value</span> <span class=o>=</span> <span class=mf>1.0</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>Range</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>metallic_coefficient</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>Position</span><span class=o>.</span><span class=n>point1</span> <span class=o>=</span> <span class=p>(</span><span class=mf>0.1</span><span class=p>,</span> <span class=n>y_val</span><span class=p>)</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>Position</span><span class=o>.</span><span class=n>point2</span> <span class=o>=</span> <span class=p>(</span><span class=mf>0.9</span><span class=p>,</span> <span class=n>y_val</span><span class=p>)</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>Text</span><span class=o>.</span><span class=n>title</span> <span class=o>=</span> <span class=s1>'Metallicity'</span>
+    <span class=n>sw_metallic</span> <span class=o>=</span> <span class=n>make_2d_slider_widget</span><span class=p>(</span><span class=n>slider_properties</span><span class=p>,</span> <span class=n>interactor</span><span class=p>)</span>
     <span class=n>sw_metallic_cb</span> <span class=o>=</span> <span class=n>SliderCallbackMetallic</span><span class=p>(</span><span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>())</span>
 <span class=hll>    <span class=n>sw_metallic</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=n>vtkCommand</span><span class=o>.</span><span class=n>InteractionEvent</span><span class=p>,</span> <span class=n>sw_metallic_cb</span><span class=p>)</span>
 </span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>title_text</span> <span class=o>=</span> <span class=s1>'Roughness'</span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>range</span><span class=p>[</span><span class=s1>'value'</span><span class=p>]</span> <span class=o>=</span> <span class=n>roughness_coefficient</span>
     <span class=n>y_val</span> <span class=o>+=</span> <span class=n>step_size</span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>position</span> <span class=o>=</span> <span class=p>{</span><span class=s1>'point1'</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.1</span><span class=p>,</span> <span class=n>y_val</span><span class=p>),</span> <span class=s1>'point2'</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.9</span><span class=p>,</span> <span class=n>y_val</span><span class=p>)}</span>
-    <span class=n>sw_roughness</span> <span class=o>=</span> <span class=n>make_slider_widget</span><span class=p>(</span><span class=n>slider_properties</span><span class=p>,</span> <span class=n>interactor</span><span class=p>)</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>Range</span><span class=o>.</span><span class=n>maximum_value</span> <span class=o>=</span> <span class=mf>1.0</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>Range</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>roughness_coefficient</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>Position</span><span class=o>.</span><span class=n>point1</span> <span class=o>=</span> <span class=p>(</span><span class=mf>0.1</span><span class=p>,</span> <span class=n>y_val</span><span class=p>)</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>Position</span><span class=o>.</span><span class=n>point2</span> <span class=o>=</span> <span class=p>(</span><span class=mf>0.9</span><span class=p>,</span> <span class=n>y_val</span><span class=p>)</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>Text</span><span class=o>.</span><span class=n>title</span> <span class=o>=</span> <span class=s1>'Roughness'</span>
+    <span class=n>sw_roughness</span> <span class=o>=</span> <span class=n>make_2d_slider_widget</span><span class=p>(</span><span class=n>slider_properties</span><span class=p>,</span> <span class=n>interactor</span><span class=p>)</span>
     <span class=n>sw_roughness_cb</span> <span class=o>=</span> <span class=n>SliderCallbackRoughness</span><span class=p>(</span><span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>())</span>
 <span class=hll>    <span class=n>sw_roughness</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=n>vtkCommand</span><span class=o>.</span><span class=n>InteractionEvent</span><span class=p>,</span> <span class=n>sw_roughness_cb</span><span class=p>)</span>
 </span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>title_text</span> <span class=o>=</span> <span class=s1>'Occlusion'</span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>range</span><span class=p>[</span><span class=s1>'maximum_value'</span><span class=p>]</span> <span class=o>=</span> <span class=mf>1.0</span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>range</span><span class=p>[</span><span class=s1>'value'</span><span class=p>]</span> <span class=o>=</span> <span class=n>occlusion_strength</span>
     <span class=n>y_val</span> <span class=o>+=</span> <span class=n>step_size</span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>position</span> <span class=o>=</span> <span class=p>{</span><span class=s1>'point1'</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.1</span><span class=p>,</span> <span class=n>y_val</span><span class=p>),</span> <span class=s1>'point2'</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.9</span><span class=p>,</span> <span class=n>y_val</span><span class=p>)}</span>
-    <span class=n>sw_occlusion_strength</span> <span class=o>=</span> <span class=n>make_slider_widget</span><span class=p>(</span><span class=n>slider_properties</span><span class=p>,</span> <span class=n>interactor</span><span class=p>)</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>Range</span><span class=o>.</span><span class=n>maximum_value</span> <span class=o>=</span> <span class=mf>5.0</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>Range</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>occlusion_strength</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>Position</span><span class=o>.</span><span class=n>point1</span> <span class=o>=</span> <span class=p>(</span><span class=mf>0.1</span><span class=p>,</span> <span class=n>y_val</span><span class=p>)</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>Position</span><span class=o>.</span><span class=n>point2</span> <span class=o>=</span> <span class=p>(</span><span class=mf>0.9</span><span class=p>,</span> <span class=n>y_val</span><span class=p>)</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>Text</span><span class=o>.</span><span class=n>title</span> <span class=o>=</span> <span class=s1>'Occlusion'</span>
+    <span class=n>sw_occlusion_strength</span> <span class=o>=</span> <span class=n>make_2d_slider_widget</span><span class=p>(</span><span class=n>slider_properties</span><span class=p>,</span> <span class=n>interactor</span><span class=p>)</span>
     <span class=n>sw_occlusion_strength_cb</span> <span class=o>=</span> <span class=n>SliderCallbackOcclusionStrength</span><span class=p>(</span><span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>())</span>
 <span class=hll>    <span class=n>sw_occlusion_strength</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=n>vtkCommand</span><span class=o>.</span><span class=n>InteractionEvent</span><span class=p>,</span> <span class=n>sw_occlusion_strength_cb</span><span class=p>)</span>
 </span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>title_text</span> <span class=o>=</span> <span class=s1>'Normal'</span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>range</span><span class=p>[</span><span class=s1>'maximum_value'</span><span class=p>]</span> <span class=o>=</span> <span class=mf>5.0</span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>range</span><span class=p>[</span><span class=s1>'value'</span><span class=p>]</span> <span class=o>=</span> <span class=n>normal_scale</span>
     <span class=n>y_val</span> <span class=o>+=</span> <span class=n>step_size</span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>position</span> <span class=o>=</span> <span class=p>{</span><span class=s1>'point1'</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.1</span><span class=p>,</span> <span class=n>y_val</span><span class=p>),</span> <span class=s1>'point2'</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.9</span><span class=p>,</span> <span class=n>y_val</span><span class=p>)}</span>
-    <span class=n>sw_normal</span> <span class=o>=</span> <span class=n>make_slider_widget</span><span class=p>(</span><span class=n>slider_properties</span><span class=p>,</span> <span class=n>interactor</span><span class=p>)</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>Range</span><span class=o>.</span><span class=n>maximum_value</span> <span class=o>=</span> <span class=mf>5.0</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>Range</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>normal_scale</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>Position</span><span class=o>.</span><span class=n>point1</span> <span class=o>=</span> <span class=p>(</span><span class=mf>0.1</span><span class=p>,</span> <span class=n>y_val</span><span class=p>)</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>Position</span><span class=o>.</span><span class=n>point2</span> <span class=o>=</span> <span class=p>(</span><span class=mf>0.9</span><span class=p>,</span> <span class=n>y_val</span><span class=p>)</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>Text</span><span class=o>.</span><span class=n>title</span> <span class=o>=</span> <span class=s1>'Normal'</span>
+    <span class=n>sw_normal</span> <span class=o>=</span> <span class=n>make_2d_slider_widget</span><span class=p>(</span><span class=n>slider_properties</span><span class=p>,</span> <span class=n>interactor</span><span class=p>)</span>
     <span class=n>sw_normal_cb</span> <span class=o>=</span> <span class=n>SliderCallbackNormalScale</span><span class=p>(</span><span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>())</span>
 <span class=hll>    <span class=n>sw_normal</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=n>vtkCommand</span><span class=o>.</span><span class=n>InteractionEvent</span><span class=p>,</span> <span class=n>sw_normal_cb</span><span class=p>)</span>
 </span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>title_text</span> <span class=o>=</span> <span class=s1>'Anisotropy'</span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>range</span><span class=p>[</span><span class=s1>'maximum_value'</span><span class=p>]</span> <span class=o>=</span> <span class=mf>1.0</span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>range</span><span class=p>[</span><span class=s1>'value'</span><span class=p>]</span> <span class=o>=</span> <span class=n>anisotropy_coefficient</span>
     <span class=n>y_val</span> <span class=o>+=</span> <span class=n>step_size</span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>position</span> <span class=o>=</span> <span class=p>{</span><span class=s1>'point1'</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.1</span><span class=p>,</span> <span class=n>y_val</span><span class=p>),</span> <span class=s1>'point2'</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.9</span><span class=p>,</span> <span class=n>y_val</span><span class=p>)}</span>
-    <span class=n>sw_anisotropy</span> <span class=o>=</span> <span class=n>make_slider_widget</span><span class=p>(</span><span class=n>slider_properties</span><span class=p>,</span> <span class=n>interactor</span><span class=p>)</span>
-    <span class=n>sw_anisotropy_cb</span> <span class=o>=</span> <span class=n>SliderCallbackNormalScale</span><span class=p>(</span><span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>())</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>Range</span><span class=o>.</span><span class=n>maximum_value</span> <span class=o>=</span> <span class=mf>1.0</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>Range</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>anisotropy_coefficient</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>Position</span><span class=o>.</span><span class=n>point1</span> <span class=o>=</span> <span class=p>(</span><span class=mf>0.1</span><span class=p>,</span> <span class=n>y_val</span><span class=p>)</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>Position</span><span class=o>.</span><span class=n>point2</span> <span class=o>=</span> <span class=p>(</span><span class=mf>0.9</span><span class=p>,</span> <span class=n>y_val</span><span class=p>)</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>Text</span><span class=o>.</span><span class=n>title</span> <span class=o>=</span> <span class=s1>'Anisotropy'</span>
+    <span class=n>sw_anisotropy</span> <span class=o>=</span> <span class=n>make_2d_slider_widget</span><span class=p>(</span><span class=n>slider_properties</span><span class=p>,</span> <span class=n>interactor</span><span class=p>)</span>
+    <span class=n>sw_anisotropy_cb</span> <span class=o>=</span> <span class=n>SliderCallbackAnisotropy</span><span class=p>(</span><span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>())</span>
 <span class=hll>    <span class=n>sw_anisotropy</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=n>vtkCommand</span><span class=o>.</span><span class=n>InteractionEvent</span><span class=p>,</span> <span class=n>sw_anisotropy_cb</span><span class=p>)</span>
 </span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>title_text</span> <span class=o>=</span> <span class=s1>'Anisotropy Rotation'</span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>range</span><span class=p>[</span><span class=s1>'maximum_value'</span><span class=p>]</span> <span class=o>=</span> <span class=mf>1.0</span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>range</span><span class=p>[</span><span class=s1>'value'</span><span class=p>]</span> <span class=o>=</span> <span class=n>anisotropy_rotation</span>
     <span class=n>y_val</span> <span class=o>+=</span> <span class=n>step_size</span>
-    <span class=n>slider_properties</span><span class=o>.</span><span class=n>position</span> <span class=o>=</span> <span class=p>{</span><span class=s1>'point1'</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.1</span><span class=p>,</span> <span class=n>y_val</span><span class=p>),</span> <span class=s1>'point2'</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.9</span><span class=p>,</span> <span class=n>y_val</span><span class=p>)}</span>
-    <span class=n>sw_anisotropy_rotation</span> <span class=o>=</span> <span class=n>make_slider_widget</span><span class=p>(</span><span class=n>slider_properties</span><span class=p>,</span> <span class=n>interactor</span><span class=p>)</span>
-    <span class=n>sw_anisotropy_rotation_cb</span> <span class=o>=</span> <span class=n>SliderCallbackNormalScale</span><span class=p>(</span><span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>())</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>Range</span><span class=o>.</span><span class=n>maximum_value</span> <span class=o>=</span> <span class=mf>1.0</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>Range</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>anisotropy_rotation</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>Position</span><span class=o>.</span><span class=n>point1</span> <span class=o>=</span> <span class=p>(</span><span class=mf>0.1</span><span class=p>,</span> <span class=n>y_val</span><span class=p>)</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>Position</span><span class=o>.</span><span class=n>point2</span> <span class=o>=</span> <span class=p>(</span><span class=mf>0.9</span><span class=p>,</span> <span class=n>y_val</span><span class=p>)</span>
+    <span class=n>slider_properties</span><span class=o>.</span><span class=n>Text</span><span class=o>.</span><span class=n>title</span> <span class=o>=</span> <span class=s1>'Anisotropy Rotation'</span>
+    <span class=n>sw_anisotropy_rotation</span> <span class=o>=</span> <span class=n>make_2d_slider_widget</span><span class=p>(</span><span class=n>slider_properties</span><span class=p>,</span> <span class=n>interactor</span><span class=p>)</span>
+    <span class=n>sw_anisotropy_rotation_cb</span> <span class=o>=</span> <span class=n>SliderCallbackAnisotropyRotation</span><span class=p>(</span><span class=n>actor</span><span class=o>.</span><span class=n>GetProperty</span><span class=p>())</span>
 <span class=hll>    <span class=n>sw_anisotropy_rotation</span><span class=o>.</span><span class=n>AddObserver</span><span class=p>(</span><span class=n>vtkCommand</span><span class=o>.</span><span class=n>InteractionEvent</span><span class=p>,</span> <span class=n>sw_anisotropy_rotation_cb</span><span class=p>)</span>
 </span>
     <span class=n>render_window</span><span class=o>.</span><span class=n>Render</span><span class=p>()</span>
@@ -810,60 +816,102 @@ Options:
     <span class=k>return</span> <span class=n>pd</span>
 
 
-<span class=k>class</span><span class=w> </span><span class=nc>SliderProperties</span><span class=p>:</span>
-    <span class=n>dimensions</span> <span class=o>=</span> <span class=p>{</span>
-        <span class=s1>'tube_width'</span><span class=p>:</span> <span class=mf>0.008</span><span class=p>,</span>
-        <span class=s1>'slider_length'</span><span class=p>:</span> <span class=mf>0.075</span><span class=p>,</span> <span class=s1>'slider_width'</span><span class=p>:</span> <span class=mf>0.025</span><span class=p>,</span>
-        <span class=s1>'end_cap_length'</span><span class=p>:</span> <span class=mf>0.025</span><span class=p>,</span> <span class=s1>'end_cap_width'</span><span class=p>:</span> <span class=mf>0.025</span><span class=p>,</span>
-        <span class=s1>'title_height'</span><span class=p>:</span> <span class=mf>0.025</span><span class=p>,</span> <span class=s1>'label_height'</span><span class=p>:</span> <span class=mf>0.020</span><span class=p>,</span>
-    <span class=p>}</span>
-    <span class=n>colors</span> <span class=o>=</span> <span class=p>{</span>
-        <span class=s1>'title_color'</span><span class=p>:</span> <span class=s1>'Black'</span><span class=p>,</span> <span class=s1>'label_color'</span><span class=p>:</span> <span class=s1>'Black'</span><span class=p>,</span> <span class=s1>'slider_color'</span><span class=p>:</span> <span class=s1>'BurlyWood'</span><span class=p>,</span>
-        <span class=s1>'selected_color'</span><span class=p>:</span> <span class=s1>'Lime'</span><span class=p>,</span> <span class=s1>'bar_color'</span><span class=p>:</span> <span class=s1>'Black'</span><span class=p>,</span> <span class=s1>'bar_ends_color'</span><span class=p>:</span> <span class=s1>'Indigo'</span><span class=p>,</span>
-    <span class=p>}</span>
-    <span class=nb>range</span> <span class=o>=</span> <span class=p>{</span><span class=s1>'minimum_value'</span><span class=p>:</span> <span class=mf>0.0</span><span class=p>,</span> <span class=s1>'maximum_value'</span><span class=p>:</span> <span class=mf>1.0</span><span class=p>,</span> <span class=s1>'value'</span><span class=p>:</span> <span class=mf>1.0</span><span class=p>}</span>
-    <span class=n>title_text</span> <span class=o>=</span> <span class=s1>''</span><span class=p>,</span>
-    <span class=n>position</span> <span class=o>=</span> <span class=p>{</span><span class=s1>'point1'</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.1</span><span class=p>,</span> <span class=mf>0.1</span><span class=p>),</span> <span class=s1>'point2'</span><span class=p>:</span> <span class=p>(</span><span class=mf>0.9</span><span class=p>,</span> <span class=mf>0.1</span><span class=p>)}</span>
-
-
-<span class=k>def</span><span class=w> </span><span class=nf>make_slider_widget</span><span class=p>(</span><span class=n>slider_properties</span><span class=p>,</span> <span class=n>interactor</span><span class=p>):</span>
+<span class=k>def</span><span class=w> </span><span class=nf>make_slider_2d_properties</span><span class=p>():</span>
 <span class=w>    </span><span class=sd>"""</span>
-<span class=sd>    Make a slider widget.</span>
-<span class=sd>    :param slider_properties: range, title name, dimensions, colors, and position.</span>
+<span class=sd>    This applies more specific values to the default Slider2DProperties.</span>
+
+<span class=sd>    :return: The slider 2D properties.</span>
+<span class=sd>    """</span>
+    <span class=n>sp</span> <span class=o>=</span> <span class=n>Slider2DProperties</span><span class=p>()</span>
+
+    <span class=n>sp</span><span class=o>.</span><span class=n>Colors</span><span class=o>.</span><span class=n>bar_color</span> <span class=o>=</span> <span class=s1>'Black'</span>
+    <span class=n>sp</span><span class=o>.</span><span class=n>Colors</span><span class=o>.</span><span class=n>bar_ends_color</span> <span class=o>=</span> <span class=s1>'Indigo'</span>
+    <span class=n>sp</span><span class=o>.</span><span class=n>Colors</span><span class=o>.</span><span class=n>label_color</span> <span class=o>=</span> <span class=s1>'Black'</span>
+    <span class=n>sp</span><span class=o>.</span><span class=n>Colors</span><span class=o>.</span><span class=n>selected_color</span> <span class=o>=</span> <span class=s1>'Lime'</span>
+    <span class=n>sp</span><span class=o>.</span><span class=n>Colors</span><span class=o>.</span><span class=n>slider_color</span> <span class=o>=</span> <span class=s1>'BurlyWood'</span>
+    <span class=n>sp</span><span class=o>.</span><span class=n>Colors</span><span class=o>.</span><span class=n>title_color</span> <span class=o>=</span> <span class=s1>'Black'</span>
+
+    <span class=n>sp</span><span class=o>.</span><span class=n>Dimensions</span><span class=o>.</span><span class=n>end_cap_length</span> <span class=o>=</span> <span class=mf>0.025</span>
+    <span class=n>sp</span><span class=o>.</span><span class=n>Dimensions</span><span class=o>.</span><span class=n>end_cap_width</span> <span class=o>=</span> <span class=mf>0.025</span>
+    <span class=n>sp</span><span class=o>.</span><span class=n>Dimensions</span><span class=o>.</span><span class=n>label_height</span> <span class=o>=</span> <span class=mf>0.020</span>
+    <span class=n>sp</span><span class=o>.</span><span class=n>Dimensions</span><span class=o>.</span><span class=n>slider_length</span> <span class=o>=</span> <span class=mf>0.075</span>
+    <span class=n>sp</span><span class=o>.</span><span class=n>Dimensions</span><span class=o>.</span><span class=n>slider_width</span> <span class=o>=</span> <span class=mf>0.025</span>
+    <span class=n>sp</span><span class=o>.</span><span class=n>Dimensions</span><span class=o>.</span><span class=n>title_height</span> <span class=o>=</span> <span class=mf>0.025</span>
+    <span class=n>sp</span><span class=o>.</span><span class=n>Dimensions</span><span class=o>.</span><span class=n>tube_width</span> <span class=o>=</span> <span class=mf>0.008</span>
+
+    <span class=n>sp</span><span class=o>.</span><span class=n>Position</span><span class=o>.</span><span class=n>point1</span> <span class=o>=</span> <span class=p>(</span><span class=mf>0.3</span><span class=p>,</span> <span class=mf>0.1</span><span class=p>)</span>
+    <span class=n>sp</span><span class=o>.</span><span class=n>Position</span><span class=o>.</span><span class=n>point2</span> <span class=o>=</span> <span class=p>(</span><span class=mf>0.7</span><span class=p>,</span> <span class=mf>0.1</span><span class=p>)</span>
+
+    <span class=n>sp</span><span class=o>.</span><span class=n>Range</span><span class=o>.</span><span class=n>minimum_value</span> <span class=o>=</span> <span class=mf>0.0</span>
+    <span class=n>sp</span><span class=o>.</span><span class=n>Range</span><span class=o>.</span><span class=n>maximum_value</span> <span class=o>=</span> <span class=mf>1.0</span>
+    <span class=n>sp</span><span class=o>.</span><span class=n>Range</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=mf>0.0</span>
+
+    <span class=k>return</span> <span class=n>sp</span>
+
+
+<span class=k>def</span><span class=w> </span><span class=nf>make_2d_slider_widget</span><span class=p>(</span><span class=n>properties</span><span class=p>,</span> <span class=n>interactor</span><span class=p>):</span>
+<span class=w>    </span><span class=sd>"""</span>
+<span class=sd>    Make a 2D slider widget.</span>
+
+<span class=sd>    :param properties: The 2D slider properties.</span>
 <span class=sd>    :param interactor: The vtkInteractor.</span>
 <span class=sd>    :return: The slider widget.</span>
 <span class=sd>    """</span>
+
 <span class=hll>    <span class=n>colors</span> <span class=o>=</span> <span class=n>vtkNamedColors</span><span class=p>()</span>
 </span>
-<span class=hll>    <span class=n>slider_rep</span> <span class=o>=</span> <span class=n>vtkSliderRepresentation2D</span><span class=p>(</span><span class=n>minimum_value</span><span class=o>=</span><span class=n>slider_properties</span><span class=o>.</span><span class=n>range</span><span class=p>[</span><span class=s1>'minimum_value'</span><span class=p>],</span>
-</span>                                           <span class=n>maximum_value</span><span class=o>=</span><span class=n>slider_properties</span><span class=o>.</span><span class=n>range</span><span class=p>[</span><span class=s1>'maximum_value'</span><span class=p>],</span>
-                                           <span class=n>value</span><span class=o>=</span><span class=n>slider_properties</span><span class=o>.</span><span class=n>range</span><span class=p>[</span><span class=s1>'value'</span><span class=p>],</span>
-                                           <span class=n>title_text</span><span class=o>=</span><span class=n>slider_properties</span><span class=o>.</span><span class=n>title_text</span><span class=p>,</span>
-                                           <span class=n>tube_width</span><span class=o>=</span><span class=n>slider_properties</span><span class=o>.</span><span class=n>dimensions</span><span class=p>[</span><span class=s1>'tube_width'</span><span class=p>],</span>
-                                           <span class=n>slider_length</span><span class=o>=</span><span class=n>slider_properties</span><span class=o>.</span><span class=n>dimensions</span><span class=p>[</span><span class=s1>'slider_length'</span><span class=p>],</span>
-                                           <span class=n>slider_width</span><span class=o>=</span><span class=n>slider_properties</span><span class=o>.</span><span class=n>dimensions</span><span class=p>[</span><span class=s1>'slider_width'</span><span class=p>],</span>
-                                           <span class=n>end_cap_length</span><span class=o>=</span><span class=n>slider_properties</span><span class=o>.</span><span class=n>dimensions</span><span class=p>[</span><span class=s1>'end_cap_length'</span><span class=p>],</span>
-                                           <span class=n>end_cap_width</span><span class=o>=</span><span class=n>slider_properties</span><span class=o>.</span><span class=n>dimensions</span><span class=p>[</span><span class=s1>'end_cap_width'</span><span class=p>],</span>
-                                           <span class=n>title_height</span><span class=o>=</span><span class=n>slider_properties</span><span class=o>.</span><span class=n>dimensions</span><span class=p>[</span><span class=s1>'title_height'</span><span class=p>],</span>
-                                           <span class=n>label_height</span><span class=o>=</span><span class=n>slider_properties</span><span class=o>.</span><span class=n>dimensions</span><span class=p>[</span><span class=s1>'label_height'</span><span class=p>],</span>
+<span class=hll>    <span class=n>slider_rep</span> <span class=o>=</span> <span class=n>vtkSliderRepresentation2D</span><span class=p>(</span><span class=n>end_cap_length</span><span class=o>=</span><span class=n>properties</span><span class=o>.</span><span class=n>Dimensions</span><span class=o>.</span><span class=n>end_cap_length</span><span class=p>,</span>
+</span>                                           <span class=n>end_cap_width</span><span class=o>=</span><span class=n>properties</span><span class=o>.</span><span class=n>Dimensions</span><span class=o>.</span><span class=n>end_cap_width</span><span class=p>,</span>
+                                           <span class=n>label_height</span><span class=o>=</span><span class=n>properties</span><span class=o>.</span><span class=n>Dimensions</span><span class=o>.</span><span class=n>label_height</span><span class=p>,</span>
+                                           <span class=n>slider_length</span><span class=o>=</span><span class=n>properties</span><span class=o>.</span><span class=n>Dimensions</span><span class=o>.</span><span class=n>slider_length</span><span class=p>,</span>
+                                           <span class=n>slider_width</span><span class=o>=</span><span class=n>properties</span><span class=o>.</span><span class=n>Dimensions</span><span class=o>.</span><span class=n>slider_width</span><span class=p>,</span>
+                                           <span class=n>title_height</span><span class=o>=</span><span class=n>properties</span><span class=o>.</span><span class=n>Dimensions</span><span class=o>.</span><span class=n>title_height</span><span class=p>,</span>
+                                           <span class=n>tube_width</span><span class=o>=</span><span class=n>properties</span><span class=o>.</span><span class=n>Dimensions</span><span class=o>.</span><span class=n>tube_width</span><span class=p>,</span>
+                                           <span class=n>minimum_value</span><span class=o>=</span><span class=n>properties</span><span class=o>.</span><span class=n>Range</span><span class=o>.</span><span class=n>minimum_value</span><span class=p>,</span>
+                                           <span class=n>maximum_value</span><span class=o>=</span><span class=n>properties</span><span class=o>.</span><span class=n>Range</span><span class=o>.</span><span class=n>maximum_value</span><span class=p>,</span>
+                                           <span class=n>value</span><span class=o>=</span><span class=n>properties</span><span class=o>.</span><span class=n>Range</span><span class=o>.</span><span class=n>value</span><span class=p>,</span>
+                                           <span class=n>title_text</span><span class=o>=</span><span class=n>properties</span><span class=o>.</span><span class=n>Text</span><span class=o>.</span><span class=n>title</span><span class=p>,</span>
                                            <span class=p>)</span>
 
-    <span class=c1># Set the color properties.</span>
-    <span class=n>slider_rep</span><span class=o>.</span><span class=n>title_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>slider_properties</span><span class=o>.</span><span class=n>colors</span><span class=p>[</span><span class=s1>'title_color'</span><span class=p>])</span>
-    <span class=n>slider_rep</span><span class=o>.</span><span class=n>label_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>slider_properties</span><span class=o>.</span><span class=n>colors</span><span class=p>[</span><span class=s1>'label_color'</span><span class=p>])</span>
-    <span class=n>slider_rep</span><span class=o>.</span><span class=n>tube_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>slider_properties</span><span class=o>.</span><span class=n>colors</span><span class=p>[</span><span class=s1>'bar_color'</span><span class=p>])</span>
-    <span class=n>slider_rep</span><span class=o>.</span><span class=n>cap_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>slider_properties</span><span class=o>.</span><span class=n>colors</span><span class=p>[</span><span class=s1>'bar_ends_color'</span><span class=p>])</span>
-    <span class=n>slider_rep</span><span class=o>.</span><span class=n>slider_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>slider_properties</span><span class=o>.</span><span class=n>colors</span><span class=p>[</span><span class=s1>'slider_color'</span><span class=p>])</span>
-    <span class=n>slider_rep</span><span class=o>.</span><span class=n>selected_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>slider_properties</span><span class=o>.</span><span class=n>colors</span><span class=p>[</span><span class=s1>'selected_color'</span><span class=p>])</span>
+    <span class=n>slider_rep</span><span class=o>.</span><span class=n>tube_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>properties</span><span class=o>.</span><span class=n>Colors</span><span class=o>.</span><span class=n>bar_color</span><span class=p>)</span>
+    <span class=n>slider_rep</span><span class=o>.</span><span class=n>cap_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>properties</span><span class=o>.</span><span class=n>Colors</span><span class=o>.</span><span class=n>bar_ends_color</span><span class=p>)</span>
+    <span class=n>slider_rep</span><span class=o>.</span><span class=n>label_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>properties</span><span class=o>.</span><span class=n>Colors</span><span class=o>.</span><span class=n>label_color</span><span class=p>)</span>
+    <span class=n>slider_rep</span><span class=o>.</span><span class=n>selected_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>properties</span><span class=o>.</span><span class=n>Colors</span><span class=o>.</span><span class=n>selected_color</span><span class=p>)</span>
+    <span class=n>slider_rep</span><span class=o>.</span><span class=n>slider_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>properties</span><span class=o>.</span><span class=n>Colors</span><span class=o>.</span><span class=n>slider_color</span><span class=p>)</span>
+    <span class=n>slider_rep</span><span class=o>.</span><span class=n>title_property</span><span class=o>.</span><span class=n>color</span> <span class=o>=</span> <span class=n>colors</span><span class=o>.</span><span class=n>GetColor3d</span><span class=p>(</span><span class=n>properties</span><span class=o>.</span><span class=n>Colors</span><span class=o>.</span><span class=n>title_color</span><span class=p>)</span>
 
-    <span class=c1># Set the position.</span>
-    <span class=n>slider_rep</span><span class=o>.</span><span class=n>point1_coordinate</span><span class=o>.</span><span class=n>coordinate_system</span> <span class=o>=</span> <span class=n>Coordinate</span><span class=o>.</span><span class=n>CoordinateSystem</span><span class=o>.</span><span class=n>VTK_NORMALIZED_VIEWPORT</span>
-    <span class=n>slider_rep</span><span class=o>.</span><span class=n>point1_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>slider_properties</span><span class=o>.</span><span class=n>position</span><span class=p>[</span><span class=s1>'point1'</span><span class=p>]</span>
-    <span class=n>slider_rep</span><span class=o>.</span><span class=n>point2_coordinate</span><span class=o>.</span><span class=n>coordinate_system</span> <span class=o>=</span> <span class=n>Coordinate</span><span class=o>.</span><span class=n>CoordinateSystem</span><span class=o>.</span><span class=n>VTK_NORMALIZED_VIEWPORT</span>
-    <span class=n>slider_rep</span><span class=o>.</span><span class=n>point2_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>slider_properties</span><span class=o>.</span><span class=n>position</span><span class=p>[</span><span class=s1>'point2'</span><span class=p>]</span>
+    <span class=n>slider_rep</span><span class=o>.</span><span class=n>point1_coordinate</span><span class=o>.</span><span class=n>coordinate_system</span> <span class=o>=</span> <span class=n>properties</span><span class=o>.</span><span class=n>Position</span><span class=o>.</span><span class=n>coordinate_system</span>
+    <span class=n>slider_rep</span><span class=o>.</span><span class=n>point1_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>properties</span><span class=o>.</span><span class=n>Position</span><span class=o>.</span><span class=n>point1</span>
+    <span class=n>slider_rep</span><span class=o>.</span><span class=n>point2_coordinate</span><span class=o>.</span><span class=n>coordinate_system</span> <span class=o>=</span> <span class=n>properties</span><span class=o>.</span><span class=n>Position</span><span class=o>.</span><span class=n>coordinate_system</span>
+    <span class=n>slider_rep</span><span class=o>.</span><span class=n>point2_coordinate</span><span class=o>.</span><span class=n>value</span> <span class=o>=</span> <span class=n>properties</span><span class=o>.</span><span class=n>Position</span><span class=o>.</span><span class=n>point2</span>
 
-<span class=hll>    <span class=n>widget</span> <span class=o>=</span> <span class=n>vtkSliderWidget</span><span class=p>(</span><span class=n>representation</span><span class=o>=</span><span class=n>slider_rep</span><span class=p>,</span> <span class=n>interactor</span><span class=o>=</span><span class=n>interactor</span><span class=p>,</span> <span class=n>enabled</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
-</span>    <span class=n>widget</span><span class=o>.</span><span class=n>SetAnimationModeToAnimate</span><span class=p>()</span>
+    <span class=n>label_font_family</span> <span class=o>=</span> <span class=n>properties</span><span class=o>.</span><span class=n>Text</span><span class=o>.</span><span class=n>label_font_family</span>
+    <span class=k>match</span> <span class=n>label_font_family</span><span class=p>:</span>
+        <span class=k>case</span> <span class=s1>'Courier'</span><span class=p>:</span>
+            <span class=n>slider_rep</span><span class=o>.</span><span class=n>label_property</span><span class=o>.</span><span class=n>SetFontFamilyToCourier</span><span class=p>()</span>
+        <span class=k>case</span> <span class=s1>'Times'</span><span class=p>:</span>
+            <span class=n>slider_rep</span><span class=o>.</span><span class=n>label_property</span><span class=o>.</span><span class=n>SetFontFamilyToTimes</span><span class=p>()</span>
+        <span class=k>case</span><span class=w> </span><span class=k>_</span><span class=p>:</span>
+            <span class=n>slider_rep</span><span class=o>.</span><span class=n>label_property</span><span class=o>.</span><span class=n>SetFontFamilyToArial</span><span class=p>()</span>
+    <span class=n>slider_rep</span><span class=o>.</span><span class=n>label_property</span><span class=o>.</span><span class=n>bold</span> <span class=o>=</span> <span class=n>properties</span><span class=o>.</span><span class=n>Text</span><span class=o>.</span><span class=n>label_bold</span>
+    <span class=n>slider_rep</span><span class=o>.</span><span class=n>label_property</span><span class=o>.</span><span class=n>italic</span> <span class=o>=</span> <span class=n>properties</span><span class=o>.</span><span class=n>Text</span><span class=o>.</span><span class=n>label_italic</span>
+    <span class=n>slider_rep</span><span class=o>.</span><span class=n>label_property</span><span class=o>.</span><span class=n>shadow</span> <span class=o>=</span> <span class=n>properties</span><span class=o>.</span><span class=n>Text</span><span class=o>.</span><span class=n>label_shadow</span>
+    <span class=n>title_font_family</span> <span class=o>=</span> <span class=n>properties</span><span class=o>.</span><span class=n>Text</span><span class=o>.</span><span class=n>title_font_family</span>
+    <span class=k>match</span> <span class=n>title_font_family</span><span class=p>:</span>
+        <span class=k>case</span> <span class=s1>'Courier'</span><span class=p>:</span>
+            <span class=n>slider_rep</span><span class=o>.</span><span class=n>title_property</span><span class=o>.</span><span class=n>SetFontFamilyToCourier</span><span class=p>()</span>
+        <span class=k>case</span> <span class=s1>'Times'</span><span class=p>:</span>
+            <span class=n>slider_rep</span><span class=o>.</span><span class=n>title_property</span><span class=o>.</span><span class=n>SetFontFamilyToTimes</span><span class=p>()</span>
+        <span class=k>case</span><span class=w> </span><span class=k>_</span><span class=p>:</span>
+            <span class=n>slider_rep</span><span class=o>.</span><span class=n>title_property</span><span class=o>.</span><span class=n>SetFontFamilyToArial</span><span class=p>()</span>
+    <span class=n>slider_rep</span><span class=o>.</span><span class=n>title_property</span><span class=o>.</span><span class=n>bold</span> <span class=o>=</span> <span class=n>properties</span><span class=o>.</span><span class=n>Text</span><span class=o>.</span><span class=n>title_bold</span>
+    <span class=n>slider_rep</span><span class=o>.</span><span class=n>title_property</span><span class=o>.</span><span class=n>italic</span> <span class=o>=</span> <span class=n>properties</span><span class=o>.</span><span class=n>Text</span><span class=o>.</span><span class=n>title_italic</span>
+    <span class=n>slider_rep</span><span class=o>.</span><span class=n>title_property</span><span class=o>.</span><span class=n>shadow</span> <span class=o>=</span> <span class=n>properties</span><span class=o>.</span><span class=n>Text</span><span class=o>.</span><span class=n>title_shadow</span>
+
+<span class=hll>    <span class=n>widget</span> <span class=o>=</span> <span class=n>vtkSliderWidget</span><span class=p>(</span><span class=n>interactor</span><span class=o>=</span><span class=n>interactor</span><span class=p>)</span>
+</span>    <span class=n>widget</span><span class=o>.</span><span class=n>SetRepresentation</span><span class=p>(</span><span class=n>slider_rep</span><span class=p>)</span>
+    <span class=n>widget</span><span class=o>.</span><span class=n>enabled</span> <span class=o>=</span> <span class=kc>True</span>
+    <span class=n>widget</span><span class=o>.</span><span class=n>SetAnimationModeToAnimate</span><span class=p>()</span>
 
     <span class=k>return</span> <span class=n>widget</span>
 
@@ -1016,6 +1064,59 @@ Options:
         <span class=n>VTK_POSE</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>5</span>
         <span class=n>VTK_WORLD</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>6</span>
         <span class=n>VTK_USERDEFINED</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>7</span>
+
+
+<span class=nd>@dataclass</span>
+<span class=k>class</span><span class=w> </span><span class=nc>Slider2DProperties</span><span class=p>:</span>
+    <span class=nd>@dataclass</span>
+    <span class=k>class</span><span class=w> </span><span class=nc>Colors</span><span class=p>:</span>
+        <span class=c1># The color of the bar.</span>
+        <span class=n>bar_color</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s1>'White'</span>
+        <span class=c1># The color of the ends of the bar.</span>
+        <span class=n>bar_ends_color</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s1>'White'</span>
+        <span class=c1># The color of the text displaying the value.</span>
+        <span class=n>label_color</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s1>'White'</span>
+        <span class=c1># The color of the knob when the mouse is held on it.</span>
+        <span class=n>selected_color</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s1>'HotPink'</span>
+        <span class=c1># The color of the knob that slides.</span>
+        <span class=n>slider_color</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s1>'White'</span>
+        <span class=c1># The color of the text indicating what the slider controls.</span>
+        <span class=n>title_color</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s1>'White'</span>
+
+    <span class=nd>@dataclass</span>
+    <span class=k>class</span><span class=w> </span><span class=nc>Dimensions</span><span class=p>:</span>
+        <span class=n>end_cap_length</span><span class=p>:</span> <span class=nb>float</span> <span class=o>=</span> <span class=mf>0.005</span>
+        <span class=n>end_cap_width</span><span class=p>:</span> <span class=nb>float</span> <span class=o>=</span> <span class=mf>0.05</span>
+        <span class=n>label_height</span><span class=p>:</span> <span class=nb>float</span> <span class=o>=</span> <span class=mf>0.025</span>
+        <span class=n>slider_length</span><span class=p>:</span> <span class=nb>float</span> <span class=o>=</span> <span class=mf>0.01</span>
+        <span class=n>slider_width</span><span class=p>:</span> <span class=nb>float</span> <span class=o>=</span> <span class=mf>0.02</span>
+        <span class=n>title_height</span><span class=p>:</span> <span class=nb>float</span> <span class=o>=</span> <span class=mf>0.03</span>
+        <span class=n>tube_width</span><span class=p>:</span> <span class=nb>float</span> <span class=o>=</span> <span class=mf>0.008</span>
+
+    <span class=nd>@dataclass</span>
+    <span class=k>class</span><span class=w> </span><span class=nc>Position</span><span class=p>:</span>
+        <span class=n>coordinate_system</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=n>Coordinate</span><span class=o>.</span><span class=n>CoordinateSystem</span><span class=o>.</span><span class=n>VTK_NORMALIZED_VIEWPORT</span>
+        <span class=n>point1</span><span class=p>:</span> <span class=n>Tuple</span> <span class=o>=</span> <span class=p>(</span><span class=mf>0.1</span><span class=p>,</span> <span class=mf>0.1</span><span class=p>)</span>
+        <span class=n>point2</span><span class=p>:</span> <span class=n>Tuple</span> <span class=o>=</span> <span class=p>(</span><span class=mf>0.9</span><span class=p>,</span> <span class=mf>0.1</span><span class=p>)</span>
+
+    <span class=nd>@dataclass</span>
+    <span class=k>class</span><span class=w> </span><span class=nc>Range</span><span class=p>:</span>
+        <span class=n>minimum_value</span><span class=p>:</span> <span class=nb>float</span> <span class=o>=</span> <span class=mf>0.0</span>
+        <span class=n>maximum_value</span><span class=p>:</span> <span class=nb>float</span> <span class=o>=</span> <span class=mf>1.0</span>
+        <span class=n>value</span><span class=p>:</span> <span class=nb>float</span> <span class=o>=</span> <span class=mf>0.0</span>
+
+    <span class=nd>@dataclass</span>
+    <span class=k>class</span><span class=w> </span><span class=nc>Text</span><span class=p>:</span>
+        <span class=c1># Font families are: Ariel, Courier and Times</span>
+        <span class=n>label_font_family</span> <span class=o>=</span> <span class=s1>'Arial'</span>
+        <span class=n>label_bold</span><span class=p>:</span> <span class=nb>bool</span> <span class=o>=</span> <span class=kc>True</span>
+        <span class=n>label_italic</span><span class=p>:</span> <span class=nb>bool</span> <span class=o>=</span> <span class=kc>False</span>
+        <span class=n>label_shadow</span><span class=p>:</span> <span class=nb>bool</span> <span class=o>=</span> <span class=kc>True</span>
+        <span class=n>title</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s1>''</span>
+        <span class=n>title_font_family</span> <span class=o>=</span> <span class=s1>'Arial'</span>
+        <span class=n>title_bold</span><span class=p>:</span> <span class=nb>bool</span> <span class=o>=</span> <span class=kc>True</span>
+        <span class=n>title_italic</span><span class=p>:</span> <span class=nb>bool</span> <span class=o>=</span> <span class=kc>False</span>
+        <span class=n>title_shadow</span><span class=p>:</span> <span class=nb>bool</span> <span class=o>=</span> <span class=kc>True</span>
 
 
 <span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>'__main__'</span><span class=p>:</span>
